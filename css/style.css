@@ -1,0 +1,328 @@
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/inter-webfont/Inter-Regular.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/inter-webfont/Inter-Light.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/inter-webfont/Inter-SemiBold.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/inter-webfont/Inter-Bold.woff) format("woff");
+}
+
+.inter-regular {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+}
+
+.inter-italic {
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.inter-light {
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+}
+
+.inter-semibold {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
+
+.inter-bold {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Lufga Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/lufga-webfont/LufgaRegular.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Lufga Italic";
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/lufga-webfont/LufgaItalic.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Lufga Bold";
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/lufga-webfont/LufgaBold.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Lufga ExtraBold";
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/lufga-webfont/LufgaExtraBold.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Lufga Black";
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/lufga-webfont/LufgaBlack.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Lufga Semibold";
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/lufga-webfont/LufgaSemibold.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Lufga Medium";
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/lufga-webfont/LufgaMedium.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Lufga Light";
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/lufga-webfont/LufgaLight.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Lufga Thin";
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/lufga-webfont/LufgaThin.woff) format("woff");
+}
+html,
+body {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+}
+
+.body-text {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.title,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  margin: 0;
+}
+
+.h1,
+h1 {
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+.h2,
+h2 {
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+.h3,
+h3 {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.lufga-regular {
+  font-family: "Lufga Regular", sans-serif;
+  font-weight: 400;
+}
+
+.lufga-bold {
+  font-family: "Lufga Bold", sans-serif;
+  font-weight: 400;
+}
+
+.lufga-extrabold {
+  font-family: "Lufga ExtraBold", sans-serif;
+  font-weight: 400;
+}
+
+.lufga-black {
+  font-family: "Lufga Black", sans-serif;
+  font-weight: 400;
+}
+
+.lufga-semibold {
+  font-family: "Lufga Semibold", sans-serif;
+  font-weight: 400;
+}
+
+.lufga-medium {
+  font-family: "Lufga Medium", sans-serif;
+  font-weight: 400;
+}
+
+.lufga-light {
+  font-family: "Lufga Light", sans-serif;
+  font-weight: 400;
+}
+
+.lufga-thin {
+  font-family: "Lufga Thin", sans-serif;
+  font-weight: 400;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  line-height: 1.1;
+}
+@media (min-width: 640px) {
+  .main-title {
+      font-size: 3.5rem;
+      line-height: 1.1;
+  }
+}
+@media (min-width: 1024px) {
+  .main-title {
+      font-size: 2.5rem;
+      line-height: 1.1;
+  }
+}
+@media (min-width: 1280px) {
+  .main-title {
+      font-size: 3.5rem;
+      line-height: 1.1;
+  }
+}
+
+.huge-title {
+  font-size: 2.5rem;
+  line-height: 3rem;
+}
+@media (min-width: 640px) {
+  .huge-title {
+      font-size: 2.5rem;
+      line-height: 3rem;
+  }
+}
+@media (min-width: 1024px) {
+  .huge-title {
+      font-size: 2.5rem;
+      line-height: 3rem;
+  }
+}
+
+.large-title {
+  font-size: 2rem;
+  line-height: 2rem;
+}
+@media (min-width: 640px) {
+  .large-title {
+      font-size: 2rem;
+      line-height: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .large-title {
+      font-size: 2rem;
+      line-height: 2rem;
+  }
+}
+
+.medium-title {
+  font-size: 1.625rem;
+  line-height: 2rem;
+}
+@media (min-width: 640px) {
+  .medium-title {
+      font-size: 1.625rem;
+      line-height: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .medium-title {
+      font-size: 1.625rem;
+      line-height: 2rem;
+  }
+}
+
+.subtitle {
+  font-size: 1.375rem;
+  line-height: 2rem;
+}
+@media (min-width: 640px) {
+  .subtitle {
+      font-size: 1.375rem;
+      line-height: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .subtitle {
+      font-size: 1.375rem;
+      line-height: 2rem;
+  }
+}
+
+.small-title {
+  font-size: 1.25rem;
+  line-height: 2rem;
+}
+@media (min-width: 640px) {
+  .small-title {
+      font-size: 1.25rem;
+      line-height: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .small-title {
+      font-size: 1.25rem;
+      line-height: 2rem;
+  }
+}
+
+.body-text {
+  font-size: 1rem;
+  line-height: 1.7rem;
+}
+@media (min-width: 640px) {
+  .body-text {
+      font-size: 1rem;
+      line-height: 1.7rem;
+  }
+}
+@media (min-width: 1024px) {
+  .body-text {
+      font-size: 1rem;
+      line-height: 1.7rem;
+  }
+}

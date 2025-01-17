@@ -1,0 +1,120 @@
+<?php
+
+// Cabeceras de CORS
+// Ponemos estas peticiones para que las llamadas AJAX no se detengan
+header( 'Access-Control-Allow-Origin: *' );
+header( 'Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method' );
+header( 'Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE' );
+header( 'Allow: GET, POST, OPTIONS, PUT, DELETE' );
+
+// Incluímos el framework
+require_once( __DIR__ . '/polaris.php' );
+
+// Si ya existe la DB, no se ejecutará nada
+require_once( __DIR__ . '/init/init.php' );
+
+// -------------------------------------------------------------------------------------
+// Enturador y compilador de máscaras
+// -------------------------------------------------------------------------------------
+
+// Instanciamos un enrutador
+$router = new Router();
+
+// Por cada controlador encontrado, lo procesamos
+foreach( $router->routes as $route_controller )
+{
+  // Capturamos la clave valor
+  $route_name   = key( $route_controller );
+  $route_method = $route_controller[$route_name];
+  $route_file   = $route_controller['file'];
+
+  // Capturamos el nombre y el método del controlador
+  [$controller_name, $method_name] = explode( '@', $route_method );
+
+  // Calculamos la ruta del controlador final
+  $controller_path = sprintf(
+      '%s/pages/%s.php'
+    , __DIR__
+    , $route_file
+  );
+
+  // Calculamos la ruta del controlador final
+  $mask_path = sprintf(
+      '%s/pages/%s.html'
+    , __DIR__
+    , $route_file
+  );
+
+  // Añadimos el Controlador
+  try
+  {
+    require_once( $controller_path );
+  }
+  catch( Exception $e )
+  {
+    print $e->getMessage() . '<br>';
+    print '404 - Controller class not found';
+    continue;
+  }
+
+  // Validación por si el controlador no existe
+  if( !file_exists( $controller_path ) )
+  {
+    print '404 - Controller not found';
+    continue;
+  }
+
+  // Instanciamos un nuevo controlador
+  $controller = new $controller_name();
+
+  // Validación por si el método no existe
+  if( !method_exists( $controller, $method_name ) )
+  {
+    print "404 - Controller Method {$method_name} not found";
+    continue;
+  }
+
+  // Si se trata de una llamada AJAX, no ejecutamos el INDEX
+  if( !$router->ajax )
+  {
+    // Ejecutamos el método del controlador calculado
+    call_user_func( [$controller, $method_name] );
+  }
+  else
+  {
+    // Controlamos las peticiones POST de AJAX
+    if( ( !empty( $_POST ) || !empty( $_FILES ) ) && isset( $_GET['cm'] ) )
+    {
+      // Determinamos qué datos enviar a la función
+      // Si hay archivos y datos POST, combinamos ambos
+      if( !empty( $_FILES ) && !empty( $_POST ) )
+        $data = array_merge( $_POST, $_FILES );
+      elseif( !empty( $_FILES ) ) // Si solo hay archivos
+        $data = $_FILES;
+      else // Si solo hay datos POST
+        $data = $_POST;
+
+      // Ejecutamos la función AJAX correspondiente
+      $ajax_response = call_user_func( [$controller, 'ajax_' . pl_get( 'cm' )], $data );
+
+      // Cabeceras del SUCCESS
+      header( 'Content-Type: application/json' );
+      http_response_code( 200 );
+
+      // Devolvemos la respuesta
+      echo json_encode( $ajax_response );
+    }
+
+    break;
+  }
+
+  // -------------------------------------------------------------------------------------
+  // Ejecución de la máscara
+  // -------------------------------------------------------------------------------------
+
+  // Añadimos los parámetros y renderizamos la máscara
+  $view_engine = new pl_view_engine( $mask_path, $controller, false );
+  $view_engine->render_template();
+}
+
+?>
