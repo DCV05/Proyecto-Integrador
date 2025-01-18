@@ -87,4 +87,24 @@ $polaris = [
 
 $_SESSION['polaris'] = $polaris;
 
+// -------------------–-------------------–-------------------–-------------------–
+// Constantes de idioma
+// -------------------–-------------------–-------------------–-------------------–
+
+// Si está definido en la sesión, usamos ese idioma
+if( !defined( 'DEF_LANG' ) && !empty( $_SESSION['polaris']['def_lang'] ) )
+  define( 'DEF_LANG', $_SESSION['polaris']['def_lang'] );
+
+// Si no está definido en la sesión, utilizamos el del navegador
+elseif( !defined( 'DEF_LANG' ) && empty( $_SESSION['polaris']['def_lang'] ) )
+  define( 'DEF_LANG', pl_get_browser_language( ['es', 'en'], 'es' ) );
+
+// -------------------–-------------------–-------------------–-------------------–
+// Labels
+// -------------------–-------------------–-------------------–-------------------–
+
+// Labels de la aplicación
+$labels_json        = file_get_contents( APP_PATH . '/labels.json' );
+$_SESSION['labels'] = json_decode( $labels_json, true );
+
 ?>

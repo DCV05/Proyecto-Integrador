@@ -41,12 +41,6 @@ class LoginController
 
       // Si llega hasta aquí, está todo OK
       $result = 1;
-
-      // Dependiendo del tipo de usuario que sea, redirigimos a una dirección u otra
-      $user_type  = ( $row[0]['user_type'] == 1 ) ? 'doctor': 'patient';
-      $redirect   = sprintf( '/%s?uid2=%s', $user_type, $row[0]['user_id2'] );
-        
-      header( 'Location: ' . $redirect );
       break;
 
     } while( false );

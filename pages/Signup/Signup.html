@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <metaname="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[[ polaris.page.title_seo ]]</title>
+  [[ func | &headers ]]
+</head>
+<body>
+
+  <div class="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full max-w-3xl">
+      <h2 class="text-center text-4xl font-bold tracking-tight text-gray-900">
+        [[ label | create_account_button ]]
+      </h2>
+
+      <div class="mt-10 sm:mx-auto sm:w-full">
+        <form id="register-form" class="space-y-4">
+
+          <section class="flex flex-col space-y-4" id="participant_section">
+
+            <h3 class="text-2xl font-semibold text-gray-700">[[ label | participant_info ]]</h3>
+
+            <div>
+              <label for="child_full_name" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | child_full_name ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="child_full_name"
+                  name="child_full_name" placeholder="[[ label | child_full_name_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="child_birth_date" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | child_birth_date ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="date" id="child_birth_date"
+                  name="child_birth_date" placeholder="[[ label | child_birth_date_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="child_address" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | child_address ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="child_address"
+                  name="child_address" placeholder="[[ label | child_address_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="child_state" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | child_state ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="child_state"
+                  name="child_state" placeholder="[[ label | child_state_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="child_province" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | child_province ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="child_province"
+                  name="child_province" placeholder="[[ label | child_province_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="child_group" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | child_group ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="child_group"
+                  name="child_group" placeholder="[[ label | child_group_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div class="flex justify-end mt-4 col-span-2">
+              <button type="button" class="next-btn bg-indigo-600 text-white px-4 py-2 rounded">[[ label | next ]]</button>
+            </div>
+
+          </section>
+
+          <section class="flex flex-col space-y-4" id="emergency_section">
+
+            <h3 class="text-2xl font-semibold text-gray-700">[[ label | emergency_info ]]</h3>
+
+            <div>
+              <label for="emergency_contact_name" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | emergency_contact_name ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="emergency_contact_name"
+                  name="emergency_contact_name" placeholder="[[ label | emergency_contact_name_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="emergency_contact_phone" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | emergency_contact_phone ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="tel" id="emergency_contact_phone"
+                  name="emergency_contact_phone" placeholder="[[ label | emergency_contact_phone_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="child_allergies" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | child_allergies ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="child_allergies"
+                  name="child_allergies" placeholder="[[ label | child_allergies_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="child_medical_needs" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | child_medical_needs ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="child_medical_needs"
+                  name="child_medical_needs" placeholder="[[ label | child_medical_needs_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="current_medical_treatment" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | current_medical_treatment ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="current_medical_treatment"
+                  name="current_medical_treatment" placeholder="[[ label | current_medical_treatment_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="special_camp_attention" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | special_camp_attention ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="special_camp_attention"
+                  name="special_camp_attention"
+                  placeholder="[[ label | special_camp_attention_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="other_medical_info" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | other_medical_info ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="other_medical_info"
+                  name="other_medical_info" placeholder="[[ label | other_medical_info_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div class="flex justify-between mt-4 col-span-2">
+              <button type="button" class="prev-btn bg-gray-500 text-white px-4 py-2 rounded">[[ label | previous ]]</button>
+              <button type="button" class="next-btn bg-indigo-600 text-white px-4 py-2 rounded">[[ label | next ]]</button>
+            </div>
+
+          </section>
+
+          <section class="flex flex-col space-y-4" id="tutor_section">
+
+            <h3 class="text-2xl font-semibold text-gray-700">[[ label | tutor_info ]]</h3>
+
+            <div>
+              <label for="tutor_relationship" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | tutor_relationship ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="tutor_relationship"
+                  name="tutor_relationship" placeholder="[[ label | tutor_relationship_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="tutor_full_name" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | tutor_full_name ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="tutor_full_name"
+                  name="tutor_full_name" placeholder="[[ label | tutor_full_name_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="tutor_dni" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | tutor_dni ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="tutor_dni"
+                  name="tutor_dni" placeholder="[[ label | tutor_dni_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="tutor_email" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | tutor_email ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="email" id="tutor_email"
+                  name="tutor_email" placeholder="[[ label | tutor_email_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="tutor_birth_date" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | tutor_birth_date ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="date"
+                  id="tutor_birth_date"
+                  name="tutor_birth_date"
+                  placeholder="[[ label | tutor_birth_date_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div class="flex justify-between mt-4 col-span-2">
+              <button type="button" class="prev-btn bg-gray-500 text-white px-4 py-2 rounded">[[ label | previous ]]</button>
+              <button type="button" class="next-btn bg-indigo-600 text-white px-4 py-2 rounded">[[ label | next ]]</button>
+            </div>
+
+          </section>
+
+          <section class="flex flex-col space-y-4" id="payment_section">
+
+            <h3 class="text-2xl font-semibold text-gray-700">[[ label | payment_info ]]</h3>
+
+            <div>
+              <label for="card_number" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | card_number ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="card_number"
+                  name="card_number" placeholder="[[ label | card_number_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="card_name" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | card_name ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="card_name"
+                  name="card_name" placeholder="[[ label | card_name_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="card_expiration_date" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | card_expiration_date ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="month" id="card_expiration_date"
+                  name="card_expiration_date" placeholder="[[ label | card_expiration_date_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="card_cvv" class="block text-sm/6 font-medium text-gray-900">
+                [[ label | card_cvv ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="card_cvv"
+                  name="card_cvv" maxlength="4" placeholder="[[ label | card_cvv_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div class="flex justify-between mt-4 col-span-2">
+              <button type="button" class="prev-btn bg-gray-500 text-white px-4 py-2 rounded">[[ label | previous ]]</button>
+
+              <button
+                type="submit"
+                class="bg-indigo-600 text-white px-4 py-2 rounded"
+              >
+                [[ label | create_account_button ]]
+              </button>
+            </div>
+
+          </section>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="pages/[[ polaris.page.page_title ]]/[[ polaris.page.page_title ]].js"></script>
+</body>
+</html>

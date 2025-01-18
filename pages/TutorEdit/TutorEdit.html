@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[[ polaris.page.title_seo ]]</title>
+  [[ func | &headers ]]
+</head>
+<body>
+  <div class="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full max-w-3xl">
+      <h2 class="text-center text-4xl font-bold tracking-tight text-gray-900">
+        [[ label | modify_tutor_data ]]
+      </h2>
+
+      <div class="mt-10 sm:mx-auto sm:w-full">
+        <form id="edit-tutor-form" class="space-y-4">
+
+          <section class="flex flex-col space-y-4" id="tutor_section">
+
+            <h3 class="text-2xl font-semibold text-gray-700">[[ label | tutor_info ]]</h3>
+
+            <div>
+              <label for="tutor_relationship" class="block text-sm font-medium text-gray-900">
+                [[ label | tutor_relationship ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="tutor_relationship"
+                  name="tutor_relationship"
+                  placeholder="[[ label | tutor_relationship_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="tutor_full_name" class="block text-sm font-medium text-gray-900">
+                [[ label | tutor_full_name ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="tutor_full_name"
+                  name="tutor_full_name"
+                  placeholder="[[ label | tutor_full_name_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="tutor_dni" class="block text-sm font-medium text-gray-900">
+                [[ label | tutor_dni ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="text"
+                  id="tutor_dni"
+                  name="tutor_dni"
+                  placeholder="[[ label | tutor_dni_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="tutor_email" class="block text-sm font-medium text-gray-900">
+                [[ label | tutor_email ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="email"
+                  id="tutor_email"
+                  name="tutor_email"
+                  placeholder="[[ label | tutor_email_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="tutor_birth_date" class="block text-sm font-medium text-gray-900">
+                [[ label | tutor_birth_date ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="date"
+                  id="tutor_birth_date"
+                  name="tutor_birth_date"
+                  placeholder="[[ label | tutor_birth_date_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="tutor_phone_1" class="block text-sm font-medium text-gray-900">
+                [[ label | tutor_phone_1 ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="tel"
+                  id="tutor_phone_1"
+                  name="tutor_phone_1"
+                  placeholder="[[ label | tutor_phone_1_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="tutor_phone_2" class="block text-sm font-medium text-gray-900">
+                [[ label | tutor_phone_2 ]]
+              </label>
+              <div class="mb-4">
+                <input
+                  type="tel"
+                  id="tutor_phone_2"
+                  name="tutor_phone_2"
+                  placeholder="[[ label | tutor_phone_2_placeholder ]]"
+                  class="block px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+              </div>
+            </div>
+
+            <div class="flex justify-end mt-4 col-span-2">
+              <button
+                type="submit"
+                class="bg-indigo-600 text-white px-4 py-2 rounded">
+                [[ label | save_changes ]]
+              </button>
+            </div>
+
+          </section>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="pages/[[ polaris.page.page_title ]]/[[ polaris.page.page_title ]].js"></script>
+</body>
+</html>

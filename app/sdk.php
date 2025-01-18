@@ -87,4 +87,51 @@ function pl_number_id( string $number, int $zeros = 4 ): string
 	return $value;
 }
 
+/**
+ * Devuelve el idioma del navegador.
+ * 
+ * @param  array   $available   Lista de idiomas disponibles para el sitio.
+ * @param  string  $default     Idioma predeterminado del sitio.
+ * @return string               Código del idioma detectado.
+ */
+function pl_get_browser_language( array $available = [], string $default = 'en' ): string
+{
+  // Valor por defecto
+  $value = $default;
+
+  do
+  {
+    // Si hay cabecera de lenguaje
+    if( !isset( $_SERVER[ 'HTTP_ACCEPT_LANGUAGE' ] ) )
+      break;
+
+    // Dividimos los idiomas disponibles
+		$langs = explode( ',', $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
+
+    // Si no hay idiomas disponibles definidos, capturamos el primer idioma detectado
+		if( empty( $available ) && !empty( $langs ) )
+    {
+      $value = substr( $langs[0], 0, 2 );
+      break;
+    }
+
+    // Verificar cada idioma detectado
+		foreach( $langs as $lang )
+    {
+      // Extraemos el código del idioma
+			$lang = substr( $lang, 0, 2 );
+
+      // Verificar si coincide con la lista de idiomas disponibles
+			if( in_array( $lang, $available ) )
+			{
+        $value = $lang;
+        break 2;
+      }
+		}
+    
+  } while( false );
+
+  return $value;
+}
+
 ?>

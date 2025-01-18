@@ -113,7 +113,7 @@ foreach( $router->routes as $route_controller )
   // -------------------------------------------------------------------------------------
 
   // Añadimos los parámetros y renderizamos la máscara
-  $view_engine = new pl_view_engine( $mask_path, $controller, false );
+  $view_engine = new pl_view_engine( $mask_path, $controller );
   $view_engine->render_template();
 }
 

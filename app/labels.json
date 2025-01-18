@@ -1,0 +1,267 @@
+{
+  "section1_comment": "Labels para secciones principales",
+  "participant_info": {
+    "es": "Información del participante",
+    "en": "Participant information"
+  },
+  "emergency_info": {
+    "es": "Información de emergencia",
+    "en": "Emergency information"
+  },
+  "tutor_info": {
+    "es": "Información del tutor",
+    "en": "Tutor information"
+  },
+  "payment_info": {
+    "es": "Información de pago",
+    "en": "Payment information"
+  },
+
+  "section2_comment": "Labels para navegación",
+  "previous": {
+    "es": "Anterior",
+    "en": "Previous"
+  },
+  "next": {
+    "es": "Siguiente",
+    "en": "Next"
+  },
+
+  "section3_comment": "Labels para alertas y mensajes",
+  "email_alert_invalid": {
+    "es": "Email no válido.",
+    "en": "Invalid email."
+  },
+  "field_required_alert": {
+    "es": "Este campo es obligatorio. Por favor, rellénelo.",
+    "en": "This field is required. Please fill it out."
+  },
+  "general_alert_message": {
+    "es": "Advertencia",
+    "en": "Warning"
+  },
+
+  "section4_comment": "Labels para botones",
+  "login_button": {
+    "es": "Iniciar sesión",
+    "en": "Log in"
+  },
+  "create_account_button": {
+    "es": "Crear cuenta",
+    "en": "Create account"
+  },
+  "forgot_password_button": {
+    "es": "¿Has olvidado tu contraseña?",
+    "en": "Forgot your password?"
+  },
+  "save_changes": {
+    "es": "Guardar cambios",
+    "en": "Save changes"
+  },
+
+
+  "section5_comment": "Labels para campos relacionados con participantes/niños",
+  "child_full_name": {
+    "es": "Nombre completo",
+    "en": "Full Name"
+  },
+  "child_birth_date": {
+    "es": "Fecha de nacimiento",
+    "en": "Date of Birth"
+  },
+  "child_address": {
+    "es": "Dirección",
+    "en": "Address"
+  },
+  "child_state": {
+    "es": "Comunidad autónoma",
+    "en": "State"
+  },
+  "child_province": {
+    "es": "Provincia",
+    "en": "Province"
+  },
+  "child_group": {
+    "es": "Grupo",
+    "en": "Group"
+  },
+
+  "section6_comment": "Labels para campos relacionados con emergencias",
+  "emergency_contact_name": {
+    "es": "Contacto en caso de emergencia",
+    "en": "Emergency Contact"
+  },
+  "emergency_contact_phone": {
+    "es": "Teléfono en caso de emergencia",
+    "en": "Emergency Phone"
+  },
+  "child_allergies": {
+    "es": "Alergias",
+    "en": "Allergies"
+  },
+  "child_medical_needs": {
+    "es": "Necesidades médicas especiales",
+    "en": "Medical Needs"
+  },
+  "current_medical_treatment": {
+    "es": "Tratamientos médicos actuales",
+    "en": "Current Medical Treatments"
+  },
+  "other_medical_info": {
+    "es": "Otros datos importantes de comunicación médica",
+    "en": "Other Important Medical Information"
+  },
+  "special_camp_attention": {
+    "es": "¿Algún tipo de atención especial que este campamento deba considerar?",
+    "en": "Any special attention this camp should consider?"
+  },
+
+  "section7_comment": "Labels para campos relacionados con tutores",
+  "tutor_relationship": {
+    "es": "Parentesco",
+    "en": "Relationship"
+  },
+  "tutor_full_name": {
+    "es": "Nombre completo",
+    "en": "Full Name"
+  },
+  "tutor_dni": {
+    "es": "DNI",
+    "en": "ID"
+  },
+  "tutor_birth_date": {
+    "es": "Fecha de nacimiento",
+    "en": "Date of Birth"
+  },
+  "tutor_address": {
+    "es": "Dirección",
+    "en": "Address"
+  },
+  "tutor_phone_1": {
+    "es": "Teléfono 1",
+    "en": "Phone 1"
+  },
+  "tutor_phone_2": {
+    "es": "Teléfono 2",
+    "en": "Phone 2"
+  },
+  "tutor_email": {
+    "es": "Correo electrónico",
+    "en": "Email"
+  },
+
+  
+  "section8_comment": "Labels para campos relacionados con pagos",
+  "card_number": {
+    "es": "Número de tarjeta de crédito",
+    "en": "Credit Card Number"
+  },
+  "card_name": {
+    "es": "Nombre en la tarjeta",
+    "en": "Name on Card"
+  },
+  "card_expiration_date": {
+    "es": "Fecha de vencimiento",
+    "en": "Expiration Date"
+  },
+  "card_cvv": {
+    "es": "Código CVV",
+    "en": "CVV Code"
+  },
+
+  "section9_comment": "Placeholders para campos relacionados con participantes/niños",
+  "child_full_name_placeholder": {
+    "es": "Juan Pérez",
+    "en": "John Smith"
+  },
+  "child_birth_date_placeholder": {
+    "es": "01/01/2015",
+    "en": "01/01/2015"
+  },
+  "child_address_placeholder": {
+    "es": "Calle Principal 123",
+    "en": "123 Main Street"
+  },
+  "child_state_placeholder": {
+    "es": "Comunidad de Madrid",
+    "en": "Pennsylvania"
+  },
+  "child_province_placeholder": {
+    "es": "Madrid",
+    "en": "Scranton"
+  },
+  "child_group_placeholder": {
+    "es": "Grupo A",
+    "en": "Group A"
+  },
+
+  "section10_comment": "Placeholders para campos relacionados con emergencias",
+  "emergency_contact_name_placeholder": {
+    "es": "Ana López",
+    "en": "Jane Doe"
+  },
+  "emergency_contact_phone_placeholder": {
+    "es": "+34 612 34 56 78",
+    "en": "+1 555 123 4567"
+  },
+  "child_allergies_placeholder": {
+    "es": "Polen, nueces",
+    "en": "Pollen, nuts"
+  },
+  "child_medical_needs_placeholder": {
+    "es": "Asma, insulina",
+    "en": "Asthma, insulin"
+  },
+  "current_medical_treatment_placeholder": {
+    "es": "Tratamiento con antibióticos",
+    "en": "Antibiotic treatment"
+  },
+  "other_medical_info_placeholder": {
+    "es": "Lleva un inhalador en la mochila",
+    "en": "Carries an inhaler in the backpack"
+  },
+
+  "section11_comment": "Placeholders para campos relacionados con tutores",
+  "tutor_relationship_placeholder": {
+    "es": "Padre",
+    "en": "Father"
+  },
+  "tutor_full_name_placeholder": {
+    "es": "Carlos Ramírez",
+    "en": "Michael Scott"
+  },
+  "tutor_dni_placeholder": {
+    "es": "123456789",
+    "en": "987654321"
+  },
+  "tutor_phone_1_placeholder": {
+    "es": "+34 612 34 56 78",
+    "en": "+1 987 654 3210"
+  },
+  "tutor_phone_2_placeholder": {
+    "es": "+34 722 45 67 89",
+    "en": "+1 876 543 2109"
+  },
+  "tutor_email_placeholder": {
+    "es": "carlos.ramirez@example.com",
+    "en": "michael.scott@dundermifflin.com"
+  },
+
+  "section12_comment": "Placeholders para campos relacionados con pagos",
+  "card_number_placeholder": {
+    "es": "1234 5678 9012 3456",
+    "en": "1234 5678 9012 3456"
+  },
+  "card_name_placeholder": {
+    "es": "Carlos Ramírez",
+    "en": "Michael Scott"
+  },
+  "card_expiration_date_placeholder": {
+    "es": "MM/AAAA",
+    "en": "MM/YYYY"
+  },
+  "card_cvv_placeholder": {
+    "es": "123",
+    "en": "123"
+  }
+}

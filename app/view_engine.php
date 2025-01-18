@@ -8,33 +8,17 @@ class pl_view_engine
 {
 	// Variables necesarias para compilar la máscara
 	protected string $template_path;
-	protected Object $controller;
+	protected object $controller;
 	protected array $vars = [];
 
-	// Variables de caché
-	protected bool $cache_enabled  = true;
-	protected string $cache_path     = '';
-	protected int $cache_lifetime = 300;
-
 	/**
-	 * En este caso, el constructor almacenará la plantilla, el directorio de la caché, y el tiempo de vida de la caché en segundos
+	 * En este caso, el constructor almacenará la plantilla
 	 * @param string $template_path
-	 * @param string $cache_path
-	 * @param int $cache_lifetime
 	 *  */ 
-	public function __construct(
-			$template_path
-		, $controller
-		,	$cache_enabled  = true
-		,	$cache_lifetime = 10
-	)
+	public function __construct( string $template_path, object $controller )
 	{
 		$this->template_path    = $template_path;
 		$this->controller				= $controller;
-
-		$this->cache_path 			= str_replace( '/app/view_engine.php', '/storage/cache', __DIR__ );
-		$this->cache_lifetime   = $cache_lifetime;
-		$this->cache_enabled		= $cache_enabled;
 	}
 
 	// Le asignamos a la plantilla unas variables
@@ -53,16 +37,56 @@ class pl_view_engine
 		// Establecemos una expresión regular para capturar los tags
 		$tag_pattern = "/\[\[\s*([^\|\]\s]+(?:\.[^\|\]\s]+)?)\s*(?:\|\s*([^\]]+))?\s*\]\]/";
 		preg_match_all( $tag_pattern, $template_html, $matches );
+
+		/*
+			Array
+			(
+				[0] => Array
+					(
+						[0] => [[ polaris.page.title_seo ]]
+						[1] => [[ func | &headers ]]
+						[2] => [[ label | test ]]
+						[3] => [[ polaris.page.page_title ]]
+						[4] => [[ polaris.page.page_title ]]
+					)
+
+				[1] => Array
+					(
+						[0] => polaris.page.title_seo
+						[1] => func
+						[2] => label
+						[3] => polaris.page.page_title
+						[4] => polaris.page.page_title
+					)
+
+				[2] => Array
+					(
+						[0] => 
+						[1] => &headers 
+						[2] => test 
+						[3] => 
+						[4] => 
+					)
+			)
+		*/
 		
 		// Separar en arrays
+		$labels 		= [];
 		$tags 			= [];
 		$functions 	= [];
-		foreach( $matches[0] as $key => $match )
+		foreach( $matches[1] as $key => $match )
 		{
-			if( isset( $matches[2][$key] ) && $matches[2][$key] )
-				$functions[] = $matches[1][$key] . " | " . $matches[2][$key];
+			// Funciones
+			if( $match == 'func' && !empty( $matches[2][$key] ) )
+				$functions[] = $match . " | " . $matches[2][$key];
+			
+			// Labels
+			elseif( $match == 'label' && !empty( $matches[2][$key] ) )
+				$labels[] = trim( $match . " | " . $matches[2][$key] );
+
+			// Tags
 			else
-				$tags[] = $matches[1][$key];
+				$tags[] = $match;
 		}
 
 		// Intentamos ejecutar las funciones de la máscara
@@ -76,43 +100,36 @@ class pl_view_engine
 				$func_parts 				= array_map( 'trim', explode( '|', $func_name ) );
 				$callable_func_name = $func_parts[1];
 
-				if( $callable_func_name == 'index' ) // Controlamos que vuelvan a llamar a la función index
+				// Controlamos que vuelvan a llamar a la función index
+				if( $callable_func_name == 'index' )
+					throw new Exception( 'INDEX method cannot be executed again' );
+
+				// Detecta las funciones globales
+				$is_global = $callable_func_name[0] === '&';
+
+				// Calculamos el nombre de la función
+				$callable_func_name = $is_global
+					? 'app_' . substr( $callable_func_name, 1 )
+					: $callable_func_name
+				;
+
+				// Si tiene un parámetro, ejecutamos la función o método con el parámetro
+				if( isset( $func_parts[2] ) )
 				{
-					print 'INDEX method cannot be executed again';
-					exit;
+					$func_result = $is_global
+						? $callable_func_name( $func_parts[2] )
+						: $this->controller->$callable_func_name( $func_parts[2] );
+				}
+				else // Funciones y métodos sin parámetros
+				{
+					$func_result = $is_global
+					? $callable_func_name()
+					: $this->controller->$callable_func_name();
 				}
 
-				// Si contiene un & al inicio del tag, se tratará de una función global de la aplicación
-				if( $callable_func_name[0] == '&' )
-				{
-					$callable_func_name = 'app_' . substr( $callable_func_name, 1 );
-
-					// Detectamos que la función contenga un parámetro
-					if( isset( $func_parts[2] ) )
-					{
-						$callable_func_param = $func_parts[2];
-						$func_result = $callable_func_name( $callable_func_param );
-					}
-					else
-						$func_result	= $callable_func_name();
-
-					// Reemplazamos la función por el resultado obtenido
-					$template_html = str_replace( "[[ {$func_name} ]]", $func_result, $template_html );
-				}
-				else
-				{
-					// Detectamos que la función contenga un parámetro
-					if( isset( $func_parts[2] ) )
-					{
-						$callable_func_param = $func_parts[2];
-						$func_result = $this->controller->$callable_func_name( $callable_func_param );
-					}
-					else
-						$func_result	= $this->controller->$callable_func_name();
-
-					// Llamamos a la función y reemplazamos el HTMl en la máscara
-					$template_html 	= str_replace( "[[ {$func_name} ]]", $func_result, $template_html );
-				}
+				// Reemplazamos el HTMl en la máscara
+				$template_html 	= str_replace( "[[ {$func_name} ]]", $func_result, $template_html );
+				
 			}
 			catch( Exception $e )
 			{
@@ -120,53 +137,72 @@ class pl_view_engine
 				continue;
 			}
 		}
+
+		// Compilamos los labels
+		foreach( $labels as $label )
+		{
+			// Extraemos el label y buscamos su significado
+			$label_name = trim( explode( ' | ', $label )[1] );
+
+			// Buscamos su valor en la sesión
+			if( !empty( $_SESSION['labels'][$label_name] ) )
+				$label_value = $_SESSION['labels'][$label_name][DEF_LANG];
+			else
+				$label_value = '';
+
+			// Reemplazamos el HTML
+			$template_html = str_replace( '[[ ' . $label . ' ]]', $label_value, $template_html );
+		}
 		
 		// Intentamos buscar las constantes
 		foreach( $tags as $tag_name )
 		{
+			$tag_name = strtolower( $tag_name );
+
 			try
 			{
-				// Capturamos el nombre de la constante
-				$tag_parts 	= explode( '.', $tag_name );
-				$const_name = $tag_parts[0];
-				$prop_name	= !empty( $tag_parts[1] ) ? $tag_parts[1] : '';
-								
-				// Comprobamos si es una constante definida
+				// Capturamos el nombre de la constante y las llaves por las que navegar
+				$tag_parts  = explode( '.', $tag_name );
+				$const_name = array_shift( $tag_parts );
+
+				// ------------------------------------------------------------------------------------------
+				// Manejo de constantes
+				// ------------------------------------------------------------------------------------------
 				if( defined( $const_name ) )
 				{
-					// Intentamos convertir a constante el string
-					$constant_value = constant( $const_name );
-
-					// Si la constante es un array y contiene la clave $prop_name
-					if( is_array( $constant_value ) && isset( $constant_value[$prop_name] ) )
-						$result = $constant_value[$prop_name];
-					// Si la constante es un string
-					elseif( is_string( $constant_value ) )
-						$result = $constant_value;
-					// Si no es válida, devolvemos un error
-					else
-						$result = '!' . $tag_name;
+					$value 	= constant( $const_name );
+					$result = $this->navigate_array( $value, $tag_parts, $tag_name );
 				}
-				// Comprobamos si es una propiedad del controlador
+
+				// ------------------------------------------------------------------------------------------
+				// Manejo de sesiones
+				// ------------------------------------------------------------------------------------------
+				elseif( isset( $_SESSION[$const_name] ) )
+				{
+					$value 	= $_SESSION[$const_name];
+					$result = $this->navigate_array( $value, $tag_parts, $tag_name );
+				}
+
+				// ------------------------------------------------------------------------------------------
+				// Manejo de propiedades en controladores
+				// ------------------------------------------------------------------------------------------
 				elseif( isset( $this->controller->$const_name ) )
 				{
-					$property = $this->controller->$const_name;
-					$result = is_array( $property ) && isset( $property[$prop_name] ) 
-						? $property[$prop_name] 
-						: '!' . $tag_name;
+					$value 	= $this->controller->$const_name;
+					$result = $this->navigate_array( $value, $tag_parts, $tag_name );
 				} 
-				// Si no es válido
-				else {
-					$result = '!' . $tag_name;
-				}
 
-				// Renderizamos el HTML
-				$template_html 	= str_replace( '[[ ' . $tag_name . ' ]]', $result, $template_html );
+				// Si no es válido
+				else
+					$result = '!' . $tag_name;
+
+				// Reemplazamos el HTML
+				$template_html = str_replace( '[[ ' . $tag_name . ' ]]', $result, $template_html );
 			}
 			catch( Exception $e )
 			{
 				print $e->getMessage();
-				continue;
+				exit;
 			}
 		}
 
@@ -175,59 +211,51 @@ class pl_view_engine
 	}
 
 	/**
-	 * Devuelve la ruta relativa del archivo caché que se va a crear
-	 * @param string $template
-	 *  */ 
-	public function cache_file(): string
+	 * Navega por un array o un objeto basado en un conjunto de claves.
+	 * @param mixed $value
+	 * @param array $keys
+	 * @param string $tag_name
+	 * @return mixed
+	 */
+	private function navigate_array( mixed $value, array $keys, string $tag_name ): mixed
 	{
-		return "{$this->cache_path}/" . md5( $this->template_path ) . '.cache';
+		// Si no hay más claves que procesar, devolvemos el valor final
+		if( empty( $keys ) )
+		{
+			return is_string( $value ) || is_numeric( $value )
+				? $value 						// Si es un string o número, lo devolvemos
+				: '!' . $tag_name 	// Si no, devolvemos un error
+			;
+		}
+
+		// Capturamos la siguiente clave del array
+		$key = array_shift( $keys );
+
+		// Si es un array y la clave existe, seguimos recorriendo
+		if( is_array( $value ) && isset( $value[$key] ) )
+			return $this->navigate_array( $value[$key], $keys, $tag_name );
+
+		// Si es un objeto y la clave existe, seguimos recorriendo
+		if( is_object( $value ) && isset( $value->$key ) )
+			return $this->navigate_array( $value->$key, $keys, $tag_name );
+
+		// Si no encontramos la clave, devolvemos un error
+		return '!' . $tag_name;
 	}
 
 	/**
 	 * Método para renderizar la plantilla
-	 * @param string $template
-	 *  */ 
+	 * */ 
 	public function render_template(): void
 	{
 		// Capturamos la ruta absoluta de la plantilla
 		if( !file_exists( $this->template_path ) ) // Si la plantilla no existe, lo mostramos
 			throw new Exception( "Error: Template not found" );
 
-		// Generamos la ruta relativa del archivo de caché
-		$cache_file = $this->cache_file();
-
-		// Capturamos la última hora de modificación del nuevo archivo caché
-		$filemtime = @filemtime( $cache_file );
-		
-		// Si permitimos la caché, existe una ruta relativa, y no ha pasado el tiempo de vida de la caché, leemos el archivo de la caché
-		if( $this->cache_enabled && $filemtime && ( time() - $filemtime < $this->cache_lifetime ) )
-		{
-			readfile( $cache_file );
-			exit;
-		}
-		else
-		{
-			// Capturamos el contenido del script
-			ob_start();
-
-			// Capturamos el contenido de la plantilla y la compilamos
-			$html = file_get_contents( $this->template_path );
-			$compiled_html = $this->compile( $html );
-			echo $compiled_html;
-
-			// Guardamos el fichero en el directorio de Caché
-			if( $this->cache_enabled )
-			{
-				// Se verifica si el directorio de caché existe
-				// Si no existe, lo creamos con permisos 755
-				if( !is_dir( $this->cache_path ) )
-					mkdir( $this->cache_path, 0755, true );
-
-				// Enviamos el contenido del buffer ( ob_get_flush )
-				// La función de LOCK_EX es evitar que, mientras se está escribiendo el archivo, no haya otro proceso que pueda escirbir dentro de él
-				file_put_contents( $cache_file, ob_get_flush(), LOCK_EX );
-			}
-		}
+		// Capturamos el contenido de la plantilla y la compilamos
+		$html = file_get_contents( $this->template_path );
+		$compiled_html = $this->compile( $html );
+		echo $compiled_html;
 	}
 }
 
