@@ -75,35 +75,30 @@ foreach( $router->routes as $route_controller )
   }
 
   // Si se trata de una llamada AJAX, no ejecutamos el INDEX
+  // Ejecutamos el método del controlador calculado
   if( !$router->ajax )
-  {
-    // Ejecutamos el método del controlador calculado
     call_user_func( [$controller, $method_name] );
-  }
-  else
+
+  // Controlamos las peticiones POST de AJAX
+  elseif( ( !empty( $_POST ) || !empty( $_FILES ) ) && isset( $_GET['cm'] ) )
   {
-    // Controlamos las peticiones POST de AJAX
-    if( ( !empty( $_POST ) || !empty( $_FILES ) ) && isset( $_GET['cm'] ) )
-    {
-      // Determinamos qué datos enviar a la función
-      // Si hay archivos y datos POST, combinamos ambos
-      if( !empty( $_FILES ) && !empty( $_POST ) )
-        $data = array_merge( $_POST, $_FILES );
-      elseif( !empty( $_FILES ) ) // Si solo hay archivos
-        $data = $_FILES;
-      else // Si solo hay datos POST
-        $data = $_POST;
+    // Determinamos qué datos enviar a la función
+    if( !empty( $_FILES ) && !empty( $_POST ) ) // Si hay archivos y datos POST, combinamos ambos
+      $data = array_merge( $_POST, $_FILES );
+    elseif( !empty( $_FILES ) ) // Si solo hay archivos
+      $data = $_FILES;
+    else // Si solo hay datos POST
+      $data = $_POST;
 
-      // Ejecutamos la función AJAX correspondiente
-      $ajax_response = call_user_func( [$controller, 'ajax_' . pl_get( 'cm' )], $data );
+    // Ejecutamos la función AJAX correspondiente
+    $ajax_response = call_user_func( [$controller, 'ajax_' . pl_get( 'cm' )], $data );
 
-      // Cabeceras del SUCCESS
-      header( 'Content-Type: application/json' );
-      http_response_code( 200 );
+    // Cabeceras del SUCCESS
+    header( 'Content-Type: application/json' );
+    http_response_code( 200 );
 
-      // Devolvemos la respuesta
-      echo json_encode( $ajax_response );
-    }
+    // Devolvemos la respuesta
+    echo json_encode( $ajax_response );
 
     break;
   }
@@ -113,7 +108,7 @@ foreach( $router->routes as $route_controller )
   // -------------------------------------------------------------------------------------
 
   // Añadimos los parámetros y renderizamos la máscara
-  $view_engine = new pl_view_engine( $mask_path, $controller );
+  $view_engine = new ViewEngine( $mask_path, $controller );
   $view_engine->render_template();
 }
 

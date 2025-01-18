@@ -4,7 +4,7 @@
 // Compilador de máscaras
 // -------------------------------------------------------------------------------------
 
-class pl_view_engine
+class ViewEngine
 {
 	// Variables necesarias para compilar la máscara
 	protected string $template_path;

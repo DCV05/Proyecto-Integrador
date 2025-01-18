@@ -13,11 +13,11 @@ define( 'APP_PATH', __DIR__ . '/app' );
 define( 'BASE_PATH', __DIR__ );
 
 // Incluímos todas las librerías
-require_once( APP_PATH . '/model.php'       );
-require_once( APP_PATH . '/router.php'      );
-require_once( APP_PATH . '/view_engine.php' );
-require_once( APP_PATH . '/sdk.php'         );
-require_once( APP_PATH . '/app.php'         );
+require_once( APP_PATH . '/Model.php'      );
+require_once( APP_PATH . '/Router.php'     );
+require_once( APP_PATH . '/ViewEngine.php' );
+require_once( APP_PATH . '/sdk.php'        );
+require_once( APP_PATH . '/app.php'        );
 
 // Constantes de DB
 // La constante DB_NAME, correspondiente al dominio, se genera al procesar la URL
@@ -75,14 +75,25 @@ session_start();
 $url_relative = filter_var( $_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL );
 $url_base     = str_replace( '?' . $_SERVER['QUERY_STRING'], '', $url_relative );
 
+// Protocolo HTTP o HTTPS
+$protocol = !empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off'
+  ? 'https://'
+  : 'http://'
+;
+
 // Capturamos los valores de la página
 $polaris = [
     'domain' 		    => $_SERVER['HTTP_HOST']
-  ,	'url_abs' 		  => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $url_relative
+  , 'protocol'      => $protocol
+  , 'complex_domain'=> $protocol . $_SERVER['HTTP_HOST']
+  ,	'url_abs' 		  => $protocol . $_SERVER['HTTP_HOST'] . $url_relative
   ,	'url_relative' 	=> $url_relative
   ,	'url_base' 	    => $url_base
   ,	'url_get' 		  => $_GET
   ,	'document_root'	=> $_SERVER['DOCUMENT_ROOT']
+
+  // ACTUAL_DIR SE DEFINE EN EL ROUTER
+  // , 'actual_dir' => ''
 ];
 
 $_SESSION['polaris'] = $polaris;
