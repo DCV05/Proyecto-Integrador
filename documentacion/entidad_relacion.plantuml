@@ -1,0 +1,104 @@
+@startuml Campamento
+
+top to bottom direction
+
+entity "users" as usuarios {
+    + user_id : int
+    + email : string
+    + password : string
+    + role : int <<0 = tutor, 1 = monitor, 2 = admin>>
+    ---
+    * Acciones:
+      - Tutores: registro, inicio de sesión, gestión de participantes, pagos.
+      - Monitores: control de actividades y asistencias.
+      - Administradores: gestión de todo el sistema.
+}
+
+entity "user_details" as detalles_usuarios {
+    + detail_id : int
+    + user_id : int
+    + dni : string
+    + phone_number : string
+    ---
+    * Acciones:
+      - Tutores: añadir/modificar DNIs y teléfonos.
+}
+
+entity "participants" as participantes {
+    + participant_id : int
+    + user_id : int
+    + full_name : string
+    + birth_date : date
+    + allergies : string
+    + special_needs : string
+    + activities_signed_up : int
+    ---
+    * Acciones:
+      - Tutores: registro y edición.
+      - Monitores: ver registros de información.
+      - Administradores: edición y eliminación.
+}
+
+entity "activities" as actividades {
+    + activity_id : int
+    + name : string
+    + description : string
+    + date : date
+    + time : time
+    + max_participants : int
+    + current_participants : int
+    ---
+    * Acciones:
+      - Tutores: inscripción en actividades.
+      - Monitores: ver registros de actividades asignadas.
+      - Administradores: creación, modificación y eliminación.
+}
+
+entity "payments" as pagos {
+    + payment_id : int
+    + user_id : int
+    + amount : decimal
+    + date : date
+    + status : string
+    + method : string
+    ---
+    * Acciones:
+      - Tutores: realizar pagos.
+      - Monitores: ver registros de pagos (si aplica).
+      - Administradores: ver registros y gestión de pagos.
+}
+
+entity "blog_posts" as publicaciones_blog {
+    + post_id : int
+    + admin_id : int
+    + title : string
+    + content : text
+    + date_published : date
+    ---
+    * Acciones:
+      - Tutores y monitores: ver publicaciones.
+      - Administradores: creación, edición y eliminación.
+}
+
+entity "attendance" as asistencias {
+    + attendance_id : int
+    + participant_id : int
+    + activity_id : int
+    + check_in : datetime
+    + check_out : datetime
+    ---
+    * Acciones:
+      - Tutores: ver registros de asistencia (si aplica).
+      - Monitores: registro de entrada y salida.
+      - Administradores: ver registros de asistencia.
+}
+
+usuarios ||--o{ detalles_usuarios : "Tutor tiene"
+usuarios ||--o{ participantes : "Tutor registra"
+usuarios ||--o{ pagos : "Tutor realiza"
+usuarios ||--o{ actividades : "Admin gestiona"
+actividades ||--o{ participantes : "Incluye"
+actividades ||--o{ asistencias : "Monitor controla"
+publicaciones_blog ||--o{ usuarios : "Admin escribe"
+
+@enduml

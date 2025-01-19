@@ -1,0 +1,73 @@
+users
+----
+user_id PK int
+user_id2 varchar
+email varchar
+password varchar
+role int
+
+user_details
+----
+detail_id PK int
+user_id int FK >- users.user_id
+participant_id int FK >- participants.participant_id
+dni varchar
+phone_number varchar
+
+participants
+----
+participant_id PK int
+participant_id2 varchar
+full_name varchar
+birth_date date
+address varchar
+state varchar
+province varchar
+group varchar
+allergies varchar
+medical_needs varchar
+current_medical_treatment varchar
+special_camp_attention varchar
+other_medical_info varchar
+
+activities
+----
+activity_id PK int
+activity_id2 varchar
+name varchar
+description varchar
+activity_date datetime
+activity_time int
+insert_date datetime
+max_participants int
+
+payments
+----
+payment_id PK int
+payment_id2 varchar
+user_id int FK >- users.user_id
+amount float
+payment_date  
+status varchar
+
+activity_participant
+----
+activity_id int FK >- activities.activity_id
+participant_id int FK >- participants.participant_id
+
+blog_posts
+----
+post_id PK int
+post_id2 varchar
+post_title varchar
+post_content varchar
+user_id int FK >- users.user_id
+insert_date datetime
+
+attendance
+----
+attendance_id PK int
+participant_id int FK >- activity_participant.participant_id
+activity_id int FK >- activities.activity_id
+check_in_date datetime
+check_out_date datetime
