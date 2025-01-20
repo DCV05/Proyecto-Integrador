@@ -1,8 +1,15 @@
 # Proyecto Integrador
 
-Este proyecto requiere configuraciones adicionales en el servidor Apache para funcionar correctamente. Es importante habilitar el uso de archivos `.htaccess` para que las configuraciones específicas del proyecto sean reconocidas.
+## Rutas
+
+- **Login:** /login
+- **Signup:** /signup
+- **TutorEdit:** /tutor/edit
+- **ParticipantEdit:** /participant/edit
 
 ## Requisitos
+
+Este proyecto requiere configuraciones adicionales en el servidor Apache para funcionar correctamente. Es importante habilitar el uso de archivos `.htaccess` para que las configuraciones específicas del proyecto sean reconocidas.
 
 1. **Servidor Apache:** Asegúrate de que Apache está instalado y funcionando correctamente.
 2. **Permisos para `.htaccess`:** Es necesario que Apache permita la ejecución de archivos `.htaccess` en el directorio correspondiente.
