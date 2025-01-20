@@ -63,3 +63,31 @@ Para habilitar el uso de archivos `.htaccess`, sigue estos pasos:
 
 - Si no realizas esta configuración, el proyecto podría no funcionar correctamente debido a la dependencia de configuraciones en los archivos `.htaccess`.
 - Asegúrate de que el archivo `.htaccess` esté presente en el directorio raíz de tu proyecto.
+
+## Configuración de MySQL
+
+Para que las conexiones de MySQL funcionen correctamente, será necesario modificar el archivo `config.ini`, ya que es este archivo el que contiene las claves de acceso al servicio de base de datos.
+
+Ejemplo de `config.ini`:
+
+```ini
+[mysql]
+db_server   = mariadb
+db_user     = root
+db_password = root
+db_name     = polaris
+```
+
+En el caso de que se quiera conectar a MySQL mediante XAMMP, será necesario cambiar las claves a las siguientes:
+
+```ini
+[mysql]
+db_server   = localhost
+db_user     = root
+db_password = root
+db_name     = polaris
+```
+
+## Soporte
+
+- En el caso de que surja algún problema en su instalación o ejecución, contacte al correo daniel.correa@kodalogic.com para poder solucionarlo.
