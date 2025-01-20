@@ -9,7 +9,6 @@ class ViewEngine
 	// Variables necesarias para compilar la máscara
 	protected string $template_path;
 	protected object $controller;
-	protected array $vars = [];
 
 	/**
 	 * En este caso, el constructor almacenará la plantilla
@@ -17,14 +16,8 @@ class ViewEngine
 	 *  */ 
 	public function __construct( string $template_path, object $controller )
 	{
-		$this->template_path    = $template_path;
-		$this->controller				= $controller;
-	}
-
-	// Le asignamos a la plantilla unas variables
-	public function vars( $vars ): void
-	{
-		$this->vars = $vars;
+		$this->template_path 	= $template_path;
+		$this->controller			= $controller;
 	}
 
 	/**
@@ -123,8 +116,8 @@ class ViewEngine
 				else // Funciones y métodos sin parámetros
 				{
 					$func_result = $is_global
-					? $callable_func_name()
-					: $this->controller->$callable_func_name();
+						? $callable_func_name()
+						: $this->controller->$callable_func_name();
 				}
 
 				// Reemplazamos el HTMl en la máscara
