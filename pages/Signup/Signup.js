@@ -2,25 +2,23 @@ $( document ).ready( function() {
 
   // Evento para cuando el usuario deje de tener el focus en un input
   $( 'input:not([type="button"])' ).on( 'focusout', function() {
-
-    let has_error = false;
-
-    // Capturamos el valor del input
-    let input_val = $( this ).val();
-    if( input_val == null || input_val == '' ) {
-      generate_error_message( $( this ).parent(), 'Campo requerido' );
-      has_error = true;
-    }
-
-    // Comprobamos que el valor del input email es válido
-    if( $( this ).attr( 'type' ) == 'email' && has_error == false ) {
-
-      // Si no es un email válido, mostramos una alerta
-      if( !validate_email( input_val ) )
-        generate_error_message( $( this ).parent(), 'Email inválido' );
-    }
+    check_inputs( $( this ) );
   } );
-  
+
+  // Evento del Submit
+  $( '#register-form' ).submit( function( e ) {
+
+    // Evitamos el submit
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    // Evento de checkeo en submit
+    $( this ).find( 'input:not([type="button"])' ).each( function() {
+      check_inputs( $( this ) );
+    } );
+  } );
+
   // Índice actual de la sección visible
   let current_section = 0;
   const sections      = $( 'form section' );
@@ -50,6 +48,25 @@ $( document ).ready( function() {
   // Mostramos la primera sección
   show_section( current_section );
 } );
+
+function check_inputs( input ) {
+  let has_error = false;
+
+  // Capturamos el valor del input
+  let input_val = input.val();
+  if( input_val == null || input_val == '' ) {
+    generate_error_message( input.parent(), 'Campo requerido' );
+    has_error = true;
+  }
+
+  // Comprobamos que el valor del input email es válido
+  if( input.attr( 'type' ) == 'email' && has_error == false ) {
+
+    // Si no es un email válido, mostramos una alerta
+    if( !validate_email( input_val ) )
+      generate_error_message( input.parent(), 'Email inválido' );
+  }
+}
 
 // Función para generar mensajes de error
 function generate_error_message( elem, alert_message ) {

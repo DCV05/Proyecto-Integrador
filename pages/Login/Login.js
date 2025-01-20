@@ -2,23 +2,7 @@ $( document ).ready( function() {
 
   // Evento para cuando el usuario deje de tener el focus en un input
   $( 'input:not([type="button"])' ).on( 'focusout', function() {
-
-    let has_error = false;
-
-    // Capturamos el valor del input
-    let input_val = $( this ).val();
-    if( input_val == null || input_val == '' ) {
-      generate_error_message( $( this ).parent(), 'Campo requerido' );
-      has_error = true;
-    }
-
-    // Comprobamos que el valor del input email es válido
-    if( $( this ).attr( 'type' ) == 'email' && has_error == false ) {
-
-      // Si no es un email válido, mostramos una alerta
-      if( !validate_email( input_val ) )
-        generate_error_message( $( this ).parent(), 'Email inválido' );
-    }
+    check_inputs( $( this ) );
   } );
 
   // Evento del Submit
@@ -27,6 +11,12 @@ $( document ).ready( function() {
     // Evitamos el submit
     e.preventDefault();
     e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    // Evento de checkeo en submit
+    $( this ).find( 'input:not([type="button"])' ).each( function() {
+      check_inputs( $( this ) );
+    } );
 
     // Comprobamos el valor de todos los inputs del formulario
     $( this ).find( 'input[type="text"], input[type="password"]' ).each( function () {
@@ -100,6 +90,25 @@ function form_submit( formdata ) {
       // Manejo de errores
       console.error( error );
     } );
+}
+
+function check_inputs( input ) {
+  let has_error = false;
+
+  // Capturamos el valor del input
+  let input_val = input.val();
+  if( input_val == null || input_val == '' ) {
+    generate_error_message( input.parent(), 'Campo requerido' );
+    has_error = true;
+  }
+
+  // Comprobamos que el valor del input email es válido
+  if( input.attr( 'type' ) == 'email' && has_error == false ) {
+
+    // Si no es un email válido, mostramos una alerta
+    if( !validate_email( input_val ) )
+      generate_error_message( input.parent(), 'Email inválido' );
+  }
 }
 
 // Función para generar mensajes de error
