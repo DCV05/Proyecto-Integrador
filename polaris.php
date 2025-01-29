@@ -9,7 +9,8 @@ ini_set( 'display_startup_errors', 1 );
 error_reporting( E_ALL );
 
 // Constantes de rutas
-define( 'APP_PATH', __DIR__ . '/app' );
+define( 'APP_PATH', __DIR__ . '/src/app' );
+define( 'MAIN_PATH', __DIR__ . '/src' );
 define( 'BASE_PATH', __DIR__ );
 
 // Incluímos todas las librerías

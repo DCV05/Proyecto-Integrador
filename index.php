@@ -11,7 +11,7 @@ header( 'Allow: GET, POST, OPTIONS, PUT, DELETE' );
 require_once __DIR__ . '/polaris.php';
 
 // Si ya existe la DB, no se ejecutará nada
-require_once __DIR__ . '/init/init.php';
+require_once __DIR__ . '/src/init/init.php';
 
 // -------------------------------------------------------------------------------------
 // Enturador y compilador de máscaras
@@ -39,8 +39,8 @@ foreach( $router->routes as $route_controller )
   [$controller_name, $method_name] = explode( '@', $route_method );
 
   // Calculamos la ruta del controlador final
-  $controller_path  = sprintf( '%s/pages/%s.php', __DIR__, $route_file );
-  $mask_path        = sprintf( '%s/pages/%s.html', __DIR__, $route_file );
+  $controller_path  = sprintf( '%s/pages/%s.php', MAIN_PATH, $route_file );
+  $mask_path        = sprintf( '%s/pages/%s.html', MAIN_PATH, $route_file );
 
   // -------------------------------------------------------------------------------------
   // Ejecución del controlador

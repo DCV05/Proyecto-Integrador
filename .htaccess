@@ -2,14 +2,14 @@
 Options -Indexes
 
 # Determinamos que el fichero principal es el index.php
-DirectoryIndex src/index.php
+DirectoryIndex index.php
 
 # Configuramos que siempre que entremos en esta carpeta, siempre se ejecute el index.php
 # Además, en el caso de que se intenten capturar archivos físicos o directorios, estarán disponibles
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^.*$ src/index.php [L,QSA]
+RewriteRule ^.*$ index.php [L,QSA]
 
 # Página personalizada para errores 404
 ErrorDocument 404 /apache/errors/404.html
