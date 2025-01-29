@@ -31,7 +31,7 @@ class Router
     $db = new pl_model();
 
     try
-    {
+    {      
       // ------------------------------------------------------------------------------
       // Búsqueda de la URI
       // ------------------------------------------------------------------------------
@@ -89,7 +89,15 @@ class Router
 
       // Si no hay resultados, redireccionamos al home
       if( empty( $rows ) || $this->uri !== $rows[0]['url'] )
-        pl_redirect( '/' );
+      {
+        // Si existe el fichero 404, lo mostramos
+        $file_404 = BASE_PATH . '/errors/404.html';
+        if( file_exists( $file_404 ) )
+        {
+          print file_get_contents( $file_404 );
+          exit;
+        }
+      }
       else
         $row = $rows[0];
 

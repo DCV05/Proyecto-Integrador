@@ -6,8 +6,14 @@
 
 class ViewEngine
 {
-	// Variables necesarias para compilar la máscara
+	/**
+	 * @var string Ruta absoluta del archivo de plantilla.
+	 */
 	protected string $template_path;
+
+	/**
+	 * @var object Controlador asociado que contiene la lógica para la vista.
+	 */
 	protected object $controller;
 
 	/**

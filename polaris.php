@@ -82,7 +82,7 @@ $protocol = !empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off'
 ;
 
 // Capturamos los valores de la página
-$polaris = [
+$_SESSION['polaris'] = [
     'domain' 		    => $_SERVER['HTTP_HOST']
   , 'protocol'      => $protocol
   , 'complex_domain'=> $protocol . $_SERVER['HTTP_HOST']
@@ -95,8 +95,6 @@ $polaris = [
   // ACTUAL_DIR SE DEFINE EN EL ROUTER
   // , 'actual_dir' => ''
 ];
-
-$_SESSION['polaris'] = $polaris;
 
 // -------------------–-------------------–-------------------–-------------------–
 // Constantes de idioma

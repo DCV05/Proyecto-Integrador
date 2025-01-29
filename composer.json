@@ -1,0 +1,15 @@
+{
+    "name": "dcorrea/proyecto-integrador",
+    "autoload": {
+        "psr-4": {
+            "Dcorrea\\ProyectoIntegrador\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Daniel Correa",
+            "email": "daniel.correa@kodalogic.com"
+        }
+    ],
+    "require": {}
+}

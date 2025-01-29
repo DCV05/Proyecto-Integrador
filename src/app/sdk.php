@@ -6,10 +6,10 @@
 
 /**
  * Función para imprimir un array de forma formateada
- * @param array $arr
+ * @param array|object $arr
  * @param boolean $return
  */
-function pl_dump( array $arr, bool $return = false )
+function pl_dump( array|object $arr_obj, bool $return = false )
 {
   // Si definimos que no debe haber un return, mostramos los datos
   if( !$return )
@@ -48,11 +48,11 @@ function pl_dump( array $arr, bool $return = false )
 
   // Return
   if( $return )
-    return $arr;
+    return $arr_obj;
   else
   {
     echo "\n{$chr} \n{$file} | {$line} | {$function} \n{$chr} \n\n";
-    print_r( $arr );
+    print_r( $arr_obj );
   }
 }
 

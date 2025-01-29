@@ -8,6 +8,7 @@ $( document ).ready( function() {
   // Evento del Submit
   $( '#edit-tutor-form' ).submit( function( e ) {
 
+    // Evitamos el submit
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
