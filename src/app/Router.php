@@ -1,6 +1,12 @@
 <?php
 
-// Clase enrutador
+/**
+ * @author Daniel Correa Villa <daniel.correa@kodalogic.com>
+ * 24/03/2024
+ * 
+ * Enrutador de Polaris
+ * 
+ */
 class Router
 {
   /**
@@ -71,14 +77,17 @@ class Router
       }
 
       // Comprobamos que no sea un archivo CSS, JS o HTML
-      $allowed_extensions = ['.css', '.js', '.html'];
+      $allowed_extensions = ['.css', '.js', '.html', '.png', '.webp', '.jpeg', '.jpg'];
       foreach( $allowed_extensions as $extension )
       {
-        if( str_ends_with( $this->uri, $extension ) && file_exists( $this->uri ) )
+        if( str_ends_with( $this->uri, $extension ) && file_exists( 'src/' . $this->uri ) )
         {
+          // Cabeceras
+          $content_type = $extension == '.css' ? 'text/css' : mime_content_type( 'src/' . $this->uri );
+
           // Enviar el archivo al cliente con la cabecera adecuada
-          header( 'Content-Type: ' . mime_content_type( $this->uri ) );
-          readfile( $this->uri );
+          header( 'Content-Type: ' . $content_type );
+          readfile( 'src/' . $this->uri );
           exit;
         }
       }
@@ -91,7 +100,7 @@ class Router
       if( empty( $rows ) || $this->uri !== $rows[0]['url'] )
       {
         // Si existe el fichero 404, lo mostramos
-        $file_404 = BASE_PATH . '/errors/404.html';
+        $file_404 = BASE_PATH . '/src/apache/errors/404.html';
         if( file_exists( $file_404 ) )
         {
           print file_get_contents( $file_404 );

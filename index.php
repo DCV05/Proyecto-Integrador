@@ -27,6 +27,7 @@ $router = new Router();
       [file] => Debug/Debug
 */
 
+// Extraemos la primera ruta
 // Por cada controlador encontrado, lo procesamos
 foreach( $router->routes as $route_controller )
 {

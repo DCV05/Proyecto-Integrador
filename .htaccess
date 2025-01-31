@@ -12,10 +12,10 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^.*$ index.php [L,QSA]
 
 # Página personalizada para errores 404
-ErrorDocument 404 /apache/errors/404.html
+ErrorDocument 404 /src/apache/errors/404.html
 
 # Página personalizada para errores 403
-ErrorDocument 403 /apache/errors/403.html
+ErrorDocument 403 /src/apache/errors/403.html
 
 # Página personalizada para errores 500
-ErrorDocument 500 /apache/errors/500.html
+ErrorDocument 500 /src/apache/errors/500.html

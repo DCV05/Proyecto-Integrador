@@ -20,6 +20,47 @@ function app_headers(): string
   return $headers;
 }
 
+function app_navbar(): string
+{
+  $current_url = $_SESSION['polaris']['url_relative'];
+  
+  // Inicializamos el HTML del aside
+  $links_html = '';
+  $entries    = [
+      ['title' => 'Activities', 'link' => '/activities']
+    , ['title' => 'Contact'   , 'link' => '/contact']
+  ];
+
+  // Formato para el checked
+  foreach( $entries as $entry )
+  {
+    // Estilo para cada link
+    $checked = $entry['link'] === $current_url ? 'font-bold': '';
+
+    // Le insertamos formato al link
+    $links_html .= sprintf(
+        '<a href="%s" class="uppercase text-2xl font-bold %s">%s %s</a>'
+      , $entry['link']
+      , $checked
+      , $entry['icon'] ?? ''
+      , $entry['title']
+    );
+  }
+
+  // Encapsulamos el sidebar
+  $value = '
+    <!-- Navbar -->
+    <nav class="fixed top-16 left-0 w-full flex items-center justify-between p-4 px-[15rem] text-white">
+      <h1 class="text-3xl">LOGO</h1>
+      <div id="links-container" class="flex space-x-32">
+        ' . $links_html . '
+      </div>
+    </nav>
+  ';
+
+  return $value;
+}
+
 // Sidebar para paciente
 function app_patient_sidebar(): string
 {
@@ -114,7 +155,7 @@ function app_convert_date_format( $date ): string
 {
   $date_object = DateTime::createFromFormat( 'Y-m-d', $date );
 
-  if ( $date_object === false )
+  if( $date_object === false )
     return "Invalid date";
 
   return $date_object->format( 'M d, Y' );

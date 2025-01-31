@@ -1,7 +1,11 @@
 <?php
 
 /**
- * Clase MySQL
+ * @author Daniel Correa Villa <daniel.correa@kodalogic.com>
+ * 18/03/2024
+ * 
+ * Modelo de MySQL para realizar su conexión
+ * 
  */
 class pl_model extends mysqli
 {

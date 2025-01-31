@@ -82,12 +82,15 @@ $protocol = !empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off'
   : 'http://'
 ;
 
+$complex_domain = $protocol . $_SERVER['HTTP_HOST'];
+
 // Capturamos los valores de la página
 $_SESSION['polaris'] = [
     'domain' 		    => $_SERVER['HTTP_HOST']
   , 'protocol'      => $protocol
-  , 'complex_domain'=> $protocol . $_SERVER['HTTP_HOST']
-  ,	'url_abs' 		  => $protocol . $_SERVER['HTTP_HOST'] . $url_relative
+  , 'complex_domain'=> $complex_domain
+  ,	'url_abs' 		  => $complex_domain . $url_relative
+  , 'assets'        => $complex_domain . '/assets'
   ,	'url_relative' 	=> $url_relative
   ,	'url_base' 	    => $url_base
   ,	'url_get' 		  => $_GET

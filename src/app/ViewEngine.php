@@ -1,9 +1,12 @@
 <?php
 
-// -------------------------------------------------------------------------------------
-// Compilador de máscaras
-// -------------------------------------------------------------------------------------
-
+/**
+ * @author Daniel Correa Villa <daniel.correa@kodalogic.com>
+ * 18/03/2024
+ * 
+ * Compilador de máscaras Polaris
+ * 
+ */
 class ViewEngine
 {
 	/**
@@ -156,8 +159,6 @@ class ViewEngine
 		// Intentamos buscar las constantes
 		foreach( $tags as $tag_name )
 		{
-			$tag_name = strtolower( $tag_name );
-
 			try
 			{
 				// Capturamos el nombre de la constante y las llaves por las que navegar
@@ -193,7 +194,9 @@ class ViewEngine
 
 				// Si no es válido
 				else
+				{
 					$result = '!' . $tag_name;
+				}
 
 				// Reemplazamos el HTML
 				$template_html = str_replace( '[[ ' . $tag_name . ' ]]', $result, $template_html );
