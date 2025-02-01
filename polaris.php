@@ -21,12 +21,13 @@ require_once( APP_PATH . '/sdk.php'        );
 require_once( APP_PATH . '/app.php'        );
 
 // Constantes de DB
-// La constante DB_NAME, correspondiente al dominio, se genera al procesar la URL
+// La constante DB_SYS, correspondiente al dominio, se genera al procesar la URL
 $config = parse_ini_file( __DIR__ . '/config.ini', true  );
 define( 'DB_SERVER'   , $config['mysql']['db_server']   );
 define( 'DB_USER'     , $config['mysql']['db_user']     );
 define( 'DB_PASSWORD' , $config['mysql']['db_password'] );
-define( 'DB_NAME'     , $config['mysql']['db_name']     );
+define( 'DB_SYS'      , $config['mysql']['db_sys']      );
+define( 'DB_PROJECT'  , $config['mysql']['db_project']  );
 
 // Inicializamos la sesión
 session_start();

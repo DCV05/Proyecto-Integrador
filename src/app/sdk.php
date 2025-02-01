@@ -59,12 +59,22 @@ function pl_dump( array|object $arr_obj, bool $return = false )
 /**
  * Función para capturar parámetros del GET
  * @param string $param_name
- * @param string $default_value
+ * @param mixed $default_value
  * @return mixed
  */
-function pl_get( $param_name, $default_value = null ): mixed
+function pl_get( string $param_name, mixed $default_value = null ): mixed
 {
   return $_GET[$param_name] ?? $default_value;
+}
+
+/**
+ * Función para capturar el label mandado como argumento
+ * @param string $label_name
+ * @return mixed
+ */
+function pl_label( string $label_name ): mixed
+{
+  return $_SESSION['labels'][$label_name][DEF_LANG] ?? '!' . $label_name;
 }
 
 /**

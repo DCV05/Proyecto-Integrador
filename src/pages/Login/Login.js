@@ -8,6 +8,8 @@ $( document ).ready( function() {
   // Evento del Submit
   $( '#login-form' ).submit( function( e ) {
 
+    let has_error = false;
+
     // Evitamos el submit
     e.preventDefault();
     e.stopPropagation();
@@ -36,6 +38,8 @@ $( document ).ready( function() {
           setTimeout( () => {
             alert_container.hide();
           }, 5000 );
+
+          has_error = true;
         }
       }
 
@@ -48,10 +52,11 @@ $( document ).ready( function() {
         setTimeout( () => {
           alert_container.hide();
         }, 5000 );
+
+        has_error = true;
       }
     } );
 
-    /*
     // Si no hay errores, enviamos el formulario
     if( has_error == false ) {
       // Capturamos los datos del formulario y los encapsulamos en un objeto
@@ -59,7 +64,6 @@ $( document ).ready( function() {
       var formdata_array = Object.fromEntries( formdata.entries() );
       form_submit( formdata_array );
     }
-    */
   } );
 } );
 

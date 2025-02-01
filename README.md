@@ -82,7 +82,8 @@ Ejemplo de `config.ini`:
 db_server   = mariadb
 db_user     = root
 db_password = root
-db_name     = polaris
+db_sys      = polaris
+db_project  = proyect_integrador
 ```
 
 En el caso de que se quiera conectar a MySQL mediante XAMMP, será necesario cambiar las claves a las siguientes:
@@ -92,7 +93,8 @@ En el caso de que se quiera conectar a MySQL mediante XAMMP, será necesario cam
 db_server   = localhost
 db_user     = root
 db_password = root
-db_name     = polaris
+db_sys      = polaris
+db_project  = proyect_integrador
 ```
 
 ## Soporte

@@ -9,15 +9,29 @@
  */
 class pl_model extends mysqli
 {
+  /**
+   * @var string Nombre de la base de datos
+  */
   public string $db_name;
+
+  /**
+   * @var bool|mysqli_result Resultado de la consulta o false si falla
+   * */
+  public bool|mysqli_result $result;
+
+  /**
+   * @var array|bool|null Fila actual de la consulta, false si no hay más filas, o null si no se ha inicializado
+   * */
+  public array|bool|null $current_row;
 
   /**
    * Creamos un constructor para poder crear instancias de la conexión
    * @param string $db_name
    */
-  public function __construct( string $db_name = DB_NAME )
+  public function __construct( string $db_name = DB_SYS )
   {
-    $this->db_name = $db_name;
+    $this->db_name      = $db_name;
+    $this->current_row  = null;
 
     // Configuramos mysqli para que lanze excepciones
     mysqli_report( MYSQLI_REPORT_STRICT | MYSQLI_REPORT_ERROR );
@@ -52,34 +66,61 @@ class pl_model extends mysqli
   /**
    * Realizar consulta SQL a MySQL
    * @param string $sql
-   * @return array<array|bool|null> $value
    * */ 
-  public function pl_query( string $sql ): array|bool|null
+  public function pl_query( string $sql ): void
   {
-    // Inicializamos el array a devolver
-    $value = [];
-
     try
     {
-      if( $this->real_query( $sql ) && $data = $this->use_result() )
-      {
-        // Guardamos el resultado en el array a devolver
-        while( $row = $data->fetch_assoc() )
-          $value[] = $row;
+      // Si hay un resultado anterior, lo liberamos antes de ejecutar una nueva consulta
+      if( !empty( $this->result ) && is_object( $this->result ) )
+        $this->result->free();
 
-        // Liberamos recursos
-        $data->free();
-
-        // Si hay solo un resultado, devolvemos la primera posición directamente
-        return $value;
-      }
+      // Si la consulta es correcta, capturamos los datos
+      if( $this->real_query( $sql ) && $value = $this->use_result() )
+        $this->result = $value;
     }
-    catch( mysqli_sql_exception | Exception $e ) // Capturamos la excepción
+    catch( mysqli_sql_exception | Exception $e )
     {
       print "\n\nError: {$e->getMessage()}\n\n";
     }
+  }
 
-    return $value;
+  /**
+   * Avanza al siguiente resultado en la consulta.
+   *
+   * @return bool Devuelve true si hay más filas, false en caso contrario.
+   */
+  public function next_row(): bool
+  {
+    // Verificamos si existe un siguiente resultado
+    // Si no hay un siguiente resultado, devuelve false
+    $this->current_row = isset( $this->result ) && is_object( $this->result )
+      ? $this->result->fetch_assoc()
+      : false
+    ;
+
+    return $this->current_row !== null;
+  }
+
+  /**
+   * Obtiene la fila actual de la consulta.
+   *
+   * @return array|false Devuelve la fila actual como un array asociativo o false si no hay más filas.
+   */
+  public function get_row(): array|bool
+  {
+    return $this->current_row;
+  }
+
+  /**
+   * Obtiene el número total de filas en el resultado.
+   *
+   * @return int Número de filas en el resultado.
+   */
+  public function get_num_rows(): int|string
+  {
+    // Devuelve 0 si no hay resultado
+    return $this->result->num_rows ?? 0;
   }
 
   /**
@@ -136,12 +177,12 @@ class pl_model extends mysqli
     $error_fields = [];
 
     // Consulta SQL de la tabla
-    $sql    = "describe " . $this->db_name . ".{$table_name}";
-    $result = $this->pl_query( $sql );
+    $sql = "describe " . $this->db_name . ".{$table_name}";
+    $this->pl_query( $sql );
 
     // Iteramos cada resultado
-    foreach( $result as $key => $value )
-      $error_fields[] = $value['Field'];
+    foreach( $this->result as $none => $value )
+      $error_fields[] = $value['field'];
 
     return $error_fields;
   }
@@ -176,8 +217,7 @@ class pl_model extends mysqli
       if( $col_capacity != null )
         $str_capacity = "({$col_capacity})";
   
-        $sql = "alter table " . $this->db_name . ".{$table_name} add {$col_name} {$col_type}{$str_capacity}";
-       
+      $sql = "alter table " . $this->db_name . ".{$table_name} add {$col_name} {$col_type}{$str_capacity}"; 
       $this->pl_query( $sql );
 
       return 1;

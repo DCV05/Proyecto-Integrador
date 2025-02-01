@@ -7,8 +7,8 @@ try
 {
   // Comprobamos que la DB existe
   $sql = 'show databases like "%polaris%"';
-  $rows = $db->pl_query( $sql );
-  if( count( $rows ) > 0 )
+  $db->pl_query( $sql );
+  if( $db->get_num_rows() > 0 )
     throw new Exception();
 
   // Capturamos el contenido del SQL para inicializar la DB y lo ejecutamos

@@ -64,7 +64,7 @@ class Router
       if( !empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) )
       {
         // Calculamos el destinatario de la llamada AJAX
-        $this->uri  = pl_get( 'cn' );
+        $this->uri  = '/' . pl_get( 'cn' );
         $this->ajax = true;
       }
       else
@@ -93,11 +93,13 @@ class Router
       }
 
       // Buscamos la página en la DB
-      $sql  = 'select * from polaris_pages where url = "' . $db->pl_esc( $this->uri ) . '" limit 1';
-      $rows = $db->pl_query( $sql );
+      $sql  = 'select * from ' . DB_SYS . '.polaris_pages where url = "' . $db->pl_esc( $this->uri ) . '" limit 1';
+      $db->pl_query( $sql );
+      if( $db->next_row() )
+        $row = $db->get_row();
 
       // Si no hay resultados, redireccionamos al home
-      if( empty( $rows ) || $this->uri !== $rows[0]['url'] )
+      if( !$row || $this->uri !== $row['url'] )
       {
         // Si existe el fichero 404, lo mostramos
         $file_404 = BASE_PATH . '/src/apache/errors/404.html';
@@ -107,8 +109,6 @@ class Router
           exit;
         }
       }
-      else
-        $row = $rows[0];
 
       /*
         Array

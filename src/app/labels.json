@@ -263,5 +263,10 @@
   "card_cvv_placeholder": {
     "es": "123",
     "en": "123"
+  },
+
+  "incorrect_user_or_password": {
+    "es": "Usuario o contraseña incorrectos",
+    "en": "Incorrect username or password"
   }
 }
