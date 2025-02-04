@@ -76,6 +76,10 @@ class Router
         ;
       }
 
+      // Elinimanos el último / 
+      if( strlen( $this->uri ) > 1 )
+        $this->uri = rtrim( $this->uri, '/' );
+
       // Comprobamos que no sea un archivo CSS, JS o HTML
       $allowed_extensions = ['.css', '.js', '.html', '.png', '.webp', '.jpeg', '.jpg'];
       foreach( $allowed_extensions as $extension )
@@ -83,7 +87,12 @@ class Router
         if( str_ends_with( $this->uri, $extension ) && file_exists( 'src/' . $this->uri ) )
         {
           // Cabeceras
-          $content_type = $extension == '.css' ? 'text/css' : mime_content_type( 'src/' . $this->uri );
+          $content_type = match( $extension )
+          {
+              '.css'  => 'text/css'
+            , '.js'   => 'text/javascript'
+            , default => mime_content_type( 'src/' . $this->uri )
+          };
 
           // Enviar el archivo al cliente con la cabecera adecuada
           header( 'Content-Type: ' . $content_type );
@@ -93,13 +102,13 @@ class Router
       }
 
       // Buscamos la página en la DB
-      $sql  = 'select * from ' . DB_SYS . '.polaris_pages where url = "' . $db->pl_esc( $this->uri ) . '" limit 1';
+      $sql  = 'select * from ' . DB_SYS . '.polaris_pages where url = "' . $db->esc( $this->uri ) . '" limit 1';
       $db->pl_query( $sql );
       if( $db->next_row() )
         $row = $db->get_row();
 
       // Si no hay resultados, redireccionamos al home
-      if( !$row || $this->uri !== $row['url'] )
+      if( empty( $row ) || $this->uri !== $row['url'] )
       {
         // Si existe el fichero 404, lo mostramos
         $file_404 = BASE_PATH . '/src/apache/errors/404.html';
@@ -162,7 +171,7 @@ class Router
         ];
 
         // Definimos el nombre del controlador en la sesión
-        $row['controller_anme']      = ucfirst( $this->uri ) . 'Controller';
+        $row['controller_name']      = ucfirst( $this->uri ) . 'Controller';
         $_SESSION['polaris']['page'] = $row;
 
         // Directorio de la página

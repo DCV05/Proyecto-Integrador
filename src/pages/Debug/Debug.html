@@ -5,11 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>[[ polaris.page.title_seo ]]</title>
   [[ func | &headers ]]
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.11.3/main.min.js"></script>
+  <style>
+    .fc-event.selected-day {
+      background-color: #007bff !important;
+      border: none !important;
+      color: #fff !important;
+      font-weight: bold;
+      text-align: center;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      margin: 2px auto;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
 
+  <!--
   <main class="min-h-screen h-full overflow-x-hidden space-y-16">
-    <!-- Hero Section -->
+
     <section class="bg-[url([[ polaris.assets ]]/img/hero_background.png)] hero-section">
 
       <article class="mx-[24rem]">
@@ -24,7 +43,6 @@
 
     </section>
 
-    <!-- Section 1 -->
     <section>
       <div class="grid lg:grid-cols-2 gap-12 items-center mx-[24rem]">
         <div class="flex flex-col space-y-6 max-w-2xl">
@@ -43,7 +61,6 @@
       </div>
     </section>
 
-    <!-- Section 2 -->
     <section>
       <div class="grid lg:grid-cols-2 gap-12 items-center mx-[24rem]">
         
@@ -65,7 +82,6 @@
       </div>
     </section>
 
-    <!-- Section 3 -->
     <section>
       <div class="grid lg:grid-cols-2 gap-12 items-center mx-[24rem]">
 
@@ -93,7 +109,6 @@
       <h2 class="text-5xl ml-[6.25rem] font-semibold">Descubre nuestras actividades.</h2>
       <div class="flex overflow-x-auto gap-6 py-12 items-center w-full snap-x snap-mandatory scrollbar-none">
 
-        <!-- Elemento vacío para tener el width -->
         <div class="apple-card snap-center flex-none w-[5rem]">&nbsp;</div>
 
         <div class="apple-card snap-center flex-none bg-[url([[ polaris.assets ]]/img/hero_background.png)] transition hover:scale-105 duration-300 origin-center">
@@ -191,6 +206,23 @@
     </section>
 
   </main>
+  -->
+
+  <form id="register-form" class="space-y-4">
+    <section id="tutor_section" class="flex flex-col space-y-4 max-w-3xl">
+      <h3 class="text-2xl font-semibold text-gray-700">Horario y Participación</h3>
+
+      <h3 class="text-xl font-semibold text-gray-700">Selecciona los días disponibles</h3>            
+      <div id="calendar"></div>
+      
+      <p>Días seleccionados: <span id="selected_days_display"></span></p>
+      <div class="flex justify-between mt-4">
+        <button type="button" class="prev-btn">[[ label | previous ]]</button>
+        <button type="submit" class="next-btn">[[ label | create_account_button ]]</button>
+      </div>
+
+    </section>
+  </form>
 
   <script src="[[ polaris.actual_dir ]]/[[ polaris.page.page_title ]].js"></script>
 </body>

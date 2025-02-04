@@ -1,5 +1,9 @@
 {
   "section1_comment": "Labels para secciones principales",
+  "account_info": {
+    "es": "Información de la cuenta",
+    "en": "Account information"
+  },
   "participant_info": {
     "es": "Información del participante",
     "en": "Participant information"
@@ -61,27 +65,27 @@
 
 
   "section5_comment": "Labels para campos relacionados con participantes/niños",
-  "child_full_name": {
+  "full_name": {
     "es": "Nombre completo",
     "en": "Full Name"
   },
-  "child_birth_date": {
+  "birth_date": {
     "es": "Fecha de nacimiento",
     "en": "Date of Birth"
   },
-  "child_address": {
+  "address": {
     "es": "Dirección",
     "en": "Address"
   },
-  "child_state": {
+  "state": {
     "es": "Comunidad autónoma",
     "en": "State"
   },
-  "child_province": {
+  "province": {
     "es": "Provincia",
     "en": "Province"
   },
-  "child_group": {
+  "group": {
     "es": "Grupo",
     "en": "Group"
   },
@@ -95,15 +99,15 @@
     "es": "Teléfono en caso de emergencia",
     "en": "Emergency Phone"
   },
-  "child_allergies": {
+  "allergies": {
     "es": "Alergias",
     "en": "Allergies"
   },
-  "child_medical_needs": {
+  "medical_needs": {
     "es": "Necesidades médicas especiales",
     "en": "Medical Needs"
   },
-  "current_medical_treatment": {
+  "medical_treatment": {
     "es": "Tratamientos médicos actuales",
     "en": "Current Medical Treatments"
   },
@@ -145,9 +149,17 @@
     "es": "Teléfono 2",
     "en": "Phone 2"
   },
-  "tutor_email": {
+  "email": {
     "es": "Correo electrónico",
     "en": "Email"
+  },
+  "phone_number": {
+    "es": "Número de teléfono",
+    "en": "Phone number"
+  },
+  "password": {
+    "es": "Contraseña",
+    "en": "Password"
   },
 
   
@@ -170,27 +182,27 @@
   },
 
   "section9_comment": "Placeholders para campos relacionados con participantes/niños",
-  "child_full_name_placeholder": {
+  "full_name_placeholder": {
     "es": "Juan Pérez",
     "en": "John Smith"
   },
-  "child_birth_date_placeholder": {
+  "birth_date_placeholder": {
     "es": "01/01/2015",
     "en": "01/01/2015"
   },
-  "child_address_placeholder": {
+  "address_placeholder": {
     "es": "Calle Principal 123",
     "en": "123 Main Street"
   },
-  "child_state_placeholder": {
+  "state_placeholder": {
     "es": "Comunidad de Madrid",
     "en": "Pennsylvania"
   },
-  "child_province_placeholder": {
+  "province_placeholder": {
     "es": "Madrid",
     "en": "Scranton"
   },
-  "child_group_placeholder": {
+  "group_placeholder": {
     "es": "Grupo A",
     "en": "Group A"
   },
@@ -204,15 +216,15 @@
     "es": "+34 612 34 56 78",
     "en": "+1 555 123 4567"
   },
-  "child_allergies_placeholder": {
+  "allergies_placeholder": {
     "es": "Polen, nueces",
     "en": "Pollen, nuts"
   },
-  "child_medical_needs_placeholder": {
+  "medical_needs_placeholder": {
     "es": "Asma, insulina",
     "en": "Asthma, insulin"
   },
-  "current_medical_treatment_placeholder": {
+  "medical_treatment_placeholder": {
     "es": "Tratamiento con antibióticos",
     "en": "Antibiotic treatment"
   },
@@ -242,7 +254,7 @@
     "es": "+34 722 45 67 89",
     "en": "+1 876 543 2109"
   },
-  "tutor_email_placeholder": {
+  "email_placeholder": {
     "es": "carlos.ramirez@example.com",
     "en": "michael.scott@dundermifflin.com"
   },
@@ -264,9 +276,80 @@
     "es": "123",
     "en": "123"
   },
-
   "incorrect_user_or_password": {
     "es": "Usuario o contraseña incorrectos",
     "en": "Incorrect username or password"
+  },
+  "tutor_birth_date_placeholder": {
+    "es": "Ingrese la fecha de nacimiento",
+    "en": "Enter birth date"
+  },
+  "mark_as_emergency_contact": {
+    "es": "Marcar como contacto de emergencia",
+    "en": "Mark as emergency contact"
+  },
+  "add_tutor": {
+    "es": "Añadir tutor",
+    "en": "Add tutor"
+  },
+  "remove_tutor": {
+    "es": "Eliminar tutor",
+    "en": "Remove tutor"
+  },
+  "my-account": {
+    "es": "Mi cuenta",
+    "en": "My account"
+  },
+  "log-out": {
+    "es": "Cerrar sesión",
+    "en": "Log out"
+  },
+  "edit-tutor": {
+    "es": "Editar tutor",
+    "en": "Edit tutor"
+  },
+  "edit-participant": {
+    "es": "Editar participante",
+    "en": "Edit participant"
+  },
+  "tutors_section": {
+    "es": "Tutores",
+    "en": "Tutors"
+  },
+  "participants_section": {
+    "es": "Participantes",
+    "en": "Participants"
+  },
+  "tutor_email_placeholder": {
+    "es": "Ejemplo: correo@tutor.com",
+    "en": "e.g. tutor@example.com"
+  },
+  "participant_name": {
+    "es": "Nombre del participante",
+    "en": "Participant name"
+  },
+  "participant_name_placeholder": {
+    "es": "Ejemplo: Diego Sánchez",
+    "en": "e.g. Diego Sánchez"
+  },
+  "participant_birth_date": {
+    "es": "Fecha de nacimiento",
+    "en": "Birth date"
+  },
+  "participant_birth_date_placeholder": {
+    "es": "Ejemplo: 2016-03-10",
+    "en": "e.g. 2016-03-10"
+  },
+  "participant_address": {
+    "es": "Dirección",
+    "en": "Address"
+  },
+  "participant_address_placeholder": {
+    "es": "Ejemplo: Calle Falsa 123",
+    "en": "e.g. 123 Fake Street"
+  },
+  "send-button": {
+    "es": "Enviar",
+    "en": "Send"
   }
 }

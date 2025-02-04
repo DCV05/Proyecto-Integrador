@@ -66,9 +66,12 @@ class pl_model extends mysqli
   /**
    * Realizar consulta SQL a MySQL
    * @param string $sql
+   * @param bool $return_all
    * */ 
-  public function pl_query( string $sql ): void
+  public function pl_query( string $sql, bool $return_all = false ): array|mysqli_result
   {
+    $value = [];
+
     try
     {
       // Si hay un resultado anterior, lo liberamos antes de ejecutar una nueva consulta
@@ -76,12 +79,20 @@ class pl_model extends mysqli
         $this->result->free();
 
       // Si la consulta es correcta, capturamos los datos
-      if( $this->real_query( $sql ) && $value = $this->use_result() )
-        $this->result = $value;
+      if( $this->real_query( $sql ) && $result = $this->use_result() )
+        $this->result = $result;
+
+      // Si estamos en modo return_all, devolvemos el array de datos completo
+      if( $return_all )
+        $value = $this->result->fetch_all( MYSQLI_ASSOC );
     }
     catch( mysqli_sql_exception | Exception $e )
     {
       print "\n\nError: {$e->getMessage()}\n\n";
+    }
+    finally
+    {
+      return $value;
     }
   }
 
@@ -124,19 +135,11 @@ class pl_model extends mysqli
   }
 
   /**
-   * Método para cerrar la sesión de MySQL
-   */ 
-  public function pl_close(): void
-  {
-    $this->close();
-  }
-
-  /**
    * Función para escapar caracteres
    * @param string $str
    * @return string $escaped_str
    *  */ 
-  public function pl_esc( string $str ): string
+  public function esc( string $str ): string
   {
     // Escapamos el string
     $str = htmlspecialchars( $str, ENT_QUOTES, 'UTF-8' );
@@ -150,7 +153,7 @@ class pl_model extends mysqli
    * @param mysqli $db
    * @return mixed $value
    *  */ 
-  public function pl_db_last_id(): mixed
+  public function get_last_id(): mixed
   {
     // Buscamos el nuevo ID
     $sql = 'select last_insert_id() as last_id';

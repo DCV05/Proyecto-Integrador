@@ -116,8 +116,9 @@ class ViewEngine
 				;
 
 				// Si tiene un parámetro, ejecutamos la función o método con el parámetro
-				if( isset( $func_parts[2] ) )
+				if( isset( $func_parts[2] ) ) // Funciones y métodos con parámetros
 				{
+					// Ejecutamos la función
 					$func_result = $is_global
 						? $callable_func_name( $func_parts[2] )
 						: $this->controller->$callable_func_name( $func_parts[2] );
@@ -131,7 +132,6 @@ class ViewEngine
 
 				// Reemplazamos el HTMl en la máscara
 				$template_html 	= str_replace( "[[ {$func_name} ]]", $func_result, $template_html );
-				
 			}
 			catch( Exception $e )
 			{
@@ -150,7 +150,7 @@ class ViewEngine
 			if( !empty( $_SESSION['labels'][$label_name] ) )
 				$label_value = $_SESSION['labels'][$label_name][DEF_LANG];
 			else
-				$label_value = '';
+				$label_value = '!' . $label_name;
 
 			// Reemplazamos el HTML
 			$template_html = str_replace( '[[ ' . $label . ' ]]', $label_value, $template_html );

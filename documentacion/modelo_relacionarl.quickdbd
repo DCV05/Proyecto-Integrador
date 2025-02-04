@@ -26,7 +26,7 @@ province varchar
 group varchar
 allergies varchar
 medical_needs varchar
-current_medical_treatment varchar
+medical_treatment varchar
 special_camp_attention varchar
 other_medical_info varchar
 

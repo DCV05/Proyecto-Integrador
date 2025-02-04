@@ -1,12 +1,110 @@
+let counter = 1;
+
 $( document ).ready( function() {
 
+  // ------------------------------------------------------------------------------
+  // Calendario
+  // ------------------------------------------------------------------------------
+
+  // Array para almacenar los días seleccionados (formato "YYYY-MM-DD")
+  let selected_days = [];
+
+  // Función que formatea una fecha a "YYYY-MM-DD" (local)
+  const format_date = date => {
+    const year  = date.getFullYear();
+    const month = String( date.getMonth() + 1 ).padStart( 2, '0' );
+    const day   = String( date.getDate() ).padStart( 2, '0' );
+    return `${ year }-${ month }-${ day }`;
+  };
+
+  // Actualiza el display de días seleccionados
+  const update_display = () => {
+    $( '#selected_days_display' ).text( selected_days.sort().join( ', ')  );
+  };
+
+  // Función para agregar una fecha: añade el tick (evento) en el calendario
+  const add_date = date_str => {
+    if( !selected_days.includes( date_str ) ) {
+      selected_days.push( date_str );
+      calendar.addEvent( {
+        title: '✔',       // El tick a mostrar
+        start: date_str,
+        allDay: true,
+        classNames: ['selected-day']
+      } );
+    }
+  };
+
+  // Inicializa FullCalendar en la sección de horario
+  const calendar_el = $( '#calendar' )[0];
+  const calendar = new FullCalendar.Calendar( calendar_el, {
+    initialView  : 'dayGridMonth',
+    timeZone     : 'local',
+    selectable   : true,
+    selectMirror : true,
+    validRange   : { start: new Date().toISOString().split( 'T' )[0], end: '2026-12-31' },
+
+    // Al arrastrar para seleccionar un rango
+    select: info => {
+      // Si la selección es de un solo día (exactamente 24 horas), no hacer nada,
+      // pues el dateClick se encargará del toggle.
+      if( info.end - info.start === 86400000 )
+        return;
+      
+      let current = new Date( info.start );
+      while( current < info.end ) { // info.end es exclusiva
+        let date_str = format_date( current );
+        if( !selected_days.includes( date_str ) ) {
+          selected_days.push( date_str );
+          calendar.addEvent( {
+            title: '✔',
+            start: date_str,
+            allDay: true,
+            classNames: ['selected-day']
+          } );
+        }
+
+        current.setDate( current.getDate() + 1 );
+      }
+      update_display();
+    },
+
+    // Al hacer click en un día, se alterna (toggle) su selección
+    dateClick: info => {
+      let date_str = info.dateStr; // "YYYY-MM-DD"
+      if( selected_days.includes( date_str ) ) {
+
+        // Quitar la fecha
+        selected_days = selected_days.filter( day => day !== date_str );
+        let events = calendar.getEvents();
+        events.forEach( event => {
+          if( event.startStr === date_str )
+            event.remove();
+        } );
+
+      } else // Agregar la fecha
+        add_date( date_str );
+
+      update_display();
+    },
+    eventColor: 'rgba(0,123,255,0.5)',
+    events: []
+  } );
+  calendar.render();
+
+  // ------------------------------------------------------------------------------
+  // Formulario
+  // ------------------------------------------------------------------------------
+
   // Evento para cuando el usuario deje de tener el focus en un input
-  $( 'input:not([type="button"])' ).on( 'focusout', function() {
+  $( document ).on( 'focusout', '#register-form input:not([type="button"])', function() {
     check_inputs( $( this ) );
   } );
 
   // Evento del Submit
   $( '#register-form' ).submit( function( e ) {
+
+    let has_error = false;
 
     // Evitamos el submit
     e.preventDefault();
@@ -15,9 +113,62 @@ $( document ).ready( function() {
 
     // Evento de checkeo en submit
     $( this ).find( 'input:not([type="button"])' ).each( function() {
-      check_inputs( $( this ) );
+      incorrect_input = check_inputs( $( this ) );
+
+      // Si es incorrecto, el formulario no se podrá mandar
+      if( !has_error && incorrect_input )
+        has_error = true;
     } );
+
+    // Si no hay errores, enviamos el formulario
+    if( has_error == false ) {
+      // Capturamos los datos del formulario y los encapsulamos en un objeto
+      let formdata = new FormData( this );
+      formdata.append( 'schedule_days', selected_days );
+
+      let formdata_array = Object.fromEntries( formdata.entries() );
+      form_submit( formdata_array );
+    }
   } );
+
+  // Añadir un nuevo bloque de tutor
+  $( '#add_tutor' ).click( function() {
+
+    // Obtenemos el html del template
+    let html = $( '#tutor_template' ).html();
+  
+    // Convertimos el HTML en un objeto JQuery para modificarlo
+    let $html = $( html );
+
+    // Modificamos el name de los inputs
+    $html.find( 'input:not([type="button"])' ).each( function() {
+
+      // Modificamos el name y el id
+      let name_counter = $( this ).attr( 'name' ) + '_' + counter;
+      $( this ).attr( 'name', name_counter );
+      $( this ).attr( 'id', name_counter );
+
+      // Label
+      if( $( this ).attr( 'type' ) == 'file' )
+        $( this ).parent().attr( 'for', name_counter );
+      else
+        $( this ).siblings( 'label' ).attr( 'for', name_counter );
+    } );
+
+    // Añadimos el nuevo tutor
+    $( '#tutor_container' ).append( $html );
+    counter += 1;
+  } );
+
+  // Borrar un bloque de tutor
+  $( document ).on( 'click', '.remove_tutor', function() {
+    $( this ).closest( '.tutor_block' ).remove();
+    counter -= 1;
+  } );
+
+  // ------------------------------------------------------------------------------
+  // Next y previous
+  // ------------------------------------------------------------------------------
 
   // Índice actual de la sección visible
   let current_section = 0;
@@ -49,53 +200,26 @@ $( document ).ready( function() {
   show_section( current_section );
 } );
 
-function check_inputs( input ) {
-  let has_error = false;
+// ------------------------------------------------------------------------------
+// Formularios
+// ------------------------------------------------------------------------------
 
-  // Capturamos el valor del input
-  let input_val = input.val();
-  if( input_val == null || input_val == '' ) {
-    generate_error_message( input.parent(), 'Campo requerido' );
-    has_error = true;
-  }
+// Función para crear una cuenta
+function form_submit( formdata ) {
 
-  // Comprobamos que el valor del input email es válido
-  if( input.attr( 'type' ) == 'email' && has_error == false ) {
+  pl_ajax_post_files( 'signup', formdata )
+    .then( function( data ) {
 
-    // Si no es un email válido, mostramos una alerta
-    if( !validate_email( input_val ) )
-      generate_error_message( input.parent(), 'Email inválido' );
-  }
-}
-
-// Función para generar mensajes de error
-function generate_error_message( elem, alert_message ) {
-
-  // Mensaje de error
-  let error_alert = `
-    <div class="alert-container flex items-center p-4 my-2 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
-      <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-red-700" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.93-11.412a.75.75 0 00-1.86 0l-.42 3.25a.75.75 0 00.74.842h1.34a.75.75 0 00.74-.842l-.42-3.25zm-.93 7.662a1 1 0 110-2 1 1 0 010 2z" clip-rule="evenodd" />
-      </svg>
-      <span class="sr-only">Error</span>
-      <div class="ml-3 text-sm">
-        ` + alert_message + `
-      </div>
-    </div>
-  `;
-
-  // Si no existe una alerta, la añadimos
-  if( !elem.next( '.alert-container' ).length )
-    elem.after( error_alert );
-      
-  // Borramos la alerta después de 5 segundos
-  setTimeout( () => {
-    elem.next( '.alert-container' ).remove();
-  }, 5000 );
-}
-
-// Función para detectar un email correcto
-function validate_email( email ) {
-  const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return email_pattern.test( email );
+      // Si el resultado es correcto, redirigmos al panel
+      if( data.result = 1 && data.redirect > '' && false )
+        window.location.href = data.redirect;
+      else {
+        let form = $( '#register-form' );
+        generate_error_message( form, data.message );
+      }
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
 }

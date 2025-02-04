@@ -83,7 +83,7 @@ db_server   = mariadb
 db_user     = root
 db_password = root
 db_sys      = polaris
-db_project  = proyect_integrador
+db_project  = proyecto_integrador
 ```
 
 En el caso de que se quiera conectar a MySQL mediante XAMMP, será necesario cambiar las claves a las siguientes:
@@ -94,7 +94,7 @@ db_server   = localhost
 db_user     = root
 db_password = root
 db_sys      = polaris
-db_project  = proyect_integrador
+db_project  = proyecto_integrador
 ```
 
 ## Soporte
