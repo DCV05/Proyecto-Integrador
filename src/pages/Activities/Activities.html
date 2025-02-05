@@ -17,7 +17,7 @@
 
       <div class="flex flex-col flex-1 items-start p-4">
         <a class="inline-flex" href="/" title="kodalogic">
-          <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">Campamento</span>
+          <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">[[ label | campament ]]</span>
         </a>
       </div>
 
@@ -77,19 +77,15 @@
   </aside>
   
   <div class="page-content">
-    <form id="form_search" class="px-8 py-6">
-      <div class="mx-auto w-full">
-  
-        <div id="count_list">
-          [[ func | count_list ]]
-        </div>
+    <div class="mx-auto w-full p-8">
 
-        <div id="activity-list">
-          [[ func | list ]]
-        </div>
-  
+      <div class="flex justify-between mb-4">
+        <h2 class="subtitle font-semibold">[[ label | activities ]]</h2>
+        [[ func | layout_buttons ]]
       </div>
-    </form>
+
+      [[ func | content ]]
+    </div>
   </div>
 
   <script src="[[ polaris.actual_dir ]]/[[ polaris.page.page_title ]].js"></script>

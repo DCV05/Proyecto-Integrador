@@ -5,7 +5,8 @@
 function pl_start(): void
 {
   // Inicializamos la sesión
-  session_start();
+  if( !session_id() )
+    session_start();
 
   /*
     Array | $_SERVER

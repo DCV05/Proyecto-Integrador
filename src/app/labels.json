@@ -147,22 +147,6 @@
     "es": "Contraseña",
     "en": "Password"
   },
-  "card_number": {
-    "es": "Número de tarjeta de crédito",
-    "en": "Credit Card Number"
-  },
-  "card_name": {
-    "es": "Nombre en la tarjeta",
-    "en": "Name on Card"
-  },
-  "card_expiration_date": {
-    "es": "Fecha de vencimiento",
-    "en": "Expiration Date"
-  },
-  "card_cvv": {
-    "es": "Código CVV",
-    "en": "CVV Code"
-  },
   "incorrect_user_or_password": {
     "es": "Usuario o contraseña incorrectos",
     "en": "Incorrect username or password"
@@ -299,22 +283,6 @@
     "es": "Ingrese la fecha de nacimiento",
     "en": "Enter birth date"
   },
-  "card_number_placeholder": {
-    "es": "1234 5678 9012 3456",
-    "en": "1234 5678 9012 3456"
-  },
-  "card_name_placeholder": {
-    "es": "Carlos Ramírez",
-    "en": "Michael Scott"
-  },
-  "card_expiration_date_placeholder": {
-    "es": "MM/AAAA",
-    "en": "MM/YYYY"
-  },
-  "card_cvv_placeholder": {
-    "es": "123",
-    "en": "123"
-  },
   "participant_name_placeholder": {
     "es": "Diego Sánchez",
     "en": "e.g. Diego Sánchez"
@@ -326,5 +294,109 @@
   "participant_address_placeholder": {
     "es": "Calle Falsa 123",
     "en": "e.g. 123 Fake Street"
+  },
+  "participant_full_name": {
+    "es": "Nombre completo del participante",
+    "en": "Participant Full Name"
+  },
+  "participant_full_name_placeholder": {
+    "es": "Ingrese el nombre completo",
+    "en": "Enter full name"
+  },
+  "participant_birth_date": {
+    "es": "Fecha de nacimiento",
+    "en": "Birth Date"
+  },
+  "participant_address": {
+    "es": "Dirección",
+    "en": "Address"
+  },
+  "participant_allergies": {
+    "es": "Alergias",
+    "en": "Allergies"
+  },
+  "participant_allergies_placeholder": {
+    "es": "Ingrese las alergias si las hay",
+    "en": "Enter allergies if any"
+  },
+  "participant_special_needs": {
+    "es": "Necesidades especiales",
+    "en": "Special Needs"
+  },
+  "participant_special_needs_placeholder": {
+    "es": "Ingrese las necesidades especiales",
+    "en": "Enter special needs"
+  },
+  "participant_medical_treatment": {
+    "es": "Tratamiento médico",
+    "en": "Medical Treatment"
+  },
+  "participant_medical_treatment_placeholder": {
+    "es": "Ingrese el tratamiento médico si aplica",
+    "en": "Enter medical treatment if applicable"
+  },
+  "send-button": {
+    "es": "Enviar",
+    "en": "Send"
+  },
+  "has_account": {
+    "es": "¿Tienes ya una cuenta?",
+    "en": "Do you have already an account?"
+  },
+  "users": {
+    "es": "Usuarios",
+    "en": "Users"
+  },
+  "participant": {
+    "es": "Participante",
+    "en": "Participant"
+  },
+  "participants": {
+    "es": "Participantes",
+    "en": "Participants"
+  },
+  "desktop": {
+    "es": "Inicio",
+    "en": "Desktop"
+  },
+  "activities": {
+    "es": "Actividades",
+    "en": "Activities"
+  },
+  "account": {
+    "es": "Cuenta",
+    "en": "Account"
+  },
+  "edit-activity": {
+    "es": "Editar Actividad",
+    "en": "Edit Activity"
+  },
+  "activity_name": {
+    "es": "Nombre de la Actividad",
+    "en": "Activity Name"
+  },
+  "activity_name_placeholder": {
+    "es": "Ingrese el nombre de la actividad",
+    "en": "Enter the activity name"
+  },
+  "activity_description": {
+    "es": "Descripción de la Actividad",
+    "en": "Activity Description"
+  },
+  "activity_description_placeholder": {
+    "es": "Ingrese la descripción de la actividad",
+    "en": "Enter the activity description"
+  },
+  "activity_time": {
+    "es": "Fecha y Hora",
+    "en": "Date & Time"
+  },
+  "activity_time_placeholder": {
+    "es": "Seleccione la fecha y hora",
+    "en": "Select date & time"
+  },
+  "activity_example_description": {
+    "es": "Los niños trabajan juntos como astronautas en una misión espacial, resolviendo desafíos y explorando un nuevo planeta mientras fortalecen su espíritu de equipo.",
+    "en": "Children work together as astronauts on a space mission, solving challenges and exploring a new planet while strengthening their teamwork."
   }
 }

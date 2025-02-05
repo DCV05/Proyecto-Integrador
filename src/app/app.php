@@ -7,17 +7,17 @@
 global $entries;
 $entries = [
   [
-    'title'  => 'Desktop',
+    'title'  => pl_label( 'desktop' ),
     'link'   => '/desktop',
     'icon'   => app_get_svg_icon( 'desktop' )
   ],
   [
-    'title'  => 'Activities',
+    'title'  => pl_label( 'activities' ),
     'link'   => '/activities',
     'icon'   => app_get_svg_icon( 'activities' )
   ],
   [
-    'title'  => 'Account',
+    'title'  => pl_label( 'account' ),
     'link'   => '/account',
     'icon'   => app_get_svg_icon( 'account' )
   ]
@@ -26,24 +26,29 @@ $entries = [
 global $heading_entries;
 $heading_entries = [
   [
-    'title'  => 'Desktop',
+    'title'  => pl_label( 'desktop' ),
     'link'   => '/desktop',
     'icon'   => app_get_svg_icon( 'desktop' )
   ],
   [
-    'title'  => 'Activities',
+    'title'  => pl_label( 'activities' ),
     'link'   => '/activities',
     'icon'   => app_get_svg_icon( 'activities' )
   ],
   [
-    'title'  => 'Account',
+    'title'  => pl_label( 'account' ),
     'link'   => '/account',
     'icon'   => app_get_svg_icon( 'account' )
   ],
   [
-    'title'  => 'Schedule',
+    'title'  => pl_label( 'schedule' ),
     'link'   => '/schedule',
     'icon'   => app_get_svg_icon( 'schedule' )
+  ],
+  [
+    'title'  => pl_label( 'participant' ),
+    'link'   => '/participant',
+    'icon'   => app_get_svg_icon( 'account' )
   ]
 ];
   
@@ -105,18 +110,18 @@ function app_panel_render_tree(): string
     $color  = $colors[$entry_index] ?? 'blue';
 
     // Si el item pertenece a la URL actual, añadimos una clase bold
-    $bold = $current_url == $link ? 'font-bold' : '';
+    $bold = $current_url == $link ? 'font-bold bg-gray-100' : '';
     $icon = !empty( $entry['icon'] ) ? '<div class="w-9 h-9 bg-' . $color . '-500 shadow-landing white-svg text-i-2xl tree-icon-container">' . $entry['icon'] . '</div>' : '';
 
     // Encapsulamos
     $value .= sprintf(
-      '<div class="grid grid-cols-[auto_1fr] gap-2 px-[1.125rem] py-2 items-start">
+      '<a href="%s" class="grid grid-cols-[auto_1fr] gap-2 px-[0.7rem] py-2 items-start hover:bg-gray-100 transform transition duration-300 mx-2 rounded-lg %s">
         %s
-        <a href="%s" class="text-base %s mt-1">%s</a>
-      </div>',
-      $icon,
+        <p class="text-base mt-1">%s</p>
+      </a>',
       $link,
       $bold,
+      $icon,
       $entry['title']
     );
   }

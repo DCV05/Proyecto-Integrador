@@ -6,40 +6,44 @@
   <title>[[ polaris.page.title_seo ]]</title>
   [[ func | &headers ]]
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="bg-white shadow-xl rounded-2xl p-8 max-w-md w-full space-y-6">
-    <div class="text-center">
-      <h2 class="text-3xl font-extrabold text-gray-900">[[ label | campament ]]</h2>
-    </div>
-    
-    <form id="login-form" class="space-y-4">
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">[[ label | email ]]</label>
-        <input id="email" name="email" type="text" autocomplete="email" placeholder="johndoe@example.com"
-          class="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300">
-      </div>
-      
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-700">[[ label | password ]]</label>
-        <input id="password" name="password" type="password"
-          class="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300">
-      </div>
-      
-      <div class="flex justify-center items-center text-sm">
-        <a href="/recover-password" class="text-center text-sm text-indigo-600 hover:underline">[[ label | forgot_password_button ]]</a>
-      </div>
-      
-      <div class="grid grid-cols-2 gap-4 mt-4">
-        <button type="submit" class="w-full py-2 px-4 text-white bg-indigo-600 rounded-lg transform transition duration-300 hover:bg-indigo-500 shadow-md">
-          [[ label | login_button ]]
-        </button>
-        <a href="/signup" class="w-full py-2 px-4 text-indigo-600 border border-indigo-600 rounded-lg transform transition duration-300 hover:bg-indigo-600 hover:text-white shadow-md text-center">
-          [[ label | create_account_button ]]
-        </a>
-      </div>
-    </form>
-  </div>
+<body class="bg-gray-100 min-h-screen grid place-items-center">
   
+  <div class="grid grid-cols-1 gap-2 w-full max-w-xl">
+    <h2 class="text-left text-4xl font-bold tracking-tight text-gray-900">
+      [[ label | create_account_button ]]
+    </h2>
+
+    <div class="bg-white shadow-xl rounded-lg p-8 w-full space-y-6">
+      
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">[[ label | email ]]</label>
+          <input id="email" name="email" type="text" autocomplete="email" placeholder="johndoe@example.com"
+            class="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300">
+        </div>
+        
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">[[ label | password ]]</label>
+          <input id="password" name="password" type="password"
+            class="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300">
+        </div>
+        
+        <div class="flex justify-center items-center text-sm">
+          <a href="/recover-password" class="text-center text-sm text-indigo-600 hover:underline">[[ label | forgot_password_button ]]</a>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <button type="submit" class="w-full py-2 px-4 text-white bg-indigo-600 rounded-lg transform transition duration-300 hover:bg-indigo-500 shadow-md">
+            [[ label | login_button ]]
+          </button>
+          <a href="/signup" class="w-full py-2 px-4 text-indigo-600 border border-indigo-600 rounded-lg transform transition duration-300 hover:bg-indigo-600 hover:text-white shadow-md text-center">
+            [[ label | create_account_button ]]
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="[[ polaris.actual_dir ]]/[[ polaris.page.page_title ]].js"></script>
 </body>
 </html>

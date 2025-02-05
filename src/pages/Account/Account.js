@@ -1,6 +1,17 @@
-$( document ).ready( function( ) {
+$( document ).ready( function() {
 
-  $( document ).on( 'click', '.edit-icon', function() {
+  // Evento para redirección según la fila
+  $( '.table-row-link' ).on( 'click', function( e ) {
+    if( !$( e.target ).closest( '.edit-icon' ).length )
+      window.location.href = $( this ).data( 'href' );
+  } );
+
+  $( document ).on( 'click', '.edit-icon', function( e ) {
+
+    // Evitamos los demás eventos
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
 
     // Capturamos el tipo de item que queremos editar
     let type  = $( this ).data( 'type' );
@@ -8,7 +19,12 @@ $( document ).ready( function( ) {
 
     // Dependiendo del tipo de item ejecutamos un método u otro
     let method_name = type == 'user' ? 'popup_user' : 'popup_participant';
-    open_popup( method_name, id2 );
+    open_popup( method_name, { 'id2': id2 } );
+  } );
+
+  // Evento para cerrar el modal
+  $( document ).on( 'click', '.close_modal', function() {
+    $( '#modal' ).remove();
   } );
   
   // ------------------------------------------------------------------------------
@@ -21,7 +37,7 @@ $( document ).ready( function( ) {
   } );
 
   // Evento del Submit
-  $( '.account-form, .participant-form' ).submit( function( e ) {
+  $( document ).on( 'submit', '.account-form, .participant-form', function( e ) {
 
     let has_error = false;
 
@@ -79,8 +95,11 @@ function form_submit( formdata, form ) {
     .then( function( data ) {
 
       // Si el resultado es correcto, redirigmos al panel
-      if( data.result = 1 )
-        $( form ).parent().parent().addClass( 'hidden' );
+      if( data.result = 1 && data.elements ) {
+        console.log( data );
+        pl_dom( data.elements );
+        $( '#modal' ).remove();
+      }
       else
         generate_error_message( form, data.message );
     } )
@@ -91,15 +110,15 @@ function form_submit( formdata, form ) {
 }
 
 // Función para inciar sesión en la aplicación
-function open_popup( method_name, form ) {
+function open_popup( method_name, id2 ) {
 
   // Ejecutamos la función AJAX
-  pl_ajax_post( method_name, form )
+  pl_ajax_post( method_name, id2 )
     .then( function( data ) {
 
       // Si el resultado es correcto, mostramos los popups
-      if( data.result = 1 ) {
-        
+      if( data.result = 1 && data.elements ) {
+        pl_dom( data.elements );
       }
       else
         generate_error_message( form, data.message );
@@ -108,4 +127,16 @@ function open_popup( method_name, form ) {
       // Manejo de errores
       console.error( error );
     } );
+}
+
+window.highlight_row = function( kwargs ) {
+  if( !kwargs.elem ) return; // Evita errores si el elemento no existe
+
+  // Agrega la clase con el borde
+  $( kwargs.elem ).addClass( 'bg-' + kwargs.color + '-100' );
+
+  // Elimina el borde después de 3 segundos
+  setTimeout( () => {
+    $( kwargs.elem ).removeClass( 'bg-' + kwargs.color + '-100' );
+  }, 3000 );
 }

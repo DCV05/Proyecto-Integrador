@@ -1,47 +1,150 @@
 $( document ).ready( function() {
 
-  // Abrir modal de actividad
-  $( document ).on( 'click', '.open_modal_activity', function( e ) {
-    e.stopPropagation();
+  // Evento para los botones de layout
+  $( document ).on( 'click', '#layout_buttons button', function( e ) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
 
-    let card  = $( this ).closest( '.group' );
-    let modal = card.find( '.card_modal_activity' );
-
-    modal.data( 'card', card );
-    modal.removeClass( 'hidden' );
-    modal.appendTo( 'body' );
+    // Capturamos el modo layout
+    let layout_mode = $( this ).attr( 'id' ).replace( 'button_', '' );
+    update_layout( layout_mode );
   } );
 
-  // Evitar cierre al hacer clic dentro del contenido del modal
-  $( document ).on( 'click', '.modal_content', function( e ) {
-    e.stopPropagation();
+  // Evento para redirección según la fila
+  $( '.table-row-link' ).on( 'click', function( e ) {
+    if( !$( e.target ).closest( '.edit-icon' ).length )
+      window.location.href = $( this ).data( 'href' );
   } );
 
-  // Cerrar modal de actividad
-  $( document ).on( 'click', '.close_modal_activity', function( e ) {
-    e.stopPropagation();
+  $( document ).on( 'click', '.edit-icon', function( e ) {
 
-    // Obtenemos el modal contenedor del botón clickado
-    let modal = $( this ).closest( '.card_modal_activity' );
-    close_modal( modal );
+    // Evitamos los demás eventos
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    // Capturamos el tipo de item que queremos editar
+    let id2   = $( this ).data( 'id2' );
+
+    // Dependiendo del tipo de item ejecutamos un método u otro
+    open_popup( { 'id2': id2 } );
   } );
 
-  // Cierre global de los modales de actividad al hacer clic fuera
-  $( document ).on( 'click', function() {
-    $( '.card_modal_activity' ).each( function() {
-      // Obtenemos el modal contenedor del botón clickado
-      let modal = $( this );
-      close_modal( modal );
+  // Evento para cerrar el modal
+  $( document ).on( 'click', '.close_modal', function() {
+    $( '#modal' ).remove();
+  } );
+
+    // ------------------------------------------------------------------------------
+  // Formulario
+  // ------------------------------------------------------------------------------
+
+  // Evento para cuando el usuario deje de tener el focus en un input
+  $( document ).on( 'focusout', 'input:not([type="button"]):not([type="radio"])', function() {
+    check_inputs( $( this ) );
+  } );
+
+  // Evento del Submit
+  $( document ).on( 'submit', '.account-form, .participant-form', function( e ) {
+
+    let has_error = false;
+
+    // Evitamos el submit
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    // Evento de checkeo en submit
+    $( this ).find( 'input:not([type="button"]):not([type="radio"])' ).each( function() {
+      incorrect_input = check_inputs( $( this ) );
+
+      // Si es incorrecto, el formulario no se podrá mandar
+      if( !has_error && incorrect_input )
+        has_error = true;
     } );
+
+    // Si no hay errores, enviamos el formulario
+    if( has_error == false ) {
+      
+      // Capturamos los datos del formulario y los encapsulamos en un objeto
+      let formdata = new FormData( this );
+
+      // Capturamos el data-id del formulario y loa añadimos al formdata
+      let id2 = $( this ).data( 'id2' );
+      formdata.append( 'id2', id2 );
+
+      let formdata_array = Object.fromEntries( formdata.entries() );
+      form_submit( formdata_array, this );
+    }
   } );
 
 } );
 
-function close_modal( elem ) {
-  elem.addClass( 'hidden' );
+function update_layout( layout ) {
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'update_layout', { 'layout': layout } )
+    .then( function( data ) {
 
-  // Movemos el modal de vuelta a su tarjeta original
-  let card = elem.data( 'card' );
-  if( card )
-    elem.appendTo( card );
+      // Si el resultado es correcto, mostramos los popups
+      if( data.result = 1 && data.elements )
+        pl_dom( data.elements );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
+// Función para inciar sesión en la aplicación
+function form_submit( formdata, form ) {
+
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'edit_activity', formdata )
+    .then( function( data ) {
+
+      // Si el resultado es correcto, redirigmos al panel
+      if( data.result = 1 && data.elements ) {
+        console.log( data );
+        pl_dom( data.elements );
+        $( '#modal' ).remove();
+      }
+      else
+        generate_error_message( form, data.message );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
+// Función para inciar sesión en la aplicación
+function open_popup( id2 ) {
+
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'popup_activity', id2 )
+    .then( function( data ) {
+
+      // Si el resultado es correcto, mostramos los popups
+      if( data.result = 1 && data.elements ) {
+        pl_dom( data.elements );
+      }
+      else
+        generate_error_message( form, data.message );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
+window.highlight_row = function( kwargs ) {
+  if( !kwargs.elem ) return; // Evita errores si el elemento no existe
+
+  // Agrega la clase con el borde
+  $( kwargs.elem ).addClass( 'bg-' + kwargs.color + '-100' );
+
+  // Elimina el borde después de 3 segundos
+  setTimeout( () => {
+    $( kwargs.elem ).removeClass( 'bg-' + kwargs.color + '-100' );
+  }, 3000 );
 }

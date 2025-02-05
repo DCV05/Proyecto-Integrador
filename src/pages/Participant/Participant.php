@@ -1,6 +1,6 @@
 <?php
 
-class ScheduleController
+class ParticipantController
 {
   public string|null $participant_id2;
   public array $participant;
@@ -24,18 +24,11 @@ class ScheduleController
 
   public function events(): string
   {
-    $value = '';
-    $db    = new pl_model();
+    $value          = '';
+    $mod_schedules  = new Schedules();
 
-    // Buscamos las cuentas relacionadas al usuario
-    $sql = '
-      select
-        s.*
-      from ' . DB_PROJECT . '.schedule s
-      left join ' . DB_PROJECT . '.participants p on s.participant_id = p.participant_id
-      where
-        p.participant_id = ' . $this->participant['participant_id'];
-    $events = $db->pl_query( $sql, true );
+    // Capturamos los eventos
+    $events = $mod_schedules->GetEvents( $this->participant_id2 );
 
     // Compilamos los items de JS
     $js_items = '';

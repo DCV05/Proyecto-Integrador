@@ -57,7 +57,7 @@ function pl_ajax_post( url, data ) {
 function pl_ajax_post_files( url, data ) {
   // Calculamos la URL de la petición
   let protocol   = window.location.protocol;
-  let pathname   = window.location.pathname.substring( 1 ); // Elimina el primer "/"
+  let pathname   = window.location.pathname.substring( 1 ); // Elimina el primer '/'
   let action_url = protocol + '//' + window.location.host + '?cn=' + encodeURIComponent( pathname ) + '&cm=' + encodeURIComponent( url );
 
 
@@ -81,4 +81,70 @@ function pl_ajax_post_files( url, data ) {
     contentType: false, // Permite que el navegador configure automáticamente el encabezado Content-Type
     dataType: 'json',
   } );
+}
+
+function pl_dom( elements ) {
+
+  elements.forEach( ( element ) => {
+
+    // Dependiendo del método, ejecutamos una función u otra
+    let node      = $( element.selector );
+    let is_string = ( element.value > '' && element.value !== undefined && typeof element.value === 'string' );
+
+    switch( element.method_name ) {
+      case 'update':
+        if( is_string )
+          node.replaceWith( element.value );
+        break;
+
+      case 'prepend':
+        if( is_string )
+          node.prepend( element.value );
+        break;
+
+      case 'append':
+        if( is_string )
+          node.append( element.value );
+        break;
+
+      case 'hide':
+        node.hide();
+        break;
+
+      case 'show':
+        node.show();
+        break;
+
+      case 'css':
+        if( element.css && is_string )
+          node.css( element.css, element.value );
+        break;
+
+      case 'addClass':
+        if( element.class_name )
+          node.addClass( element.class_name );
+        break;
+
+      case 'removeClass':
+        if( element.class_name )
+          node.removeClass( element.class_name );
+        break;
+
+      case 'toggleClass':
+        if( element.class_name )
+          node.toggleClass( element.class_name );
+        break;
+
+      case 'execute':
+        console.log( element );
+        if( element.func_name && element.kwargs )
+          window[element.func_name]( element.kwargs );
+        break;
+
+      default:
+        console.error( `pl_dom: Undefined method '${element.method_name}' at`, element );
+        break;
+    }
+  } );
+
 }
