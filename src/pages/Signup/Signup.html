@@ -8,81 +8,153 @@
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.11.3/main.min.js"></script>
-  <style>
-    .fc-event.selected-day {
-      background-color: #007bff !important;
-      border: none !important;
-      color: #fff !important;
-      font-weight: bold;
-      text-align: center;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      line-height: 24px;
-      margin: 2px auto;
-      font-size: 16px;
-    }
-  </style>
 </head>
-<body>
+<body class="bg-gray-100">
   <div class="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full max-w-3xl">
-      <h2 class="text-center text-4xl font-bold tracking-tight text-gray-900">
-        [[ label | create_account_button ]]
-      </h2>
       <div class="mt-10 sm:mx-auto sm:w-full">
         <form id="register-form" class="space-y-4">
 
-          <!-- Sección de cuenta -->
-          <section id="account_section" class="flex flex-col space-y-4">
-            <h3 class="text-2xl font-semibold text-gray-700">[[ label | account_info ]]</h3>
+          <h2 class="text-left text-4xl font-bold max-w-xl tracking-tight text-gray-900  mx-auto">
+            [[ label | create_account_button ]]
+          </h2>
 
-            <div class="border p-4 mb-4 rounded">
-              <div>
-                <label for="user_email" class="custom-label">[[ label | email ]]</label>
-                <input type="email" name="user_email" placeholder="[[ label | email_placeholder ]]" class="custom-input transform transition duration-300">
-              </div>
+          <section id="account_section" class="flex flex-col space-y-4 max-w-xl mx-auto">
+
+            <div class="border p-4 mb-4 rounded-lg bg-white shadow-landing">
+              <h3 class="text-2xl font-semibold text-gray-700 mb-4">[[ label | account_info ]]</h3>
+
+              <label for="user_email" class="custom-label">[[ label | email ]]</label>
+              <input
+                type="email"
+                name="user_email"
+                placeholder="[[ label | email_placeholder ]]"
+                class="custom-input transform transition duration-300 mt-1">
               
-              <div>
-                <label for="user_password" class="custom-label">[[ label | password ]]</label>
-                <input type="password" id="user_password" name="user_password" placeholder="***********" class="custom-input transform transition duration-300">
-              </div>
+              <label for="user_password" class="custom-label">[[ label | password ]]</label>
+              <input
+                type="password" id="user_password"
+                name="user_password"
+                placeholder="***********"
+                class="custom-input transform transition duration-300 mt-1">
             </div>
 
             <div class="flex justify-end mt-4">
               <button type="button" class="next-btn">[[ label | next ]]</button>
             </div>
           </section>
+          
+          <section id="tutor_section" class="flex flex-col space-y-4 max-w-xl mx-auto hidden">
+            <div class="border p-4 mb-4 rounded-lg bg-white shadow-landing">
+              <h3 class="text-2xl font-semibold text-gray-700 mb-4">[[ label | legal_tutor_info ]]</h3>
+              <div id="tutor_container" class="space-y-6">
+                <div class="tutor_block">
 
-          <!-- Sección del participante -->
-          <section id="participant_section" class="flex flex-col space-y-4">
-            <h3 class="text-2xl font-semibold text-gray-700">[[ label | participant_info ]]</h3>
+                  <h3 class="text-xl text-gray-600 mb-2">[[ label | legal_tutor ]] 1</h3>
 
-            <div class="border p-4 mb-4 rounded">
-              <div>
-                <label for="participant_name" class="custom-label">[[ label | full_name ]]</label>
-                <input type="text" id="participant_name" name="participant_name" placeholder="[[ label | full_name_placeholder ]]" class="custom-input transform transition duration-300">
+                  <label for="tutor_full_name_0" class="custom-label">[[ label | legal_tutor_full_name ]]</label>
+                  <input
+                    type="text"
+                    id="tutor_full_name_0"
+                    name="tutor_full_name_0"
+                    placeholder="[[ label | legal_tutor_full_name_placeholder ]]"
+                    class="custom-input transform transition duration-300 mt-1">
+
+                  <label for="tutor_relationship_0" class="custom-label">[[ label | legal_tutor_relationship ]]</label>
+                  <input
+                    type="text"
+                    id="tutor_relationship_0"
+                    name="tutor_relationship_0"
+                    placeholder="[[ label | legal_tutor_relationship_placeholder ]]"
+                    class="custom-input transform transition duration-300 mt-1">
+
+                  <label class="custom-label">[[ label | email ]]</label>
+                  <input
+                    type="text"
+                    name="tutor_email_0"
+                    id="tutor_email_0"
+                    placeholder="[[ label | legal_tutor_email_placeholder ]]" class="custom-input transform transition duration-300 mt-1">
+                  <label for="tutor_dni_0" class="custom-label">[[ label | legal_tutor_dni ]]</label>
+                  <input
+                    type="text"
+                    id="tutor_dni_0"
+                    name="tutor_dni_0"
+                    placeholder="[[ label | legal_tutor_dni_placeholder ]]"
+                    class="custom-input transform transition duration-300 mt-1">
+
+                  <label for="tutor_phone_number_0" class="custom-label">[[ label | phone_number ]]</label>
+                  <input
+                    type="tel"
+                    id="tutor_phone_number_0"
+                    name="tutor_phone_number_0"
+                    placeholder="[[ label | legal_tutor_phone_1 ]]"
+                    class="custom-input transform transition duration-300 mt-1">
+
+                  <div id="image_container" class="w-full">
+                    <span class="custom-label">[[ label | legal_tutor_photo ]]</span>
+                    <label for="tutor_image_upload_0" class="flex flex-col items-center justify-center w-full h-32 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-50 transform transition duration-300 mt-1">
+                      <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                        [[ func | &get_svg_icon | cloud ]]
+                        <p class="mb-2 body-text text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                        <p class="text-xs text-gray-500">JPG, PNG, WEBP, SVG, JPEG</p>
+                      </div>
+                      <input
+                        id="tutor_image_upload_0"
+                        name="tutor_image_upload_0"
+                        type="file"
+                        accept=".jpg, .png, .webp, .svg, .jpeg"
+                        class="hidden"/>
+                    </label>
+                  </div>
+
+                </div>
               </div>
-              <div>
-                <label for="participant_birth_date" class="custom-label">[[ label | birth_date ]]</label>
-                <input type="date" id="participant_birth_date" name="participant_birth_date" placeholder="[[ label | birth_date_placeholder ]]" class="custom-input transform transition duration-300">
+
+              <div class="flex justify-end mt-4">
+                <button type="button" id="add_tutor" class="bg-green-600 text-white px-4 py-2 rounded">[[ label | add_legal_tutor ]]</button>
               </div>
-              <div>
-                <label for="participant_address" class="custom-label">[[ label | address ]]</label>
-                <input type="text" id="participant_address" name="participant_address" placeholder="[[ label | address_placeholder ]]" class="custom-input transform transition duration-300">
-              </div>
+
+            </div>
+
+            <div class="flex justify-between mt-4">
+              <button type="button" class="prev-btn">[[ label | previous ]]</button>
+              <button type="button" class="next-btn">[[ label | next ]]</button>
+            </div>
+          </section>
+
+          <section id="participant_section" class="flex flex-col space-y-4 max-w-xl mx-auto hidden">
+
+            <div class="border p-4 mb-4 rounded-lg bg-white shadow-landing">
+              <h3 class="text-2xl font-semibold text-gray-700 mb-4">[[ label | participant_info ]]</h3>
+
+              <label for="participant_name" class="custom-label">[[ label | full_name ]]</label>
+              <input
+                type="text" id="participant_name"
+                name="participant_name"
+                placeholder="[[ label | full_name_placeholder ]]"
+                class="custom-input transform transition duration-300 mt-1">
+
+              <label for="participant_birth_date" class="custom-label">[[ label | birth_date ]]</label>
+              <input
+                type="date" id="participant_birth_date"
+                name="participant_birth_date"
+                placeholder="[[ label | birth_date_placeholder ]]"
+                class="custom-input transform transition duration-300 mt-1">
 
               <div id="image_container" class="w-full">
-                <span class="block mb-2 body-text font-medium text-gray-900">[[ label | participant_photo ]]</span>
-                <label for="participant_image_upload" class="flex flex-col items-center justify-center w-full h-32 cursor-pointer border border-gray-300 rounded-lg">
+                <span class="custom-label">[[ label | participant_photo ]]</span>
+                <label for="participant_image_upload" class="flex flex-col items-center justify-center w-full h-32 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-50 transform transition duration-300 mt-1">
                   <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                    </svg>
+                    [[ func | &get_svg_icon | cloud ]]
                     <p class="mb-2 body-text text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
                     <p class="text-xs text-gray-500">JPG, PNG, WEBP, SVG, JPEG</p>
                   </div>
-                  <input id="participant_image_upload" name="participant_image_upload" type="file" accept=".jpg, .png, .webp, .svg, .jpeg" class="hidden"/>
+                  <input
+                    id="participant_image_upload"
+                    name="participant_image_upload"
+                    type="file"
+                    accept=".jpg, .png, .webp, .svg, .jpeg"
+                    class="hidden"/>
                 </label>
               </div>
             </div>
@@ -93,23 +165,30 @@
             </div>
           </section>
           
-          <!-- Sección de datos de emergencia -->
-          <section id="emergency_section" class="flex flex-col space-y-4">
-            <h3 class="text-2xl font-semibold text-gray-700">[[ label | emergency_info ]]</h3>
+          <section id="emergency_section" class="flex flex-col space-y-4 max-w-xl mx-auto hidden">
+            <div class="border p-4 mb-4 rounded-lg bg-white shadow-landing">
+              <h3 class="text-2xl font-semibold text-gray-700 mb-4">[[ label | emergency_info ]]</h3>
 
-            <div class="border p-4 mb-4 rounded">
-              <div>
-                <label for="participant_allergies" class="custom-label">[[ label | allergies ]]</label>
-                <textarea id="participant_allergies" name="participant_allergies" placeholder="[[ label | allergies_placeholder ]]" class="custom-input transform transition duration-300"></textarea>
-              </div>
-              <div>
-                <label for="participant_medical_treatment" class="custom-label">[[ label | medical_treatment ]]</label>
-                <textarea id="participant_medical_treatment" name="participant_medical_treatment" placeholder="[[ label | medical_treatment_placeholder ]]" class="custom-input transform transition duration-300"></textarea>
-              </div>
-              <div>
-                <label for="participant_special_needs" class="custom-label">[[ label | special_camp_attention ]]</label>
-                <textarea id="participant_special_needs" name="participant_special_needs" placeholder="[[ label | special_camp_attention_placeholder ]]" class="custom-input transform transition duration-300"></textarea>
-              </div>
+              <label for="participant_allergies" class="custom-label">[[ label | allergies ]]</label>
+              <textarea
+                id="participant_allergies"
+                name="participant_allergies"
+                class="custom-input transform transition duration-300 mt-1"
+              ></textarea>
+
+              <label for="participant_medical_treatment" class="custom-label">[[ label | medical_treatment ]]</label>
+              <textarea
+                id="participant_medical_treatment"
+                name="participant_medical_treatment"
+                class="custom-input transform transition duration-300 mt-1"
+              ></textarea>
+
+              <label for="participant_special_needs" class="custom-label">[[ label | special_camp_attention ]]</label>
+              <textarea
+                id="participant_special_needs"
+                name="participant_special_needs"
+                class="custom-input transform transition duration-300 mt-1"
+              ></textarea>
             </div>
 
             <div class="flex justify-between mt-4">
@@ -118,129 +197,84 @@
             </div>
           </section>
           
-          <!-- Sección de tutores -->
-          <section id="tutor_section" class="flex flex-col space-y-4">
-            <h3 class="text-2xl font-semibold text-gray-700">[[ label | tutor_info ]]</h3>
+          <section id="schedule_section" class="flex flex-col space-y-4 max-w-xl mx-auto hidden">
+            <div class="border p-4 mb-4 rounded-lg bg-white shadow-landing">
+              <h3 class="text-2xl font-semibold text-gray-700 mb-4">[[ label | schedule ]]</h3>
+              <div id="calendar"></div>
+              <p>Días seleccionados: <span id="selected_days_display"></span></p>
 
-            <div id="tutor_container">
-              <div class="tutor_block relative border p-4 mb-4 rounded">
-                <div>
-                  <label for="tutor_relationship_0" class="custom-label">[[ label | tutor_relationship ]]</label>
-                  <input type="text" id="tutor_relationship_0" name="tutor_relationship_0" placeholder="[[ label | tutor_relationship_placeholder ]]" class="custom-input transform transition duration-300">
-                </div>
-                <div>
-                  <label for="tutor_full_name_0" class="custom-label">[[ label | tutor_full_name ]]</label>
-                  <input type="text" id="tutor_full_name_0" name="tutor_full_name_0" placeholder="[[ label | tutor_full_name_placeholder ]]" class="custom-input transform transition duration-300">
-                </div>
-                <div>
-                  <label class="custom-label">[[ label | tutor_email ]]</label>
-                  <input type="text" name="tutor_email_0" id="tutor_email_0" placeholder="[[ label | tutor_email_placeholder ]]" class="custom-input transform transition duration-300">
-                </div>
-                <div>
-                  <label for="tutor_dni_0" class="custom-label">[[ label | tutor_dni ]]</label>
-                  <input type="text" id="tutor_dni_0" name="tutor_dni_0" placeholder="[[ label | tutor_dni_placeholder ]]" class="custom-input transform transition duration-300">
-                </div>
-                <div>
-                  <label for="tutor_phone_number_0" class="custom-label">[[ label | phone_number ]]</label>
-                  <input type="tel" id="tutor_phone_number_0" name="tutor_phone_number_0" placeholder="[[ label | tutor_phone_1 ]]" class="custom-input transform transition duration-300">
-                </div>
-                <div>
-                  <label for="tutor_birth_date_0" class="custom-label">[[ label | tutor_birth_date ]]</label>
-                  <input type="date" id="tutor_birth_date_0" name="tutor_birth_date_0" placeholder="[[ label | tutor_birth_date_placeholder ]]" class="custom-input transform transition duration-300">
-                </div>
-
-                <div id="image_container" class="w-full">
-                  <span class="block mb-2 body-text font-medium text-gray-900">Tutor image</span>
-                  <label for="tutor_image_upload_0" class="flex flex-col items-center justify-center w-full h-32 cursor-pointer border border-gray-300 rounded-lg">
-                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                      <svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                      </svg>
-                      <p class="mb-2 body-text text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                      <p class="text-xs text-gray-500">JPG, PNG, WEBP, SVG, JPEG</p>
-                    </div>
-                    <input id="tutor_image_upload_0" name="tutor_image_upload_0" type="file" accept=".jpg, .png, .webp, .svg, .jpeg" class="hidden"/>
-                  </label>
-                </div>
-
+              <div class="flex justify-between mt-4">
+                <button type="button" class="prev-btn">[[ label | previous ]]</button>
+                <button type="submit" class="next-btn">[[ label | create_account_button ]]</button>
               </div>
-
             </div>
-
-            <div class="flex justify-end mt-4">
-              <button type="button" id="add_tutor" class="bg-green-600 text-white px-4 py-2 rounded">[[ label | add_tutor ]]</button>
-            </div>
-
-            <div class="flex justify-between mt-4">
-              <button type="button" class="prev-btn">[[ label | previous ]]</button>
-              <button type="button" class="next-btn">[[ label | next ]]</button>
-            </div>
-
           </section>
 
-          <!-- Sección de tutores -->
-          <section id="tutor_section" class="flex flex-col space-y-4">
-            <h3 class="text-2xl font-semibold text-gray-700">Horario y Participación</h3>
-
-            <h3 class="text-xl font-semibold text-gray-700">Selecciona los días disponibles</h3>            
-            <div id="calendar"></div>
-            
-            <p>Días seleccionados: <span id="selected_days_display"></span></p>
-            <div class="flex justify-between mt-4">
-              <button type="button" class="prev-btn">[[ label | previous ]]</button>
-              <button type="submit" class="next-btn">[[ label | create_account_button ]]</button>
-            </div>
-
-          </section>
         </form>
+
       </div>
     </div>
   </div>
 
   <!-- Plantilla para los tutores -->
   <div id="tutor_template" class="hidden">
-    <div class="tutor_block relative border p-4 mb-4 rounded">
-      <button type="button" class="remove_tutor bg-red-600 text-white p-1.5 rounded absolute top-0 right-0" title="Remove Tutor">
-        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z" fill="#fff"/>
-        </svg>
-      </button>
-      <div>
-        <label class="custom-label">[[ label | tutor_relationship ]]</label>
-        <input type="text" name="tutor_relationship" placeholder="[[ label | tutor_relationship_placeholder ]]" class="custom-input transform transition duration-300">
-      </div>
-      <div>
-        <label class="custom-label">[[ label | tutor_full_name ]]</label>
-        <input type="text" name="tutor_full_name" placeholder="[[ label | tutor_full_name_placeholder ]]" class="custom-input transform transition duration-300">
-      </div>
-      <div>
-        <label class="custom-label">[[ label | tutor_email ]]</label>
-        <input type="text" name="tutor_email" placeholder="[[ label | tutor_email_placeholder ]]" class="custom-input transform transition duration-300">
-      </div>
-      <div>
-        <label class="custom-label">[[ label | tutor_dni ]]</label>
-        <input type="text" name="tutor_dni" placeholder="[[ label | tutor_dni_placeholder ]]" class="custom-input transform transition duration-300">
-      </div>
-      <div>
-        <label class="custom-label">[[ label | phone_number ]]</label>
-        <input type="tel" id="tutor_phone_number" name="tutor_phone_number" placeholder="[[ label | tutor_phone_1 ]]" class="custom-input transform transition duration-300">
-      </div>
-      <div>
-        <label class="custom-label">[[ label | tutor_birth_date ]]</label>
-        <input type="date" name="tutor_birth_date" placeholder="[[ label | tutor_birth_date_placeholder ]]" class="custom-input transform transition duration-300">
-      </div>
+
+    <div class="tutor_block">
+      <h3 id="legal_tutor_counter" class="text-xl text-gray-600 mb-2">[[ label | legal_tutor ]]</h3>
+
+      <label for="tutor_full_name" class="custom-label">[[ label | legal_tutor_full_name ]]</label>
+      <input
+        type="text"
+        id="tutor_full_name"
+        name="tutor_full_name"
+        placeholder="[[ label | legal_tutor_full_name_placeholder ]]"
+        class="custom-input transform transition duration-300 mt-1">
+
+      <label for="tutor_relationship" class="custom-label">[[ label | legal_tutor_relationship ]]</label>
+      <input
+        type="text"
+        id="tutor_relationship"
+        name="tutor_relationship"
+        placeholder="[[ label | legal_tutor_relationship_placeholder ]]"
+        class="custom-input transform transition duration-300 mt-1">
+
+      <label class="custom-label">[[ label | legal_tutor_email ]]</label>
+      <input
+        type="text"
+        name="tutor_email"
+        id="tutor_email"
+        placeholder="[[ label | legal_tutor_email_placeholder ]]" class="custom-input transform transition duration-300 mt-1">
+      
+      <label for="tutor_dni" class="custom-label">[[ label | legal_tutor_dni ]]</label>
+      <input
+        type="text"
+        id="tutor_dni"
+        name="tutor_dni"
+        placeholder="[[ label | legal_tutor_dni_placeholder ]]"
+        class="custom-input transform transition duration-300 mt-1">
+
+      <label for="tutor_phone_number" class="custom-label">[[ label | phone_number ]]</label>
+      <input
+        type="tel"
+        id="tutor_phone_number"
+        name="tutor_phone_number"
+        placeholder="[[ label | legal_tutor_phone_1 ]]"
+        class="custom-input transform transition duration-300 mt-1">
 
       <div id="image_container" class="w-full">
-        <span class="block mb-2 body-text font-medium text-gray-900">Tutor image</span>
-        <label for="tutor_image_upload" class="flex flex-col items-center justify-center w-full h-32 cursor-pointer border border-gray-300 rounded-lg">
+        <span class="custom-label">[[ label | legal_tutor_photo ]]</span>
+        <label for="tutor_image_upload" class="flex flex-col items-center justify-center w-full h-32 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-50 transform transition duration-300 mt-1">
           <div class="flex flex-col items-center justify-center pt-5 pb-6">
-            <svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-            </svg>
+            [[ func | &get_svg_icon | cloud ]]
             <p class="mb-2 body-text text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
             <p class="text-xs text-gray-500">JPG, PNG, WEBP, SVG, JPEG</p>
           </div>
-          <input id="tutor_image_upload" name="tutor_image_upload" type="file" accept=".jpg, .png, .webp, .svg, .jpeg" class="hidden"/>
+          <input
+            id="tutor_image_upload"
+            name="tutor_image_upload"
+            type="file"
+            accept=".jpg, .png, .webp, .svg, .jpeg"
+            class="hidden"/>
         </label>
       </div>
 

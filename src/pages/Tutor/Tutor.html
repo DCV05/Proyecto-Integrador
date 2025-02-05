@@ -46,14 +46,8 @@
       <div class="flex flex-col flex-1 items-end p-4 relative">
         <div class="flex flex-row gap-4">
           <button id="dropdown_button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <circle cx="5" cy="12" r="1"></circle>
-              <circle cx="12" cy="12" r="1"></circle>
-              <circle cx="19" cy="12" r="1"></circle>
-            </svg>
+            [[ app.user.user_image ]]
           </button>
-
-          <img src="https://www.kodalogic.com/k/apps/kodalogic_contents/user_images/daniel_correa.jpg" class="w-10 h-10 mr-2 rounded-full" alt="Daniel Correa, Co-Founder and Software Developer at kodalogic">
         </div>
 
         [[ func | &dropdown_panel ]]

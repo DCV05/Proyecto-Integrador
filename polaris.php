@@ -14,7 +14,8 @@ define( 'MAIN_PATH'  , __DIR__ . '/src' );
 define( 'APP_PATH'   , __DIR__ . '/src/app' );
 define( 'ASSETS_PATH', __DIR__ . '/src/assets' );
 
-// Inicializamos la sesión
+// Inicializamos la sesión y composer
+require_once( __DIR__ . '/vendor/autoload.php' );
 require_once( APP_PATH . '/sdk.php' );
 pl_start();
 
@@ -38,11 +39,18 @@ define( 'DB_PROJECT'  , $config['mysql']['db_project']  );
 // Monolog Logger
 // -------------------------------------------------------------------------------------
 
-require_once( __DIR__ . '/vendor/autoload.php' );
-
 // Creamos una variable global Logger para todo el sistema
 global $logger;
 $logger = ( new AppLogger() )->getLogger();
+
+// -------------------------------------------------------------------------------------
+// Table Creator
+// -------------------------------------------------------------------------------------
+
+use erguncaner\Table\Table;
+use erguncaner\Table\TableColumn;
+use erguncaner\Table\TableRow;
+use erguncaner\Table\TableCell;
 
 // -------------------–-------------------–-------------------–-------------------–
 // Constantes de idioma

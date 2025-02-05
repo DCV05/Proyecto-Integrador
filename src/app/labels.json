@@ -1,5 +1,4 @@
 {
-  "section1_comment": "Labels para secciones principales",
   "account_info": {
     "es": "Información de la cuenta",
     "en": "Account information"
@@ -12,16 +11,14 @@
     "es": "Información de emergencia",
     "en": "Emergency information"
   },
-  "tutor_info": {
-    "es": "Información del tutor",
-    "en": "Tutor information"
+  "legal_tutor_info": {
+    "es": "Información del tutor legal",
+    "en": "Legal tutor information"
   },
   "payment_info": {
     "es": "Información de pago",
     "en": "Payment information"
   },
-
-  "section2_comment": "Labels para navegación",
   "previous": {
     "es": "Anterior",
     "en": "Previous"
@@ -30,8 +27,6 @@
     "es": "Siguiente",
     "en": "Next"
   },
-
-  "section3_comment": "Labels para alertas y mensajes",
   "email_alert_invalid": {
     "es": "Email no válido.",
     "en": "Invalid email."
@@ -44,8 +39,6 @@
     "es": "Advertencia",
     "en": "Warning"
   },
-
-  "section4_comment": "Labels para botones",
   "login_button": {
     "es": "Iniciar sesión",
     "en": "Log in"
@@ -62,9 +55,6 @@
     "es": "Guardar cambios",
     "en": "Save changes"
   },
-
-
-  "section5_comment": "Labels para campos relacionados con participantes/niños",
   "full_name": {
     "es": "Nombre completo",
     "en": "Full Name"
@@ -89,8 +79,6 @@
     "es": "Grupo",
     "en": "Group"
   },
-
-  "section6_comment": "Labels para campos relacionados con emergencias",
   "emergency_contact_name": {
     "es": "Contacto en caso de emergencia",
     "en": "Emergency Contact"
@@ -119,33 +107,31 @@
     "es": "¿Algún tipo de atención especial que este campamento deba considerar?",
     "en": "Any special attention this camp should consider?"
   },
-
-  "section7_comment": "Labels para campos relacionados con tutores",
-  "tutor_relationship": {
+  "legal_tutor_relationship": {
     "es": "Parentesco",
     "en": "Relationship"
   },
-  "tutor_full_name": {
+  "legal_tutor_full_name": {
     "es": "Nombre completo",
     "en": "Full Name"
   },
-  "tutor_dni": {
+  "legal_tutor_dni": {
     "es": "DNI",
     "en": "ID"
   },
-  "tutor_birth_date": {
+  "legal_tutor_birth_date": {
     "es": "Fecha de nacimiento",
     "en": "Date of Birth"
   },
-  "tutor_address": {
+  "legal_tutor_address": {
     "es": "Dirección",
     "en": "Address"
   },
-  "tutor_phone_1": {
+  "legal_tutor_phone_1": {
     "es": "Teléfono 1",
     "en": "Phone 1"
   },
-  "tutor_phone_2": {
+  "legal_tutor_phone_2": {
     "es": "Teléfono 2",
     "en": "Phone 2"
   },
@@ -161,9 +147,6 @@
     "es": "Contraseña",
     "en": "Password"
   },
-
-  
-  "section8_comment": "Labels para campos relacionados con pagos",
   "card_number": {
     "es": "Número de tarjeta de crédito",
     "en": "Credit Card Number"
@@ -180,8 +163,58 @@
     "es": "Código CVV",
     "en": "CVV Code"
   },
-
-  "section9_comment": "Placeholders para campos relacionados con participantes/niños",
+  "incorrect_user_or_password": {
+    "es": "Usuario o contraseña incorrectos",
+    "en": "Incorrect username or password"
+  },
+  "mark_as_emergency_contact": {
+    "es": "Marcar como contacto de emergencia",
+    "en": "Mark as emergency contact"
+  },
+  "add_legal_tutor": {
+    "es": "Añadir tutor legal",
+    "en": "Add legal tutor"
+  },
+  "remove_legal_tutor": {
+    "es": "Eliminar tutor legal",
+    "en": "Remove legal tutor"
+  },
+  "my_account": {
+    "es": "Mi cuenta",
+    "en": "My account"
+  },
+  "log_out": {
+    "es": "Cerrar sesión",
+    "en": "Log out"
+  },
+  "edit_legal_tutor": {
+    "es": "Editar tutor legal",
+    "en": "Edit legal tutor"
+  },
+  "edit_participant": {
+    "es": "Editar participante",
+    "en": "Edit participant"
+  },
+  "legal_tutors_section": {
+    "es": "Tutores legales",
+    "en": "Legal tutors"
+  },
+  "legal_tutor_photo": {
+    "es": "Fotografía del tutor legal",
+    "en": "Legal tutor photography"
+  },
+  "participants_section": {
+    "es": "Participantes",
+    "en": "Participants"
+  },
+  "participant_photo": {
+    "es": "Fotografía del participante",
+    "en": "Participant's photo"
+  },
+  "campament": {
+    "es": "Campamento",
+    "en": "Campament"
+  },
   "full_name_placeholder": {
     "es": "Juan Pérez",
     "en": "John Smith"
@@ -206,8 +239,6 @@
     "es": "Grupo A",
     "en": "Group A"
   },
-
-  "section10_comment": "Placeholders para campos relacionados con emergencias",
   "emergency_contact_name_placeholder": {
     "es": "Ana López",
     "en": "Jane Doe"
@@ -217,8 +248,8 @@
     "en": "+1 555 123 4567"
   },
   "allergies_placeholder": {
-    "es": "Polen, nueces",
-    "en": "Pollen, nuts"
+    "es": "Polen, nueces, intolerancia a la lactosa...",
+    "en": "Pollen, nuts, lactose intolerance..."
   },
   "medical_needs_placeholder": {
     "es": "Asma, insulina",
@@ -232,34 +263,42 @@
     "es": "Lleva un inhalador en la mochila",
     "en": "Carries an inhaler in the backpack"
   },
-
-  "section11_comment": "Placeholders para campos relacionados con tutores",
-  "tutor_relationship_placeholder": {
+  "schedule": {
+    "es": "Calendario",
+    "en": "Schedule"
+  },
+  "legal_tutor": {
+    "es": "Tutor legal",
+    "en": "Legal tutor"
+  },
+  "legal_tutor_relationship_placeholder": {
     "es": "Padre",
     "en": "Father"
   },
-  "tutor_full_name_placeholder": {
+  "legal_tutor_full_name_placeholder": {
     "es": "Carlos Ramírez",
     "en": "Michael Scott"
   },
-  "tutor_dni_placeholder": {
+  "legal_tutor_dni_placeholder": {
     "es": "123456789",
     "en": "987654321"
   },
-  "tutor_phone_1_placeholder": {
+  "legal_tutor_phone_1_placeholder": {
     "es": "+34 612 34 56 78",
     "en": "+1 987 654 3210"
   },
-  "tutor_phone_2_placeholder": {
+  "legal_tutor_phone_2_placeholder": {
     "es": "+34 722 45 67 89",
     "en": "+1 876 543 2109"
   },
-  "email_placeholder": {
-    "es": "carlos.ramirez@example.com",
-    "en": "michael.scott@dundermifflin.com"
+  "legal_tutor_email_placeholder": {
+    "es": "correo@tutorlegal.com",
+    "en": "e.g. legaltutor@example.com"
   },
-
-  "section12_comment": "Placeholders para campos relacionados con pagos",
+  "legal_tutor_birth_date_placeholder": {
+    "es": "Ingrese la fecha de nacimiento",
+    "en": "Enter birth date"
+  },
   "card_number_placeholder": {
     "es": "1234 5678 9012 3456",
     "en": "1234 5678 9012 3456"
@@ -276,80 +315,16 @@
     "es": "123",
     "en": "123"
   },
-  "incorrect_user_or_password": {
-    "es": "Usuario o contraseña incorrectos",
-    "en": "Incorrect username or password"
-  },
-  "tutor_birth_date_placeholder": {
-    "es": "Ingrese la fecha de nacimiento",
-    "en": "Enter birth date"
-  },
-  "mark_as_emergency_contact": {
-    "es": "Marcar como contacto de emergencia",
-    "en": "Mark as emergency contact"
-  },
-  "add_tutor": {
-    "es": "Añadir tutor",
-    "en": "Add tutor"
-  },
-  "remove_tutor": {
-    "es": "Eliminar tutor",
-    "en": "Remove tutor"
-  },
-  "my-account": {
-    "es": "Mi cuenta",
-    "en": "My account"
-  },
-  "log-out": {
-    "es": "Cerrar sesión",
-    "en": "Log out"
-  },
-  "edit-tutor": {
-    "es": "Editar tutor",
-    "en": "Edit tutor"
-  },
-  "edit-participant": {
-    "es": "Editar participante",
-    "en": "Edit participant"
-  },
-  "tutors_section": {
-    "es": "Tutores",
-    "en": "Tutors"
-  },
-  "participants_section": {
-    "es": "Participantes",
-    "en": "Participants"
-  },
-  "tutor_email_placeholder": {
-    "es": "Ejemplo: correo@tutor.com",
-    "en": "e.g. tutor@example.com"
-  },
-  "participant_name": {
-    "es": "Nombre del participante",
-    "en": "Participant name"
-  },
   "participant_name_placeholder": {
-    "es": "Ejemplo: Diego Sánchez",
+    "es": "Diego Sánchez",
     "en": "e.g. Diego Sánchez"
   },
-  "participant_birth_date": {
-    "es": "Fecha de nacimiento",
-    "en": "Birth date"
-  },
   "participant_birth_date_placeholder": {
-    "es": "Ejemplo: 2016-03-10",
+    "es": "2016-03-10",
     "en": "e.g. 2016-03-10"
   },
-  "participant_address": {
-    "es": "Dirección",
-    "en": "Address"
-  },
   "participant_address_placeholder": {
-    "es": "Ejemplo: Calle Falsa 123",
+    "es": "Calle Falsa 123",
     "en": "e.g. 123 Fake Street"
-  },
-  "send-button": {
-    "es": "Enviar",
-    "en": "Send"
   }
 }

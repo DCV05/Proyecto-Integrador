@@ -514,6 +514,202 @@ section {
   z-index: 100;
 }
 
-.white-svg svg {
-  fill: #fff !important;
+.white-svg i {
+  color: white !important;
+}
+
+.text-i-2xl i {
+  font-size: 1.5rem;
+}
+
+.tree-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+}
+
+.fc-event.selected-day {
+  background-color: #007bff !important;
+  border: none !important;
+  color: #fff !important;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  margin: 2px auto;
+  font-size: 16px;
+}
+
+.table-ui {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e4e7ec;
+}
+
+.table-ui thead {
+  background: #fafafa;
+  border-bottom: 2px solid #e4e7ec;
+}
+
+.table-ui thead tr {
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: black;
+}
+
+.table-ui thead tr th {
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  color: #797e87;
+}
+
+.table-ui tbody tr {
+  border-bottom: 1px solid #e4e7ec;
+  transition: background 0.2s ease-in-out;
+}
+
+.table-ui tbody tr:hover {
+  background: #f3f4f6;
+}
+
+.table-ui tbody tr td {
+  padding: 1.25rem 1rem;
+  font-size: 0.875rem;
+  color: #535862;
+}
+
+.table-ui tbody tr td:first-child {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.table-ui tbody tr td img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.table-ui tbody tr td .status {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.status.active {
+  background: #e6f6e6;
+  color: #027a48;
+}
+
+.table-ui tbody tr td .badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.badge.design {
+  background: #ebe9fe;
+  color: #6d5bff;
+}
+
+.badge.product {
+  background: #e0f2fe;
+  color: #027bc3;
+}
+
+.badge.marketing {
+  background: #fdeff3;
+  color: #d02670;
+}
+
+.badge.more {
+  background: #f3f4f6;
+  color: #475467;
+}
+
+.table-ui tbody tr td .actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.table-ui tbody tr td .actions button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #98a2b3;
+  transition: color 0.2s;
+}
+
+.table-ui tbody tr td .actions button:hover {
+  color: #344054;
+}
+
+/* Pagination */
+.table-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.table-pagination button {
+  font-size: 0.875rem;
+  color: #475467;
+  background: #f3f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.table-pagination button:hover {
+  background: #e4e7ec;
+}
+
+.table-pagination .pages {
+  display: flex;
+  gap: 8px;
+}
+
+.table-pagination .pages button {
+  background: #f3f4f6;
+  color: #475467;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: background 0.2s;
+}
+
+.table-pagination .pages button:hover {
+  background: #e4e7ec;
+}
+
+.table-pagination .pages button.active {
+  background: #6d5bff;
+  color: white;
+}
+
+.edit-icon-container {
+  padding: 0.50rem !important;
+  border-radius: 0.75rem;
+}
+
+.edit-icon-container div i {
+  font-size: 1.5rem;
+  color: white;
 }

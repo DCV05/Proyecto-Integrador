@@ -1,5 +1,0 @@
-AuthType Digest
-AuthName "Secured Area - Tutors"
-AuthDigestProvider file
-AuthUserFile /var/www/html/apache/.htdigest_tutors
-Require valid-user

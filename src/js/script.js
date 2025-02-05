@@ -43,7 +43,7 @@ function pl_ajax_post( url, data ) {
   let pathname   = window.location.pathname;
   pathname = pathname.substring( 1, pathname.length );
   
-  let action_url = protocol + window.location.host + '?cn=' + pathname + '&cm=' + url;
+  let action_url = protocol + window.location.host + '?cn=' + encodeURIComponent( pathname ) + '&cm=' + encodeURIComponent( url );
   
   // Petición AJAX
   return $.ajax( {
@@ -58,7 +58,8 @@ function pl_ajax_post_files( url, data ) {
   // Calculamos la URL de la petición
   let protocol   = window.location.protocol;
   let pathname   = window.location.pathname.substring( 1 ); // Elimina el primer "/"
-  let action_url = protocol + '//' + window.location.host + '?cn=' + pathname + '&cm=' + url;
+  let action_url = protocol + '//' + window.location.host + '?cn=' + encodeURIComponent( pathname ) + '&cm=' + encodeURIComponent( url );
+
 
   // Crear un objeto FormData
   let formdata = new FormData();

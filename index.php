@@ -66,16 +66,8 @@ foreach( $router->routes as $route_controller )
     continue;
   }
 
-  // Si existe el controlador, lo cargamos
-  // En caso contrario, lo guardamos en la sesión
-  if( !isset( $_SESSION['controllers'][$controller_name] ) )
-  {
-    // Guardamos en la sesión
-    $controller = new $controller_name();
-    $_SESSION['controllers'][$controller_name] = serialize( $controller );
-  }
-  else
-    $controller = unserialize( $_SESSION['controllers'][$controller_name] );
+  // Instanciamos el nuevo controlador
+  $controller = new $controller_name();
 
   // Validación por si el método no existe
   if( !method_exists( $controller, $method_name ) )

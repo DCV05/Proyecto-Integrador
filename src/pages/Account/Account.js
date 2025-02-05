@@ -1,57 +1,14 @@
 $( document ).ready( function( ) {
 
-  // Cuando se hace clic en una tarjeta (con la clase ".card")
-  // se mueve su modal interno (".card_modal") al <body> para posicionarlo
-  // de manera absoluta y se muestra.
-  $( '.card' ).on( 'click', function( e ) {
-    e.stopPropagation();
-  
-    let card  = $( this );
-    let modal = card.find( '.card_modal' );
-    
-    // Guardamos la tarjeta original en los datos del modal,
-    // para poder devolverlo a su lugar cuando se cierre.
-    modal.data( 'card', card );
-    
-    modal.removeClass( 'hidden' );
-    modal.appendTo( 'body' );
-  } );
+  $( document ).on( 'click', '.edit-icon', function() {
 
-  // Si se hace clic dentro del contenido del modal (".modal_content"),
-  // detenemos la propagación para evitar que el modal se cierre.
-  $( document ).on( 'click', '.modal_content', function( e ) {
-    e.stopPropagation();
-  } );
+    // Capturamos el tipo de item que queremos editar
+    let type  = $( this ).data( 'type' );
+    let id2   = $( this ).data( 'id2' );
 
-  // Cuando se hace clic en el botón de cerrar (".close_modal")
-  // se oculta el modal y se mueve de vuelta a la tarjeta original.
-  $( document ).on( 'click', '.close_modal', function( e ) {
-    e.stopPropagation();
-    
-    // Obtenemos el modal contenedor del botón clicado
-    let modal = $( this ).closest( '.card_modal' );
-    modal.addClass( 'hidden' );
-    
-    // Movemos el modal de vuelta a su tarjeta original
-    let card = modal.data( 'card' );
-    if( card )
-      modal.appendTo( card );
-  } );
-
-  // Si se hace clic en cualquier parte fuera de los modales,
-  // se ocultan todos los modales y se devuelven a su tarjeta original.
-  $( document ).on( 'click', function() {
-    $( '.card_modal' ).each( function() {
-      let modal = $( this );
-      
-      // Ocultamos el modal
-      modal.addClass( 'hidden' );
-      
-      // Movemos el modal de vuelta a su tarjeta original
-      let card = modal.data( 'card' );
-      if( card )
-        modal.appendTo( card );
-    } );
+    // Dependiendo del tipo de item ejecutamos un método u otro
+    let method_name = type == 'user' ? 'popup_user' : 'popup_participant';
+    open_popup( method_name, id2 );
   } );
   
   // ------------------------------------------------------------------------------
@@ -124,6 +81,26 @@ function form_submit( formdata, form ) {
       // Si el resultado es correcto, redirigmos al panel
       if( data.result = 1 )
         $( form ).parent().parent().addClass( 'hidden' );
+      else
+        generate_error_message( form, data.message );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
+// Función para inciar sesión en la aplicación
+function open_popup( method_name, form ) {
+
+  // Ejecutamos la función AJAX
+  pl_ajax_post( method_name, form )
+    .then( function( data ) {
+
+      // Si el resultado es correcto, mostramos los popups
+      if( data.result = 1 ) {
+        
+      }
       else
         generate_error_message( form, data.message );
     } )

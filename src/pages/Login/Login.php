@@ -4,6 +4,9 @@ class LoginController
 {
   public function index(): void
   {
+    if( !empty( $_SESSION['app']['user'] ) )
+      unset( $_SESSION['app']['user'] );
+
     return;
   }
 
@@ -90,8 +93,8 @@ class LoginController
       // Buscamos el fichero y capturamos la imagen
       $files = glob( $assets_dir . '/' . $file_name . '.*' );
       $row['user_image'] = !empty( $files )
-        ? str_replace( $_SESSION['polaris']['document_root'], $_SESSION['polaris']['complex_domain'], reset( $files ) )
-        : '<div class="flex items-center justify-center w-10 h-10 bg-blue-500 text-white font-bold rounded-full">' . $row['user_email'][0] . '</div>'
+        ? '<img src="' . str_replace( $_SESSION['polaris']['document_root'], $_SESSION['polaris']['complex_domain'], reset( $files ) ) . '" class="w-10 h-10 mr-2 rounded-full shadow-landing border-2 border-gray-300">'
+        : '<div class="flex items-center justify-center w-10 h-10 bg-blue-500 text-white font-bold rounded-full">' . ucfirst( $row['user_email'][0] ) . '</div>'
       ;
 
       // Guardamos el usuario en la sesión
@@ -99,7 +102,7 @@ class LoginController
       $_SESSION['app']['user'] = $row;
 
       // Redirigimos al usuario
-      $redirect = '/debug';
+      $redirect = '/desktop';
 
       // Si llega hasta aquí, está todo OK
       $result = 1;

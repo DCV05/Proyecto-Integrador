@@ -140,6 +140,11 @@ $( document ).ready( function() {
     // Convertimos el HTML en un objeto JQuery para modificarlo
     let $html = $( html );
 
+    // Modificamos el contador del tutor legal
+    let heading_counter = $html.find( '#legal_tutor_counter' );
+    let heading_counter_html = heading_counter.html();
+    heading_counter.text( heading_counter_html + ' ' + ( counter + 1 ) );
+
     // Modificamos el name de los inputs
     $html.find( 'input:not([type="button"])' ).each( function() {
 
@@ -195,9 +200,6 @@ $( document ).ready( function() {
       show_section( current_section );
     }
   } );
-
-  // Mostramos la primera sección
-  show_section( current_section );
 } );
 
 // ------------------------------------------------------------------------------
@@ -211,7 +213,7 @@ function form_submit( formdata ) {
     .then( function( data ) {
 
       // Si el resultado es correcto, redirigmos al panel
-      if( data.result = 1 && data.redirect > '' && false )
+      if( data.result = 1 && data.redirect > '' )
         window.location.href = data.redirect;
       else {
         let form = $( '#register-form' );

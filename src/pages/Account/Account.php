@@ -1,5 +1,10 @@
 <?php
 
+use erguncaner\Table\Table;
+use erguncaner\Table\TableCell;
+use erguncaner\Table\TableColumn;
+use erguncaner\Table\TableRow;
+
 class AccountController
 {
   public function index(): void
@@ -17,23 +22,27 @@ class AccountController
     // Dependiendo del tipo de usuario mostramos un formulario u otro
     $value = match( ( int ) $_SESSION['app']['user']['role'] )
     {
-        0       => $this->tutor_form()
-      , 1       => $this->monitor_form()
-      , 2       => $this->admin_form()
+        0       => $this->form_tutor()
+      , 1       => $this->form_monitor()
+      , 2       => $this->form_admin()
       , default => ''
     };
 
     return $value;
   }
 
-  public function tutor_form(): string
+  public function form_tutor(): string
   {
     $value = '';
     $db    = new pl_model();
 
+    // --------------------------------------------------------------------------------
+    // Tabla usuarios
+    // --------------------------------------------------------------------------------
+
     // Buscamos las cuentas relacionadas al usuario
     $sql = 'select * from ' . DB_PROJECT . '.user_details where user_id = ' . $_SESSION['app']['user']['user_id'];
-    $db->pl_query( $sql );
+    $users = $db->pl_query( $sql, true );
 
     /*
       Array | account
@@ -45,201 +54,104 @@ class AccountController
         [user_dni] => 34213213
         [user_phone_number] => 644753740
     */
+
+    // Inicializamos la tabla y sus columnas
+    $table_users = new Table( ['id' => 'users_table', 'class' => 'table-ui'] );
+
+    // Columnas
+    $table_users->addColumn( 'user_name'        , new TableColumn( 'Name'        , ['id' => 'name_col']          ) );
+    $table_users->addColumn( 'user_email'       , new TableColumn( 'Email'       , ['id' => 'email_col']         ) );
+    $table_users->addColumn( 'user_relationship', new TableColumn( 'Relationship', ['id' => 'relationship_col']  ) );
+    $table_users->addColumn( 'user_birth_date'  , new TableColumn( 'Birth date'  , ['id' => 'birth_date_col']    ) );
+    $table_users->addColumn( 'user_dni'         , new TableColumn( 'DNI'         , ['id' => 'dni_col']           ) );
+    $table_users->addColumn( 'user_phone_number', new TableColumn( 'Phone number', ['id' => 'phone_number_col']  ) );
+    $table_users->addColumn( 'edit_icon'        , new TableColumn( ''            , ['id' => 'edit_icon']         ) );
     
-    $accounts_value = '';
-    while( $db->next_row() )
+    // Iteramos cada cuenta y la añadimos a la tabla
+    foreach( $users as $user )
     {
-      $account = $db->get_row();
-  
-      $accounts_value .= '
-        <div class="cursor-pointer card relative bg-white rounded-3xl shadow-landing p-6">
-          <img class="w-full h-52 object-cover object-top" src="{{ template_image }}" alt="Tutor image" />
-          <div class="card_body flex flex-col px-4 py-2 flex-1">
-            <div class="flex flex-col flex-1 justify-start">
-              <p class="my-2 subtitle tracking-tight text-slate-900">
-                ' . $account['user_name'] . '
-              </p>
-            </div>
-          </div>
-  
-          <div class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-scroll">
-  
-              <h3 class="text-2xl mb-4">' . pl_label( 'edit-tutor' ) . '</h3>
-  
-              <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-              </button>
-  
-              <form data-type="user" data-id2="' . $account['detail_id2'] . '" class="account-form modal_content">
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'tutor_full_name' ) . '</label>
-                  <input type="text" name="user_name" placeholder="' . pl_label( 'tutor_full_name_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $account['user_name'] . '">
-                </div>
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'tutor_relationship' ) . '</label>
-                  <input type="text" name="user_relationship" placeholder="' . pl_label( 'tutor_relationship_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $account['user_relationship'] . '">
-                </div>
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'email' ) . '</label>
-                  <input type="text" name="user_email" placeholder="' . pl_label( 'tutor_email_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $account['user_email'] . '">
-                </div>
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'tutor_dni' ) . '</label>
-                  <input type="text" name="user_dni" placeholder="' . pl_label( 'tutor_dni_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $account['user_dni'] . '">
-                </div>
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'phone_number' ) . '</label>
-                  <input type="tel" id="user_phone_number" name="user_phone_number" placeholder="' . pl_label( 'tutor_phone_1' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $account['user_phone_number'] . '">
-                </div>
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'tutor_birth_date' ) . '</label>
-                  <input type="date" name="user_birth_date" placeholder="' . pl_label( 'tutor_birth_date_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $account['user_birth_date'] . '">
-                </div>
-  
-                <div class="flex justify-end">
-                  <button type="submit" class="custom-submit bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
-                    ' . pl_label( 'send-button' ) . '
-                  </button>
-                </div>
-              </form>
-  
-            </div>
-          </div>
+      $edit_icon = '
+        <div data-type="user" data-id2="' . $user['detail_id2'] . '" class="edit-icon p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
+          ' . app_get_svg_icon( 'pen' ) . '
         </div>
       ';
+
+      // Definimos las celdas
+      $cells = [
+          'user_name'         => new TableCell( $user['user_name'] )
+        , 'user_email'        => new TableCell( $user['user_email'] )
+        , 'user_relationship' => new TableCell( $user['user_relationship'] )
+        , 'user_birth_date'   => new TableCell( $user['user_birth_date'] )
+        , 'user_dni'          => new TableCell( $user['user_dni'] )
+        , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
+        , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 edit-icon-container'] )
+      ];
+
+      // Añadimos la fila
+      $table_users->addRow( new TableRow( $cells ) );
     }
+
+    // Convertimos la tabla a HTML
+    $table_users_html = $table_users->html();
+
+    // --------------------------------------------------------------------------------
+    // Tabla participantes
+    // --------------------------------------------------------------------------------
 
     // Buscamos los participantes relacionados al usuario
     $sql = 'select * from ' . DB_PROJECT . '.participants where user_id = ' . $_SESSION['app']['user']['user_id'];
-    $db->pl_query( $sql );
+    $participants = $db->pl_query( $sql, true );
 
-    $participants_value = '';
-    while( $db->next_row() )
+    // Inicializamos la tabla y sus columnas
+    $table_participants = new Table( ['id' => 'participants_table', 'class' => 'table-ui'] );
+
+    // Columnas
+    $table_participants->addColumn( 'participant_name'             , new TableColumn( 'Name'             , ['id' => 'p_name_col']          ) );
+    $table_participants->addColumn( 'participant_birth_date'       , new TableColumn( 'Birth Date'       , ['id' => 'p_birth_date_col']    ) );
+    $table_participants->addColumn( 'participant_address'          , new TableColumn( 'Address'          , ['id' => 'p_address_col']       ) );
+    $table_participants->addColumn( 'participant_medical_treatment', new TableColumn( 'Medical Treatment', ['id' => 'p_medical_treatment'] ) );
+    $table_participants->addColumn( 'edit_icon'                    , new TableColumn( ''                 , ['id' => 'edit_icon']           ) );
+    
+    // Iteramos cada cuenta y la añadimos a la tabla
+    foreach( $participants as $participant )
     {
-      $participant = $db->get_row();
+      // Le damos formato a los campos
+      $participant['participant_medical_treatment'] = substr( $participant['participant_medical_treatment'], 0, 50 ) . '...';
 
-      /*
-        Array | participant
-          [participant_id] => 1
-          [participant_id2] => e26b20124473be7d8ff9eb4cead70a9f
-          [user_id] => 11
-          [participant_name] => Diego Sánchez
-          [birth_date] => 2016-03-10
-          [address] => 
-          [allergies] => Alérgico a los frutos secos y al polen. Para evitar cualquier reacción, su dieta en el campamento es estrictamente controlada y su equipo siempre lleva un EpiPen en caso de emergencia. Durante las actividades al aire libre, los monitores supervisan de cerca cualquier exposición al entorno natural, asegurándose de que siempre tenga un espacio seguro donde jugar sin riesgos. Además, su grupo ha sido informado sobre su alergia para fomentar un ambiente de apoyo y cuidado.
-          [special_needs] => Para que su experiencia en el campamento sea cómoda, cuenta con un horario estructurado y zonas de descanso donde puede relajarse si necesita un momento de calma. Su monitor ha sido capacitado para comprender sus necesidades y adaptar las actividades según su ritmo, asegurando que pueda participar en cada aventura de manera divertida y sin estrés.
-          [medical_treatment] => 
-      */
-  
-      $participants_value .= '
-        <div class="cursor-pointer card relative bg-white rounded-3xl shadow-landing p-6">
-          <img class="w-full h-52 object-cover object-top" src="{{ template_image }}" alt="Participant image" />
-          <div class="card_body flex flex-col px-4 py-2 flex-1">
-            <div class="flex flex-col flex-1 justify-start">
-              <p class="my-2 subtitle tracking-tight text-slate-900">
-                ' . $participant['participant_name'] . '
-              </p>
-            </div>
-          </div>
-  
-          <div class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-scroll">
-  
-              <h3 class="text-2xl mb-4">' . pl_label( 'edit-participant' ) . '</h3>
-  
-              <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-              </button>
-  
-              <form data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="participant-form modal_content">
-
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_name' ) . '</label>
-                  <input
-                    type="text"
-                    id="participant_name"
-                    name="participant_name"
-                    placeholder="' . pl_label( 'participant_name_placeholder' ) . '"
-                    class="custom-input mt-1 transform transition duration-300"
-                    value="' . $participant['participant_name'] . '"
-                  >
-                </div>
-
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
-                  <input
-                    type="date"
-                    id="participant_birth_date"
-                    name="participant_birth_date"
-                    placeholder="' . pl_label( 'participant_birth_date_placeholder' ) . '"
-                    class="custom-input mt-1 transform transition duration-300"
-                    value="' . $participant['participant_birth_date'] . '"
-                  >
-                </div>
-
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_address' ) . '</label>
-                  <input
-                    type="text"
-                    id="participant_address"
-                    name="participant_address"
-                    placeholder="' . pl_label( 'participant_address_placeholder' ) . '"
-                    class="custom-input mt-1 transform transition duration-300"
-                    value="' . $participant['participant_address'] . '"
-                  >
-                </div>
-
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>
-                  <textarea id="participant_allergies" name="participant_allergies" placeholder="' . pl_label( 'participant_allergies_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300">' . $participant['participant_allergies'] . '</textarea>
-                </div>
-
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_special_needs' ) . '</label>
-                  <textarea id="participant_special_needs" name="participant_special_needs" placeholder="' . pl_label( 'participant_special_needs_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300">' . $participant['participant_special_needs'] . '</textarea>
-                </div>
-
-                <div>
-                  <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_medical_treatment' ) . '</label>
-                  <textarea id="participant_medical_treatment" name="participant_medical_treatment" placeholder="' . pl_label( 'participant_medical_treatment_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300">' . $participant['participant_medical_treatment'] . '</textarea>
-                </div>
-
-  
-                <div class="flex justify-end">
-                  <button type="submit" class="custom-submit bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
-                    ' . pl_label( 'send-button' ) . '
-                  </button>
-                </div>
-              </form>
-  
-            </div>
-          </div>
+      $edit_icon = '
+        <div data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="edit-icon p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
+          ' . app_get_svg_icon( 'pen' ) . '
         </div>
       ';
+
+      // Definimos las celdas
+      $cells = [
+          'participant_name'              => new TableCell( $participant['participant_name'] )
+        , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'] )
+        , 'participant_address'           => new TableCell( $participant['participant_address'] )
+        , 'participant_medical_treatment' => new TableCell( $participant['participant_medical_treatment'], ['class' => 'max-w-[14rem]'] )
+        , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 edit-icon-container'] )
+      ];
+
+      // Añadimos la fila
+      $table_participants->addRow( new TableRow( $cells ) );
     }
+
+    // Convertimos la tabla a HTML
+    $table_participants_html = $table_participants->html();
   
     // --------------------------------------------------------------------------
     // Encapsulamos
     // --------------------------------------------------------------------------
+
     $value = '
-      <div>
-        <h2 class="text-2xl font-bold mb-4">' . pl_label( 'tutors_section' ) . '</h2>
-        <div class="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-5 gap-8">' 
-          . $accounts_value . 
-        '</div>
-      </div>
+      <h2 class="subtitle font-semibold m-4">' . pl_label( 'users' ) . '</h2>
+      ' . $table_users_html . '
   
-      <div class="mt-12">
-        <h2 class="text-2xl font-bold mb-4">' . pl_label( 'participants_section' ) . '</h2>
-        <div class="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-5 gap-8">'
-          . $participants_value . 
-        '</div>
-      </div>
+      <hr class="my-12">
+
+      <h2 class="subtitle font-semibold m-4">' . pl_label( 'participants' ) . '</h2>
+      ' . $table_participants_html . '
     ';  
 
     $db->close();
@@ -370,6 +282,45 @@ class AccountController
           participant_id2 = "' . $db->esc( $fields['id2'] ) . '"
       ';
       $db->pl_query( $sql );
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+    ];
+
+    $db->close();
+    return $value;
+  }
+
+  public function ajax_popup_user( string $detail_id2 ): string
+  {
+    $value  = [];
+    $db     = new pl_model();
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+
+    do
+    {
+      // Buscamos los datos del usuario solicitado
+      $sql = '
+        select
+          *
+        from ' . DB_PROJECT . '.user_details
+        where
+          detail_id2 = "' . $db->esc( $detail_id2 ) .'"
+      ';
+      
+
 
       // Si llega hasta aquí, está todo OK
       $result = 1;

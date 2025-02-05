@@ -39,24 +39,62 @@ class ActivitiesController
       */
 
       $value .= '
-        <div class="group flex w-full flex-col overflow-hidden rounded-3xl shadow-landing">
+        <div class="group flex w-full flex-col overflow-hidden rounded-3xl shadow-landing relative">
 
-          <a class="h-auto overflow-hidden" href="/activity/' . $normalized_activity_name . '">
-            <img class="w-full h-52 object-cover object-top" src="{{ activity_image }}" alt="activity image" />
-          </a>
+          <img class="w-full h-52 object-cover object-top" src="{{ activity_image }}" alt="activity image" />
 
           <div class="flex flex-col px-4 py-2 flex-1">
-
             <div class="flex flex-col flex-1 justify-start">
-              <a href="/activity/' . $normalized_activity_name . '" class="my-2 subtitle tracking-tight text-slate-900 hover:underline">' . $activity['activity_name'] . '</a>
-
+              <h3 class="my-2 subtitle tracking-tight text-slate-900 hover:underline">' . $activity['activity_name'] . '</h3>
               <hr class="my-2">
               <h4 class="small-title font-bold">Description</h4>
               <p class="body-text mt-2 mb-6">' . $activity['activity_description'] . '</p>
               <p class="body-text mt-2 mb-6">' . $activity['activity_time'] . '</p>
             </div>
-
           </div>
+
+          <button type="button" class="open_modal_activity absolute top-4 right-4 bg-indigo-600 text-white p-1 rounded-full hover:bg-indigo-500 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m0 0l3-3m-3 3l3 3"/>
+            </svg>
+          </button>
+
+          <div class="card_modal_activity hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div class="modal_content relative bg-white p-10 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              
+              <div class="flex items-center justify-between mb-8">
+                <h3 class="text-3xl font-semibold text-gray-900">Detalles de la Actividad</h3>
+                <button type="button" class="close_modal_activity text-gray-500 hover:text-gray-700 focus:outline-none" aria-label="Cerrar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="space-y-6 text-gray-800 text-lg">
+                <div class="flex justify-between items-center border-b pb-2">
+                  <span class="font-medium">ID</span>
+                  <span class="font-light">' . $activity['activity_id'] . '</span>
+                </div>
+                <div class="flex justify-between items-center border-b pb-2">
+                  <span class="font-medium">Nombre</span>
+                  <span class="font-light">' . $activity['activity_name'] . '</span>
+                </div>
+                <div class="flex justify-between items-center border-b pb-2">
+                  <span class="font-medium">Descripción</span>
+                  <span class="font-light">' . $activity['activity_description'] . '</span>
+                </div>
+                <div class="flex justify-between items-center border-b pb-2">
+                  <span class="font-medium">Hora</span>
+                  <span class="font-light">' . $activity['activity_time'] . '</span>
+                </div>
+              </div>
+
+              
+
+            </div>
+          </div>
+
         </div>
       ';
     }

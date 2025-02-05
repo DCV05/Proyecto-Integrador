@@ -5,6 +5,14 @@
   <metaname="viewport" content="width=device-width, initial-scale=1.0">
   <title>[[ polaris.page.title_seo ]]</title>
   [[ func | &headers ]]
+
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.11.3/main.min.js"></script>
+
+  <script>
+    [[ func | events ]]
+  </script>
 </head>
 
 <body class="overflow-hidden flex flex-col min-h-screen relative">
@@ -77,19 +85,17 @@
   </aside>
   
   <div class="page-content">
-    <form id="form_search" class="px-8 py-6">
-      <div class="mx-auto w-full">
-  
-        <div id="count_list">
-          [[ func | count_list ]]
-        </div>
-
-        <div id="activity-list">
-          [[ func | list ]]
-        </div>
-  
-      </div>
-    </form>
+    <div class="mx-auto w-full p-8">
+      <form id="register-form" class="space-y-4">
+        <section id="tutor_section" class="flex flex-col space-y-4 max-w-6xl">
+          <h3 class="text-2xl font-semibold text-gray-700">Horario y Participación</h3>
+    
+          <h3 class="text-xl font-semibold text-gray-700">Selecciona los días disponibles</h3>
+          <div id="calendar"></div>
+    
+        </section>
+      </form>
+    </div>
   </div>
 
   <script src="[[ polaris.actual_dir ]]/[[ polaris.page.page_title ]].js"></script>

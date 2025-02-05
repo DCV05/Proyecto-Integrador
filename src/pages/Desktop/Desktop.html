@@ -68,28 +68,16 @@
 
   <aside class="fixed h-full left-24 top-32 bg-white shadow-landing-reverse z-50">
     <div class="w-64 flex flex-col">
-      
       <div class="overflow-y-auto mt-2">
         [[ func | &panel_render_tree ]]      
       </div>
-
     </div>
   </aside>
   
   <div class="page-content">
-    <form id="form_search" class="px-8 py-6">
-      <div class="mx-auto w-full">
-  
-        <div id="count_list">
-          [[ func | count_list ]]
-        </div>
-
-        <div id="activity-list">
-          [[ func | list ]]
-        </div>
-  
-      </div>
-    </form>
+    <div class="px-8 py-6">
+      [[ func | content ]]
+    </div>
   </div>
 
   <script src="[[ polaris.actual_dir ]]/[[ polaris.page.page_title ]].js"></script>

@@ -4,8 +4,52 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "055c8c227b890fc47cfd14876917b2b7",
+    "content-hash": "a4db6da7fc0bcafe396d5247deda8cfc",
     "packages": [
+        {
+            "name": "erguncaner/table",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erguncaner/table.git",
+                "reference": "e0675a9f46f276dfb02d0e293304bd5a01fccf2f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erguncaner/table/zipball/e0675a9f46f276dfb02d0e293304bd5a01fccf2f",
+                "reference": "e0675a9f46f276dfb02d0e293304bd5a01fccf2f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "erguncaner\\Table\\": "src/Table/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Caner ERGÜN",
+                    "email": "erguncaner@gmail.com"
+                }
+            ],
+            "description": "Very simple table generator for PHP",
+            "support": {
+                "issues": "https://github.com/erguncaner/table/issues",
+                "source": "https://github.com/erguncaner/table/tree/master"
+            },
+            "time": "2021-02-08T18:18:22+00:00"
+        },
         {
             "name": "monolog/monolog",
             "version": "3.8.1",
@@ -163,7 +207,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "erguncaner/table": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {},

@@ -12,6 +12,7 @@
         }
     ],
     "require": {
-        "monolog/monolog": "^3.8"
+        "monolog/monolog": "^3.8",
+        "erguncaner/table": "dev-master"
     }
 }

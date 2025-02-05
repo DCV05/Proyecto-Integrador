@@ -1,5 +1,5 @@
 $( document ).ready( function() {
-  var open = false
+  let open = false
   $( document ).on( 'click', '#dropdown_button', function( e ){
 
     // Paramos los demás eventos
@@ -17,7 +17,7 @@ $( document ).ready( function() {
       $( '#dropdown_panel' ).addClass( 'hidden' );
   } );
 
-  $( document ).on( 'click', function( e ){
+  $( document ).on( 'click', function( e ) {
 
     // Cerramos el toggle si hacemos click fuera del dropdown
     if( !$( e.target ).closest( '#dropdown_button, #dropdown_panel' ).length ){
