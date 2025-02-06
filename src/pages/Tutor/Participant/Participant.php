@@ -1,6 +1,6 @@
 <?php
 
-class ParticipantController
+class TutorParticipantController
 {
   public string|null $participant_id2;
   public array $participant;
@@ -12,12 +12,12 @@ class ParticipantController
     // Capturamos el id2 del participante
     $this->participant_id2 = pl_get( 'pid2', null );
     if( !$this->participant_id2 )
-      pl_redirect( '/account' );
+      pl_redirect( '/tutor/account' );
 
     // Buscamos en la DB el participante. En caso de que no exista, redirigimos al account
     $this->participant = $mod_participants->GetRow( $this->participant_id2, $_SESSION['app']['user']['user_id'] );
     if( empty( $this->participant ) )
-      pl_redirect( '/account' );
+      pl_redirect( '/tutor/account' );
 
     return;
   }

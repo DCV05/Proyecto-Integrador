@@ -1,6 +1,6 @@
 <?php
 
-class ActivityParticipants
+class ActivitiesParticipants
 {
   private pl_model $db;
 
@@ -10,7 +10,7 @@ class ActivityParticipants
   }
 
   /**
-   * Obtiene todas las filas de la tabla `activity_participants`.
+   * Obtiene todas las filas de la tabla `activities_participants`.
    * 
    * @return array Lista de relaciones entre actividades y participantes o un array vacío si no hay resultados.
    */
@@ -19,13 +19,13 @@ class ActivityParticipants
     $sql = '
       select
         * 
-      from ' . DB_PROJECT . '.activity_participants
+      from ' . DB_PROJECT . '.activities_participants
     ';
     return $this->db->pl_query( $sql, true );
   }
 
   /**
-   * Obtiene una fila específica de la tabla `activity_participants` según `activity_id` y `participant_id`.
+   * Obtiene una fila específica de la tabla `activities_participants` según `activity_id` y `participant_id`.
    * 
    * @param int $activity_id ID de la actividad.
    * @param int $participant_id ID del participante.
@@ -36,16 +36,11 @@ class ActivityParticipants
     $sql = '
       select
         * 
-      from ' . DB_PROJECT . '.activity_participants
+      from ' . DB_PROJECT . '.activities_participants
       where
         activity_id = "' . $this->db->esc( $activity_id ) . '" and
         participant_id = "' . $this->db->esc( $participant_id ) . '"
     ';
-    $this->db->pl_query( $sql );
-
-    return $this->db->next_row()
-      ? $this->db->get_row()
-      : []
-    ;
+    return $this->db->pl_query( $sql, true );
   }
 }

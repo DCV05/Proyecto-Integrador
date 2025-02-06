@@ -39,11 +39,6 @@ class Payments
       where
         payment_id2 = "' . $this->db->esc( $payment_id2 ) . '"
     ';
-    $this->db->pl_query( $sql );
-
-    return $this->db->next_row()
-      ? $this->db->get_row()
-      : []
-    ;
+    return $this->db->pl_query( $sql, true );
   }
 }

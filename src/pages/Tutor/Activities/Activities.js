@@ -104,7 +104,6 @@ function form_submit( formdata, form ) {
 
       // Si el resultado es correcto, redirigmos al panel
       if( data.result = 1 && data.elements ) {
-        console.log( data );
         pl_dom( data.elements );
         $( '#modal' ).remove();
       }

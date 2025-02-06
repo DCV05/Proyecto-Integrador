@@ -25,25 +25,56 @@ class Attendance
   }
 
   /**
-   * Obtiene una fila específica de la tabla `attendance` según `attendance_id2`.
+   * Obtiene una fila específica de la tabla `attendance` según `activity_id`.
    * 
-   * @param string $attendance_id2 Identificador de la asistencia.
+   * @param string $activity_id Identificador de la asistencia.
    * @return array Datos de la asistencia si existe, o un array vacío si no hay resultados.
    */
-  public function GetRow( string $attendance_id2 ): array
+  public function GetRow( int $activity_id, int $participant_id = null ): array
   {
+    // Si hemos puesto un filtro por participante, lo añadimos a la consulta
+    $where = !is_null( $participant_id )
+      ? 'and participant_id = ' . $participant_id
+      : '';
+
     $sql = '
       select
         * 
       from ' . DB_PROJECT . '.attendance
       where
-        attendance_id2 = "' . $this->db->esc( $attendance_id2 ) . '"
+        activity_id = ' . $this->db->esc( $activity_id ) . '
+        ' . $where . '
     ';
-    $this->db->pl_query( $sql );
+    return $this->db->pl_query( $sql, true );
+  }
 
-    return $this->db->next_row()
-      ? $this->db->get_row()
-      : []
-    ;
+  /**
+   * Obtiene la lista de participantes de una actividad junto con sus detalles de usuario.
+   * 
+   * @param int $activity_id ID de la actividad.
+   * @return array Lista de participantes con detalles de usuario.
+   */
+  public function GetAttendanceDetails( int $activity_id, int $participant_id = null ): array
+  {
+    $mod_participants = new Participants();
+
+    // Obtenemos la lista de registros de asistencia
+    $attendance_list = $this->GetRow( $activity_id, $participant_id );
+    if( empty( $attendance_list ) )
+      return [];
+
+    $detailed_list = [];
+
+    // Recorremos cada registro de asistencia y obtenemos los datos del participante
+    foreach( $attendance_list as $attendance )
+    {
+      $participant_details = $mod_participants->GetRow( $attendance['participant_id'] );
+      $detailed_list[] = [
+          'attendance'  => $attendance
+        , 'participant' => $participant_details
+      ];
+    }
+
+    return $detailed_list;
   }
 }

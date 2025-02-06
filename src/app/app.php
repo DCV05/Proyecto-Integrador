@@ -5,52 +5,74 @@
 // -------------------------------------------------------------------------------------
 
 global $entries;
+
+// Determinamos la carpeta según el rol del usuario
+if( !empty( $_SESSION['app']['user'] ) )
+{
+  $folder = match( ( int ) $_SESSION['app']['user']['role'] )
+  {
+      0       => 'tutor'
+    , 1       => 'monitor'
+    , 2       => 'admin'
+    , default => 'tutor'
+  };
+}
+else
+  $folder = 'tutor';
+
+// Definimos las entradas comunes
 $entries = [
   [
     'title'  => pl_label( 'desktop' ),
-    'link'   => '/desktop',
+    'link'   => '/' . $folder . '/desktop',
     'icon'   => app_get_svg_icon( 'desktop' )
   ],
   [
     'title'  => pl_label( 'activities' ),
-    'link'   => '/activities',
+    'link'   => '/' . $folder . '/activities',
     'icon'   => app_get_svg_icon( 'activities' )
   ],
   [
     'title'  => pl_label( 'account' ),
-    'link'   => '/account',
+    'link'   => '/' . $folder . '/account',
     'icon'   => app_get_svg_icon( 'account' )
   ]
 ];
 
+// Añadir páginas según el rol
+switch( ( int ) $_SESSION['app']['user']['role'] )
+{
+  case 1: // Monitor
+    break;
+
+  case 2: // Admin
+    $entries[] = [
+      'title'  => pl_label( 'finances' ),
+      'link'   => '/' . $folder . '/finances',
+      'icon'   => app_get_svg_icon( 'finances' )
+    ];
+    $entries[] = [
+      'title'  => pl_label( 'reports' ),
+      'link'   => '/' . $folder . '/reports',
+      'icon'   => app_get_svg_icon( 'reports' )
+    ];
+    break;
+}
+
+// Definimos las entradas del encabezado (heading_entries)
 global $heading_entries;
-$heading_entries = [
-  [
-    'title'  => pl_label( 'desktop' ),
-    'link'   => '/desktop',
-    'icon'   => app_get_svg_icon( 'desktop' )
-  ],
-  [
-    'title'  => pl_label( 'activities' ),
-    'link'   => '/activities',
-    'icon'   => app_get_svg_icon( 'activities' )
-  ],
-  [
-    'title'  => pl_label( 'account' ),
-    'link'   => '/account',
-    'icon'   => app_get_svg_icon( 'account' )
-  ],
+$heading_entries = array_merge( $entries, [
   [
     'title'  => pl_label( 'schedule' ),
-    'link'   => '/schedule',
+    'link'   => '/' . $folder . '/schedule',
     'icon'   => app_get_svg_icon( 'schedule' )
   ],
   [
-    'title'  => pl_label( 'participant' ),
-    'link'   => '/participant',
-    'icon'   => app_get_svg_icon( 'account' )
+    'title'  => pl_label( 'attendance' ),
+    'link'   => '/' . $folder . '/attendance',
+    'icon'   => app_get_svg_icon( 'attendance' )
   ]
-];
+] );
   
 // Colores de los svg
 global $colors;
@@ -213,6 +235,9 @@ function app_get_svg_icon( string $name ): string
     , 'activities'  => '<i class="text-3xl fa-light fa-person-running"></i>'
     , 'account'     => '<i class="text-3xl fa-light fa-user"></i>'
     , 'schedule'    => '<i class="text-3xl fa-light fa-calendar-days"></i>'
+    , 'attendance'  => '<i class="text-3xl fa-light fa-clipboard-user"></i>'
+    , 'finances'    => '<i class="text-3xl fa-light fa-coins"></i>'
+    , 'reports'     => '<i class="text-3xl fa-light fa-chart-line"></i>'
     , 'pen'         => '<i class="text-3xl fa-light fa-pen"></i>'
     , 'cloud'       => '<svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/></svg>'
   ];

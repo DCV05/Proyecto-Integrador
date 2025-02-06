@@ -1,5 +1,15 @@
 $( document ).ready( function() {
 
+  // Evento para los botones de layout
+  $( document ).on( 'click', '#layout_buttons button', function( e ) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    // Capturamos el modo layout
+    let layout_mode = $( this ).attr( 'id' ).replace( 'button_', '' );
+    update_layout( layout_mode );
+  } );
+
   // Evento para redirección según la fila
   $( '.table-row-link' ).on( 'click', function( e ) {
     if( !$( e.target ).closest( '.edit-icon' ).length )
@@ -14,20 +24,18 @@ $( document ).ready( function() {
     e.stopImmediatePropagation();
 
     // Capturamos el tipo de item que queremos editar
-    let type  = $( this ).data( 'type' );
     let id2   = $( this ).data( 'id2' );
 
     // Dependiendo del tipo de item ejecutamos un método u otro
-    let method_name = type == 'user' ? 'popup_user' : 'popup_participant';
-    open_popup( method_name, { 'id2': id2 } );
+    open_popup( { 'id2': id2 } );
   } );
 
   // Evento para cerrar el modal
   $( document ).on( 'click', '.close_modal', function() {
     $( '#modal' ).remove();
   } );
-  
-  // ------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------
   // Formulario
   // ------------------------------------------------------------------------------
 
@@ -57,6 +65,7 @@ $( document ).ready( function() {
 
     // Si no hay errores, enviamos el formulario
     if( has_error == false ) {
+      
       // Capturamos los datos del formulario y los encapsulamos en un objeto
       let formdata = new FormData( this );
 
@@ -71,32 +80,30 @@ $( document ).ready( function() {
 
 } );
 
+function update_layout( layout ) {
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'update_layout', { 'layout': layout } )
+    .then( function( data ) {
+
+      // Si el resultado es correcto, mostramos los popups
+      if( data.result = 1 && data.elements )
+        pl_dom( data.elements );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
 // Función para inciar sesión en la aplicación
 function form_submit( formdata, form ) {
 
-  let method_name;
-
-  // Dependiendo del tipo de formulario que sea, ejecutamos un método u otro
-  switch( $( form ).data( 'type' ) ) {
-    case 'user':
-      method_name = 'edit_tutor';
-      break;
-
-    case 'participant':
-      method_name = 'edit_participant';
-      break;
-  
-    default:
-      break;
-  }
-
   // Ejecutamos la función AJAX
-  pl_ajax_post( method_name, formdata )
+  pl_ajax_post( 'edit_activity', formdata )
     .then( function( data ) {
 
       // Si el resultado es correcto, redirigmos al panel
       if( data.result = 1 && data.elements ) {
-        console.log( data );
         pl_dom( data.elements );
         $( '#modal' ).remove();
       }
@@ -110,10 +117,10 @@ function form_submit( formdata, form ) {
 }
 
 // Función para inciar sesión en la aplicación
-function open_popup( method_name, id2 ) {
+function open_popup( id2 ) {
 
   // Ejecutamos la función AJAX
-  pl_ajax_post( method_name, id2 )
+  pl_ajax_post( 'popup_activity', id2 )
     .then( function( data ) {
 
       // Si el resultado es correcto, mostramos los popups

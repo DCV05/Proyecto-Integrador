@@ -1,6 +1,6 @@
 <?php
 
-class DesktopController
+class TutorDesktopController
 {
   public function index(): void
   {

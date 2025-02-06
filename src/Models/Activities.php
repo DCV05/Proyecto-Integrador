@@ -47,4 +47,28 @@ class Activities
       : []
     ;
   }
+
+  /**
+   * Obtiene la actividad asociada a un participante específico.
+   * 
+   * @param int $participant_id ID del participante.
+   * @return array Datos de la actividad si existe, o un array vacío si no hay resultados.
+   */
+  public function GetParticipantLinkedRows( int $participant_id ): array
+  {
+    $sql = '
+      select
+        a.*
+      from ' . DB_PROJECT . '.activities a
+      left join ' . DB_PROJECT . '.activities_participants ap on a.activity_id = ap.activity_id
+      where
+        ap.participant_id = ' . $participant_id;
+    $this->db->pl_query( $sql );
+
+    // Devolvemos el array de datos
+    return $this->db->next_row()
+      ? $this->db->get_row()
+      : []
+    ;
+  }
 }

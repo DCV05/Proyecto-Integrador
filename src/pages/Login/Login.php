@@ -101,8 +101,14 @@ class LoginController
       unset( $row['user_password'] );
       $_SESSION['app']['user'] = $row;
 
-      // Redirigimos al usuario
-      $redirect = '/desktop';
+      // Dependiendo del tipo de usuario mostramos un formulario u otro
+      $redirect = match( ( int ) $row['role'] )
+      {
+          0       => '/tutor/desktop'
+        , 1       => '/monitor/desktop'
+        , 2       => '/admin/desktop'
+        , default => ''
+      };
 
       // Si llega hasta aquí, está todo OK
       $result = 1;

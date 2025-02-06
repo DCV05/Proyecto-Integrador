@@ -175,7 +175,7 @@ class Router
         $_SESSION['polaris']['page'] = $row;
 
         // Directorio de la página
-        $_SESSION['polaris']['actual_dir'] = $_SESSION['polaris']['complex_domain'] . '/pages/' . $row['page_title'];
+        $_SESSION['polaris']['actual_dir'] = $_SESSION['polaris']['complex_domain'] . '/pages' . $row['url'];
       }
     }
     catch( Exception $e )

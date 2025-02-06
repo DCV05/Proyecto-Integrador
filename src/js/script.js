@@ -136,7 +136,6 @@ function pl_dom( elements ) {
         break;
 
       case 'execute':
-        console.log( element );
         if( element.func_name && element.kwargs )
           window[element.func_name]( element.kwargs );
         break;

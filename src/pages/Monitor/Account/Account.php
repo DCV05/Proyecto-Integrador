@@ -5,7 +5,7 @@ use erguncaner\Table\TableCell;
 use erguncaner\Table\TableColumn;
 use erguncaner\Table\TableRow;
 
-class AccountController
+class MonitorAccountController
 {
   public function index(): void
   {
@@ -13,27 +13,6 @@ class AccountController
     app_security();
 
     return;
-  }
-
-  /**
-   * Obtiene los detalles de la cuenta según el rol del usuario.
-   * 
-   * @return string HTML del formulario correspondiente.
-   */
-  public function account_details(): string
-  {
-    $value = '';
-
-    // Dependiendo del tipo de usuario mostramos un formulario u otro
-    $value = match( ( int ) $_SESSION['app']['user']['role'] )
-    {
-        0       => $this->table_users() . '<hr class="my-12">' . $this->table_participants()
-      , 1       => $this->form_monitor()
-      , 2       => $this->form_admin()
-      , default => ''
-    };
-
-    return $value;
   }
 
   // --------------------------------------------------------------------------------
@@ -239,7 +218,7 @@ class AccountController
     $mod_participants = new Participants();
 
     // Capturamos los datos del participante
-    $participant = $mod_participants->GetRow( $participant_id2, $_SESSION['app']['user']['user_id'] );
+    $participant = $mod_participants->GetRow( $participant_id2 );
     if( empty( $participant ) )
       return '';
 
@@ -589,7 +568,7 @@ class AccountController
     do
     {
       // Buscamos los datos del participante solicitado
-      $participant = $mod_participant->GetRow( $fields['id2'], $_SESSION['app']['user']['user_id'] );
+      $participant = $mod_participant->GetRow( $fields['id2'] );
       if( empty( $participant ) )
         break;
 

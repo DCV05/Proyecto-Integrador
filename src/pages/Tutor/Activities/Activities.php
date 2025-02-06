@@ -5,7 +5,7 @@ use erguncaner\Table\TableCell;
 use erguncaner\Table\TableColumn;
 use erguncaner\Table\TableRow;
 
-class ActivitiesController
+class TutorActivitiesController
 {
   public function index(): void
   {
@@ -113,7 +113,7 @@ class ActivitiesController
       $table->addRow( new TableRow( $cells, [
           'id'        => 'row-' . $activity['activity_id2']
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
-        , 'data-href' => '/activity?aid2=' . $activity['activity_id2']
+        , 'data-href' => '/tutor/activity?aid2=' . $activity['activity_id2']
       ] ) );
     }
 
@@ -167,7 +167,7 @@ class ActivitiesController
     $row = new TableRow( $cells, [
         'id'        => 'row-' . $activity['activity_id2']
       , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
-      , 'data-href' => '/activity?aid2=' . $activity['activity_id2']
+      , 'data-href' => '/tutor/activity?aid2=' . $activity['activity_id2']
     ] );
 
     // Retornamos la fila convertida a HTML
@@ -197,7 +197,7 @@ class ActivitiesController
 
       $grid_html .= '
         <div class="group relative bg-white shadow-lg rounded-2xl overflow-hidden transition transform hover:scale-105 hover:shadow-2xl">
-          <a href="/activity?aid2=' . $activity['activity_id2'] . '" class="block w-full h-full">
+          <a href="/tutor/activity?aid2=' . $activity['activity_id2'] . '" class="block w-full h-full">
             <div class="p-6 space-y-4">
               <h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">' . $activity['activity_name'] . '</h3>
               <p class="text-sm text-gray-500">' . $short_description . '</p>
@@ -246,7 +246,7 @@ class ActivitiesController
     // Generamos la tarjeta HTML
     $card_html = '
       <div id="card-' . $activity['activity_id2'] . '" class="group relative bg-white shadow-lg rounded-2xl overflow-hidden transition transform hover:scale-105 hover:shadow-2xl">
-        <a href="/activity?aid2=' . $activity['activity_id2'] . '" class="block w-full h-full">
+        <a href="/tutor/activity?aid2=' . $activity['activity_id2'] . '" class="block w-full h-full">
           <div class="p-6 space-y-4">
             <h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">' . $activity['activity_name'] . '</h3>
             <p class="text-sm text-gray-500">' . $short_description . '</p>

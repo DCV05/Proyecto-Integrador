@@ -363,6 +363,42 @@
     "es": "Actividades",
     "en": "Activities"
   },
+  "activity_participants": {
+    "es": "Participantes de la actividad",
+    "en": "Activity participants"
+  },
+  "participant_name": {
+    "es": "Nombre del Participante",
+    "en": "Participant Name"
+  },
+  "checkin": {
+    "es": "Entrada",
+    "en": "Check-in"
+  },
+  "checkout": {
+    "es": "Salida",
+    "en": "Check-out"
+  },
+  "attendance_action": {
+    "es": "Acción de Asistencia",
+    "en": "Attendance Action"
+  },
+  "mark_attendance": {
+    "es": "Marcar Asistencia",
+    "en": "Mark Attendance"
+  },
+  "attendance": {
+    "es": "Asistencia",
+    "en": "Attendance"
+  },
+  "finances": {
+    "es": "Finanzas",
+    "en": "Finances"
+  },
+  "asigned_activities": {
+    "es": "Actividades asignadas",
+    "en": "Asigned activities"
+  },
   "account": {
     "es": "Cuenta",
     "en": "Account"

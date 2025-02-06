@@ -708,11 +708,16 @@ section {
 }
 
 .edit-icon-container {
-  padding: 0.50rem !important;
+  padding: 0.50rem;
   border-radius: 0.75rem;
 }
 
 .edit-icon-container div i {
   font-size: 1.5rem;
   color: white;
+}
+
+.px-4-imp {
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
 }
