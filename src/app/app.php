@@ -39,24 +39,27 @@ $entries = [
   ]
 ];
 
-// Añadir páginas según el rol
-switch( ( int ) $_SESSION['app']['user']['role'] )
+if( !empty( $_SESSION['app']['user'] ) )
 {
-  case 1: // Monitor
-    break;
+  // Añadir páginas según el rol
+  switch( ( int ) $_SESSION['app']['user']['role'] )
+  {
+    case 1: // Monitor
+      break;
 
-  case 2: // Admin
-    $entries[] = [
-      'title'  => pl_label( 'finances' ),
-      'link'   => '/' . $folder . '/finances',
-      'icon'   => app_get_svg_icon( 'finances' )
-    ];
-    $entries[] = [
-      'title'  => pl_label( 'reports' ),
-      'link'   => '/' . $folder . '/reports',
-      'icon'   => app_get_svg_icon( 'reports' )
-    ];
-    break;
+    case 2: // Admin
+      $entries[] = [
+        'title'  => pl_label( 'finances' ),
+        'link'   => '/' . $folder . '/finances',
+        'icon'   => app_get_svg_icon( 'finances' )
+      ];
+      $entries[] = [
+        'title'  => pl_label( 'reports' ),
+        'link'   => '/' . $folder . '/reports',
+        'icon'   => app_get_svg_icon( 'reports' )
+      ];
+      break;
+  }
 }
 
 // Definimos las entradas del encabezado (heading_entries)
@@ -66,6 +69,16 @@ $heading_entries = array_merge( $entries, [
     'title'  => pl_label( 'schedule' ),
     'link'   => '/' . $folder . '/schedule',
     'icon'   => app_get_svg_icon( 'schedule' )
+  ],
+  [
+    'title'  => pl_label( 'participant' ),
+    'link'   => '/' . $folder . '/participant',
+    'icon'   => app_get_svg_icon( 'account' )
+  ],
+  [
+    'title'  => pl_label( 'activity' ),
+    'link'   => '/' . $folder . '/activity',
+    'icon'   => app_get_svg_icon( 'activities' )
   ],
   [
     'title'  => pl_label( 'attendance' ),

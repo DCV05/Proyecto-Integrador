@@ -191,7 +191,7 @@ class TutorAccountController
       $table->addRow( new TableRow( $cells, [
           'id'      => 'row-' . $participant['participant_id2']
         , 'class'   => 'hover:bg-gray-100 cursor-pointer table-row-link'
-        , 'data-href' => '/participant?pid2=' . $participant['participant_id2']
+        , 'data-href' => '/tutor/participant?pid2=' . $participant['participant_id2']
       ] ) );
     }
 
@@ -218,9 +218,11 @@ class TutorAccountController
     $mod_participants = new Participants();
 
     // Capturamos los datos del participante
-    $participant = $mod_participants->GetRow( $participant_id2, $_SESSION['app']['user']['user_id'] );
+    $participant = $mod_participants->GetRow( $participant_id2 );
     if( empty( $participant ) )
       return '';
+
+    $participant = $participant[0];
 
     /*
       Array | participant
@@ -254,7 +256,7 @@ class TutorAccountController
     $row = new TableRow( $cells, [
         'id'        => 'row-' . $participant['participant_id2']
       , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
-      , 'data-href' => '/participant?pid2=' . $participant['participant_id2']
+      , 'data-href' => '/tutor/participant?pid2=' . $participant['participant_id2']
     ] );
 
     // Retornamos la fila convertida a HTML
@@ -568,9 +570,11 @@ class TutorAccountController
     do
     {
       // Buscamos los datos del participante solicitado
-      $participant = $mod_participant->GetRow( $fields['id2'], $_SESSION['app']['user']['user_id'] );
+      $participant = $mod_participant->GetRow( $fields['id2'] );
       if( empty( $participant ) )
         break;
+
+      $participant = $participant[0];
 
       /*
         Array | participant

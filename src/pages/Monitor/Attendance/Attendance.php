@@ -85,7 +85,7 @@ class MonitorAttendanceController
       {
         $checkin_input = '
           <button class="btn-checkin bg-green-500 text-white px-3 py-1 rounded-lg" data-pid2="' . $participant['participant_id2'] . '">
-            ' . pl_label( 'mark_attendance' ) . '
+            ' . pl_label( 'mark_checkin' ) . '
           </button>
         ';
       }
@@ -101,7 +101,7 @@ class MonitorAttendanceController
       {
         $checkout_input = '
           <button class="btn-checkout bg-red-500 text-white px-3 py-1 rounded-lg" data-pid2="' . $participant['participant_id2'] . '">
-            ' . pl_label( 'mark_attendance' ) . '
+            ' . pl_label( 'mark_checkout' ) . '
           </button>
         ';
       }
@@ -122,8 +122,9 @@ class MonitorAttendanceController
 
       // Añadimos la fila
       $table->addRow( new TableRow( $cells, [
-          'id'    => 'row-' . $participant['participant_id2']
-        , 'class' => 'hover:bg-gray-100'
+          'id'        => 'row-' . $participant['participant_id2']
+        , 'class'     => 'hover:bg-gray-100 table-row-link cursor-pointer'
+        , 'data-href' => '/monitor/participant?pid2=' . $participant['participant_id2']
       ] ) );
     }
 

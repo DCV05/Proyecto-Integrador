@@ -305,7 +305,7 @@ class MonitorActivitiesController
     return $value;
   }
 
-  /**
+    /**
    * Edita los datos de una actividad y actualiza la base de datos.
    * 
    * @param array $fields Datos de la actividad a actualizar.
@@ -476,7 +476,6 @@ class MonitorActivitiesController
 
     return $value;
   }
-
 }
 
 ?>

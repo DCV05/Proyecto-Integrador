@@ -189,9 +189,9 @@ class MonitorAccountController
 
       // Añadimos la fila
       $table->addRow( new TableRow( $cells, [
-          'id'      => 'row-' . $participant['participant_id2']
-        , 'class'   => 'hover:bg-gray-100 cursor-pointer table-row-link'
-        , 'data-href' => '/participant?pid2=' . $participant['participant_id2']
+          'id'        => 'row-' . $participant['participant_id2']
+        , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
+        , 'data-href' => '/monitor/participant?pid2=' . $participant['participant_id2']
       ] ) );
     }
 
@@ -254,7 +254,7 @@ class MonitorAccountController
     $row = new TableRow( $cells, [
         'id'        => 'row-' . $participant['participant_id2']
       , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
-      , 'data-href' => '/participant?pid2=' . $participant['participant_id2']
+      , 'data-href' => '/monitor/participant?pid2=' . $participant['participant_id2']
     ] );
 
     // Retornamos la fila convertida a HTML

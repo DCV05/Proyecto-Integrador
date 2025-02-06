@@ -359,6 +359,10 @@
     "es": "Inicio",
     "en": "Desktop"
   },
+  "activity": {
+    "es": "Actividad",
+    "en": "Activity"
+  },
   "activities": {
     "es": "Actividades",
     "en": "Activities"
@@ -386,6 +390,18 @@
   "mark_attendance": {
     "es": "Marcar Asistencia",
     "en": "Mark Attendance"
+  },
+  "mark_checkin": {
+    "es": "Marcar entrada",
+    "en": "Mark check in"
+  },
+  "mark_checkout": {
+    "es": "Marcar salida",
+    "en": "Mark Attendance"
+  },
+  "add_participant": {
+    "es": "Añadir participante",
+    "en": "Add participant"
   },
   "attendance": {
     "es": "Asistencia",

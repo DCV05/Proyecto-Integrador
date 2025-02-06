@@ -1,5 +1,11 @@
 $( document ).ready( function() {
 
+  // Evento para redirección según la fila
+  $( '.table-row-link' ).on( 'click', function( e ) {
+    if( !$( e.target ).closest( '.edit-icon, input, button' ).length )
+      window.location.href = $( this ).data( 'href' );
+  } );
+
   // Capturamos el activity_id2 desde la tabla
   let aid2 = $( '#attendance_table' ).data( 'activity' );
 
