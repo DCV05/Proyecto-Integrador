@@ -1,17 +1,16 @@
-<?php declare( strict_types = 1 );
+<?php
 
 use erguncaner\Table\Table;
 use erguncaner\Table\TableCell;
 use erguncaner\Table\TableColumn;
 use erguncaner\Table\TableRow;
 
-class AdminActivitiesController
+class ActivitiesController
 {
   public function index(): void
   {
     // Control de seguridad
     app_security();
-
     return;
   }
 
@@ -19,8 +18,7 @@ class AdminActivitiesController
   {
     $value = isset( $_SESSION['layout_mode'] ) && $_SESSION['layout_mode'] == 'table'
       ? $this->table_activities()
-      : $this->grid_activities()
-    ;
+      : $this->grid_activities();
 
     return $value;
   }
@@ -74,7 +72,9 @@ class AdminActivitiesController
    */
   public function table_activities(): string
   {
-    $value         = '';
+    global $role;
+
+    $value          = '';
     $mod_activities = new Activities();
 
     // Capturamos todas las actividades
@@ -82,13 +82,16 @@ class AdminActivitiesController
 
     // Inicializamos la tabla y sus columnas
     $table = new Table( ['id' => 'activities_table', 'class' => 'table-ui'] );
-
-    // Columnas
     $table->addColumn( 'activity_name'       , new TableColumn( 'Name'        , ['id' => 'a_name_col']        ) );
     $table->addColumn( 'activity_description', new TableColumn( 'Description' , ['id' => 'a_description_col'] ) );
     $table->addColumn( 'activity_time'       , new TableColumn( 'Date & Time' , ['id' => 'a_time_col']        ) );
-    $table->addColumn( 'edit_icon'           , new TableColumn( ''            , ['id' => 'edit_icon']         ) );
-    $table->addColumn( 'delete_icon'         , new TableColumn( ''            , ['id' => 'delete_icon']       ) );
+
+    // Si es un admin, mostramos los iconos de editar y borrar
+    if( $role === 2 )
+    {
+      $table->addColumn( 'edit_icon'  , new TableColumn( '', ['id' => 'edit_icon']    ) );
+      $table->addColumn( 'delete_icon', new TableColumn( '', ['id' => 'delete_icon']  ) );
+    }
 
     // Iteramos cada actividad y la añadimos a la tabla
     foreach( $activities as $activity )
@@ -96,45 +99,61 @@ class AdminActivitiesController
       // Le damos formato a los campos
       $activity['activity_description'] = substr( $activity['activity_description'], 0, 50 ) . '...';
 
-      $edit_icon = '
-        <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
-          ' . app_get_svg_icon( 'pen' ) . '
-        </div>
-      ';
-
-      $delete_icon = '
-        <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="delete-icon cursor-pointer p-2 rounded-lg bg-red-600 flex items-center justify-center white-svg">
-          ' . app_get_svg_icon( 'trash' ) . '
-        </div>
-      ';
-
       // Definimos las celdas
       $cells = [
           'activity_name'        => new TableCell( $activity['activity_name'] )
         , 'activity_description' => new TableCell( $activity['activity_description'], ['class' => 'max-w-[14rem]'] )
         , 'activity_time'        => new TableCell( $activity['activity_time'] )
-        , 'edit_icon'            => new TableCell( $edit_icon, ['class' => 'text-center w-12 edit-icon-container'] )
-        , 'delete_icon'          => new TableCell( $delete_icon, ['class' => 'text-center w-12 delete-icon-container'] )
       ];
+
+      // --------------------------------------------------------------------------------
+      // ADMIN
+      // --------------------------------------------------------------------------------
+
+      // Si es un admin, mostramos los iconos de editar y borrar
+      if( $role === 2 )
+      {
+        $edit_icon = '
+          <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
+            ' . app_get_svg_icon( 'pen' ) . '
+          </div>
+        ';
+
+        $delete_icon = '
+          <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="delete-icon cursor-pointer p-2 rounded-lg bg-red-600 flex items-center justify-center white-svg">
+            ' . app_get_svg_icon( 'trash' ) . '
+          </div>
+        ';
+
+        $cells['edit_icon']   = new TableCell( $edit_icon   , ['class' => 'text-center w-12 edit-icon-container'] );
+        $cells['delete_icon'] = new TableCell( $delete_icon , ['class' => 'text-center w-12 delete-icon-container'] );
+      }
 
       // Añadimos la fila
       $table->addRow( new TableRow( $cells, [
           'id'        => 'row-' . $activity['activity_id2']
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
-        , 'data-href' => '/tutor/activity?aid2=' . $activity['activity_id2']
+        , 'data-href' => '/activity?aid2=' . $activity['activity_id2']
       ] ) );
     }
 
-    // Botón para agregar una actividad
-    $button = '
-      <button id="btn-add-activity" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-600 w-full">
-        ' . pl_label( 'add_activity' ) . '
-      </button>
-    ';
+    // --------------------------------------------------------------------------------
+    // ADMIN
+    // --------------------------------------------------------------------------------
 
-    // Botón para añadir una actividad
-    $add_button = ['activity_name' => new TableCell( $button, ['id' => 'btn-add-activity', 'colspan' => 3, 'class' => 'text-center'] )];
-    $table->addRow( new TableRow( $add_button ) );
+    if( $role === 2 )
+    {
+      // Botón para agregar una actividad
+      $button = '
+        <button id="btn-add-activity" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-600 w-full">
+          ' . pl_label( 'add_activity' ) . '
+        </button>
+      ';
+
+      // Botón para añadir una actividad
+      $add_button = ['activity_name' => new TableCell( $button, ['id' => 'btn-add-activity', 'colspan' => 3, 'class' => 'text-center'] )];
+      $table->addRow( new TableRow( $add_button ) );
+    }
 
     // Convertimos la tabla a HTML
     $value = $table->html();
@@ -149,6 +168,8 @@ class AdminActivitiesController
    */
   public function table_row_activities( string $activity_id2 ): string
   {
+    global $role;
+
     $mod_activities = new Activities();
 
     // Capturamos los datos de la actividad
@@ -168,32 +189,41 @@ class AdminActivitiesController
     // Le damos formato a los campos
     $activity['activity_description'] = substr( $activity['activity_description'], 0, 50 ) . '...';
 
-    $edit_icon = '
-      <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
-        ' . app_get_svg_icon( 'pen' ) . '
-      </div>
-    ';
-
-    $delete_icon = '
-      <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="delete-icon cursor-pointer p-2 rounded-lg bg-red-600 flex items-center justify-center white-svg">
-        ' . app_get_svg_icon( 'trash' ) . '
-      </div>
-    ';
-
     // Definimos las celdas
     $cells = [
         'activity_name'        => new TableCell( $activity['activity_name'] )
       , 'activity_description' => new TableCell( $activity['activity_description'], ['class' => 'max-w-[14rem]'] )
       , 'activity_time'        => new TableCell( $activity['activity_time'] )
-      , 'edit_icon'            => new TableCell( $edit_icon, ['class' => 'text-center w-12 edit-icon-container'] )
-      , 'delete_icon'          => new TableCell( $delete_icon, ['class' => 'text-center w-12 edit-icon-container'] )
     ];
+
+    // --------------------------------------------------------------------------------
+    // ADMIN
+    // --------------------------------------------------------------------------------
+
+    // Si es un admin, mostramos los iconos de editar y borrar
+    if( $role === 2 )
+    {
+      $edit_icon = '
+        <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
+          ' . app_get_svg_icon( 'pen' ) . '
+        </div>
+      ';
+  
+      $delete_icon = '
+        <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="delete-icon cursor-pointer p-2 rounded-lg bg-red-600 flex items-center justify-center white-svg">
+          ' . app_get_svg_icon( 'trash' ) . '
+        </div>
+      ';
+
+      $cells['edit_icon']   = new TableCell( $edit_icon   , ['class' => 'text-center w-12 edit-icon-container'] );
+      $cells['delete_icon'] = new TableCell( $delete_icon , ['class' => 'text-center w-12 delete-icon-container'] );
+    }
 
     // Creamos la fila con `TableRow`
     $row = new TableRow( $cells, [
         'id'        => 'row-' . $activity['activity_id2']
       , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
-      , 'data-href' => '/tutor/activity?aid2=' . $activity['activity_id2']
+      , 'data-href' => '/activity?aid2=' . $activity['activity_id2']
     ] );
 
     // Retornamos la fila convertida a HTML
@@ -223,7 +253,7 @@ class AdminActivitiesController
 
       $grid_html .= '
         <div class="group relative bg-white shadow-lg rounded-2xl overflow-hidden transition transform hover:scale-105 hover:shadow-2xl">
-          <a href="/tutor/activity?aid2=' . $activity['activity_id2'] . '" class="block w-full h-full">
+          <a href="/activity?aid2=' . $activity['activity_id2'] . '" class="block w-full h-full">
             <div class="p-6 space-y-4">
               <h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">' . $activity['activity_name'] . '</h3>
               <p class="text-sm text-gray-500">' . $short_description . '</p>
@@ -272,7 +302,7 @@ class AdminActivitiesController
     // Generamos la tarjeta HTML
     $card_html = '
       <div id="card-' . $activity['activity_id2'] . '" class="group relative bg-white shadow-lg rounded-2xl overflow-hidden transition transform hover:scale-105 hover:shadow-2xl">
-        <a href="/tutor/activity?aid2=' . $activity['activity_id2'] . '" class="block w-full h-full">
+        <a href="/activity?aid2=' . $activity['activity_id2'] . '" class="block w-full h-full">
           <div class="p-6 space-y-4">
             <h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">' . $activity['activity_name'] . '</h3>
             <p class="text-sm text-gray-500">' . $short_description . '</p>

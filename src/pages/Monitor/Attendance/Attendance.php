@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php
 
 use erguncaner\Table\Table;
 use erguncaner\Table\TableCell;
@@ -19,12 +19,12 @@ class MonitorAttendanceController
     // Capturamos el id2 de la actividad
     $this->activity_id2 = pl_get( 'aid2', null );
     if( !$this->activity_id2 )
-      pl_redirect( '/monitor/activities' );
+      pl_redirect( '/activities' );
 
     // Buscamos en la DB la actividad. En caso de que no exista, redirigimos al activities
     $this->activity = $mod_activities->GetRow( $this->activity_id2 );
     if( empty( $this->activity ) )
-      pl_redirect( '/monitor/activities' );
+      pl_redirect( '/activities' );
 
     return;
   }
@@ -60,7 +60,7 @@ class MonitorAttendanceController
   public function table_attendance(): string
   {
     $value          = '';
-    $mod_attendance = new Attendance();
+    $mod_attendance = new ActivitiesParticipants();
 
     // Obtenemos la lista de asistencia
     $attendances = $mod_attendance->GetAttendanceDetails( $this->activity['activity_id'] );
@@ -78,6 +78,8 @@ class MonitorAttendanceController
     {
       $participant = $entry['participant'][0];
       $attendance  = $entry['attendance'];
+
+      pl_dump( $attendance ); exit;
 
       // Check-in
       if( empty( $attendance['checkin_datetime'] ) )
@@ -122,7 +124,7 @@ class MonitorAttendanceController
       $table->addRow( new TableRow( $cells, [
           'id'        => 'row-' . $participant['participant_id2']
         , 'class'     => 'hover:bg-gray-100 table-row-link cursor-pointer'
-        , 'data-href' => '/monitor/participant?pid2=' . $participant['participant_id2']
+        , 'data-href' => '/participant?pid2=' . $participant['participant_id2']
       ] ) );
     }
 
@@ -138,11 +140,10 @@ class MonitorAttendanceController
    */
   public function table_row_attendance( int $activity_id, int $participant_id ): string
   {
-    $value          = '';
-    $mod_attendance = new Attendance();
+    $mod_activities_participants = new ActivitiesParticipants();
 
     // Obtenemos la lista de asistencia
-    $attendance = $mod_attendance->GetAttendanceDetails( $activity_id, $participant_id );
+    $attendance = $mod_activities_participants->GetAttendanceDetails( $activity_id, $participant_id );
     if( empty( $attendance ) )
       return '';
 
@@ -153,7 +154,7 @@ class MonitorAttendanceController
     if( empty( $attendance['checkin_datetime'] ) )
     {
       $checkin_input = '<button class="btn-checkin bg-green-500 text-white px-3 py-1 rounded-lg" data-pid2="' . $participant['participant_id2'] . '">
-        ' . pl_label( 'mark_attendance' ) . '
+        ' . pl_label( 'mark_checkin' ) . '
       </button>';
     }
     else
@@ -168,7 +169,7 @@ class MonitorAttendanceController
     {
       $checkout_input = '
         <button class="btn-checkout bg-red-500 text-white px-3 py-1 rounded-lg" data-pid2="' . $participant['participant_id2'] . '">
-          ' . pl_label( 'mark_attendance' ) . '
+          ' . pl_label( 'mark_checkout' ) . '
         </button>
       ';
     }
@@ -256,8 +257,11 @@ class MonitorAttendanceController
 
       // Actualizar la asistencia
       $sql = '
-        update ' . DB_PROJECT . '.attendance set
-          ' . $column . ' = "' . $db->esc( $fields['datetime'] ) . '"
+        insert into ' . DB_PROJECT . '.attendance (
+          ' . $column . '
+        ) values (
+          "' . $db->esc( $fields['datetime'] ) . '"
+        )
         where
           participant_id = "' . $db->esc( $participant[0]['participant_id'] ) . '" and
           activity_id = ' . $activity['activity_id'] . '

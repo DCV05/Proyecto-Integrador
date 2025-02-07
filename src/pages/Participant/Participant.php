@@ -1,6 +1,6 @@
-<?php declare( strict_types = 1 );
+<?php
 
-class MonitorParticipantController
+class ParticipantController
 {
   public string|null $participant_id2;
   public array $participant;

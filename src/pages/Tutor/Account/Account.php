@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php
 
 use erguncaner\Table\Table;
 use erguncaner\Table\TableCell;
@@ -107,7 +107,7 @@ class TutorAccountController
     // Capturamos los datos del usuario
     $user = $mod_user_details->GetRow( $detail_id2 );
     if( empty( $user ) )
-      return null;
+      return '';
 
     /*
       Array | user

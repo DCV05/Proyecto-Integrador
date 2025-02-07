@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php
 
 /**
  * Inicializa la sesión y configura variables de entorno para Polaris.

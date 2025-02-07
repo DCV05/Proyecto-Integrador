@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php
 
 class LoginController
 {
@@ -94,8 +94,10 @@ class LoginController
       $files = glob( $assets_dir . '/' . $file_name . '.*' );
       $row['user_image'] = !empty( $files )
         ? '<img src="' . str_replace( $_SESSION['polaris']['document_root'], $_SESSION['polaris']['complex_domain'], reset( $files ) ) . '" class="w-10 h-10 mr-2 rounded-full shadow-landing border-2 border-gray-300">'
-        : '<div class="flex items-center justify-center w-10 h-10 bg-blue-500 text-white font-bold rounded-full">' . ucfirst( $row['user_email'][0] ) . '</div>'
-      ;
+        : '<div class="flex items-center justify-center w-10 h-10 bg-blue-500 text-white font-bold rounded-full">' . ucfirst( $row['user_email'][0] ) . '</div>';
+
+      // Casteo del rol
+      $row['role'] = intval( $row['role'] );
 
       // Guardamos el usuario en la sesión
       unset( $row['user_password'] );

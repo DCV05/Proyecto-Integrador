@@ -1,11 +1,11 @@
-<?php declare( strict_types = 1 );
+<?php
 
 use erguncaner\Table\Table;
 use erguncaner\Table\TableCell;
 use erguncaner\Table\TableColumn;
 use erguncaner\Table\TableRow;
 
-class MonitorParticipantsController
+class ParticipantsController
 {
   public function index(): void
   {
@@ -57,7 +57,7 @@ class MonitorParticipantsController
       $table->addRow( new TableRow( $cells, [
           'id'        => 'row-' . $participant['participant_id2']
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
-        , 'data-href' => '/monitor/participant?pid2=' . $participant['participant_id2']
+        , 'data-href' => '/participant?pid2=' . $participant['participant_id2']
       ] ) );
     }
 

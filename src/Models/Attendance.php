@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php
 
 class Attendance
 {
@@ -45,36 +45,7 @@ class Attendance
         activity_id = ' . $this->db->esc( $activity_id ) . '
         ' . $where . '
     ';
+    print $sql; exit;
     return $this->db->pl_query( $sql, true );
-  }
-
-  /**
-   * Obtiene la lista de participantes de una actividad junto con sus detalles de usuario.
-   * 
-   * @param int $activity_id ID de la actividad.
-   * @return array Lista de participantes con detalles de usuario.
-   */
-  public function GetAttendanceDetails( int $activity_id, int $participant_id = null ): array
-  {
-    $mod_participants = new Participants();
-
-    // Obtenemos la lista de registros de asistencia
-    $attendance_list = $this->GetRow( $activity_id, $participant_id );
-    if( empty( $attendance_list ) )
-      return [];
-
-    $detailed_list = [];
-
-    // Recorremos cada registro de asistencia y obtenemos los datos del participante
-    foreach( $attendance_list as $attendance )
-    {
-      $participant_details = $mod_participants->GetRow( $attendance['participant_id'] );
-      $detailed_list[] = [
-          'attendance'  => $attendance
-        , 'participant' => $participant_details
-      ];
-    }
-
-    return $detailed_list;
   }
 }

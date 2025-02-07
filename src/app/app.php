@@ -1,94 +1,89 @@
-<?php declare( strict_types = 1 );
+<?php
 
 // -------------------------------------------------------------------------------------
 // Contantes globales de la aplicación
 // -------------------------------------------------------------------------------------
 
-global $entries, $folder;
+global $entries, $folder, $role;
 
-// Determinamos la carpeta según el rol del usuario
-if( !empty( $_SESSION['app']['user'] ) )
-{
-  $folder = match( ( int ) $_SESSION['app']['user']['role'] )
-  {
-      0       => 'tutor'
-    , 1       => 'monitor'
-    , 2       => 'admin'
-    , default => 'tutor'
-  };
-}
-else
-  $folder = 'tutor';
+$roles = [
+    0 => 'tutor'
+  , 1 => 'monitor'
+  , 2 => 'admin'
+];
 
-// Definimos las entradas comunes
+// Capturamos el rol del usuario
+$role   = intval( $_SESSION['app']['user']['role'] ?? null );
+$folder = $roles[$role] ?? 'tutor';
+
 $entries = [
   [
-    'title'  => pl_label( 'desktop' ),
-    'link'   => '/' . $folder . '/desktop',
-    'icon'   => app_get_svg_icon( 'desktop' )
+    'title' => pl_label( 'desktop' ),
+    'link'  => '/' . $folder . '/desktop',
+    'icon'  => app_get_svg_icon( 'desktop' )
   ],
   [
-    'title'  => pl_label( 'activities' ),
-    'link'   => '/' . $folder . '/activities',
-    'icon'   => app_get_svg_icon( 'activities' )
+    'title' => pl_label( 'activities' ),
+    'link'  => '/activities',
+    'icon'  => app_get_svg_icon( 'activities' )
   ]
 ];
 
-if( !empty( $_SESSION['app']['user'] ) )
+if( $role === 1 || $role === 2 )
 {
-  // Añadir páginas según el rol
-  switch( ( int ) $_SESSION['app']['user']['role'] )
-  {
-    case 1: // Monitor
-      $entries[] = [
-        'title'  => pl_label( 'participants' ),
-        'link'   => '/' . $folder . '/participants',
-        'icon'   => app_get_svg_icon( 'account' )
-      ];
-      break;
+  $entries[] = [
+      'title' => pl_label( 'participants' )
+    , 'link'  => '/participants'
+    , 'icon'  => app_get_svg_icon( 'account' )
+  ];
+}
 
-    case 2: // Admin
-      $entries[] = [
-        'title'  => pl_label( 'participants' ),
-        'link'   => '/' . $folder . '/participants',
-        'icon'   => app_get_svg_icon( 'account' )
-      ];
-      $entries[] = [
-        'title'  => pl_label( 'finances' ),
-        'link'   => '/' . $folder . '/finances',
-        'icon'   => app_get_svg_icon( 'finances' )
-      ];
-      break;
-  }
+if( $role === 2 )
+{
+  $entries[] = [
+      'title' => pl_label( 'finances' )
+    , 'link'  => '/' . $folder . '/finances'
+    , 'icon'  => app_get_svg_icon( 'finances' )
+  ];
 }
 
 // Definimos las entradas del encabezado (heading_entries)
 global $heading_entries;
 $heading_entries = array_merge( $entries, [
   [
+    'title'  => pl_label( 'account' ),
+    'link'   => '/' . $folder . '/account',
+    'icon'   => app_get_svg_icon( 'account' )
+  ],
+  [
+    'title'  => pl_label( 'activities' ),
+    'link'   => '/activities',
+    'icon'   => app_get_svg_icon( 'activities' )
+  ],
+  [
+    'title'  => pl_label( 'activity' ),
+    'link'   => '/activity',
+    'icon'   => app_get_svg_icon( 'activities' )
+  ],
+  [
+    'title'  => pl_label( 'participants' ),
+    'link'   => '/participants',
+    'icon'   => app_get_svg_icon( 'account' )
+  ],
+  [
+    'title'  => pl_label( 'participant' ),
+    'link'   => '/participant',
+    'icon'   => app_get_svg_icon( 'account' )
+  ],
+  [
     'title'  => pl_label( 'schedule' ),
     'link'   => '/' . $folder . '/schedule',
     'icon'   => app_get_svg_icon( 'schedule' )
   ],
   [
-    'title'  => pl_label( 'participant' ),
-    'link'   => '/' . $folder . '/participant',
-    'icon'   => app_get_svg_icon( 'account' )
-  ],
-  [
-    'title'  => pl_label( 'activity' ),
-    'link'   => '/' . $folder . '/activity',
-    'icon'   => app_get_svg_icon( 'activities' )
-  ],
-  [
     'title'  => pl_label( 'attendance' ),
     'link'   => '/' . $folder . '/attendance',
     'icon'   => app_get_svg_icon( 'attendance' )
-  ],
-  [
-    'title'  => pl_label( 'account' ),
-    'link'   => '/' . $folder . '/account',
-    'icon'   => app_get_svg_icon( 'account' )
   ]
 ] );
   

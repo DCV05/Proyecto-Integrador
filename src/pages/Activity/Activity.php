@@ -1,11 +1,11 @@
-<?php declare( strict_types = 1 );
+<?php
 
 use erguncaner\Table\Table;
 use erguncaner\Table\TableCell;
 use erguncaner\Table\TableColumn;
 use erguncaner\Table\TableRow;
 
-class TutorActivityController
+class ActivityController
 {
   public string|null $activity_id2;
   public array $activity;
@@ -19,12 +19,12 @@ class TutorActivityController
     // Capturamos el id2 de la actividad
     $this->activity_id2 = pl_get( 'aid2', null );
     if( !$this->activity_id2 )
-      pl_redirect( '/tutor/activities' );
+      pl_redirect( '/activities' );
 
     // Buscamos en la DB la actividad. En caso de que no exista, redirigimos al activities
     $this->activity = $mod_activities->GetRow( $this->activity_id2 );
     if( empty( $this->activity ) )
-      pl_redirect( '/tutor/activities' );
+      pl_redirect( '/activities' );
 
     return;
   }
@@ -59,11 +59,13 @@ class TutorActivityController
    */
   public function table_participants( array $activity = null ): string
   {
+    global $role;
+
     $mod_activities_participants = new ActivitiesParticipants();
     $this->activity = $activity ?? $this->activity;
 
     // Buscamos los participantes relacionados con esta actividad
-    $participants = $mod_activities_participants->GetActivityDetails( $this->activity['activity_id'] );
+    $participants = $mod_activities_participants->GetActivityDetails( intval( $this->activity['activity_id'] ) );
 
     // Tabla de Participantes
     $table = new Table( ['id' => 'participants_table', 'class' => 'table-ui', 'data-activity' => $this->activity['activity_id2']] );
@@ -99,9 +101,12 @@ class TutorActivityController
       ] ) );
     }
 
-    // Botón para añadir participante
-    $add_button = ['participant_name' => new TableCell( $this->participant_select(), ['colspan' => 3, 'class' => 'text-center'] )];
-    $table->addRow( new TableRow( $add_button ) );
+    if( $role === 0 )
+    {
+      // Botón para añadir participante
+      $add_button = ['participant_name' => new TableCell( $this->participant_select(), ['colspan' => 3, 'class' => 'text-center'] )];
+      $table->addRow( new TableRow( $add_button ) );
+    }
     
     return $table->html();
   }
@@ -138,7 +143,7 @@ class TutorActivityController
 
     return $row->html();
   }
-
+  
   /**
    * Genera un select con los participantes del usuario que NO están inscritos en la actividad.
    * 
@@ -146,16 +151,19 @@ class TutorActivityController
    */
   public function participant_select(): string
   {
-    $mod_participants             = new Participants();
-    $mod_activities_participants  = new ActivitiesParticipants();
+    $value = '';
+
+    // Carga de módulos
+    $mod_participants            = new Participants();
+    $mod_activities_participants = new ActivitiesParticipants();
 
     // ---------------------------–---------------------------–---------------------------–
     // Obtención de datos
     // ---------------------------–---------------------------–---------------------------–
 
     // Obtenemos todos los participantes del tutor
-    $all_participants         = $mod_participants->GetRows( $_SESSION['app']['user']['user_id'] );
-    $registered_participants  = $mod_activities_participants->GetActivityDetails( $this->activity['activity_id'] );
+    $all_participants        = $mod_participants->GetRows( $_SESSION['app']['user']['user_id'] );
+    $registered_participants = $mod_activities_participants->GetActivityDetails( $this->activity['activity_id'] );
 
     // Extraemos los participant_id2 de los ya inscritos
     $registered_ids = array_column( $registered_participants, 'participant_id2' );
@@ -173,22 +181,22 @@ class TutorActivityController
     // Generamos el select
     // ---------------------------–---------------------------–---------------------------–
 
-    $select_html = '<select id="participant_select" class="border px-4 py-2 rounded-lg w-full">';
+    $value = '<select id="participant_select" class="border px-4 py-2 rounded-lg w-full">';
     foreach( $available_participants as $participant )
-      $select_html .= '<option value="' . $participant['participant_id2'] . '">' . $participant['participant_name'] . '</option>';
+      $value .= '<option value="' . $participant['participant_id2'] . '">' . $participant['participant_name'] . '</option>';
     
-    $select_html .= '</select>';
+    $value .= '</select>';
 
     // Botón para agregar participante
-    $select_html .= '
+    $value .= '
       <button id="btn-add-participant" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-600 w-full">
         ' . pl_label( 'add_participant' ) . '
       </button>
     ';
 
-    return $select_html;
+    return $value;
   }
-
+  
   /**
    * Agrega un participante a la actividad.
    * 
@@ -235,7 +243,6 @@ class TutorActivityController
         $message = pl_label( 'activity_not_found' );
         break;
       }
-
 
       // Validamos si el participante existe y pertenece al tutor actual
       $participant = $mod_participants->GetRow( $fields['pid2'] );

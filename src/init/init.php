@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php
 
 // Inicializamos MySQL
 $db = new pl_model( 'mysql' );

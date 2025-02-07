@@ -1,4 +1,4 @@
-<?php declare( strict_types = 1 );
+<?php
 
 // Cabeceras de CORS
 // Ponemos estas peticiones para que las llamadas AJAX no se detengan
