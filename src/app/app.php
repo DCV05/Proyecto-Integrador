@@ -4,7 +4,7 @@
 // Contantes globales de la aplicación
 // -------------------------------------------------------------------------------------
 
-global $entries;
+global $entries, $folder;
 
 // Determinamos la carpeta según el rol del usuario
 if( !empty( $_SESSION['app']['user'] ) )
@@ -31,11 +31,6 @@ $entries = [
     'title'  => pl_label( 'activities' ),
     'link'   => '/' . $folder . '/activities',
     'icon'   => app_get_svg_icon( 'activities' )
-  ],
-  [
-    'title'  => pl_label( 'account' ),
-    'link'   => '/' . $folder . '/account',
-    'icon'   => app_get_svg_icon( 'account' )
   ]
 ];
 
@@ -45,18 +40,23 @@ if( !empty( $_SESSION['app']['user'] ) )
   switch( ( int ) $_SESSION['app']['user']['role'] )
   {
     case 1: // Monitor
+      $entries[] = [
+        'title'  => pl_label( 'participants' ),
+        'link'   => '/' . $folder . '/participants',
+        'icon'   => app_get_svg_icon( 'account' )
+      ];
       break;
 
     case 2: // Admin
       $entries[] = [
+        'title'  => pl_label( 'participants' ),
+        'link'   => '/' . $folder . '/participants',
+        'icon'   => app_get_svg_icon( 'account' )
+      ];
+      $entries[] = [
         'title'  => pl_label( 'finances' ),
         'link'   => '/' . $folder . '/finances',
         'icon'   => app_get_svg_icon( 'finances' )
-      ];
-      $entries[] = [
-        'title'  => pl_label( 'reports' ),
-        'link'   => '/' . $folder . '/reports',
-        'icon'   => app_get_svg_icon( 'reports' )
       ];
       break;
   }
@@ -84,6 +84,11 @@ $heading_entries = array_merge( $entries, [
     'title'  => pl_label( 'attendance' ),
     'link'   => '/' . $folder . '/attendance',
     'icon'   => app_get_svg_icon( 'attendance' )
+  ],
+  [
+    'title'  => pl_label( 'account' ),
+    'link'   => '/' . $folder . '/account',
+    'icon'   => app_get_svg_icon( 'account' )
   ]
 ] );
   
@@ -252,6 +257,7 @@ function app_get_svg_icon( string $name ): string
     , 'finances'    => '<i class="text-3xl fa-light fa-coins"></i>'
     , 'reports'     => '<i class="text-3xl fa-light fa-chart-line"></i>'
     , 'pen'         => '<i class="text-3xl fa-light fa-pen"></i>'
+    , 'trash'       => '<i class="text-2xl fa-light fa-trash"></i>'
     , 'cloud'       => '<svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/></svg>'
   ];
 
@@ -260,11 +266,13 @@ function app_get_svg_icon( string $name ): string
 
 function app_dropdown_panel(): string
 {
+  global $folder;
+
   $dropdown = '
     <div id="dropdown_panel" class="hidden absolute top-16 bg-white text-black px-3 py-2 rounded-md shadow-landing">
       <ul class="space-y-3">
         <li>
-          <a href="/account" class="hover:text-blue-500 transform transition duration-300">' . pl_label( 'my-account' ) . '</a>
+          <a href="/' . $folder . '/account" class="hover:text-blue-500 transform transition duration-300">' . pl_label( 'my-account' ) . '</a>
         </li>
         <li>
           <a href="/login" class="hover:text-blue-500 transform transition duration-300">' . pl_label( 'log-out' ) . '</a>

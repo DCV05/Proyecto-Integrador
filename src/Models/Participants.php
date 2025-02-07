@@ -10,6 +10,21 @@ class Participants
   }
 
   /**
+   * Obtiene todas las filas de la tabla `participants`.
+   * 
+   * @return array Lista de participantes o un array vacío si no hay resultados.
+   */
+  public function GetAll(): array
+  {
+    $sql = '
+      select
+        * 
+      from ' . DB_PROJECT . '.participants
+    ';
+    return $this->db->pl_query( $sql, true );
+  }
+
+  /**
    * Obtiene todas las filas de la tabla `participants` asociadas a un usuario.
    * 
    * @param int $user_id ID del usuario.

@@ -97,9 +97,18 @@ function pl_dom( elements ) {
           node.replaceWith( element.value );
         break;
 
+      case 'remove':
+        $( node ).remove();
+        break;
+
       case 'prepend':
         if( is_string )
           node.prepend( element.value );
+        break;
+
+      case 'insertBefore':
+        if( is_string )
+          $( element.value ).insertBefore( node );
         break;
 
       case 'append':

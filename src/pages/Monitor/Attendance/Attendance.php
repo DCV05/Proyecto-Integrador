@@ -72,7 +72,6 @@ class MonitorAttendanceController
     $table->addColumn( 'participant_name' , new TableColumn( pl_label( 'participant_name' ), ['id' => 'p_name_col'] ) );
     $table->addColumn( 'checkin_datetime' , new TableColumn( pl_label( 'checkin' )         , ['id' => 'p_checkin_col'] ) );
     $table->addColumn( 'checkout_datetime', new TableColumn( pl_label( 'checkout' )        , ['id' => 'p_checkout_col'] ) );
-    $table->addColumn( 'actions'          , new TableColumn( ''                            , ['id' => 'p_action_col'] ) );
 
     // Iteramos cada registro de asistencia
     foreach( $attendances as $entry )
@@ -117,7 +116,6 @@ class MonitorAttendanceController
           'participant_name'  => new TableCell( $participant['participant_name'] )
         , 'checkin_datetime'  => new TableCell( $checkin_input )
         , 'checkout_datetime' => new TableCell( $checkout_input )
-        , 'actions'           => new TableCell( '', ['class' => 'text-center w-10'] )
       ];
 
       // Añadimos la fila

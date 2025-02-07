@@ -68,7 +68,7 @@ class pl_model extends mysqli
    * @param string $sql
    * @param bool $return_all
    * */ 
-  public function pl_query( string $sql, bool $return_all = false ): array|mysqli_result
+  public function pl_query( string $sql, bool $return_all = false ): array|bool
   {
     $value = [];
 
@@ -78,13 +78,19 @@ class pl_model extends mysqli
       if( !empty( $this->result ) && is_object( $this->result ) )
         $this->result->free();
 
-      // Si la consulta es correcta, capturamos los datos
-      if( $this->real_query( $sql ) && $result = $this->use_result() )
-        $this->result = $result;
+      // Ejecutamos la consulta
+      if( $this->real_query( $sql ) )
+      {
+        $this->result = $this->use_result();
 
-      // Si estamos en modo return_all, devolvemos el array de datos completo
-      if( $return_all )
-        $value = $this->result->fetch_all( MYSQLI_ASSOC );
+        // Si la consulta es SELECT y `return_all` está activado, devolvemos todos los datos
+        if( $return_all && $this->result instanceof mysqli_result )
+          $value = $this->result->fetch_all( MYSQLI_ASSOC );
+
+        // Si la consulta es DELETE, UPDATE o INSERT, devolvemos si afectó filas
+        elseif( $this->affected_rows >= 0 )
+          return true;
+      }
     }
     catch( mysqli_sql_exception | Exception $e )
     {

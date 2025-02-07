@@ -51,6 +51,10 @@
     "es": "¿Has olvidado tu contraseña?",
     "en": "Forgot your password?"
   },
+  "change_password_button": {
+    "es": "Cambiar contraseña",
+    "en": "Change password"
+  },
   "save_changes": {
     "es": "Guardar cambios",
     "en": "Save changes"
@@ -354,6 +358,14 @@
   "participants": {
     "es": "Participantes",
     "en": "Participants"
+  },
+  "log-out": {
+    "es": "Cerrar sesión",
+    "en": "Log out"
+  },
+  "my-account": {
+    "es": "Mi cuenta",
+    "en": "My account"
   },
   "desktop": {
     "es": "Inicio",

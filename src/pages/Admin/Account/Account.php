@@ -1,6 +1,6 @@
 <?php
 
-class MonitorAccountController
+class AdminAccountController
 {
   public function index(): void
   {

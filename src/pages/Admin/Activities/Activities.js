@@ -10,9 +10,18 @@ $( document ).ready( function() {
     update_layout( layout_mode );
   } );
 
+  $( document ).on( 'click', '#btn-add-activity', function( e ) {
+    // Evitamos los demás eventos
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    open_add_popup();
+  } );
+
   // Evento para redirección según la fila
-  $( document ).on( 'click', '.table-row-link', function( e ) {
-    if( !$( e.target ).closest( '.edit-icon' ).length )
+  $( '.table-row-link' ).on( 'click', function( e ) {
+    if( !$( e.target ).closest( '.edit-icon, .delete-icon' ).length )
       window.location.href = $( this ).data( 'href' );
   } );
 
@@ -24,10 +33,32 @@ $( document ).ready( function() {
     e.stopImmediatePropagation();
 
     // Capturamos el tipo de item que queremos editar
-    let id2   = $( this ).data( 'id2' );
+    let aid2 = $( this ).data( 'aid2' );
 
     // Dependiendo del tipo de item ejecutamos un método u otro
-    open_popup( { 'id2': id2 } );
+    open_popup( { 'aid2': aid2 } );
+  } );
+
+  $( document ).on( 'click', '.delete-icon', function( e ) {
+
+    // Evitamos los demás eventos
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    let confirm_prompt = navigator.language = 'es-ES'
+      ? '¿Estás seguro de querer borrar esta actividad?'
+      : 'Are you sure you want to delete this activity?';
+
+    let is_sure = confirm( confirm_prompt );
+    if( !is_sure )
+      return;
+
+    // Capturamos el tipo de item que queremos editar
+    let aid2 = $( this ).data( 'aid2' );
+
+    // Dependiendo del tipo de item ejecutamos un método u otro
+    delete_activity( { 'aid2': aid2 } );
   } );
 
   // Evento para cerrar el modal
@@ -35,7 +66,7 @@ $( document ).ready( function() {
     $( '#modal' ).remove();
   } );
 
-    // ------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------
   // Formulario
   // ------------------------------------------------------------------------------
 
@@ -45,7 +76,7 @@ $( document ).ready( function() {
   } );
 
   // Evento del Submit
-  $( document ).on( 'submit', '.account-form, .participant-form', function( e ) {
+  $( document ).on( 'submit', '.account-form, .activity-form', function( e ) {
 
     let has_error = false;
 
@@ -69,12 +100,18 @@ $( document ).ready( function() {
       // Capturamos los datos del formulario y los encapsulamos en un objeto
       let formdata = new FormData( this );
 
-      // Capturamos el data-id del formulario y loa añadimos al formdata
-      let id2 = $( this ).data( 'id2' );
-      formdata.append( 'id2', id2 );
+      if( $( this ).hasClass( 'account-form' ) ) {
+        // Capturamos el data-id del formulario y loa añadimos al formdata
+        let aid2 = $( this ).data( 'aid2' );
+        formdata.append( 'aid2', aid2 );
+  
+        let formdata_array = Object.fromEntries( formdata.entries() );
+        form_submit( formdata_array, this, 'edit_activity' );
 
-      let formdata_array = Object.fromEntries( formdata.entries() );
-      form_submit( formdata_array, this );
+      } else {
+        let formdata_array = Object.fromEntries( formdata.entries() );
+        form_submit( formdata_array, this, 'add_activity' );
+      }
     }
   } );
 
@@ -96,10 +133,10 @@ function update_layout( layout ) {
 }
 
 // Función para inciar sesión en la aplicación
-function form_submit( formdata, form ) {
+function form_submit( formdata, form, method_name ) {
 
   // Ejecutamos la función AJAX
-  pl_ajax_post( 'edit_activity', formdata )
+  pl_ajax_post( method_name, formdata )
     .then( function( data ) {
 
       // Si el resultado es correcto, redirigmos al panel
@@ -116,7 +153,26 @@ function form_submit( formdata, form ) {
     } );
 }
 
-// Función para inciar sesión en la aplicación
+// Función para borrar una actividad
+function delete_activity( aid2 ) {
+
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'delete_activity', aid2 )
+    .then( function( data ) {
+
+      // Si el resultado es correcto, mostramos los popups
+      if( data.result = 1 && data.elements )
+        pl_dom( data.elements );
+      else
+        generate_error_message( form, data.message );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
+// Función para abrir un popup de la actividad
 function open_popup( id2 ) {
 
   // Ejecutamos la función AJAX
@@ -124,11 +180,25 @@ function open_popup( id2 ) {
     .then( function( data ) {
 
       // Si el resultado es correcto, mostramos los popups
-      if( data.result = 1 && data.elements ) {
+      if( data.result = 1 && data.elements )
         pl_dom( data.elements );
-      }
-      else
-        generate_error_message( form, data.message );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
+// Función para abrir un popup
+function open_add_popup() {
+
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'popup_add', 'none' )
+    .then( function( data ) {
+
+      // Si el resultado es correcto, mostramos los popups
+      if( data.result = 1 && data.elements )
+        pl_dom( data.elements );
     } )
     .catch( function( error ) {
       // Manejo de errores
