@@ -1,4 +1,4 @@
-<?php
+<?php declare( strict_types = 1 );
 
 /**
  * @author Daniel Correa Villa <daniel.correa@kodalogic.com>

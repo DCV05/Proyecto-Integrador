@@ -1,0 +1,60 @@
+@startuml Campamento
+left to right direction
+
+rectangle "Campamento" { 
+    actor "Participante" as Participante
+    actor "Tutor/Padre" as TutorPadre
+    actor "Monitor" as Monitor
+    actor "Administrador" as Admin
+
+    rectangle "Acciones de Tutor/Padre" {
+        usecase "Registrar hijo" as UC1
+        usecase "Actualizar información del participante" as UC2
+        usecase "Ver actividades del campamento" as UC3
+        usecase "Inscribir participante a una actividad" as UC4
+        usecase "Actualizar información del tutor/padre" as UC5
+        usecase "Realizar pago" as UC6
+        usecase "Ver publicaciones del blog" as UC7
+        usecase "Iniciar/cerrar sesión" as UC8
+        TutorPadre --> UC1
+        TutorPadre --> UC2
+        TutorPadre --> UC3
+        TutorPadre --> UC4
+        TutorPadre --> UC5
+        TutorPadre --> UC6
+        TutorPadre --> UC7
+        TutorPadre --> UC8
+    }
+
+    rectangle "Acciones del Monitor" {
+        usecase "Registrar entrada/salida de participante" as UC9
+        usecase "Ver actividades asignadas" as UC10
+        usecase "Ver registros de asistencia" as UC11
+        usecase "Iniciar/cerrar sesión" as UC12
+        Monitor --> UC9
+        Monitor --> UC10
+        Monitor --> UC11
+        Monitor --> UC12
+    }
+
+    rectangle "Acciones del Administrador" {
+        usecase "Gestionar actividades (añadir, borrar y modificar)" as UC13
+        usecase "Gestionar datos de tutores y participantes" as UC14
+        usecase "Gestionar finanzas del campamento" as UC15
+        usecase "Gestionar publicaciones del blog" as UC16
+        usecase "Enviar notificaciones a tutores" as UC17
+        usecase "Iniciar/cerrar sesión" as UC18
+        Admin --> UC13
+        Admin --> UC14
+        Admin --> UC15
+        Admin --> UC16
+        Admin --> UC17
+        Admin --> UC18
+    }
+
+    rectangle "Acciones del Participante" {
+        usecase "Ser registrado por tutor" as UC19
+        Participante <-- UC19
+    }
+}
+@enduml

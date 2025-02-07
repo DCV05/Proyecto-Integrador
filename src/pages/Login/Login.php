@@ -1,4 +1,4 @@
-<?php
+<?php declare( strict_types = 1 );
 
 class LoginController
 {
@@ -82,7 +82,7 @@ class LoginController
       }
       
       // Calculamos la foto de perfil y el nombre del fichero
-      $assets_dir = match( ( int ) $row['role'] )
+      $assets_dir = match( intval( $row['role'] ) )
       {
           0 => ASSETS_PATH . '/panel/tutors'
         , 1 => ASSETS_PATH . '/panel/monitors'
@@ -102,7 +102,7 @@ class LoginController
       $_SESSION['app']['user'] = $row;
 
       // Dependiendo del tipo de usuario mostramos un formulario u otro
-      $redirect = match( ( int ) $row['role'] )
+      $redirect = match( intval( $row['role'] ) )
       {
           0       => '/tutor/desktop'
         , 1       => '/monitor/desktop'

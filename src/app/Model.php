@@ -1,4 +1,4 @@
-<?php
+<?php declare( strict_types = 1 );
 
 /**
  * @author Daniel Correa Villa <daniel.correa@kodalogic.com>
@@ -141,15 +141,25 @@ class pl_model extends mysqli
   }
 
   /**
-   * Función para escapar caracteres
-   * @param string $str
-   * @return string $escaped_str
-   *  */ 
-  public function esc( string $str ): string
+   * Escapa caracteres especiales en un string o convierte números a enteros.
+   *
+   * Si el valor es numérico, lo convierte a entero.  
+   * Si es un string, lo escapa para evitar ataques XSS y SQL Injection.
+   *
+   * @param string|int $str El valor a escapar.
+   * @return string|int Valor escapado.
+   */
+  public function esc( string|int $str ): string|int
   {
-    // Escapamos el string
-    $str = htmlspecialchars( $str, ENT_QUOTES, 'UTF-8' );
-    $escaped_str = $this->real_escape_string( $str );
+    // Si es un número, realizamos un invtal
+    if( is_numeric( $str ) )
+      $escaped_str = intval( $str );
+    else
+    {
+      // Escapamos el string
+      $str = htmlspecialchars( $str, ENT_QUOTES, 'UTF-8' );
+      $escaped_str = $this->real_escape_string( $str );
+    }
 
     return $escaped_str;
   }

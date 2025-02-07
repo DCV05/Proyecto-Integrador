@@ -1,4 +1,4 @@
-<?php
+<?php declare( strict_types = 1 );
 
 class Activities
 {
@@ -62,7 +62,7 @@ class Activities
       from ' . DB_PROJECT . '.activities a
       left join ' . DB_PROJECT . '.activities_participants ap on a.activity_id = ap.activity_id
       where
-        ap.participant_id = ' . $participant_id;
+        ap.participant_id = ' . $this->db->esc( $participant_id );
     $this->db->pl_query( $sql );
 
     // Devolvemos el array de datos

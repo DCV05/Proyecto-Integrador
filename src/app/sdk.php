@@ -1,7 +1,13 @@
-<?php
+<?php declare( strict_types = 1 );
 
-
-// Función general de Polaris
+/**
+ * Inicializa la sesión y configura variables de entorno para Polaris.
+ *
+ * La función verifica si una sesión ya está iniciada, y en caso contrario, la inicia.
+ * Luego, captura y almacena en la sesión información relevante del servidor y la URL.
+ *
+ * @return void
+ */
 function pl_start(): void
 {
   // Inicializamos la sesión
@@ -73,7 +79,7 @@ function pl_start(): void
     ,	'url_get' 		  => $_GET
     ,	'document_root'	=> $_SERVER['DOCUMENT_ROOT']
 
-    // ACTUAL_DIR SE DEFINE EN EL ROUTER
+    // ACTUAL_DIR es definido en Router.php
     // , 'actual_dir' => ''
   ];
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare( strict_types = 1 );
 
 // Cabeceras de CORS
 // Ponemos estas peticiones para que las llamadas AJAX no se detengan
@@ -40,8 +40,8 @@ foreach( $router->routes as $route_controller )
   [$controller_name, $method_name] = explode( '@', $route_method );
 
   // Calculamos la ruta del controlador final
-  $controller_path  = sprintf( '%s/pages/%s.php', MAIN_PATH, $route_file );
-  $mask_path        = sprintf( '%s/pages/%s.html', MAIN_PATH, $route_file );
+  $controller_path = sprintf( '%s/pages/%s.php', MAIN_PATH, $route_file );
+  $mask_path       = sprintf( '%s/pages/%s.html', MAIN_PATH, $route_file );
 
   // -------------------------------------------------------------------------------------
   // Ejecución del controlador
@@ -76,10 +76,9 @@ foreach( $router->routes as $route_controller )
     continue;
   }
 
-  // Si se trata de una llamada AJAX, no ejecutamos el INDEX
   // Ejecutamos el método del controlador calculado
   if( !$router->ajax )
-    call_user_func([$controller, $method_name]);
+    call_user_func( [$controller, $method_name] );
 
   // -------------------------------------------------------------------------------------
   // AJAX
