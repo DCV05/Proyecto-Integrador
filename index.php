@@ -11,7 +11,8 @@ header( 'Allow: GET, POST, OPTIONS, PUT, DELETE' );
 require_once __DIR__ . '/polaris.php';
 
 // Si ya existe la DB, no se ejecutará nada
-require_once __DIR__ . '/src/init/init.php';
+require_once __DIR__ . '/src/init/polaris/init.php';
+require_once __DIR__ . '/src/init/project/init.php';
 
 // -------------------------------------------------------------------------------------
 // Enturador y compilador de máscaras
