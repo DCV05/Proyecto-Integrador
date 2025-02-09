@@ -77,8 +77,10 @@ class ActivitiesController
     $value          = '';
     $mod_activities = new Activities();
 
-    // Capturamos todas las actividades
-    $activities = $mod_activities->GetRows();
+    // Si el usuario es un monitor, mostramos únicamente sus actividades vinculadas
+    $activities = $role != 1
+      ? $mod_activities->GetRows()
+      : $mod_activities->GetMonitorLinkedRows( $_SESSION['app']['user']['user_id'] );
 
     // Inicializamos la tabla y sus columnas
     $table = new Table( ['id' => 'activities_table', 'class' => 'table-ui'] );

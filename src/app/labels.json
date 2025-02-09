@@ -367,9 +367,17 @@
     "es": "Mi cuenta",
     "en": "My account"
   },
+  "roll_call": {
+    "es": "Pasar lista",
+    "en": "Roll call"
+  },
   "desktop": {
     "es": "Inicio",
     "en": "Desktop"
+  },
+  "add_activity": {
+    "es": "Añadir actividad",
+    "en": "Add activity"
   },
   "activity": {
     "es": "Actividad",

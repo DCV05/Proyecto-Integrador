@@ -43,11 +43,6 @@ class UserDetails
         detail_id2 = "' . $this->db->esc( $detail_id2 ) . '"
     ';
     $this->db->pl_query( $sql );
-
-    // Devolvemos el array de datos
-    return $this->db->next_row()
-      ? $this->db->get_row()
-      : []
-    ;
+    return $this->db->pl_query( $sql, true );
   }
 }

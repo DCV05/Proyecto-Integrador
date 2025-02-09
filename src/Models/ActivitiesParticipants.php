@@ -88,25 +88,26 @@ class ActivitiesParticipants
   */
  public function GetAttendanceDetails( int $activity_id, int $participant_id = null ): array
  {
-   $mod_participants = new Participants();
+  $mod_participants             = new Participants();
+  $mod_activities_participants  = new Attendance();
 
-   // Obtenemos la lista de registros de asistencia
-   $attendance_list = $this->GetRow( $activity_id, $participant_id );
-   if( empty( $attendance_list ) )
-     return [];
+    // Obtenemos la lista de registros de asistencia
+    $attendance_list = $mod_activities_participants->GetRow( $activity_id, $participant_id );
+    if( empty( $attendance_list ) )
+      return [];
 
-   $detailed_list = [];
+    $detailed_list = [];
 
-   // Recorremos cada registro de asistencia y obtenemos los datos del participante
-   foreach( $attendance_list as $attendance )
-   {
-     $participant_details = $mod_participants->GetRow( $attendance['participant_id'] );
-     $detailed_list[] = [
-         'attendance'  => $attendance
-       , 'participant' => $participant_details
-     ];
-   }
+    // Recorremos cada registro de asistencia y obtenemos los datos del participante
+    foreach( $attendance_list as $attendance )
+    {
+      $participant_details = $mod_participants->GetRow( $attendance['participant_id'] );
+      $detailed_list[] = [
+          'attendance'  => $attendance
+        , 'participant' => $participant_details
+      ];
+    }
 
-   return $detailed_list;
- }
+    return $detailed_list;
+  }
 }

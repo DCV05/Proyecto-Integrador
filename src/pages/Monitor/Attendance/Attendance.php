@@ -22,7 +22,7 @@ class MonitorAttendanceController
       pl_redirect( '/activities' );
 
     // Buscamos en la DB la actividad. En caso de que no exista, redirigimos al activities
-    $this->activity = $mod_activities->GetRow( $this->activity_id2 );
+    $this->activity = $mod_activities->GetRow( $this->activity_id2 )[0];
     if( empty( $this->activity ) )
       pl_redirect( '/activities' );
 
@@ -78,8 +78,6 @@ class MonitorAttendanceController
     {
       $participant = $entry['participant'][0];
       $attendance  = $entry['attendance'];
-
-      pl_dump( $attendance ); exit;
 
       // Check-in
       if( empty( $attendance['checkin_datetime'] ) )
@@ -258,18 +256,21 @@ class MonitorAttendanceController
       // Actualizar la asistencia
       $sql = '
         insert into ' . DB_PROJECT . '.attendance (
-          ' . $column . '
+            attendance_id2
+          , participant_id
+          , activity_id
+          , ' . $column . '
         ) values (
-          "' . $db->esc( $fields['datetime'] ) . '"
+            "'  . pl_random()                                   . '"
+          , '   . $db->esc( $participant[0]['participant_id'] ) . '
+          , '   . $activity[0]['activity_id']                   . '
+          , "'  . $db->esc( $fields['datetime'] )               . '"
         )
-        where
-          participant_id = "' . $db->esc( $participant[0]['participant_id'] ) . '" and
-          activity_id = ' . $activity['activity_id'] . '
       ';
       $db->pl_query( $sql );
 
       // Recargar la fila de la tabla
-      $html = $this->table_row_attendance( $activity['activity_id'], $participant[0]['participant_id'] );
+      $html = $this->table_row_attendance( $activity[0]['activity_id'], $participant[0]['participant_id'] );
       $elements = [
         ['selector' => '#row-' . $fields['pid2'], 'method_name' => 'update', 'value' => $html]
       ];

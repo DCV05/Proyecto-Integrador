@@ -6,7 +6,6 @@ class AdminAccountController
   {
     // Control de seguridad
     app_security();
-
     return;
   }
 

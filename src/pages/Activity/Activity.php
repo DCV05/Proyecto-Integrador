@@ -22,7 +22,7 @@ class ActivityController
       pl_redirect( '/activities' );
 
     // Buscamos en la DB la actividad. En caso de que no exista, redirigimos al activities
-    $this->activity = $mod_activities->GetRow( $this->activity_id2 );
+    $this->activity = $mod_activities->GetRow( $this->activity_id2 )[0];
     if( empty( $this->activity ) )
       pl_redirect( '/activities' );
 
@@ -193,6 +193,24 @@ class ActivityController
         ' . pl_label( 'add_participant' ) . '
       </button>
     ';
+
+    return $value;
+  }
+
+
+  public function attendance_list_link(): string
+  {
+    global $role;
+    $value = '';
+
+    if( $role == 1 )
+    {
+      $value .= '
+        <a href="/monitor/attendance?aid2=' . $this->activity_id2 . '" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-600 w-full">
+          ' . pl_label( 'roll_call' ) . '
+        </a>
+      ';
+    }
 
     return $value;
   }

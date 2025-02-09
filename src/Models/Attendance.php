@@ -45,7 +45,6 @@ class Attendance
         activity_id = ' . $this->db->esc( $activity_id ) . '
         ' . $where . '
     ';
-    print $sql; exit;
     return $this->db->pl_query( $sql, true );
   }
 }

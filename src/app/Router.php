@@ -72,8 +72,7 @@ class Router
         // Capturamos la URI del cliente
         $this->uri = !empty( $url_parts[0] )
           ? $_SESSION['polaris']['url_base']
-          : '/' // URI por defecto
-        ;
+          : '/'; // URI por defecto
       }
 
       // Elinimanos el último / 
@@ -121,17 +120,13 @@ class Router
 
       /*
         Array
-        (
           [0] => Array
-            (
-              [page_id] => 1
-              [url] => Index
-              [redirect] => 
-              [page_title] => Index
-              [file] => Index/Index
-              [title_seo] => Index
-            )
-        )
+            [page_id] => 1
+            [url] => Index
+            [redirect] => 
+            [page_title] => Index
+            [file] => Index/Index
+            [title_seo] => Index
       */
 
       // ------------------------------------------------------------------------------

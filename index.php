@@ -85,21 +85,33 @@ foreach( $router->routes as $route_controller )
   // -------------------------------------------------------------------------------------
 
   // Controlamos las peticiones POST de AJAX
-  elseif( ( !empty( $_POST ) || !empty( $_FILES ) ) && isset( $_GET['cm'] ) )
+  elseif( isset( $_GET['cm'] ) )
   {
     // Determinamos qué datos enviar a la función
     if( !empty( $_FILES ) && !empty( $_POST ) )
       $data = array_merge( $_POST, $_FILES ); // Si hay archivos y datos POST, combinamos ambos
     elseif( !empty( $_FILES ) ) 
       $data = $_FILES;  // Si solo hay archivos
-    else 
+    elseif( !empty( $_POST ) ) 
       $data = $_POST;   // Si solo hay datos POST
+    else
+      $data = null;
 
-    // Ejecutamos la función AJAX correspondiente
-    $ajax_response = call_user_func(
+    if( $data != null )
+    {
+      // Ejecutamos la función AJAX correspondiente
+      $ajax_response = call_user_func(
+          [$controller, 'ajax_' . pl_get( 'cm' )]
+        , $data
+      );
+    }
+    else
+    {
+      // Ejecutamos la función AJAX correspondiente
+      $ajax_response = call_user_func(
         [$controller, 'ajax_' . pl_get( 'cm' )]
-      , $data
-    );
+      );
+    }
 
     // Cabeceras del SUCCESS
     header( 'Content-Type: application/json' );

@@ -40,12 +40,7 @@ class Activities
         activity_id2 = "' . $this->db->esc( $activity_id2 ) . '"
     ';
     $this->db->pl_query( $sql );
-
-    // Devolvemos el array de datos
-    return $this->db->next_row()
-      ? $this->db->get_row()
-      : []
-    ;
+    return $this->db->pl_query( $sql, true );
   }
 
   /**
@@ -64,11 +59,24 @@ class Activities
       where
         ap.participant_id = ' . $this->db->esc( $participant_id );
     $this->db->pl_query( $sql );
+    return $this->db->pl_query( $sql, true );
+  }
 
-    // Devolvemos el array de datos
-    return $this->db->next_row()
-      ? $this->db->get_row()
-      : []
-    ;
+  /**
+   * Obtiene la actividad asociada a un participante específico.
+   * 
+   * @param int $monitor_id ID del participante.
+   * @return array Datos de la actividad si existe, o un array vacío si no hay resultados.
+   */
+  public function GetMonitorLinkedRows( int $monitor_id ): array
+  {
+    $sql = '
+      select
+        a.*
+      from ' . DB_PROJECT . '.activities a
+      left join ' . DB_PROJECT . '.activities_monitors am on a.activity_id = am.activity_id
+      where
+        am.monitor_id = ' . $this->db->esc( $monitor_id );
+    return $this->db->pl_query( $sql, true );
   }
 }
