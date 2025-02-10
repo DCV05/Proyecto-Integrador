@@ -1,92 +1,107 @@
-# Proyecto Integrador
+# Proyecto Integrador - Campamento Infantil
 
-## Rutas
+## Descripción
 
-- **Login:** /login
-- **Signup:** /signup
-- **TutorEdit:** /tutor/edit
-- **ParticipantEdit:** /participant/edit
+Este proyecto es una aplicación web desarrollada como parte del Proyecto Integrador del ciclo formativo de Desarrollo de Aplicaciones Web. Su propósito es facilitar la gestión de un campamento infantil mediante una plataforma digital que permite la inscripción de participantes, la administración de actividades y la supervisión de monitores.
 
-## Requisitos
+La aplicación ha sido desarrollada utilizando una arquitectura **Modelo-Vista-Controlador (MVC)** y tecnologías modernas para garantizar seguridad, escalabilidad y eficiencia en la gestión de datos.
 
-Este proyecto requiere configuraciones adicionales en el servidor Apache para funcionar correctamente. Es importante habilitar el uso de archivos `.htaccess` para que las configuraciones específicas del proyecto sean reconocidas.
+## Tecnologías utilizadas
 
-1. **Servidor Apache:** Asegúrate de que Apache está instalado y funcionando correctamente.
-2. **Permisos para `.htaccess`:** Es necesario que Apache permita la ejecución de archivos `.htaccess` en el directorio correspondiente.
+### Backend
+- **PHP**: Lenguaje principal del lado del servidor.
+- **Polaris**: Framework utilizado para la gestión de rutas y controladores.
+- **MySQL**: Base de datos relacional para almacenamiento y gestión de la información.
+- **Composer**: Gestor de dependencias de PHP.
+- **Monolog**: Sistema de logging para el registro de eventos en el servidor.
+- **PHPUnit**: Framework para la realización de pruebas unitarias.
 
-## Instalación
+### Frontend
+- **HTML5**: Estructura de la aplicación web.
+- **CSS3 / TailwindCSS**: Estilización de la interfaz y diseño responsive.
+- **JavaScript / jQuery**: Interactividad y gestión dinámica de la UI.
+- **AJAX**: Comunicación asíncrona entre frontend y backend.
 
-Para instalar el proyecto, sigue estos pasos:
+### Despliegue y configuración
+- **Apache**: Servidor web configurado con `.htaccess`.
+- **Docker**: Contenedores para gestionar entornos de desarrollo y producción.
+- **Git/GitHub**: Control de versiones y almacenamiento del código fuente.
+- **Debian 12**: Sistema operativo utilizado en entornos de desarrollo y producción.
 
-1. Clona el repositorio desde GitHub:
+## Estructura del Proyecto
 
-   ```bash
-   git clone git@github.com:DCV05/Proyecto-Integrador.git
-   ```
+La estructura del proyecto está organizada en carpetas para facilitar el mantenimiento y escalabilidad del código:
 
-2. Navega al directorio del proyecto:
-
-   ```bash
-   cd Proyecto-Integrador
-   ```
-
-3. Configura Apache según las instrucciones a continuación.
-
-## Configuración de Apache
-
-Para habilitar el uso de archivos `.htaccess`, sigue estos pasos:
-
-1. Abre el archivo de configuración principal de Apache. Normalmente se encuentra en:
-
-   - **Debian/Ubuntu:** `/etc/apache2/apache2.conf`
-
-2. Busca el bloque `<Directory>` que corresponde al directorio de tu proyecto. Por ejemplo:
-
-   ```apache
-   <Directory /var/www/html/proyecto_integrador>
-       Options Indexes FollowSymLinks
-       AllowOverride None
-       Require all granted
-   </Directory>
-   ```
-
-3. Modifica el valor de `AllowOverride` de `None` a `All` para permitir que los archivos `.htaccess` sean ejecutados. Debería quedar así:
-
-   ```apache
-   <Directory /var/www/html/proyecto_integrador>
-       Options Indexes FollowSymLinks
-       AllowOverride All
-       Require all granted
-   </Directory>
-   ```
-
-4. Guarda los cambios y reinicia el servicio de Apache para que la configuración tome efecto. Puedes usar el siguiente comando:
-
-   ```bash
-   sudo systemctl restart apache2
-   ```
-
-## Notas importantes
-
-- Si no realizas esta configuración, el proyecto podría no funcionar correctamente debido a la dependencia de configuraciones en los archivos `.htaccess`.
-- Asegúrate de que el archivo `.htaccess` esté presente en el directorio raíz de tu proyecto.
-
-## Configuración de MySQL
-
-Para que las conexiones de MySQL funcionen correctamente, será necesario modificar el archivo `config.ini`, ya que es este archivo el que contiene las claves de acceso al servicio de base de datos.
-
-Ejemplo de `config.ini`:
-
-```ini
-[mysql]
-db_server   = mariadb
-db_user     = root
-db_password = root
-db_sys      = polaris
-db_project  = proyecto_integrador
+```
+📂 src/
+ ├── 📂 apache/        # Configuraciones específicas de Apache
+ ├── 📂 app/           # Lógica de la aplicación
+ ├── 📂 assets/        # Archivos estáticos (imágenes, iconos, fuentes)
+ ├── 📂 css/           # Estilos y personalización visual
+ ├── 📂 init/
+ │   ├── 📂 polaris/   # Configuración de Polaris
+ │   │   ├── init.php  # Inicialización del framework
+ │   │   ├── init.sql  # Scripts SQL de inicialización
+ │   ├── 📂 project/   # Configuración del proyecto
+ │       ├── init.php  # Variables y constantes globales
+ │       ├── init.sql  # Base de datos inicial
+ ├── 📂 js/            # Scripts de interacción cliente-servidor
+ ├── 📂 models/        # Modelos de la base de datos
+ ├── 📂 pages/         # Vistas y controladores para cada sección
+ │   ├── Activities/
+ │   │   ├── Activities.html
+ │   │   ├── Activities.js
+ │   │   ├── Activities.php
+ │   ├── Activity/
+ │   │   ├── Activity.html
+ │   │   ├── Activity.js
+ │   │   ├── Activity.php
+ │   ├── Login/
+ │   │   ├── Login.html
+ │   │   ├── Login.js
+ │   │   ├── Login.php
+ │   ├── Tutor/
+ │       ├── Account/
+ │       │   ├── Account.html
+ │       │   ├── Account.js
+ │       │   ├── Account.php
+ ├── 📂 tests/         # Pruebas unitarias
+ ├── 📂 vendor/        # Dependencias de Composer
+ ├── .gitignore        # Archivos y carpetas ignorados en Git
+ ├── .htaccess         # Configuración de Apache para rutas
+ ├── composer.json     # Dependencias de PHP
+ ├── config.ini        # Configuración de la base de datos
+ ├── index.php         # Punto de entrada principal
+ ├── polaris.php       # Inicialización de Polaris
+ └── README.md         # Documentación del proyecto
 ```
 
-En el caso de que se quiera conectar a MySQL mediante XAMMP, será necesario cambiar las claves a las siguientes:
+## Instalación y Configuración
+
+### 1. Clonar el repositorio
+```bash
+git clone git@github.com:DCV05/Proyecto-Integrador.git
+cd Proyecto-Integrador
+```
+
+### 2. Configuración del Servidor Apache
+Es necesario modificar la configuración de Apache para permitir el uso de `.htaccess`. Edita el archivo de configuración de Apache (`apache2.conf` en Debian/Ubuntu) y cambia:
+
+```apache
+<Directory /var/www/html/proyecto_integrador>
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+</Directory>
+```
+
+Luego, reinicia Apache:
+```bash
+sudo systemctl restart apache2
+```
+
+### 3. Configuración de la Base de Datos
+El archivo `config.ini` debe configurarse correctamente para que la aplicación pueda conectarse a la base de datos MySQL:
 
 ```ini
 [mysql]
@@ -97,6 +112,17 @@ db_sys      = polaris
 db_project  = proyecto_integrador
 ```
 
-## Soporte
+Para importar la estructura de la base de datos, ejecuta:
+```bash
+mysql -u root -p proyecto_integrador < src/init/project/init.sql
+```
 
-- En el caso de que surja algún problema en su instalación o ejecución, contacte al correo daniel.correa@kodalogic.com para poder solucionarlo.
+### 4. Configuración del entorno con Docker (Opcional)
+Si prefieres usar Docker, ejecuta:
+```bash
+docker-compose up -d
+```
+Esto iniciará un entorno con PHP, MySQL y Apache configurados.
+
+## Contribuciones y Contacto
+Para reportar errores o contribuir con mejoras, puedes abrir un issue en el repositorio de GitHub o contactar a **daniel.correa@kodalogic.com**.
