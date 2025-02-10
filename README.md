@@ -30,42 +30,47 @@ La aplicación ha sido desarrollada utilizando una arquitectura **Modelo-Vista-C
 
 ## Estructura del Proyecto
 
-La estructura del proyecto está organizada en carpetas para facilitar el mantenimiento y escalabilidad del código:
-
 ```
 📂 src/
  ├── 📂 apache/        # Configuraciones específicas de Apache
- ├── 📂 app/           # Lógica de la aplicación
+ ├── 📂 app/           # Módulos de Polaris
+ │   ├── app.php       # Funciones globales de los templates
+ │   ├── labels.json   # Labels de la aplicación
+ │   ├── Logger.php    # Socket global de Monolog
+ │   ├── Model.php     # Clase de base de datos
+ │   ├── Router.php    # Enrutador
+ │   ├── sdk.php       # Funciones generales (depuración, redirección...)
+ │   └── ViewEngine.php # Compilador de templates
+ │
  ├── 📂 assets/        # Archivos estáticos (imágenes, iconos, fuentes)
  ├── 📂 css/           # Estilos y personalización visual
- ├── 📂 init/
+ │ 
+ ├── 📂 init/          # Bases de datos
  │   ├── 📂 polaris/   # Configuración de Polaris
  │   │   ├── init.php  # Inicialización del framework
- │   │   ├── init.sql  # Scripts SQL de inicialización
- │   ├── 📂 project/   # Configuración del proyecto
+ │   │   └── init.sql  # Scripts SQL de inicialización
+ │   └── 📂 project/   # Configuración del proyecto
  │       ├── init.php  # Variables y constantes globales
- │       ├── init.sql  # Base de datos inicial
+ │       └── init.sql  # Base de datos inicial
+ │ 
  ├── 📂 js/            # Scripts de interacción cliente-servidor
  ├── 📂 models/        # Modelos de la base de datos
  ├── 📂 pages/         # Vistas y controladores para cada sección
  │   ├── Activities/
  │   │   ├── Activities.html
  │   │   ├── Activities.js
- │   │   ├── Activities.php
- │   ├── Activity/
- │   │   ├── Activity.html
- │   │   ├── Activity.js
- │   │   ├── Activity.php
+ │   │   └── Activities.php
  │   ├── Login/
  │   │   ├── Login.html
  │   │   ├── Login.js
- │   │   ├── Login.php
- │   ├── Tutor/
- │       ├── Account/
- │       │   ├── Account.html
- │       │   ├── Account.js
- │       │   ├── Account.php
- ├── 📂 tests/         # Pruebas unitarias
+ │   │   └── Login.php
+ │   └── Tutor/
+ │       └── Account/
+ │           ├── Account.html
+ │           ├── Account.js
+ │           └── Account.php
+ │ 
+ ├── 📂 tests/         # PHPUnit
  ├── 📂 vendor/        # Dependencias de Composer
  ├── .gitignore        # Archivos y carpetas ignorados en Git
  ├── .htaccess         # Configuración de Apache para rutas
@@ -111,18 +116,6 @@ db_password = root
 db_sys      = polaris
 db_project  = proyecto_integrador
 ```
-
-Para importar la estructura de la base de datos, ejecuta:
-```bash
-mysql -u root -p proyecto_integrador < src/init/project/init.sql
-```
-
-### 4. Configuración del entorno con Docker (Opcional)
-Si prefieres usar Docker, ejecuta:
-```bash
-docker-compose up -d
-```
-Esto iniciará un entorno con PHP, MySQL y Apache configurados.
 
 ## Contribuciones y Contacto
 Para reportar errores o contribuir con mejoras, puedes abrir un issue en el repositorio de GitHub o contactar a **daniel.correa@kodalogic.com**.
