@@ -121,7 +121,7 @@ class ActivityController
     $mod_participants = new Participants();
     
     // Capturamos los datos del participante solicitado
-    $participant = $mod_participants->GetRow( $participant_id );
+    $participant = $mod_participants->GetRow( $participant_id )[0];
   
     // Formateamos los datos si son largos
     $participant['participant_allergies'] = empty( $participant['participant_allergies'] ) 
@@ -163,7 +163,7 @@ class ActivityController
 
     // Obtenemos todos los participantes del tutor
     $all_participants        = $mod_participants->GetRows( $_SESSION['app']['user']['user_id'] );
-    $registered_participants = $mod_activities_participants->GetActivityDetails( $this->activity['activity_id'] );
+    $registered_participants = $mod_activities_participants->GetActivityDetails( $this->activity['activity_id'] )[0];
 
     // Extraemos los participant_id2 de los ya inscritos
     $registered_ids = array_column( $registered_participants, 'participant_id2' );
@@ -255,7 +255,7 @@ class ActivityController
       }
 
       // Validamos si la actividad existe
-      $activity = $mod_activities->GetRow( $fields['aid2'] );
+      $activity = $mod_activities->GetRow( $fields['aid2'] )[0];
       if( empty( $activity ) )
       {
         $message = pl_label( 'activity_not_found' );

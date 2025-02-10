@@ -175,7 +175,7 @@ class ActivitiesController
     $mod_activities = new Activities();
 
     // Capturamos los datos de la actividad
-    $activity = $mod_activities->GetRow( $activity_id2 );
+    $activity = $mod_activities->GetRow( $activity_id2 )[0];
     if( empty( $activity ) )
       return '';
 
@@ -650,7 +650,7 @@ class ActivitiesController
     do
     {
       // Buscamos los datos de la actividad solicitada
-      $activity = $mod_activity->GetRow( $fields['aid2'] );
+      $activity = $mod_activity->GetRow( $fields['aid2'] )[0];
       if( empty( $activity ) )
         break;
 

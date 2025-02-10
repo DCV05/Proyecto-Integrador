@@ -105,7 +105,7 @@ class TutorAccountController
     $mod_user_details = new UserDetails();
 
     // Capturamos los datos del usuario
-    $user = $mod_user_details->GetRow( $detail_id2 );
+    $user = $mod_user_details->GetRow( $detail_id2 )[0];
     if( empty( $user ) )
       return '';
 

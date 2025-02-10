@@ -25,6 +25,19 @@ INSERT INTO `activities_monitors` (`activity_id`, `monitor_id`) VALUES
 (1, 2),
 (2, 3);
 
+CREATE TABLE `activities_participants` (
+  `relation_id` int(11) NOT NULL AUTO_INCREMENT,
+  `activity_id` int(11) NOT NULL,
+  `participant_id` int(11) NOT NULL,
+  PRIMARY KEY (`relation_id`)
+);
+
+INSERT INTO `activities_participants` (`relation_id`, `activity_id`, `participant_id`) VALUES
+(1, 1, 1),
+(2, 1, 5),
+(3, 2, 1),
+(4, 2, 5);
+
 CREATE TABLE `participants` (
   `participant_id` int(11) NOT NULL AUTO_INCREMENT,
   `participant_id2` varchar(32) NOT NULL,
@@ -67,9 +80,9 @@ CREATE TABLE `users` (
 );
 
 INSERT INTO `users` (`user_id2`, `user_email`, `user_password`, `role`, `enabled`) VALUES
-('4476b3f8cc574da8014d6f16e6fa5de5', 'tutor1@example.com', '$2y$10$Lg4ETIn6wlPyPFgisuwV.nq/AmpaMFpfqV7zoxFTC.k15Fc8caHS', 0, 1),
-('dcdfe398b9540c5b78f4e90e4b57e9f3', 'monitor1@example.com', '$2y$10$Lg4ETIn6wlPyPFgisuwV.nq/AmpaMFpfqV7zoxFTC.k15Fc8caHS', 1, 1),
-('D8SA79D7AS89D7A89', 'admin1@example.com', '$2y$10$Lg4ETIn6wlPyPFgisuwV.nq/AmpaMFpfqV7zoxFTC.k15Fc8caHS', 2, 1);
+('4476b3f8cc574da8014d6f16e6fa5de5', 'tutor1@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 0, 1),
+('dcdfe398b9540c5b78f4e90e4b57e9f3', 'monitor1@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 1, 1),
+('D8SA79D7AS89D7A89', 'admin1@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 2, 1);
 
 CREATE TABLE `payments` (
   `payment_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -101,5 +114,16 @@ CREATE TABLE `user_details` (
 INSERT INTO `user_details` (`detail_id2`, `user_id`, `user_name`, `user_email`, `user_relationship`, `user_birth_date`, `user_dni`, `user_phone_number`) VALUES
 ('D78S9A0D7A89SD7A89', 1, 'Laura Sánchez', 'tutor1@example.com', 'Madre', '1980-05-12', '11111111A', '555555555'),
 ('H7GF89F789H78F9G', 2, 'Carlos Rodríguez', 'monitor1@example.com', 'Monitor', '1992-08-23', '2222222B', '666666666');
+
+CREATE TABLE `schedule` (
+  `schedule_id` int(11) NOT NULL,
+  `schedule_id2` varchar(32) NOT NULL,
+  `participant_id` int(11) NOT NULL,
+  `start_day` date NOT NULL,
+  `end_day` date NOT NULL
+);
+
+INSERT INTO `schedule` (`schedule_id`, `schedule_id2`, `participant_id`, `start_day`, `end_day`) VALUES
+(1, 'DF78SF78DS9F789DS7F89SD7G89', 1, '2025-02-05', '2025-02-12');
 
 COMMIT;
