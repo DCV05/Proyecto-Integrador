@@ -168,8 +168,8 @@ class TutorAccountController
     $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' )             , ['id' => 'p_name_col']          ) );
     $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['id' => 'p_birth_date_col']    ) );
     $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['id' => 'p_medical_treatment'] ) );
-    $table->addColumn( 'edit_icon'                    , new TableColumn( ''                             , ['id' => 'edit_icon']           ) );
     $table->addColumn( 'schedule_icon'                , new TableColumn( ''                             , ['id' => 'schedule_icon']       ) );
+    $table->addColumn( 'edit_icon'                    , new TableColumn( ''                             , ['id' => 'edit_icon']           ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $participants as $participant )
@@ -199,8 +199,8 @@ class TutorAccountController
           'participant_name'              => new TableCell( $participant['participant_name'] )
         , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'] )
         , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
+        , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 edit-icon-container schedule-icon'] )
         , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 edit-icon-container'] )
-        , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 edit-icon-container'] )
       ];
 
       // Añadimos la fila
@@ -274,8 +274,8 @@ class TutorAccountController
         'participant_name'              => new TableCell( $participant['participant_name'] )
       , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'] )
       , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
+      , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 edit-icon-container schedule-icon'] )
       , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 edit-icon-container'] )
-      , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 edit-icon-container'] )
     ];
 
     // Creamos la fila con `TableRow`

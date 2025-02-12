@@ -1,5 +1,18 @@
 $( document ).ready( function() {
 
+  $( document ).on( 'click', '.table-row', function( e ) {
+    if( !e.target ) return; // Si no existe e.target, salir de la función
+
+    // Verificar si el elemento clicado tiene la clase 'fa-calendar-days'
+    if( $( e.target ).hasClass( 'fa-calendar-days' ) ) {
+      e.preventDefault();
+
+      // Obtener el enlace padre más cercano
+      var link = $( e.target ).closest( 'a' ).attr( 'href' );
+      if( link ) window.location.href = link; // Redirigir manualmente
+    }
+  } );
+
   $( document ).on( 'click', '.edit-icon, .table-row', function( e ) {
 
     // Evitamos los demás eventos
