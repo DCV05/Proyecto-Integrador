@@ -32,30 +32,35 @@ La aplicación ha sido desarrollada utilizando una arquitectura **Modelo-Vista-C
 
 ```
 📂 src/
- ├── 📂 apache/        # Configuraciones específicas de Apache
- ├── 📂 app/           # Módulos de Polaris
- │   ├── app.php       # Funciones globales de los templates
- │   ├── labels.json   # Labels de la aplicación
- │   ├── Logger.php    # Socket global de Monolog
- │   ├── Model.php     # Clase de base de datos
- │   ├── Router.php    # Enrutador
- │   ├── sdk.php       # Funciones generales (depuración, redirección...)
- │   └── ViewEngine.php # Compilador de templates
+ ├── kernel.php         # Centro de control de solicitudes de Polaris
+ ├── polaris.php        # Inicialización de Polaris
+ ├── .htaccess          # Configuración de Apache para rutas
+ ├── composer.json      # Dependencias de PHP
+ ├── config.ini         # Configuración de la base de datos
+ ├── 📂 apache/         # Configuraciones específicas de Apache
+ ├── 📂 app/            # Módulos de Polaris
+ │   ├── Router.php     # Enrutador
+ │   ├── Model.php      # Clase de base de datos
+ │   ├── ViewEngine.php # Compilador de templates
+ │   ├── sdk.php        # Funciones generales (depuración, redirección...)
+ │   ├── app.php        # Funciones globales de los templates
+ │   ├── labels.json    # Labels de la aplicación
+ │   └── Logger.php     # Socket global de Monolog
  │
- ├── 📂 assets/        # Archivos estáticos (imágenes, iconos, fuentes)
- ├── 📂 css/           # Estilos y personalización visual
+ ├── 📂 assets/         # Archivos estáticos (imágenes, iconos, fuentes)
+ ├── 📂 css/            # Estilos y personalización visual
  │ 
- ├── 📂 init/          # Bases de datos
- │   ├── 📂 polaris/   # Configuración de Polaris
- │   │   ├── init.php  # Inicialización del framework
- │   │   └── init.sql  # Scripts SQL de inicialización
- │   └── 📂 project/   # Configuración del proyecto
- │       ├── init.php  # Variables y constantes globales
- │       └── init.sql  # Base de datos inicial
+ ├── 📂 init/           # Bases de datos
+ │   ├── 📂 polaris/    # Configuración de Polaris
+ │   │   ├── init.php   # Inicialización del framework
+ │   │   └── init.sql   # Scripts SQL de inicialización
+ │   └── 📂 project/    # Configuración del proyecto
+ │       ├── init.php   # Variables y constantes globales
+ │       └── init.sql   # Base de datos inicial
  │ 
- ├── 📂 js/            # Scripts de interacción cliente-servidor
- ├── 📂 models/        # Modelos de la base de datos
- ├── 📂 pages/         # Vistas y controladores para cada sección
+ ├── 📂 js/             # Scripts de interacción cliente-servidor
+ ├── 📂 models/         # Modelos de la base de datos
+ ├── 📂 pages/          # Vistas y controladores para cada sección
  │   ├── Activities/
  │   │   ├── Activities.html
  │   │   ├── Activities.js
@@ -70,15 +75,10 @@ La aplicación ha sido desarrollada utilizando una arquitectura **Modelo-Vista-C
  │           ├── Account.js
  │           └── Account.php
  │ 
- ├── 📂 tests/         # PHPUnit
- ├── 📂 vendor/        # Dependencias de Composer
- ├── .gitignore        # Archivos y carpetas ignorados en Git
- ├── .htaccess         # Configuración de Apache para rutas
- ├── composer.json     # Dependencias de PHP
- ├── config.ini        # Configuración de la base de datos
- ├── kernel.php        # Punto de entrada principal
- ├── polaris.php       # Inicialización de Polaris
- └── README.md         # Documentación del proyecto
+ ├── 📂 tests/          # PHPUnit
+ ├── 📂 vendor/         # Dependencias de Composer
+ ├── .gitignore         # Archivos y carpetas ignorados en Git
+ └── README.md          # Documentación del proyecto
 ```
 
 ## Instalación y Configuración
