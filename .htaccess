@@ -1,15 +1,15 @@
 # No mostramos los ficheros
 Options -Indexes
 
-# Determinamos que el fichero principal es el index.php
-DirectoryIndex index.php
+# Determinamos que el fichero principal es el kernel.php
+DirectoryIndex kernel.php
 
-# Configuramos que siempre que entremos en esta carpeta, siempre se ejecute el index.php
+# Configuramos que siempre que entremos en esta carpeta, siempre se ejecute el kernel.php
 # Además, en el caso de que se intenten capturar archivos físicos o directorios, estarán disponibles
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^.*$ index.php [L,QSA]
+RewriteRule ^.*$ kernel.php [L,QSA]
 
 # Página personalizada para errores 404
 ErrorDocument 404 /src/apache/errors/404.html

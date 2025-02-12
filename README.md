@@ -76,7 +76,7 @@ La aplicación ha sido desarrollada utilizando una arquitectura **Modelo-Vista-C
  ├── .htaccess         # Configuración de Apache para rutas
  ├── composer.json     # Dependencias de PHP
  ├── config.ini        # Configuración de la base de datos
- ├── index.php         # Punto de entrada principal
+ ├── kernel.php        # Punto de entrada principal
  ├── polaris.php       # Inicialización de Polaris
  └── README.md         # Documentación del proyecto
 ```
