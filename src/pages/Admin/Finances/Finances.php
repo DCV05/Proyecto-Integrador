@@ -48,15 +48,15 @@ class AdminFinancesController
       $cells = [
           'payment_id2'   => new TableCell( $payment['payment_id2'] )
         , 'user_id'       => new TableCell( $payment['user_id'] )
-        , 'amount'        => new TableCell( $payment['amount'], ['class' => 'text-right'] )
-        , 'status'        => new TableCell( ucfirst( $payment['status'] ), ['class' => 'text-center'] )
+        , 'amount'        => new TableCell( $payment['amount'] )
+        , 'status'        => new TableCell( ucfirst( $payment['status'] ) )
         , 'payment_date'  => new TableCell( date( 'F j, Y', strtotime( $payment['payment_date'] ) ) )
       ];
 
       // Añadimos la fila
       $table->addRow( new TableRow( $cells, [
           'id'        => 'row-' . $payment['payment_id2']
-        , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
+        , 'class'     => 'hover:bg-gray-100 table-row-link'
       ] ) );
     }
 

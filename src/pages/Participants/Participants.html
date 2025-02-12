@@ -9,72 +9,7 @@
 
 <body class="overflow-hidden flex flex-col min-h-screen relative">
 
-  <div class="background"></div>
-  <div class="overlay"></div>
-
-  <nav class="fixed w-full left-0 top-0 bg-transparent shadow-landing-reverse z-50">
-    <div class="h-16 flex flex-row gap-4 items-center ml-24">
-
-      <div class="flex flex-col flex-1 items-start p-4">
-        <a class="inline-flex" href="/" title="kodalogic">
-          <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">[[ label | campament ]]</span>
-        </a>
-      </div>
-
-      <div class="flex flex-row flex-1 items-center gap-4 p-4">
-        <div>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="32" height="32" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </div>
-      
-        <div>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="32" height="32" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </div>
-
-        <div class="relative w-full">
-          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input type="text" name="query" id="query" placeholder="Search" class="text-base rounded-md py-2 pl-10 pr-3 w-full border-0 shadow-panel bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300">
-        </div>
-      </div>
-
-      <div class="flex flex-col flex-1 items-end p-4 relative">
-        <div class="flex flex-row gap-4">
-          <button id="dropdown_button">
-            [[ app.user.user_image ]]
-          </button>
-        </div>
-
-        [[ func | &dropdown_panel ]]
-      </div>
-
-    </div>
-  </nav>
-  
-  [[ func | &panel_aside ]]
-
-  <nav class="fixed left-24 top-16 bg-white w-[calc(100%-6rem)] z-20 shadow-landing">
-    <div class="h-16 flex flex-row gap-4 items-center space-x-4 px-2 py-3">
-      <div class="flex flex-row gap-4 flex-1 justify-start items-center p-2.5">
-        [[ func | &panel_heading ]]
-      </div>
-    </div>
-  </nav>
-
-  <aside class="fixed h-full left-24 top-32 bg-white shadow-landing-reverse z-50">
-    <div class="w-64 flex flex-col">
-      
-      <div class="overflow-y-auto mt-2">
-        [[ func | &panel_render_tree ]]      
-      </div>
-
-    </div>
-  </aside>
+  [[ func | &panel_interface ]]
   
   <div class="page-content">
     <div class="mx-auto w-full p-8">      

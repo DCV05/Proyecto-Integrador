@@ -507,7 +507,13 @@ section {
   height: calc(100vh - 4rem);
   overflow-y: auto;
   padding-top: 0rem;
-  padding-left: 16rem;
+  padding-left: 0;
+}
+
+@media ( min-width: 768px ) {
+  .page-content {
+    padding-left: 16rem;
+  }
 }
 
 #panel-sidebar {
