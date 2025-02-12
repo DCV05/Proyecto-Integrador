@@ -23,11 +23,6 @@ class ActivitiesController
     return $value;
   }
 
-  public function __sleep(): array
-  {
-    return ['activities'];
-  }
-
   // --------------------------------------------------------------------------------
   // Tabla actividades
   // --------------------------------------------------------------------------------
@@ -51,9 +46,9 @@ class ActivitiesController
 
     // Inicializamos la tabla y sus columnas
     $table = new Table( ['id' => 'activities_table', 'class' => 'table-ui'] );
-    $table->addColumn( 'activity_name'       , new TableColumn( 'Name'        , ['id' => 'a_name_col']        ) );
-    $table->addColumn( 'activity_description', new TableColumn( 'Description' , ['id' => 'a_description_col'] ) );
-    $table->addColumn( 'activity_time'       , new TableColumn( 'Date & Time' , ['id' => 'a_time_col']        ) );
+    $table->addColumn( 'activity_name'       , new TableColumn( pl_label( 'activity_name' ), ['id' => 'name_col']               ) );
+    $table->addColumn( 'activity_description', new TableColumn( pl_label( 'activity_description' ), ['id' => 'description_col'] ) );
+    $table->addColumn( 'activity_time'       , new TableColumn( pl_label( 'activity_time' ), ['id' => 'time_col']               ) );
 
     // Si es un admin, mostramos los iconos de editar y borrar
     if( $role === 2 )
@@ -692,7 +687,7 @@ class ActivitiesController
    * 
    * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
    */
-  public function ajax_popup_add( array $fields ): array
+  public function ajax_popup_add(): array
   {
     $value = [];
 
@@ -709,7 +704,7 @@ class ActivitiesController
         <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-scroll">
 
-            <h3 class="text-2xl mb-4">' . pl_label( 'edit-activity' ) . '</h3>
+            <h3 class="text-2xl mb-4">' . pl_label( 'add_activity' ) . '</h3>
 
             <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

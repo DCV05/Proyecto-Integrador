@@ -73,7 +73,12 @@ class TutorAccountController
       ];
 
       // Añadimos la fila
-      $table->addRow( new TableRow( $cells, ['id' => 'row-' . $user['detail_id2'], 'data-id2' => $user['detail_id2'], 'class' => 'table-row-link'] ) );
+      $table->addRow( new TableRow( $cells, [
+          'id'        => 'row-' . $user['detail_id2']
+        , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
+        , 'data-type' => 'user_info'
+        , 'data-id2'  => $user['detail_id2']
+      ] ) );
     }
 
     // Convertimos la tabla a HTML
@@ -99,10 +104,8 @@ class TutorAccountController
    */
   public function table_row_users( string $detail_id2 ): string
   {
-    $mod_user_details = new UserDetails();
-
     // Capturamos los datos del usuario
-    $user = $mod_user_details->GetRow( $detail_id2 )[0];
+    $user = ( new UserDetails() )->GetRow( $detail_id2 )[0];
     if( empty( $user ) )
       return '';
 
@@ -133,7 +136,12 @@ class TutorAccountController
     ];
 
     // Retornamos la fila de tabla generada
-    $table_row = new TableRow( $cells, ['id' => 'row-' . $detail_id2] );
+    $table_row = new TableRow( $cells, [
+        'id'        => 'row-' . $detail_id2
+      , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
+      , 'data-type' => 'user_info'
+      , 'data-id2'  => $detail_id2
+    ] );
     return $table_row->html();
   }
 
@@ -148,11 +156,10 @@ class TutorAccountController
    */
   public function table_participants(): string
   {
-    $value            = '';
-    $mod_participants = new Participants();
+    $value = '';
 
     // Capturamos todas las cuentas relacionadas con el usuario de la sesión
-    $participants = $mod_participants->GetRows( $_SESSION['app']['user']['user_id'] );
+    $participants = ( new Participants() )->GetRows( $_SESSION['app']['user']['user_id'] );
 
     // Inicializamos la tabla y sus columnas
     $table = new Table( ['id' => 'participants_table', 'class' => 'table-ui'] );
@@ -162,31 +169,46 @@ class TutorAccountController
     $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['id' => 'p_birth_date_col']    ) );
     $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['id' => 'p_medical_treatment'] ) );
     $table->addColumn( 'edit_icon'                    , new TableColumn( ''                             , ['id' => 'edit_icon']           ) );
+    $table->addColumn( 'schedule_icon'                , new TableColumn( ''                             , ['id' => 'schedule_icon']       ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $participants as $participant )
     {
       // Le damos formato a los campos
-      $participant['participant_medical_treatment'] = substr( $participant['participant_medical_treatment'], 0, 50 ) . '...';
+      if( str_word_count( $participant['participant_medical_treatment'] ) > 50 )
+        $medical_treatment = substr( $participant['participant_medical_treatment'], 0, 50 ) . '...';
+      else
+        $medical_treatment = $participant['participant_medical_treatment'];
+      
+      // Botón de editar
       $edit_icon = '
         <div data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
           ' . app_get_svg_icon( 'pen' ) . '
         </div>
       ';
 
+      // Botón de calendario
+      $schedule_icon = '
+        <a href="/tutor/participant?pid2=' . $participant['participant_id2'] . '" class="white-svg cursor-pointer p-2 rounded-lg bg-orange-600 flex items-center justify-center">
+          ' . app_get_svg_icon( 'schedule' ) . '
+        </a>
+      ';
+
       // Definimos las celdas
       $cells = [
           'participant_name'              => new TableCell( $participant['participant_name'] )
         , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'] )
-        , 'participant_medical_treatment' => new TableCell( $participant['participant_medical_treatment'], ['class' => 'max-w-[14rem]'] )
+        , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
         , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 edit-icon-container'] )
+        , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 edit-icon-container'] )
       ];
 
       // Añadimos la fila
       $table->addRow( new TableRow( $cells, [
           'id'        => 'row-' . $participant['participant_id2']
-        , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
-        , 'data-href' => '/tutor/participant?pid2=' . $participant['participant_id2']
+        , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
+        , 'data-type' => 'participant_info'
+        , 'data-id2'  => $participant['participant_id2']
       ] ) );
     }
 
@@ -197,7 +219,7 @@ class TutorAccountController
     $value = '
       <h2 class="subtitle font-semibold my-4">' . pl_label( 'participants' ) . '</h2>
       ' . $table_html . '
-    ';  
+    ';
 
     return $value;
   }
@@ -210,13 +232,10 @@ class TutorAccountController
    */
   public function table_row_participants( string $participant_id2 ): string
   {
-    $mod_participants = new Participants();
-
     // Capturamos los datos del participante
-    $participant = $mod_participants->GetRow( $participant_id2 );
+    $participant = ( new Participants() )->GetRow( $participant_id2 );
     if( empty( $participant ) )
       return '';
-
     $participant = $participant[0];
 
     /*
@@ -231,26 +250,40 @@ class TutorAccountController
     */
 
     // Le damos formato a los campos
-    $participant['participant_medical_treatment'] = substr( $participant['participant_medical_treatment'], 0, 50 ) . '...';
+    if( str_word_count( $participant['participant_medical_treatment'] ) > 50 )
+      $medical_treatment = substr( $participant['participant_medical_treatment'], 0, 50 ) . '...';
+    else
+      $medical_treatment = $participant['participant_medical_treatment'];
+
+    // Botón de editar
     $edit_icon = '
       <div data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
         ' . app_get_svg_icon( 'pen' ) . '
       </div>
     ';
 
+    // Botón de calendario
+    $schedule_icon = '
+      <a href="/tutor/participant?pid2=' . $participant['participant_id2'] . '" class="white-svg cursor-pointer p-2 rounded-lg bg-orange-600 flex items-center justify-center">
+        ' . app_get_svg_icon( 'schedule' ) . '
+      </a>
+    ';
+
     // Definimos las celdas
     $cells = [
         'participant_name'              => new TableCell( $participant['participant_name'] )
       , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'] )
-      , 'participant_medical_treatment' => new TableCell( $participant['participant_medical_treatment'], ['class' => 'max-w-[14rem]'] )
+      , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
       , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 edit-icon-container'] )
+      , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 edit-icon-container'] )
     ];
 
     // Creamos la fila con `TableRow`
     $row = new TableRow( $cells, [
         'id'        => 'row-' . $participant['participant_id2']
-      , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
-      , 'data-href' => '/tutor/participant?pid2=' . $participant['participant_id2']
+      , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
+      , 'data-type' => 'participant_info'
+      , 'data-id2'  => $participant['participant_id2']
     ] );
 
     // Retornamos la fila convertida a HTML
@@ -470,7 +503,7 @@ class TutorAccountController
       // Formulario
       $html = '
         <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-scroll">
+          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
 
             <h3 class="text-2xl mb-4">' . pl_label( 'edit_legal_tutor' ) . '</h3>
 
@@ -573,7 +606,7 @@ class TutorAccountController
       // Formulario
       $html = '
         <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-scroll">
+          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
 
             <h3 class="text-2xl mb-4">' . pl_label( 'legal_tutor' ) . '</h3>
 
@@ -674,7 +707,7 @@ class TutorAccountController
       // Formulario
       $html = '
         <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-scroll">
+          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
 
             <h3 class="text-2xl mb-4">' . pl_label( 'edit_participant' ) . '</h3>
 
@@ -712,6 +745,107 @@ class TutorAccountController
                 </button>
               </div>
             </form>
+
+          </div>
+        </div>
+      ';
+
+      // Rellenamos los objetos a actualizar
+      $elements = [
+          ['selector' => 'body'       , 'method_name' => 'append', 'value' => $html]
+        , ['selector' => '.card_modal', 'method_name' => 'css'   , 'value' => 'flex', 'css' => 'display']
+      ];
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    return $value;
+  }
+
+
+  /**
+   * Obtiene y muestra un popup con los detalles del usuario seleccionado.
+   * 
+   * @param array $fields Contiene el identificador del usuario (`id2`).
+   * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
+   */
+  public function ajax_popup_participant_info( array $fields ): array
+  {
+    $value           = [];
+    $mod_participant = new Participants();
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    do
+    {
+      // Buscamos los datos del participante solicitado
+      $participant = $mod_participant->GetRow( $fields['id2'] );
+      if( empty( $participant ) )
+        break;
+
+      $participant = $participant[0];
+
+      /*
+        Array | participant
+          [participant_id] => 5
+          [participant_id2] => abc123
+          [user_id] => 11
+          [participant_name] => Carlos
+          [participant_birth_date] => 2015-06-21
+          [participant_allergies] => Ninguna
+          [participant_special_needs] => Ninguna
+          [participant_medical_treatment] => No aplica
+      */
+
+      // Formulario
+      $html = '
+        <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
+
+            <h3 class="text-2xl mb-4">' . pl_label( 'participant' ) . '</h3>
+
+            <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+
+            <div class="modal_content">
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_name' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_name'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_birth_date'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_allergies'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_special_needs' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_special_needs'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_medical_treatment' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_medical_treatment'] . '</div>
+              </div>
+            </div>
 
           </div>
         </div>

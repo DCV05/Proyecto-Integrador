@@ -4,8 +4,13 @@ class LoginController
 {
   public function index(): void
   {
+    // Cerramos la sesión del usuario
     if( !empty( $_SESSION['app']['user'] ) )
       unset( $_SESSION['app']['user'] );
+    
+    // Destruímos los controladores
+    if( !empty( $_SESSION['controllers'] ) )
+      unset( $_SESSION['controllers'] ); 
 
     return;
   }

@@ -1,12 +1,6 @@
 $( document ).ready( function() {
 
-  // Evento para redirección según la fila
-  $( document ).on( 'click', '.table-row-link', function( e ) {
-    if( !$( e.target ).closest( '.edit-icon' ).length )
-      window.location.href = $( this ).data( 'href' );
-  } );
-
-  $( document ).on( 'click', '.edit-icon', function( e ) {
+  $( document ).on( 'click', '.edit-icon, .table-row', function( e ) {
 
     // Evitamos los demás eventos
     e.preventDefault();
@@ -18,7 +12,29 @@ $( document ).ready( function() {
     let id2   = $( this ).data( 'id2' );
 
     // Dependiendo del tipo de item ejecutamos un método u otro
-    let method_name = type == 'user' ? 'popup_user' : 'popup_participant';
+    let method_name;
+    switch( type ) {
+      case 'user':
+        method_name = 'popup_user';
+        break;
+
+      case 'user_info':
+        method_name = 'popup_user_info';
+        break;
+
+      case 'participant':
+        method_name = 'popup_participant';
+        break;
+
+      case 'participant_info':
+        method_name = 'popup_participant_info';
+        break;
+    
+      default:
+        break;
+    }
+
+    // Mandamos la petición
     open_popup( method_name, { 'id2': id2 } );
   } );
 

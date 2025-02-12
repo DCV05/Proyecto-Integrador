@@ -59,7 +59,7 @@ $heading_entries = array_merge( $entries, [
     'layout_buttons'  => true
   ],
   [
-    'title'           => pl_label( 'activity' ),
+    'title'           => '<a href="/activities" class="hover:underline">' . pl_label( 'activities' ) . '</a>' . '/' . pl_label( 'activity' ),
     'link'            => '/activity',
     'icon'            => app_get_svg_icon( 'activities' ),
     'layout_buttons'  => false
@@ -71,7 +71,7 @@ $heading_entries = array_merge( $entries, [
     'layout_buttons'  => true
   ],
   [
-    'title'           => pl_label( 'participant' ),
+    'title'           => '<a href="/activities" class="hover:underline">' . pl_label( 'participants' ) . '</a>' . '/' . pl_label( 'participant' ),
     'link'            => '/participant',
     'icon'            => app_get_svg_icon( 'account' ),
     'layout_buttons'  => false

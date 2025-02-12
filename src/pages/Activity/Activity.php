@@ -13,7 +13,6 @@ class ActivityController
   {
     // Control de seguridad
     app_security();
-
     $mod_activities = new Activities();
 
     // Capturamos el id2 de la actividad
@@ -22,11 +21,17 @@ class ActivityController
       pl_redirect( '/activities' );
 
     // Buscamos en la DB la actividad. En caso de que no exista, redirigimos al activities
-    $this->activity = $mod_activities->GetRow( $this->activity_id2 )[0];
-    if( empty( $this->activity ) )
+    $activity = $mod_activities->GetRow( $this->activity_id2 );
+    if( empty( $activity ) )
       pl_redirect( '/activities' );
+    $this->activity = $activity[0];
 
     return;
+  }
+
+  public function __sleep(): array
+  {
+    return ['activity_id2', 'activity'];
   }
 
   // --------------------------------------------------------------------------------
@@ -57,20 +62,15 @@ class ActivityController
    * 
    * @return string HTML de la tabla de participantes.
    */
-  public function table_participants( array $activity = null ): string
+  public function table_participants(): string
   {
     global $role;
 
-    $mod_activities_participants = new ActivitiesParticipants();
-    $this->activity = $activity ?? $this->activity;
-
     // Buscamos los participantes relacionados con esta actividad
-    $participants = $mod_activities_participants->GetActivityDetails( intval( $this->activity['activity_id'] ) );
+    $participants = ( new ActivitiesParticipants() )->GetActivityDetails( $this->activity['activity_id'] );
 
     // Tabla de Participantes
     $table = new Table( ['id' => 'participants_table', 'class' => 'table-ui', 'data-activity' => $this->activity['activity_id2']] );
-
-    // Columnas
     $table->addColumn( 'participant_name'         , new TableColumn( pl_label( 'participant_name' )         , ['id' => 'p_name_col'] ) );
     $table->addColumn( 'participant_special_needs', new TableColumn( pl_label( 'participant_special_needs' ), ['id' => 'p_special_needs_col'] ) );
     $table->addColumn( 'participant_allergies'    , new TableColumn( pl_label( 'allergies' )                , ['id' => 'p_allergies_col'] ) );
@@ -122,10 +122,8 @@ class ActivityController
    */
   public function table_row_participants( int $participant_id ): string
   {
-    $mod_participants = new Participants();
-    
     // Capturamos los datos del participante solicitado
-    $participant = $mod_participants->GetRow( $participant_id )[0];
+    $participant = ( new Participants() )->GetRow( $participant_id )[0];
   
     // Formateamos los datos si son largos
     $participant['participant_allergies'] = empty( $participant['participant_allergies'] ) 
@@ -157,17 +155,13 @@ class ActivityController
   {
     $value = '';
 
-    // Carga de módulos
-    $mod_participants            = new Participants();
-    $mod_activities_participants = new ActivitiesParticipants();
-
     // ---------------------------–---------------------------–---------------------------–
     // Obtención de datos
     // ---------------------------–---------------------------–---------------------------–
 
     // Obtenemos todos los participantes del tutor
-    $all_participants        = $mod_participants->GetRows( $_SESSION['app']['user']['user_id'] );
-    $registered_participants = $mod_activities_participants->GetActivityDetails( $this->activity['activity_id'] );
+    $all_participants        = ( new Participants() )->GetRows( $_SESSION['app']['user']['user_id'] );
+    $registered_participants = ( new ActivitiesParticipants() )->GetActivityDetails( $this->activity['activity_id'] );
 
     // Extraemos los participant_id2 de los ya inscritos
     $registered_ids = array_column( $registered_participants, 'participant_id2' );
@@ -200,7 +194,6 @@ class ActivityController
 
     return $value;
   }
-
 
   public function attendance_list_link(): string
   {
@@ -287,7 +280,7 @@ class ActivityController
       $db->pl_query( $sql );
 
       // Recargamos la tabla de participantes
-      $html = $this->table_participants( $activity );
+      $html = $this->table_participants();
       $elements = [
         ['selector' => '#participants_table', 'method_name' => 'update', 'value' => $html]
       ];

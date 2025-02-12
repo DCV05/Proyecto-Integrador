@@ -1,5 +1,11 @@
 $( document ).ready( function() {
 
+  // Evento para redirección según la fila
+  $( '.table-row-link' ).on( 'click', function( e ) {
+    if( !$( e.target ).closest( '.edit-icon, .delete-icon' ).length )
+      window.location.href = $( this ).data( 'href' );
+  } );
+
   // Evento para los botones de layout
   $( document ).on( 'click', '#layout_buttons button', function( e ) {
     e.preventDefault();
@@ -17,12 +23,6 @@ $( document ).ready( function() {
     e.stopImmediatePropagation();
 
     open_add_popup();
-  } );
-
-  // Evento para redirección según la fila
-  $( '.table-row-link' ).on( 'click', function( e ) {
-    if( !$( e.target ).closest( '.edit-icon, .delete-icon' ).length )
-      window.location.href = $( this ).data( 'href' );
   } );
 
   $( document ).on( 'click', '.edit-icon', function( e ) {
