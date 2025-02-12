@@ -29,6 +29,7 @@
                 <input
                   type="email"
                   name="user_email"
+                  id="user_email"
                   placeholder="[[ label | legal_tutor_email_placeholder ]]"
                   class="custom-input transform transition duration-300 mt-1">
               </div>
@@ -43,7 +44,7 @@
               </div>
 
               <div class="flex justify-end mt-4">
-                <button type="button" class="next-btn">[[ label | next ]]</button>
+                <button type="button" class="next-btn" disabled>[[ label | next ]]</button>
               </div>
             </div>
 
@@ -81,9 +82,9 @@
                   </div>
 
                   <div>
-                    <label class="custom-label">[[ label | email ]]</label>
+                    <label for="tutor_email_0" class="custom-label">[[ label | email ]]</label>
                     <input
-                      type="text"
+                      type="email"
                       name="tutor_email_0"
                       id="tutor_email_0"
                       placeholder="[[ label | legal_tutor_email_placeholder ]]" class="custom-input transform transition duration-300 mt-1">
@@ -135,7 +136,7 @@
 
               <div class="flex justify-between mt-4">
                 <button type="button" class="prev-btn">[[ label | previous ]]</button>
-                <button type="button" class="next-btn">[[ label | next ]]</button>
+                <button type="button" class="next-btn" disabled>[[ label | next ]]</button>
               </div>
 
             </div>
@@ -185,7 +186,7 @@
 
               <div class="flex justify-between mt-4">
                 <button type="button" class="prev-btn">[[ label | previous ]]</button>
-                <button type="button" class="next-btn">[[ label | next ]]</button>
+                <button type="button" class="next-btn" disabled>[[ label | next ]]</button>
               </div>
             </div>
           </section>
@@ -223,7 +224,7 @@
 
               <div class="flex justify-between mt-4">
                 <button type="button" class="prev-btn">[[ label | previous ]]</button>
-                <button type="button" class="next-btn">[[ label | next ]]</button>
+                <button type="button" class="next-btn" disabled>[[ label | next ]]</button>
               </div>
             </div>
           </section>
@@ -236,7 +237,7 @@
 
               <div class="flex justify-between mt-4">
                 <button type="button" class="prev-btn">[[ label | previous ]]</button>
-                <button type="submit" class="next-btn">[[ label | create_account_button ]]</button>
+                <button type="submit" class="next-btn" disabled>[[ label | create_account_button ]]</button>
               </div>
             </div>
           </section>
@@ -276,7 +277,7 @@
       <div>
         <label class="custom-label">[[ label | legal_tutor_email ]]</label>
         <input
-          type="text"
+          type="email"
           name="tutor_email"
           id="tutor_email"
           placeholder="[[ label | legal_tutor_email_placeholder ]]" class="custom-input transform transition duration-300 mt-1">

@@ -103,9 +103,13 @@ class ActivityController
 
     if( $role === 0 )
     {
-      // Botón para añadir participante
-      $add_button = ['participant_name' => new TableCell( $this->participant_select(), ['colspan' => 3, 'class' => 'text-center'] )];
-      $table->addRow( new TableRow( $add_button ) );
+      $select = $this->participant_select();
+      if( $select > '' )
+      {
+        // Botón para añadir participante
+        $add_button = ['participant_name' => new TableCell( $select )];
+        $table->addRow( new TableRow( $add_button ) );
+      }
     }
     
     return $table->html();
@@ -163,7 +167,7 @@ class ActivityController
 
     // Obtenemos todos los participantes del tutor
     $all_participants        = $mod_participants->GetRows( $_SESSION['app']['user']['user_id'] );
-    $registered_participants = $mod_activities_participants->GetActivityDetails( $this->activity['activity_id'] )[0];
+    $registered_participants = $mod_activities_participants->GetActivityDetails( $this->activity['activity_id'] );
 
     // Extraemos los participant_id2 de los ya inscritos
     $registered_ids = array_column( $registered_participants, 'participant_id2' );
@@ -181,7 +185,7 @@ class ActivityController
     // Generamos el select
     // ---------------------------–---------------------------–---------------------------–
 
-    $value = '<select id="participant_select" class="border px-4 py-2 rounded-lg w-full">';
+    $value = '<select id="participant_select" class="border px-4 py-2 rounded-lg w-full text-center" colspan="3">';
     foreach( $available_participants as $participant )
       $value .= '<option value="' . $participant['participant_id2'] . '">' . $participant['participant_name'] . '</option>';
     

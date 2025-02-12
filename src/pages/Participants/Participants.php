@@ -37,7 +37,7 @@ class ParticipantsController
 
     // Columnas
     $table->addColumn( 'participant_name'             , new TableColumn( 'Name'             , ['id' => 'p_name_col']          ) );
-    $table->addColumn( 'participant_birth_date'       , new TableColumn( 'Birth Date'       , ['id' => 'p_birth_date_col']    ) );
+    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['id' => 'p_birth_date_col']    ) );
     $table->addColumn( 'participant_medical_treatment', new TableColumn( 'Medical Treatment', ['id' => 'p_medical_treatment'] ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla

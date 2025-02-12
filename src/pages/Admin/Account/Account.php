@@ -85,7 +85,6 @@ class AdminAccountController
         , 'user_email'
         , 'user_dni'
         , 'user_phone_number'
-        , 'user_birth_date'
       ];
 
       foreach( $required_fields as $required_field )
@@ -108,7 +107,6 @@ class AdminAccountController
           , user_relationship = "' . $db->esc( $fields['user_relationship'] ) . '"
           , user_email        = "' . $db->esc( $fields['user_email'] )        . '"
           , user_dni          = "' . $db->esc( $fields['user_dni'] )          . '"
-          , user_birth_date   = "' . $db->esc( $fields['user_birth_date'] )   . '"
           , user_phone_number = "' . $db->esc( $fields['user_phone_number'] ) . '"
         where
           user_id = ' . $_SESSION['app']['user']['user_id'] . ' and
@@ -170,7 +168,6 @@ class AdminAccountController
       $required_fields = [
           'participant_name'
         , 'participant_birth_date'
-        , 'participant_address'
         , 'participant_allergies'
         , 'participant_special_needs'
         , 'participant_medical_treatment'
@@ -194,7 +191,6 @@ class AdminAccountController
         update ' . DB_PROJECT . '.participants set
             participant_name              = "' . $db->esc( $fields['participant_name'] )              . '"
           , participant_birth_date        = "' . $db->esc( $fields['participant_birth_date'] )        . '"
-          , participant_address           = "' . $db->esc( $fields['participant_address'] )           . '"
           , participant_allergies         = "' . $db->esc( $fields['participant_allergies'] )         . '"
           , participant_special_needs     = "' . $db->esc( $fields['participant_special_needs'] )     . '"
           , participant_medical_treatment = "' . $db->esc( $fields['participant_medical_treatment'] ) . '"
@@ -299,10 +295,6 @@ class AdminAccountController
                 <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'phone_number' ) . '</label>
                 <input type="tel" id="user_phone_number" name="user_phone_number" placeholder="' . pl_label( 'legal_tutor_phone_1' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $user_detail['user_phone_number'] . '">
               </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_birth_date' ) . '</label>
-                <input type="date" name="user_birth_date" placeholder="' . pl_label( 'legal_tutor_birth_date_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $user_detail['user_birth_date'] . '">
-              </div>
 
               <div class="flex justify-end">
                 <button type="submit" class="custom-submit bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
@@ -369,7 +361,6 @@ class AdminAccountController
           [user_id] => 11
           [participant_name] => Carlos
           [participant_birth_date] => 2015-06-21
-          [participant_address] => Calle Falsa 123
           [participant_allergies] => Ninguna
           [participant_special_needs] => Ninguna
           [participant_medical_treatment] => No aplica
@@ -396,10 +387,6 @@ class AdminAccountController
               <div>
                 <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
                 <input type="date" name="participant_birth_date" placeholder="' . pl_label( 'participant_birth_date_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $participant['participant_birth_date'] . '">
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_address' ) . '</label>
-                <input type="text" name="participant_address" placeholder="' . pl_label( 'participant_address_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $participant['participant_address'] . '">
               </div>
               <div>
                 <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>

@@ -1,5 +1,29 @@
 <?php
 
+/**
+ * --------------------------------------------------------------------------------------------------------------------
+ *     ____        __           _     
+ *    / __ \____  / /___ ______(_)____
+ *   / /_/ / __ \/ / __ `/ ___/ / ___/
+ *  / ____/ /_/ / / /_/ / /  / (__  ) 
+ * /_/    \____/_/\__,_/_/  /_/____/
+ *
+ * POLARIS KERNEL | KODALOGIC
+ * 
+ * @author Daniel Correa Villa <daniel.correa@kodalogic.com>
+ * @link   https://kodalogic.com
+ * --------------------------------------------------------------------------------------------------------------------
+ *  
+ * Núcleo del framework Polaris.
+ * Este script es el punto de entrada principal y el corazón del sistema, encargado de:
+ *  
+ * - Configuración de CORS y gestión de cabeceras HTTP.
+ * - Inicialización del framework y carga de archivos esenciales.
+ * - Manejo del enrutamiento y ejecución de controladores.
+ * - Gestión de AJAX y procesamiento de peticiones asíncronas.
+ * - Renderización de vistas y aplicación de máscaras.
+ */
+
 // Cabeceras de CORS
 // Ponemos estas peticiones para que las llamadas AJAX no se detengan
 header( 'Access-Control-Allow-Origin: *' );
@@ -67,8 +91,11 @@ foreach( $router->routes as $route_controller )
     continue;
   }
 
-  // Instanciamos el nuevo controlador
-  $controller = new $controller_name();
+  // Capturamos la instancia de la sesión
+  if( !empty( $_SESSION['controllers'][$controller_name] ) )
+    $controller = unserialize( $_SESSION['controllers'][$controller_name] );
+  else // Instanciamos el nuevo controlador
+    $controller = new $controller_name();
 
   // Validación por si el método no existe
   if( !method_exists( $controller, $method_name ) )
@@ -128,7 +155,7 @@ foreach( $router->routes as $route_controller )
   // -------------------------------------------------------------------------------------
 
   // Añadimos los parámetros y renderizamos la máscara
-  $view_engine = new ViewEngine( $mask_path, $controller );
+  $view_engine = new ViewEngine( $mask_path, $controller, $controller_name );
   $view_engine->render_template();
 }
 

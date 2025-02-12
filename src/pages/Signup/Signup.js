@@ -1,4 +1,8 @@
-let counter = 1;
+let counter     = 1;
+const sections  = $( 'form section' );
+
+// Índice actual de la sección visible
+let current_section = 0;
 
 $( document ).ready( function() {
 
@@ -97,8 +101,16 @@ $( document ).ready( function() {
   // ------------------------------------------------------------------------------
 
   // Evento para cuando el usuario deje de tener el focus en un input
-  $( document ).on( 'focusout', '#register-form input:not([type="button"])', function() {
+  $( document ).on( 'focusout', '#register-form input:not([type="button"], [type="file"]), textarea', function() {
     check_inputs( $( this ) );
+  } );
+
+  $( '#user_email' ).on( 'input', function () {
+    // Capturamos el valor del input
+    let user_email = $( this ).val();
+
+    // Insertamos este email en el primer tutor
+    $( '#tutor_email_0' ).val( user_email );
   } );
 
   // Evento del Submit
@@ -112,7 +124,7 @@ $( document ).ready( function() {
     e.stopImmediatePropagation();
 
     // Evento de checkeo en submit
-    $( this ).find( 'input:not([type="button"])' ).each( function() {
+    $( this ).find( 'input:not([type="button"], [type="file"]), textarea' ).each( function() {
       incorrect_input = check_inputs( $( this ) );
 
       // Si es incorrecto, el formulario no se podrá mandar
@@ -146,7 +158,7 @@ $( document ).ready( function() {
     heading_counter.text( heading_counter_html + ' ' + ( counter + 1 ) );
 
     // Modificamos el name de los inputs
-    $html.find( 'input:not([type="button"])' ).each( function() {
+    $html.find( 'input:not([type="button"], [type="file"]), textarea' ).each( function() {
 
       // Modificamos el name y el id
       let name_counter = $( this ).attr( 'name' ) + '_' + counter;
@@ -163,7 +175,16 @@ $( document ).ready( function() {
     // Añadimos el nuevo tutor
     $( '#tutor_container' ).append( $html );
     counter += 1;
+
+    // Asegurar que los nuevos inputs tengan el evento de validación
+    $html.find( 'input:not([type="button"], [type="file"]), textarea' ).on( 'input', update_form );
+
+    // Disparar actualización manualmente para verificar si el botón debe habilitarse
+    update_form();
   } );
+
+  // Evento para actualizar el formulario
+  $( document ).on( 'input', 'input:not([type="button"], [type="file"]), textarea', update_form );
 
   // Borrar un bloque de tutor
   $( document ).on( 'click', '.remove_tutor', function() {
@@ -174,10 +195,6 @@ $( document ).ready( function() {
   // ------------------------------------------------------------------------------
   // Next y previous
   // ------------------------------------------------------------------------------
-
-  // Índice actual de la sección visible
-  let current_section = 0;
-  const sections      = $( 'form section' );
 
   // Función para mostrar una sección según el índice
   function show_section( index ) {
@@ -224,4 +241,32 @@ function form_submit( formdata ) {
       // Manejo de errores
       console.error( error );
     } );
+}
+
+function update_form() {
+  // Capturamos el botón de la sección actual
+  let next_button = $( sections[current_section] ).find( 'button.next-btn' );
+  let has_error   = false;
+  
+  // Capturamos todos los inputs de la sección
+  $( sections[current_section] ).find( 'input:not([type="button"], [type="file"]), textarea' ).each( function() {
+
+    // Capturamos el valor del input
+    let input_val = $( this ).val();
+    if( input_val == null || input_val == '' )
+      has_error = true;
+  
+    // Comprobamos que el valor del input email es válido
+    if( $( this ).attr( 'type' ) == 'email' && has_error == false ) {
+      // Si no es un email válido, mostramos una alerta
+      if( !validate_email( input_val ) )
+        has_error = true;
+    }
+  } );
+
+  // Si tiene algún tipo de error, deshabilitamos el botón
+  if( has_error )
+    next_button.attr( 'disabled', true );
+  else
+    next_button.removeAttr( 'disabled' );
 }

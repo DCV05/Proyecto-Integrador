@@ -17,7 +17,6 @@ entity "user_details" as detalles_usuarios {
     + user_name : string
     + user_email : string
     + user_relationship : string
-    + user_birth_date : date
     + user_dni : string
     + user_phone_number : string
 }

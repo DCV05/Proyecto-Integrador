@@ -26,17 +26,13 @@ $entries = [
     'title' => pl_label( 'activities' ),
     'link'  => '/activities',
     'icon'  => app_get_svg_icon( 'activities' )
+  ],
+  [
+    'title' => pl_label( 'account' ),
+    'link'  => '/' . $folder . '/account',
+    'icon'  => app_get_svg_icon( 'account' )
   ]
 ];
-
-if( $role === 1 || $role === 2 )
-{
-  $entries[] = [
-      'title' => pl_label( 'participants' )
-    , 'link'  => '/participants'
-    , 'icon'  => app_get_svg_icon( 'account' )
-  ];
-}
 
 if( $role === 2 )
 {
@@ -51,39 +47,46 @@ if( $role === 2 )
 global $heading_entries;
 $heading_entries = array_merge( $entries, [
   [
-    'title'  => pl_label( 'account' ),
-    'link'   => '/' . $folder . '/account',
-    'icon'   => app_get_svg_icon( 'account' )
+    'title'           => pl_label( 'account' ),
+    'link'            => '/' . $folder . '/account',
+    'icon'            => app_get_svg_icon( 'account' ),
+    'layout_buttons'  => false
   ],
   [
-    'title'  => pl_label( 'activities' ),
-    'link'   => '/activities',
-    'icon'   => app_get_svg_icon( 'activities' )
+    'title'           => pl_label( 'activities' ),
+    'link'            => '/activities',
+    'icon'            => app_get_svg_icon( 'activities' ),
+    'layout_buttons'  => true
   ],
   [
-    'title'  => pl_label( 'activity' ),
-    'link'   => '/activity',
-    'icon'   => app_get_svg_icon( 'activities' )
+    'title'           => pl_label( 'activity' ),
+    'link'            => '/activity',
+    'icon'            => app_get_svg_icon( 'activities' ),
+    'layout_buttons'  => false
   ],
   [
-    'title'  => pl_label( 'participants' ),
-    'link'   => '/participants',
-    'icon'   => app_get_svg_icon( 'account' )
+    'title'           => pl_label( 'participants' ),
+    'link'            => '/participants',
+    'icon'            => app_get_svg_icon( 'account' ),
+    'layout_buttons'  => true
   ],
   [
-    'title'  => pl_label( 'participant' ),
-    'link'   => '/participant',
-    'icon'   => app_get_svg_icon( 'account' )
+    'title'           => pl_label( 'participant' ),
+    'link'            => '/participant',
+    'icon'            => app_get_svg_icon( 'account' ),
+    'layout_buttons'  => false
   ],
   [
-    'title'  => pl_label( 'schedule' ),
-    'link'   => '/' . $folder . '/schedule',
-    'icon'   => app_get_svg_icon( 'schedule' )
+    'title'           => pl_label( 'schedule' ),
+    'link'            => '/' . $folder . '/schedule',
+    'icon'            => app_get_svg_icon( 'schedule' ),
+    'layout_buttons'  => false
   ],
   [
-    'title'  => pl_label( 'attendance' ),
-    'link'   => '/' . $folder . '/attendance',
-    'icon'   => app_get_svg_icon( 'attendance' )
+    'title'           => pl_label( 'attendance' ),
+    'link'            => '/' . $folder . '/attendance',
+    'icon'            => app_get_svg_icon( 'attendance' ),
+    'layout_buttons'  => false
   ]
 ] );
   
@@ -109,6 +112,44 @@ function app_security(): void
 {
   if( empty( $_SESSION['app']['user'] ) )
     pl_redirect( '/login' );
+}
+
+function app_layout_buttons(): string
+{
+  $value = '';
+
+  // Si no existe el layout, lo designamos grid por defecto
+  if( !isset( $_SESSION['layout_mode'] ) || $_SESSION['layout_mode'] === 'grid' )
+  {
+    $grid_checked = 'bg-[#5560f5] text-white';
+    $list_checked = 'bg-gray-200 hover:bg-[#5560f5] hover:text-white';
+  }
+  else
+  {
+    $grid_checked = 'bg-gray-200 hover:bg-[#5560f5] hover:text-white';
+    $list_checked = 'bg-[#5560f5] text-white';
+  }
+
+  // HTML radio buttons
+  $value = '
+    <div id="layout_buttons" class="flex gap-2">
+      <button 
+          id="button_grid" 
+          class="py-2 px-3 ' . $grid_checked . ' transform transition duration-300 rounded-lg" 
+          type="button">
+        <i class="fa-solid fa-grid-2"></i>
+      </button>
+
+      <button 
+          id="button_table" 
+          class="py-2 px-3 ' . $list_checked . ' transform transition duration-300 rounded-lg" 
+          type="button">
+        <i class="fa-solid fa-list-ul"></i>
+      </button>
+    </div>
+  ';
+
+  return $value;
 }
 
 // Función para devolver las cabeceras (link y script) de la aplicación
@@ -171,7 +212,7 @@ function app_panel_interface(): string
     <div class="overlay"></div>
 
     <nav class="fixed w-full left-0 top-0 bg-transparent shadow-landing-reverse z-50">
-      <div class="h-16 flex flex-row gap-4 items-center ml-24">
+      <div class="h-16 flex flex-row gap-4 items-center">
 
         <div class="flex flex-col flex-1 items-start p-4">
           <a class="inline-flex" href="/" title="kodalogic">
@@ -214,9 +255,9 @@ function app_panel_interface(): string
       </div>
     </nav>
     
-    ' . app_panel_aside() . '
+    <!--' . app_panel_aside() . '-->
 
-    <nav class="fixed left-24 top-16 bg-white w-[calc(100%-6rem)] z-20 shadow-landing">
+    <nav class="fixed left-64 top-16 bg-white w-[calc(100%-16rem)] z-20 shadow-landing">
       <div class="h-16 flex flex-row gap-4 items-center space-x-4 px-2 py-3">
         <div class="flex flex-row gap-4 flex-1 justify-start items-center p-2.5">
           ' . app_panel_heading() . '
@@ -224,7 +265,7 @@ function app_panel_interface(): string
       </div>
     </nav>
 
-    <aside class="hidden md:block fixed h-full left-24 top-32 bg-white shadow-landing-reverse z-50">
+    <aside class="hidden md:block fixed h-full left-0 top-16 bg-white shadow-landing-reverse z-50">
       <div class="w-64 flex flex-col">
         
         <div class="overflow-y-auto mt-2">
@@ -252,15 +293,31 @@ function app_panel_heading(): string
     if( $current_url !== $entry['link'] )
       continue;
 
+    if( isset( $entry['layout_buttons'] ) && $entry['layout_buttons'] === true )
+    {
+      $layout_buttons = '
+        <div class="flex items-center">
+          ' .  app_layout_buttons() . '
+        </div>
+      ';
+    }
+    else
+      $layout_buttons = '';
+
     // Estilos del heading
     $color = $colors[$entry_index] ?? 'blue';
 
     $value = '
-      <div class="flex flex-row gap-2 items-center flex-shrink-0">
-        <div class="w-11 h-11 bg-' . $color . '-500 shadow-landing white-svg tree-icon-container">
-          ' . $entry['icon'] . '
+      <div class="flex justify-between items-center w-full">
+        <div class="flex flex-row gap-2 items-center flex-shrink-0">
+          <div class="w-11 h-11 bg-' . $color . '-500 shadow-landing white-svg tree-icon-container">
+            ' . $entry['icon'] . '
+          </div>
+          <p class="small-title text-black font-semibold">' . $entry['title'] . '</p>
         </div>
-        <p class="small-title text-black font-semibold">' . $entry['title'] . '</p>
+
+        ' . $layout_buttons . '
+
       </div>
     ';
   }
@@ -298,7 +355,6 @@ function app_panel_aside(): string
 
   // Encapsulamos el sidebar
   $value = '
-    <!-- Sidebar -->
     <aside class="fixed h-full top-0 left-0 bg-transparent shadow-landing-reverse">
       <div class="w-24 flex flex-col mt-28 justify-center items-center">
         ' . $links_html . '

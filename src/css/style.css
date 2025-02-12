@@ -436,6 +436,11 @@ section {
   color: white;
 }
 
+.next-btn:disabled {
+  background-color: #ccc;
+  color: white;
+}
+
 .custom-label {
   display: block;
   font-size: 0.9rem;
@@ -502,7 +507,6 @@ section {
 .page-content {
   position: relative;
   background-color: #fff;
-  margin-left: 6rem;
   margin-top: 8rem;
   height: calc(100vh - 4rem);
   overflow-y: auto;

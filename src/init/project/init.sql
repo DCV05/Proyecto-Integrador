@@ -44,16 +44,15 @@ CREATE TABLE `participants` (
   `user_id` int(11) NOT NULL,
   `participant_name` varchar(100) NOT NULL,
   `participant_birth_date` date NOT NULL,
-  `participant_address` varchar(128) NOT NULL,
   `participant_allergies` text NOT NULL,
   `participant_special_needs` text NOT NULL,
   `participant_medical_treatment` text NOT NULL,
   PRIMARY KEY (`participant_id`)
 );
 
-INSERT INTO `participants` (`participant_id2`, `user_id`, `participant_name`, `participant_birth_date`, `participant_address`, `participant_allergies`, `participant_special_needs`, `participant_medical_treatment`) VALUES
-('e26b20124473be7d8ff9eb4cead70a9f', 1, 'Diego Sánchez', '2016-03-23', 'Madrid, España', 'Alergia a frutos secos', 'Necesita estructura en actividades', 'Lleva EpiPen'),
-('D7S8A9D78AS9D', 2, 'Daniel Pérez', '2015-06-12', 'Barcelona, España', 'Sin alergias', 'Dificultades de atención', 'Ninguno');
+INSERT INTO `participants` (`participant_id2`, `user_id`, `participant_name`, `participant_birth_date`, `participant_allergies`, `participant_special_needs`, `participant_medical_treatment`) VALUES
+('e26b20124473be7d8ff9eb4cead70a9f', 1, 'Diego Sánchez', '2016-03-23', 'Alergia a frutos secos', 'Necesita estructura en actividades', 'Lleva EpiPen'),
+('D7S8A9D78AS9D', 2, 'Daniel Pérez', '2015-06-12', 'Sin alergias', 'Dificultades de atención', 'Ninguno');
 
 CREATE TABLE `attendance` (
   `attendance_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -105,15 +104,14 @@ CREATE TABLE `user_details` (
   `user_name` varchar(256) NOT NULL,
   `user_email` varchar(124) NOT NULL,
   `user_relationship` varchar(128) NOT NULL,
-  `user_birth_date` date NOT NULL,
   `user_dni` varchar(9) NOT NULL,
   `user_phone_number` varchar(16) NOT NULL,
   PRIMARY KEY (`detail_id`)
 );
 
-INSERT INTO `user_details` (`detail_id2`, `user_id`, `user_name`, `user_email`, `user_relationship`, `user_birth_date`, `user_dni`, `user_phone_number`) VALUES
-('D78S9A0D7A89SD7A89', 1, 'Laura Sánchez', 'tutor1@example.com', 'Madre', '1980-05-12', '11111111A', '555555555'),
-('H7GF89F789H78F9G', 2, 'Carlos Rodríguez', 'monitor1@example.com', 'Monitor', '1992-08-23', '2222222B', '666666666');
+INSERT INTO `user_details` (`detail_id2`, `user_id`, `user_name`, `user_email`, `user_relationship`, `user_dni`, `user_phone_number`) VALUES
+('D78S9A0D7A89SD7A89', 1, 'Laura Sánchez', 'tutor1@example.com', 'Madre', '11111111A', '555555555'),
+('H7GF89F789H78F9G', 2, 'Carlos Rodríguez', 'monitor1@example.com', 'Monitor', '2222222B', '666666666');
 
 CREATE TABLE `schedule` (
   `schedule_id` int(11) NOT NULL,

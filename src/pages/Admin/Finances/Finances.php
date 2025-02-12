@@ -32,11 +32,11 @@ class AdminFinancesController
     $table = new Table( ['id' => 'payments_table', 'class' => 'table-ui'] );
 
     // Columnas
-    $table->addColumn( 'payment_id2'     , new TableColumn( 'Payment ID'   , ['id' => 'p_id_col']          ) );
-    $table->addColumn( 'user_id'         , new TableColumn( 'User ID'      , ['id' => 'p_user_col']        ) );
-    $table->addColumn( 'amount'          , new TableColumn( 'Amount'       , ['id' => 'p_amount_col']      ) );
-    $table->addColumn( 'status'          , new TableColumn( 'Status'       , ['id' => 'p_status_col']      ) );
-    $table->addColumn( 'payment_date'    , new TableColumn( 'Payment Date' , ['id' => 'p_date_col']        ) );
+    $table->addColumn( 'payment_id2' , new TableColumn( pl_label( 'payment_id2' ) , ['id' => 'p_id_col']          ) );
+    $table->addColumn( 'user_id'     , new TableColumn( pl_label( 'user_id' )     , ['id' => 'p_user_col']        ) );
+    $table->addColumn( 'amount'      , new TableColumn( pl_label( 'amount' )      , ['id' => 'p_amount_col']      ) );
+    $table->addColumn( 'status'      , new TableColumn( pl_label( 'status' )      , ['id' => 'p_status_col']      ) );
+    $table->addColumn( 'payment_date', new TableColumn( pl_label( 'payment_date' ), ['id' => 'p_date_col']        ) );
 
     // Iteramos cada pago y lo añadimos a la tabla
     foreach( $payments as $payment )

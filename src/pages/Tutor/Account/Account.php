@@ -38,7 +38,6 @@ class TutorAccountController
         [user_id] => 11
         [user_name] => Daniel
         [user_email] => tutor1@example.com
-        [user_birth_date] => 2025-02-04
         [user_dni] => 34213213
         [user_phone_number] => 644753740
     */
@@ -47,13 +46,12 @@ class TutorAccountController
     $table = new Table( ['id' => 'users_table', 'class' => 'table-ui'] );
 
     // Columnas
-    $table->addColumn( 'user_name'        , new TableColumn( 'Name'        , ['id' => 'name_col']          ) );
-    $table->addColumn( 'user_email'       , new TableColumn( 'Email'       , ['id' => 'email_col']         ) );
-    $table->addColumn( 'user_relationship', new TableColumn( 'Relationship', ['id' => 'relationship_col']  ) );
-    $table->addColumn( 'user_birth_date'  , new TableColumn( 'Birth date'  , ['id' => 'birth_date_col']    ) );
-    $table->addColumn( 'user_dni'         , new TableColumn( 'DNI'         , ['id' => 'dni_col']           ) );
-    $table->addColumn( 'user_phone_number', new TableColumn( 'Phone number', ['id' => 'phone_number_col']  ) );
-    $table->addColumn( 'edit_icon'        , new TableColumn( ''            , ['id' => 'edit_icon']         ) );
+    $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' )         , ['id' => 'name_col']          ) );
+    $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )        , ['id' => 'email_col']         ) );
+    $table->addColumn( 'user_relationship', new TableColumn( pl_label( 'relationship' ) , ['id' => 'relationship_col']  ) );
+    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )          , ['id' => 'dni_col']           ) );
+    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ) , ['id' => 'phone_number_col']  ) );
+    $table->addColumn( 'edit_icon'        , new TableColumn( ''                         , ['id' => 'edit_icon']         ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $users as $user )
@@ -69,14 +67,13 @@ class TutorAccountController
           'user_name'         => new TableCell( $user['user_name'] )
         , 'user_email'        => new TableCell( $user['user_email'] )
         , 'user_relationship' => new TableCell( $user['user_relationship'] )
-        , 'user_birth_date'   => new TableCell( $user['user_birth_date'] )
         , 'user_dni'          => new TableCell( $user['user_dni'] )
         , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
         , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 edit-icon-container'] )
       ];
 
       // Añadimos la fila
-      $table->addRow( new TableRow( $cells, ['id' => 'row-' . $user['detail_id2']] ) );
+      $table->addRow( new TableRow( $cells, ['id' => 'row-' . $user['detail_id2'], 'data-id2' => $user['detail_id2'], 'class' => 'table-row-link'] ) );
     }
 
     // Convertimos la tabla a HTML
@@ -115,7 +112,6 @@ class TutorAccountController
         [user_id] => 11
         [user_name] => Daniel
         [user_email] => tutor1@example.com
-        [user_birth_date] => 2025-02-04
         [user_dni] => 34213213
         [user_phone_number] => 644753740
     */
@@ -131,7 +127,6 @@ class TutorAccountController
         'user_name'         => new TableCell( $user['user_name'] )
       , 'user_email'        => new TableCell( $user['user_email'] )
       , 'user_relationship' => new TableCell( $user['user_relationship'] )
-      , 'user_birth_date'   => new TableCell( $user['user_birth_date'] )
       , 'user_dni'          => new TableCell( $user['user_dni'] )
       , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
       , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 edit-icon-container'] )
@@ -163,10 +158,10 @@ class TutorAccountController
     $table = new Table( ['id' => 'participants_table', 'class' => 'table-ui'] );
 
     // Columnas
-    $table->addColumn( 'participant_name'             , new TableColumn( 'Name'             , ['id' => 'p_name_col']          ) );
-    $table->addColumn( 'participant_birth_date'       , new TableColumn( 'Birth Date'       , ['id' => 'p_birth_date_col']    ) );
-    $table->addColumn( 'participant_medical_treatment', new TableColumn( 'Medical Treatment', ['id' => 'p_medical_treatment'] ) );
-    $table->addColumn( 'edit_icon'                    , new TableColumn( ''                 , ['id' => 'edit_icon']           ) );
+    $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' )             , ['id' => 'p_name_col']          ) );
+    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['id' => 'p_birth_date_col']    ) );
+    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['id' => 'p_medical_treatment'] ) );
+    $table->addColumn( 'edit_icon'                    , new TableColumn( ''                             , ['id' => 'edit_icon']           ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $participants as $participant )
@@ -189,8 +184,8 @@ class TutorAccountController
 
       // Añadimos la fila
       $table->addRow( new TableRow( $cells, [
-          'id'      => 'row-' . $participant['participant_id2']
-        , 'class'   => 'hover:bg-gray-100 cursor-pointer table-row-link'
+          'id'        => 'row-' . $participant['participant_id2']
+        , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
         , 'data-href' => '/tutor/participant?pid2=' . $participant['participant_id2']
       ] ) );
     }
@@ -230,7 +225,6 @@ class TutorAccountController
         [user_id] => 11
         [participant_name] => Carlos
         [participant_birth_date] => 2015-06-21
-        [participant_address] => Calle Falsa 123
         [participant_allergies] => Ninguna
         [participant_special_needs] => Ninguna
         [participant_medical_treatment] => No aplica
@@ -297,7 +291,6 @@ class TutorAccountController
         , 'user_email'
         , 'user_dni'
         , 'user_phone_number'
-        , 'user_birth_date'
       ];
 
       foreach( $required_fields as $required_field )
@@ -320,7 +313,6 @@ class TutorAccountController
           , user_relationship = "' . $db->esc( $fields['user_relationship'] ) . '"
           , user_email        = "' . $db->esc( $fields['user_email'] )        . '"
           , user_dni          = "' . $db->esc( $fields['user_dni'] )          . '"
-          , user_birth_date   = "' . $db->esc( $fields['user_birth_date'] )   . '"
           , user_phone_number = "' . $db->esc( $fields['user_phone_number'] ) . '"
         where
           user_id = ' . $_SESSION['app']['user']['user_id'] . ' and
@@ -382,7 +374,6 @@ class TutorAccountController
       $required_fields = [
           'participant_name'
         , 'participant_birth_date'
-        , 'participant_address'
         , 'participant_allergies'
         , 'participant_special_needs'
         , 'participant_medical_treatment'
@@ -406,7 +397,6 @@ class TutorAccountController
         update ' . DB_PROJECT . '.participants set
             participant_name              = "' . $db->esc( $fields['participant_name'] )              . '"
           , participant_birth_date        = "' . $db->esc( $fields['participant_birth_date'] )        . '"
-          , participant_address           = "' . $db->esc( $fields['participant_address'] )           . '"
           , participant_allergies         = "' . $db->esc( $fields['participant_allergies'] )         . '"
           , participant_special_needs     = "' . $db->esc( $fields['participant_special_needs'] )     . '"
           , participant_medical_treatment = "' . $db->esc( $fields['participant_medical_treatment'] ) . '"
@@ -511,10 +501,6 @@ class TutorAccountController
                 <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'phone_number' ) . '</label>
                 <input type="tel" id="user_phone_number" name="user_phone_number" placeholder="' . pl_label( 'legal_tutor_phone_1' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $user_detail['user_phone_number'] . '">
               </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_birth_date' ) . '</label>
-                <input type="date" name="user_birth_date" placeholder="' . pl_label( 'legal_tutor_birth_date_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $user_detail['user_birth_date'] . '">
-              </div>
 
               <div class="flex justify-end">
                 <button type="submit" class="custom-submit bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
@@ -522,6 +508,103 @@ class TutorAccountController
                 </button>
               </div>
             </form>
+
+          </div>
+        </div>
+      ';
+
+      // Rellenamos los objetos a actualizar
+      $elements = [
+          ['selector' => 'body'       , 'method_name' => 'append', 'value' => $html]
+        , ['selector' => '.card_modal', 'method_name' => 'css'   , 'value' => 'flex', 'css' => 'display']
+      ];
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    $db->close();
+    return $value;
+  }
+
+  /**
+   * Obtiene y muestra un popup con los detalles del usuario seleccionado.
+   * 
+   * @param array $fields Contiene el identificador del usuario (`id2`).
+   * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
+   */
+  public function ajax_popup_user_info( array $fields ): array
+  {
+    $value  = [];
+    $db     = new pl_model();
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    do
+    {
+      // Buscamos los datos del usuario solicitado
+      $sql = '
+        select
+          *
+        from ' . DB_PROJECT . '.user_details
+        where
+          detail_id2 = "' . $db->esc( $fields['id2'] ) . '"
+      ';
+      $db->pl_query( $sql );
+      if( !$db->next_row() )
+        break;
+
+      // Capturamos el registro
+      $user_detail = $db->get_row();
+
+      // Formulario
+      $html = '
+        <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-scroll">
+
+            <h3 class="text-2xl mb-4">' . pl_label( 'legal_tutor' ) . '</h3>
+
+            <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+
+            <div class="modal_content">
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_full_name' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_name'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_relationship' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_relationship'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'email' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_email'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_dni' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_dni'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'phone_number' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_phone_number'] . '</div>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -583,7 +666,6 @@ class TutorAccountController
           [user_id] => 11
           [participant_name] => Carlos
           [participant_birth_date] => 2015-06-21
-          [participant_address] => Calle Falsa 123
           [participant_allergies] => Ninguna
           [participant_special_needs] => Ninguna
           [participant_medical_treatment] => No aplica
@@ -610,10 +692,6 @@ class TutorAccountController
               <div>
                 <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
                 <input type="date" name="participant_birth_date" placeholder="' . pl_label( 'participant_birth_date_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $participant['participant_birth_date'] . '">
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_address' ) . '</label>
-                <input type="text" name="participant_address" placeholder="' . pl_label( 'participant_address_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $participant['participant_address'] . '">
               </div>
               <div>
                 <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>

@@ -23,42 +23,9 @@ class ActivitiesController
     return $value;
   }
 
-  public function layout_buttons(): string
+  public function __sleep(): array
   {
-    $value = '';
-
-    // Si no existe el layout, lo designamos grid por defecto
-    if( !isset( $_SESSION['layout_mode'] ) || $_SESSION['layout_mode'] === 'grid' )
-    {
-      $grid_checked = 'bg-[#5560f5] text-white';
-      $list_checked = 'bg-gray-200 hover:bg-[#5560f5] hover:text-white';
-    }
-    else
-    {
-      $grid_checked = 'bg-gray-200 hover:bg-[#5560f5] hover:text-white';
-      $list_checked = 'bg-[#5560f5] text-white';
-    }
-
-    // HTML radio buttons
-    $value = '
-      <div id="layout_buttons" class="flex gap-2">
-        <button 
-            id="button_grid" 
-            class="py-2 px-3 ' . $grid_checked . ' transform transition duration-300 rounded-lg" 
-            type="button">
-          <i class="fa-solid fa-grid-2"></i>
-        </button>
-
-        <button 
-            id="button_table" 
-            class="py-2 px-3 ' . $list_checked . ' transform transition duration-300 rounded-lg" 
-            type="button">
-          <i class="fa-solid fa-list-ul"></i>
-        </button>
-      </div>
-    ';
-  
-    return $value;
+    return ['activities'];
   }
 
   // --------------------------------------------------------------------------------
@@ -153,7 +120,7 @@ class ActivitiesController
       ';
 
       // Botón para añadir una actividad
-      $add_button = ['activity_name' => new TableCell( $button, ['id' => 'btn-add-activity', 'colspan' => 3, 'class' => 'text-center'] )];
+      $add_button = ['activity_name' => new TableCell( $button, ['id' => 'btn-add-activity', 'colspan' => 5, 'class' => 'text-center'] )];
       $table->addRow( new TableRow( $add_button ) );
     }
 
@@ -337,14 +304,13 @@ class ActivitiesController
       $_SESSION['layout_mode'] = $fields['layout'];
 
       // Rellenamos los objetos a actualizar
-      $html = $this->layout_buttons();
+      $html =app_layout_buttons();
       $elements[] = ['selector' => '#layout_buttons', 'method_name' => 'update' , 'value' => $html];
   
       // Según el layout_mode, mostramos el grid o la tabla
       $html = $_SESSION['layout_mode'] == 'table'
         ? $this->table_activities()
-        : $this->grid_activities()
-      ;
+        : $this->grid_activities();
       $elements[] = ['selector' => '#activities_table', 'method_name' => 'update', 'value' => $html];
   
       // Si llega aquí está todo OK

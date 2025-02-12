@@ -19,8 +19,6 @@ class SignupController
    */
   public function ajax_signup( array $fields ): array
   {
-    global $logger;
-
     $value  = [];
     $db     = new pl_model();
 
@@ -39,14 +37,10 @@ class SignupController
       $required_fields = [
           'participant_name'
         , 'participant_birth_date'
-        , 'participant_address'
-        , 'participant_image_upload'
         , 'tutor_relationship_0'
         , 'tutor_full_name_0'
         , 'tutor_dni_0'
         , 'tutor_email_0'
-        , 'tutor_birth_date_0'
-        , 'tutor_image_upload_0'
         , 'schedule_days'
       ];
 
@@ -122,7 +116,6 @@ class SignupController
           , 1
         )
       ';
-      $logger->info( trim( $sql ) );
       $db->query( $sql );
 
       // Capturamos el id del nuevo usuario
@@ -140,20 +133,17 @@ class SignupController
             , user_relationship
             , user_email
             , user_dni
-            , user_birth_date
             , user_phone_number
           ) values (
               "'  . $detail_id2                               . '"
             , '   . $user_id                                  . '
             , "'  . $db->esc( $tutor['tutor_full_name'] )     . '"
-            , "'  . $db->esc( $tutor['tutor_relationship'] ) . '"
+            , "'  . $db->esc( $tutor['tutor_relationship'] )  . '"
             , "'  . $db->esc( $tutor['tutor_email'] )         . '"
             , "'  . $db->esc( $tutor['tutor_dni'] )           . '"
-            , "'  . $db->esc( $tutor['tutor_birth_date'] )    . '"
             , "'  . $db->esc( $tutor['tutor_phone_number'] )  . '"
           )
         ';
-        $logger->info( trim( $sql ) );
         $db->query( $sql );
 
         // Capturamos el ID del nuevo tutor
@@ -162,6 +152,9 @@ class SignupController
         // ------------------------------------------------------------------------------
         // Subida de foto de perfil
         // ------------------------------------------------------------------------------
+
+        if( empty( $tutor['tutor_image_upload'] ) && $tutor['tutor_image_upload']['size'] > 0 )
+          continue;
 
         // Generamos el nombre del directorio de destino. Si no existe lo creamos
         $dir = ASSETS_PATH . '/panel/tutors';
@@ -196,7 +189,6 @@ class SignupController
           , user_id
           , participant_name
           , participant_birth_date
-          , participant_address
           , participant_allergies
           , participant_special_needs
           , participant_medical_treatment
@@ -205,13 +197,11 @@ class SignupController
           , '   . $user_id                                 . '
           , "'  . $fields['participant_name']              . '"
           , "'  . $fields['participant_birth_date']        . '"
-          , "'  . $fields['participant_address']           . '"
           , "'  . $fields['participant_allergies']         . '"
           , "'  . $fields['participant_special_needs']     . '"
           , "'  . $fields['participant_medical_treatment'] . '"
         )
       ';
-      $logger->info( trim( $sql ) );
       $db->query( $sql );
 
       // Capturamos el ID del nuevo tutor
@@ -221,24 +211,27 @@ class SignupController
       // Subida de foto de perfil
       // ------------------------------------------------------------------------------
 
-      // Generamos el nombre del directorio de destino. Si no existe lo creamos
-      $dir = ASSETS_PATH . '/panel/participants';
-      if( !is_dir( $dir ) && !@mkdir( $dir ) )
+      if( !empty( $fields['participant_image_upload'] ) && $fields['participant_image_upload']['size'] > 0 )
       {
-        $message = pl_label( 'error-create-dir' );
-        continue;
-      }
+        // Generamos el nombre del directorio de destino. Si no existe lo creamos
+        $dir = ASSETS_PATH . '/panel/participants';
+        if( !is_dir( $dir ) && !@mkdir( $dir ) )
+        {
+          $message = pl_label( 'error-create-dir' );
+          continue;
+        }
 
-      // Calculamos la ruta de la imagen y el nombre final
-      $source     = $fields['participant_image_upload']['name'];
-      $extension  = pathinfo( $source, PATHINFO_EXTENSION );
-      $target     = $dir . '/' . pl_number_id( $participant_id ) . '_' . $participant_id2 . '.' . $extension;
-      
-      // Movemos el fichero temporal al directorio final
-      if( !move_uploaded_file( $fields['participant_image_upload']['tmp_name'], $target ) )
-      {
-        $message = pl_label( 'error-upload' );
-        continue;
+        // Calculamos la ruta de la imagen y el nombre final
+        $source     = $fields['participant_image_upload']['name'];
+        $extension  = pathinfo( $source, PATHINFO_EXTENSION );
+        $target     = $dir . '/' . pl_number_id( $participant_id ) . '_' . $participant_id2 . '.' . $extension;
+        
+        // Movemos el fichero temporal al directorio final
+        if( !move_uploaded_file( $fields['participant_image_upload']['tmp_name'], $target ) )
+        {
+          $message = pl_label( 'error-upload' );
+          continue;
+        }
       }
 
       // ------------------------------------------------------------------------------

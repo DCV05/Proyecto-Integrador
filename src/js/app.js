@@ -29,20 +29,23 @@ $( document ).ready( function() {
 } );
 
 
-function check_inputs( input ) {
+function check_inputs( input, show_alert = true ) {
   let has_error = false;
 
   // Capturamos el valor del input
   let input_val = input.val();
   if( input_val == null || input_val == '' ) {
-    generate_error_message( input.parent(), 'Campo requerido' );
     has_error = true;
+
+    // Mostramos la alerta
+    if( show_alert )
+      generate_error_message( input.parent(), 'Campo requerido' );
   }
 
   // Comprobamos que el valor del input email es válido
   if( input.attr( 'type' ) == 'email' && has_error == false ) {
     // Si no es un email válido, mostramos una alerta
-    if( !validate_email( input_val ) )
+    if( !validate_email( input_val ) && show_alert )
       generate_error_message( input.parent(), 'Email inválido' );
   }
 

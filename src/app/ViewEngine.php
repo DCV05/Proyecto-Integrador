@@ -20,13 +20,19 @@ class ViewEngine
 	protected object $controller;
 
 	/**
+	 * @var string Nombre del controlador utilizado
+	 */
+	protected string $controller_name;
+
+	/**
 	 * En este caso, el constructor almacenará la plantilla
 	 * @param string $template_path
 	 *  */ 
-	public function __construct( string $template_path, object $controller )
+	public function __construct( string $template_path, object $controller, string $controller_name )
 	{
-		$this->template_path 	= $template_path;
-		$this->controller			= $controller;
+		$this->template_path 		= $template_path;
+		$this->controller				= $controller;
+		$this->controller_name	= $controller_name;
 	}
 
 	/**
@@ -257,6 +263,11 @@ class ViewEngine
 		// Capturamos el contenido de la plantilla y la compilamos
 		$html = file_get_contents( $this->template_path );
 		$compiled_html = $this->compile( $html );
+
+		// Guardamos el controlador en la sesión
+		if( empty( $_SESSION['controllers'][$this->controller_name] ) )
+			$_SESSION['controllers'][$this->controller_name] = serialize( $this->controller );
+
 		echo $compiled_html;
 	}
 }

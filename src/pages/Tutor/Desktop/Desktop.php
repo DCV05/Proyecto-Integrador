@@ -38,7 +38,6 @@ class TutorDesktopController
         [user_id] => 11
         [user_name] => Daniel
         [user_email] => tutor1@example.com
-        [user_birth_date] => 2025-02-04
         [user_dni] => 34213213
         [user_phone_number] => 644753740
     */
