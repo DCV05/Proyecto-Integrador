@@ -20,7 +20,7 @@ class SignupController
   public function ajax_signup( array $fields ): array
   {
     $value  = [];
-    $db     = new pl_model();
+    $db     = new Model();
 
     // Inicializamos las variables de la llamada AJAX
     $result     = 0;
@@ -87,9 +87,11 @@ class SignupController
             *
           from ' . DB_PROJECT . '.user_details
           where
-            user_email = "' . $db->esc( $tutor['tutor_email'] ) . '"
+            user_email = ?
         ';
-        $db->pl_query( $sql );
+        $params = [$tutor['tutor_email']];
+        
+        $db->pl_query_prepared( $sql, $params );
         if( $db->next_row() )
         {
           $message = 'El usuario con el email: ' . $tutor['tutor_email'] . ' ya existe.';
@@ -108,15 +110,18 @@ class SignupController
           , user_password
           , role
           , enabled
-        ) values (
-            "' . pl_random()                        . '"
-          , "' . $db->esc( $fields['user_email'] )  . '"
-          , "' . $db->esc( $cyphered_password )     . '"
-          , 0
-          , 1
-        )
+        ) values ( ?, ?, ?, ?, ? )
       ';
-      $db->query( $sql );
+      
+      $params = [
+          pl_random()
+        , $fields['user_email']
+        , $cyphered_password
+        , 0
+        , 1
+      ];
+      
+      $db->pl_query_prepared( $sql, $params );
 
       // Capturamos el id del nuevo usuario
       $user_id = $db->get_last_id();
@@ -134,17 +139,20 @@ class SignupController
             , user_email
             , user_dni
             , user_phone_number
-          ) values (
-              "'  . $detail_id2                               . '"
-            , '   . $user_id                                  . '
-            , "'  . $db->esc( $tutor['tutor_full_name'] )     . '"
-            , "'  . $db->esc( $tutor['tutor_relationship'] )  . '"
-            , "'  . $db->esc( $tutor['tutor_email'] )         . '"
-            , "'  . $db->esc( $tutor['tutor_dni'] )           . '"
-            , "'  . $db->esc( $tutor['tutor_phone_number'] )  . '"
-          )
+        ) values ( ?, ?, ?, ?, ?, ?, ? )
         ';
-        $db->query( $sql );
+        
+        $params = [
+            $detail_id2
+          , $user_id
+          , $tutor['tutor_full_name']
+          , $tutor['tutor_relationship']
+          , $tutor['tutor_email']
+          , $tutor['tutor_dni']
+          , $tutor['tutor_phone_number']
+        ];
+        
+        $db->pl_query_prepared( $sql, $params );
 
         // Capturamos el ID del nuevo tutor
         $detail_id = $db->get_last_id();
@@ -192,17 +200,20 @@ class SignupController
           , participant_allergies
           , participant_special_needs
           , participant_medical_treatment
-        ) values (
-            "'  . $participant_id2                         . '"
-          , '   . $user_id                                 . '
-          , "'  . $fields['participant_name']              . '"
-          , "'  . $fields['participant_birth_date']        . '"
-          , "'  . $fields['participant_allergies']         . '"
-          , "'  . $fields['participant_special_needs']     . '"
-          , "'  . $fields['participant_medical_treatment'] . '"
-        )
+        ) values ( ?, ?, ?, ?, ?, ?, ? )
       ';
-      $db->query( $sql );
+      
+      $params = [
+          $participant_id2
+        , $user_id
+        , $fields['participant_name']
+        , $fields['participant_birth_date']
+        , $fields['participant_allergies']
+        , $fields['participant_special_needs']
+        , $fields['participant_medical_treatment']
+      ];
+      
+      $db->pl_query_prepared( $sql, $params );
 
       // Capturamos el ID del nuevo tutor
       $participant_id = $db->get_last_id();
@@ -258,14 +269,17 @@ class SignupController
               , participant_id
               , start_day
               , end_day
-            ) values (
-                "'  . pl_random()     . '"
-              , '   . $participant_id . '
-              , "'  . $start_date     . '"
-              , "'  . $end_date       . '"
-            )
+            ) values ( ?, ?, ? )
           ';
-          $db->query( $sql );
+          
+          $params = [
+              pl_random()
+            , $participant_id
+            , $start_date
+            , $end_date
+          ];
+          
+          $db->pl_query_prepared( $sql, $params );
         }
       }
       

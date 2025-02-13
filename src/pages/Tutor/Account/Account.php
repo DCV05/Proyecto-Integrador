@@ -27,10 +27,10 @@ class TutorAccountController
   public function table_users(): string
   {
     $value            = '';
-    $mod_user_details = new UserDetails();
+    $mod_user_detailss = new UserDetails();
 
     // Capturamos todas las cuentas relacionadas con el usuario de la sesión
-    $users = $mod_user_details->GetRows( $_SESSION['app']['user']['user_id'] );
+    $users = $mod_user_detailss->GetRows( $_SESSION['app']['user']['user_id'] );
 
     /*
       Array | account
@@ -303,7 +303,7 @@ class TutorAccountController
   public function ajax_edit_tutor( array $fields ): array
   {
     $value  = [];
-    $db     = new pl_model();
+    $db     = new Model();
 
     // Inicializamos las variables de la llamada AJAX
     $result     = 0;
@@ -342,16 +342,26 @@ class TutorAccountController
 
       $sql = '
         update ' . DB_PROJECT . '.user_details set
-            user_name         = "' . $db->esc( $fields['user_name'] )         . '"
-          , user_relationship = "' . $db->esc( $fields['user_relationship'] ) . '"
-          , user_email        = "' . $db->esc( $fields['user_email'] )        . '"
-          , user_dni          = "' . $db->esc( $fields['user_dni'] )          . '"
-          , user_phone_number = "' . $db->esc( $fields['user_phone_number'] ) . '"
+            user_name         = ?
+          , user_relationship = ?
+          , user_email        = ?
+          , user_dni          = ?
+          , user_phone_number = ?
         where
-          user_id = ' . $_SESSION['app']['user']['user_id'] . ' and
-          detail_id2 = "' . $db->esc( $fields['id2'] ) . '"
+          user_id = ? and
+          detail_id2 = ?
       ';
-      $db->pl_query( $sql );
+      $params = [
+          $fields['user_name']
+        , $fields['user_relationship']
+        , $fields['user_email']
+        , $fields['user_dni']
+        , $fields['user_phone_number']
+        , $_SESSION['app']['user']['user_id']
+        , $fields['id2']
+      ];
+      
+      $db->pl_query_prepared( $sql, $params );
 
       // Recargamos el HTML de la fila actualizada
       $html = $this->table_row_users( $fields['id2'] );
@@ -389,7 +399,7 @@ class TutorAccountController
   public function ajax_edit_participant( array $fields ): array
   {
     $value  = [];
-    $db     = new pl_model();
+    $db     = new Model();
 
     // Inicializamos las variables de la llamada AJAX
     $result     = 0;
@@ -428,16 +438,26 @@ class TutorAccountController
 
       $sql = '
         update ' . DB_PROJECT . '.participants set
-            participant_name              = "' . $db->esc( $fields['participant_name'] )              . '"
-          , participant_birth_date        = "' . $db->esc( $fields['participant_birth_date'] )        . '"
-          , participant_allergies         = "' . $db->esc( $fields['participant_allergies'] )         . '"
-          , participant_special_needs     = "' . $db->esc( $fields['participant_special_needs'] )     . '"
-          , participant_medical_treatment = "' . $db->esc( $fields['participant_medical_treatment'] ) . '"
+            participant_name              = ?
+          , participant_birth_date        = ?
+          , participant_allergies         = ?
+          , participant_special_needs     = ?
+          , participant_medical_treatment = ?
         where
-          user_id = ' . $_SESSION['app']['user']['user_id'] . ' and
-          participant_id2 = "' . $db->esc( $fields['id2'] ) . '"
+          user_id = ? and
+          participant_id2 = ?
       ';
-      $db->pl_query( $sql );
+      $params = [
+          $fields['participant_name']
+        , $fields['participant_birth_date']
+        , $fields['participant_allergies']
+        , $fields['participant_special_needs']
+        , $fields['participant_medical_treatment']
+        , $_SESSION['app']['user']['user_id']
+        , $fields['id2']
+      ];
+      
+      $db->pl_query_prepared( $sql, $params );
 
       // Recargamos el HTML de la fila actualizada
       $html = $this->table_row_participants( $fields['id2'] );
@@ -474,8 +494,9 @@ class TutorAccountController
    */
   public function ajax_popup_user( array $fields ): array
   {
-    $value  = [];
-    $db     = new pl_model();
+    $value            = [];
+    $db               = new Model();
+    $mod_user_details  = new UserDetails();
 
     // Inicializamos las variables de la llamada AJAX
     $result     = 0;
@@ -486,20 +507,10 @@ class TutorAccountController
     do
     {
       // Buscamos los datos del usuario solicitado
-      $sql = '
-        select
-          *
-        from ' . DB_PROJECT . '.user_details
-        where
-          detail_id2 = "' . $db->esc( $fields['id2'] ) . '"
-      ';
-      $db->pl_query( $sql );
-      if( !$db->next_row() )
+      $user_detail = $mod_user_details->GetRow( $fields['id2'] );
+      if( !$user_detail )
         break;
-
-      // Capturamos el registro
-      $user_detail = $db->get_row();
-
+      
       // Formulario
       $html = '
         <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -577,8 +588,9 @@ class TutorAccountController
    */
   public function ajax_popup_user_info( array $fields ): array
   {
-    $value  = [];
-    $db     = new pl_model();
+    $value            = [];
+    $db               = new Model();
+    $mod_user_details = new UserDetails();
 
     // Inicializamos las variables de la llamada AJAX
     $result     = 0;
@@ -589,19 +601,9 @@ class TutorAccountController
     do
     {
       // Buscamos los datos del usuario solicitado
-      $sql = '
-        select
-          *
-        from ' . DB_PROJECT . '.user_details
-        where
-          detail_id2 = "' . $db->esc( $fields['id2'] ) . '"
-      ';
-      $db->pl_query( $sql );
-      if( !$db->next_row() )
+      $user_detail = $mod_user_details->GetRow( $fields['id2'] );
+      if( !$user_detail )
         break;
-
-      // Capturamos el registro
-      $user_detail = $db->get_row();
 
       // Formulario
       $html = '

@@ -2,11 +2,11 @@
 
 class Activities
 {
-  private pl_model $db;
+  private Model $db;
 
   public function __construct()
   {
-    $this->db = new pl_model();
+    $this->db = new Model();
   }
 
   /**
@@ -16,12 +16,8 @@ class Activities
    */
   public function GetRows(): array
   {
-    $sql = '
-      select
-        * 
-      from ' . DB_PROJECT . '.activities
-    ';
-    return $this->db->pl_query( $sql, true );
+    $sql = 'select * from ' . DB_PROJECT . '.activities';
+    return $this->db->pl_query_prepared( $sql, [], true );
   }
 
   /**
@@ -37,10 +33,11 @@ class Activities
         * 
       from ' . DB_PROJECT . '.activities
       where
-        activity_id2 = "' . $this->db->esc( $activity_id2 ) . '"
+        activity_id2 = ?
     ';
-    $this->db->pl_query( $sql );
-    return $this->db->pl_query( $sql, true );
+    $params = [$this->db->esc( $activity_id2 )];
+
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 
   /**
@@ -57,9 +54,10 @@ class Activities
       from ' . DB_PROJECT . '.activities a
       left join ' . DB_PROJECT . '.activities_participants ap on a.activity_id = ap.activity_id
       where
-        ap.participant_id = ' . $this->db->esc( $participant_id );
-    $this->db->pl_query( $sql );
-    return $this->db->pl_query( $sql, true );
+        ap.participant_id = ?';
+    $params = [$participant_id];
+
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 
   /**
@@ -76,7 +74,9 @@ class Activities
       from ' . DB_PROJECT . '.activities a
       left join ' . DB_PROJECT . '.activities_monitors am on a.activity_id = am.activity_id
       where
-        am.monitor_id = ' . $this->db->esc( $monitor_id );
-    return $this->db->pl_query( $sql, true );
+        am.monitor_id = ?';
+    $params = [$monitor_id];
+    
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }

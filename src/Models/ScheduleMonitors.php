@@ -2,11 +2,11 @@
 
 class SchedulesMonitors
 {
-  private pl_model $db;
+  private Model $db;
 
   public function __construct()
   {
-    $this->db = new pl_model();
+    $this->db = new Model();
   }
 
   /**
@@ -16,12 +16,8 @@ class SchedulesMonitors
    */
   public function GetRows(): array
   {
-    $sql = '
-      select
-        * 
-      from ' . DB_PROJECT . '.schedule_monitors
-    ';
-    return $this->db->pl_query( $sql, true );
+    $sql = 'select * from ' . DB_PROJECT . '.schedule_monitors';
+    return $this->db->pl_query_prepared( $sql, [], true );
   }
 
   /**
@@ -37,30 +33,32 @@ class SchedulesMonitors
         * 
       from ' . DB_PROJECT . '.schedule_monitors
       where
-        schedule_id2 = "' . $this->db->esc( $schedule_id2 ) . '"
+        schedule_id2 = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$schedule_id2];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
+  
 
   /**
    * Obtiene los eventos de un monitor en formato JSON para un calendario.
    * 
-   * @param string $monitor_id ID del monitor.
+   * @param string $monitor_id2 ID del monitor.
    * @return array Array de eventos.
    */
   public function GetEvents( string $monitor_id2 ): array
   {
-    $db = new pl_model();
-
-    // Buscamos los horarios relacionados al monitor
     $sql = '
       select
         s.*
       from ' . DB_PROJECT . '.schedule_monitors s
       left join ' . DB_PROJECT . '.users u on s.monitor_id = u.user_id
       where
-        u.user_id2 = "' . $db->esc( $monitor_id2 ) . '"
+        u.user_id2 = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$monitor_id2];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }

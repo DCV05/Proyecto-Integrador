@@ -2,11 +2,11 @@
 
 class UserDetails
 {
-  private pl_model $db;
+  private Model $db;
 
   public function __construct()
   {
-    $this->db = new pl_model();
+    $this->db = new Model();
   }
 
   /**
@@ -22,9 +22,11 @@ class UserDetails
         * 
       from ' . DB_PROJECT . '.user_details 
       where
-        user_id = "' . $this->db->esc( $user_id ) . '"
+        user_id = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$user_id];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 
   /**
@@ -33,6 +35,7 @@ class UserDetails
    * @param string $detail_id2 Identificador del detalle del usuario.
    * @return array Datos del usuario si existe, o un array vacío si no hay resultados.
    */
+
   public function GetRow( string $detail_id2 ): array
   {
     $sql = '
@@ -40,9 +43,10 @@ class UserDetails
         * 
       from ' . DB_PROJECT . '.user_details 
       where
-        detail_id2 = "' . $this->db->esc( $detail_id2 ) . '"
+        detail_id2 = ?
     ';
-    $this->db->pl_query( $sql );
-    return $this->db->pl_query( $sql, true );
+    $params = [$detail_id2];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }

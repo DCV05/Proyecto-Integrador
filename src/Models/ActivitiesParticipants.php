@@ -2,11 +2,11 @@
 
 class ActivitiesParticipants
 {
-  private pl_model $db;
+  private Model $db;
 
   public function __construct()
   {
-    $this->db = new pl_model();
+    $this->db = new Model();
   }
 
   /**
@@ -16,12 +16,8 @@ class ActivitiesParticipants
    */
   public function GetRows(): array
   {
-    $sql = '
-      select
-        * 
-      from ' . DB_PROJECT . '.activities_participants
-    ';
-    return $this->db->pl_query( $sql, true );
+    $sql = 'select * from ' . DB_PROJECT . '.activities_participants';
+    return $this->db->pl_query_prepared( $sql, [], true );
   }
 
   /**
@@ -33,20 +29,23 @@ class ActivitiesParticipants
    */
   public function GetRow( int $activity_id, int $participant_id = null ): array
   {
-    // Si hemos puesto un filtro por participante, lo añadimos a la consulta
-    $where = !is_null( $participant_id )
-    ? 'and participant_id = ' . $participant_id
-    : '';
-    
     $sql = '
       select
         * 
       from ' . DB_PROJECT . '.activities_participants
       where
-        activity_id = "' . $this->db->esc( $activity_id ) . '"
-        ' . $where . '
+        activity_id = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$activity_id];
+    
+    // Añadimos el parámetro del participante
+    if( !is_null( $participant_id ) )
+    {
+      $sql      .= 'and participant_id = ?';
+      $params[] = $participant_id;
+    }
+    
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 
   /**
@@ -57,11 +56,6 @@ class ActivitiesParticipants
    */
   public function GetActivityDetails( int $activity_id, int $participant_id = null ): array
   {
-    // Si hemos puesto un filtro por participante, lo añadimos a la consulta
-    $where = !is_null( $participant_id )
-    ? 'and participant_id = ' . $participant_id
-    : '';
-    
     $sql = '
       select 
           ap.*
@@ -73,11 +67,18 @@ class ActivitiesParticipants
       from ' . DB_PROJECT . '.activities_participants ap
       join ' . DB_PROJECT . '.participants p on ap.participant_id = p.participant_id
       where
-        ap.activity_id = "' . $this->db->esc( $activity_id ) . '"
-        ' . $where . '
+        ap.activity_id = ?
     ';
-
-    return $this->db->pl_query( $sql, true );
+    $params = [$activity_id];
+    
+    // Añadimos el parámetro del participante
+    if( !is_null( $participant_id ) )
+    {
+      $sql      .= 'and participant_id = ?';
+      $params[] = $participant_id;
+    }
+    
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
   
   /**
@@ -86,10 +87,10 @@ class ActivitiesParticipants
   * @param int $activity_id ID de la actividad.
   * @return array Lista de participantes con detalles de usuario.
   */
- public function GetAttendanceDetails( int $activity_id, int $participant_id = null ): array
- {
-  $mod_participants             = new Participants();
-  $mod_activities_participants  = new Attendance();
+  public function GetAttendanceDetails( int $activity_id, int $participant_id = null ): array
+  {
+    $mod_participants             = new Participants();
+    $mod_activities_participants  = new Attendance();
 
     // Obtenemos la lista de registros de asistencia
     $attendance_list = $mod_activities_participants->GetRow( $activity_id, $participant_id );

@@ -26,11 +26,19 @@ class TutorDesktopController
   public function content_tutor(): string
   {
     $value = '';  
-    $db    = new pl_model();
+    $db    = new Model();
 
     // Buscamos las cuentas relacionadas al usuario
-    $sql = 'select * from ' . DB_PROJECT . '.user_details where user_id = ' . $_SESSION['app']['user']['user_id'];
-    $db->pl_query( $sql );
+    $sql = '
+      select
+        * 
+      from ' . DB_PROJECT . '.user_details 
+      where
+        user_id = ?
+    ';
+    $params = [$_SESSION['app']['user']['user_id']];
+
+    $db->pl_query_prepared( $sql, $params );
 
     /*
       Array | account

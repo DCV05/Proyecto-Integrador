@@ -285,7 +285,7 @@ class ActivitiesController
   
   public function ajax_update_layout( array $fields ): array
   {
-    $db = new pl_model();
+    $db = new Model();
   
     // Inicializamos los valores
     $result   = 0;
@@ -335,7 +335,7 @@ class ActivitiesController
   public function ajax_add_activity( array $fields ): array
   {
     $value  = [];
-    $db     = new pl_model();
+    $db     = new Model();
 
     // Inicializamos las variables de la llamada AJAX
     $result     = 0;
@@ -378,14 +378,16 @@ class ActivitiesController
           , activity_name
           , activity_description
           , activity_time
-        ) values (
-            "' . $activity_id2                               . '"
-          , "' . $db->esc( $fields['activity_name'] )        . '"
-          , "' . $db->esc( $fields['activity_description'] ) . '"
-          , "' . $db->esc( $fields['activity_time'] )        . '"
-        )
+        ) values ( ?, ?, ?, ? )
       ';
-      $db->pl_query( $sql );
+      $params = [
+          $activity_id2
+        , $fields['activity_name']
+        , $fields['activity_description']
+        , $fields['activity_time']
+      ];
+      
+      $db->pl_query_prepared( $sql, $params );
 
       // Recargamos el HTML de la fila actualizada
       $html = $this->table_row_activities( $activity_id2 );
@@ -423,7 +425,7 @@ class ActivitiesController
   public function ajax_edit_activity( array $fields ): array
   {
     $value  = [];
-    $db     = new pl_model();
+    $db     = new Model();
 
     // Inicializamos las variables de la llamada AJAX
     $result     = 0;
@@ -460,13 +462,20 @@ class ActivitiesController
 
       $sql = '
         update ' . DB_PROJECT . '.activities set
-            activity_name        = "' . $db->esc( $fields['activity_name'] )        . '"
-          , activity_description = "' . $db->esc( $fields['activity_description'] ) . '"
-          , activity_time        = "' . $db->esc( $fields['activity_time'] )        . '"
+            activity_name        = ?
+          , activity_description = ?
+          , activity_time        = ?
         where
-          activity_id2 = "' . $db->esc( $fields['aid2'] ) . '"
+          activity_id2 = ?
       ';
-      $db->pl_query( $sql );
+      $params = [
+          $fields['activity_name']
+        , $fields['activity_description']
+        , $fields['activity_time']
+        , $fields['aid2']
+      ];
+      
+      $db->pl_query_prepared( $sql, $params );
 
       // Recargamos el HTML de la fila actualizada
       $html = $this->table_row_activities( $fields['aid2'] );
@@ -504,7 +513,7 @@ class ActivitiesController
   public function ajax_delete_activity( array $fields ): array
   {
     $value  = [];
-    $db     = new pl_model();
+    $db     = new Model();
 
     // Inicializamos las variables de la llamada AJAX
     $result     = 0;
@@ -535,10 +544,10 @@ class ActivitiesController
       // Delete
       // --------------------------------------------------------------------------------------------------------------
 
-      $sql = 'select activity_id from ' . DB_PROJECT . '.activities where activity_id2 = "' . $fields['aid2'] . '"';
-      $db->pl_query( $sql );
-      if( $db->next_row() )
-        $activity_id = $db->get_row()['activity_id'];
+      // Buscamos si la actividad existe
+      $activity = ( new Activities() )->GetRow( $fields['aid2'] );
+      if( $activity )
+        $activity_id = $activity['activity_id'];
       else
       {
         $message = pl_label( 'activity_not_found' );
@@ -549,25 +558,25 @@ class ActivitiesController
       $sql = '
         delete from ' . DB_PROJECT . '.activities_participants
         where
-          activity_id = ' . $activity_id . '
+          activity_id = ?
       ';
-      $db->pl_query( $sql );
+      $db->pl_query_prepared( $sql, [$activity_id] );
 
       // Borramos las vinculaciones con monitores
       $sql = '
         delete from ' . DB_PROJECT . '.activities_monitors
         where
-          activity_id = ' . $activity_id . '
+          activity_id = ?
       ';
-      $db->pl_query( $sql );
+      $db->pl_query_prepared( $sql, [$activity_id] );
 
       // Borramos la actividad
       $sql = '
         delete from ' . DB_PROJECT . '.activities
         where
-          activity_id = ' . $activity_id . '
+          activity_id = ?
       ';
-      $db->pl_query( $sql );
+      $db->pl_query_prepared( $sql, [$activity_id] );
 
       // Rellenamos los objetos a actualizar
       $elements = [

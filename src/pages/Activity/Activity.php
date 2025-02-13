@@ -220,7 +220,7 @@ class ActivityController
    */
   public function ajax_add_participant( array $fields ): array
   {
-    $db               = new pl_model();
+    $db               = new Model();
     $mod_participants = new Participants();
     $mod_activities   = new Activities();
 
@@ -272,12 +272,14 @@ class ActivityController
         insert into ' . DB_PROJECT . '.activities_participants (
             activity_id
           , participant_id
-        ) values (
-            "' . $db->esc( $activity['activity_id'] ) . '"
-          , "' . $db->esc( $participant[0]['participant_id'] ) . '"
-        )
+        ) values ( ?, ? )
       ';
-      $db->pl_query( $sql );
+      $params = [
+          $activity['activity_id']
+        , $participant[0]['participant_id']
+      ];
+      
+      $db->pl_query_prepared( $sql, $params );
 
       // Recargamos la tabla de participantes
       $html = $this->table_participants();

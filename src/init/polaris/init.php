@@ -1,12 +1,12 @@
 <?php
 
-$db = new pl_model( 'mysql' );
+$db = new Model( 'mysql' );
 
 try
 {
   // Verificamos si la base de datos ya existe
-  $sql = 'SHOW DATABASES LIKE "polaris"';
-  $db->query( $sql );
+  $sql = 'show databases like "polaris"';
+  $db->pl_query_prepared( $sql );
 
   if( $db->get_num_rows() > 0 )
     throw new Exception( 'Database already exists.' );

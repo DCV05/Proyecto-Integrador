@@ -1,12 +1,12 @@
 <?php
 
-$db = new pl_model( 'mysql' );
+$db = new Model( 'mysql' );
 
 try
 {
   // Verificamos si la base de datos ya existe
-  $sql = 'SHOW DATABASES LIKE "proyecto_integrador"';
-  $db->query( $sql );
+  $sql = 'show databases like "proyecto_integrador"';
+  $db->pl_query_prepared( $sql );
 
   if( $db->get_num_rows() > 0 )
     throw new Exception( 'Database already exists.' );

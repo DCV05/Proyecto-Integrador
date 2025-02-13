@@ -34,7 +34,7 @@ class Router
    */
   public function __construct()
   {   
-    $db = new pl_model();
+    $db = new Model();
 
     try
     {      
@@ -101,10 +101,14 @@ class Router
       }
 
       // Buscamos la página en la DB
-      $sql  = 'select * from ' . DB_SYS . '.polaris_pages where url = "' . $db->esc( $this->uri ) . '" limit 1';
-      $db->pl_query( $sql );
+      $sql    = 'select * from ' . DB_SYS . '.polaris_pages where url = ? limit 1';
+      $params = [$db->esc( $this->uri )];
+
+      // Ejecutamos la consulta
+      $db->pl_query_prepared( $sql, $params );
       if( $db->next_row() )
         $row = $db->get_row();
+
 
       // Si no hay resultados, redireccionamos al home
       if( empty( $row ) || $this->uri !== $row['url'] )

@@ -28,7 +28,7 @@ class LoginController
   public function ajax_login( array $fields ): array
   {
     $value  = [];
-    $db     = new pl_model();
+    $db     = new Model();
 
     // Inicializamos las variables de la llamada AJAX
     $result     = 0;
@@ -63,10 +63,13 @@ class LoginController
           *
         from ' . DB_PROJECT . '.users
         where
-          user_email = "' . $db->esc( $fields['email'] ) . '" and
+          user_email = ? and
           enabled = 1
       ';
-      $db->pl_query( $sql );
+      $params = [$fields['email']];
+      $db->pl_query_prepared( $sql, $params );
+      
+      // Si no encuentra el registro, mostramos una alerta
       if( $db->next_row() )
         $row = $db->get_row();
       else

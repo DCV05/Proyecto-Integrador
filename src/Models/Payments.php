@@ -2,11 +2,11 @@
 
 class Payments
 {
-  private pl_model $db;
+  private Model $db;
 
   public function __construct()
   {
-    $this->db = new pl_model();
+    $this->db = new Model();
   }
 
   /**
@@ -16,12 +16,8 @@ class Payments
    */
   public function GetRows(): array
   {
-    $sql = '
-      select
-        * 
-      from ' . DB_PROJECT . '.payments
-    ';
-    return $this->db->pl_query( $sql, true );
+    $sql = 'select * from ' . DB_PROJECT . '.payments';
+    return $this->db->pl_query_prepared( $sql, [], true );
   }
 
   /**
@@ -37,8 +33,10 @@ class Payments
         * 
       from ' . DB_PROJECT . '.payments
       where
-        payment_id2 = "' . $this->db->esc( $payment_id2 ) . '"
+        payment_id2 = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$payment_id2];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }

@@ -2,11 +2,11 @@
 
 class SchedulesParticipants
 {
-  private pl_model $db;
+  private Model $db;
 
   public function __construct()
   {
-    $this->db = new pl_model();
+    $this->db = new Model();
   }
 
   /**
@@ -16,12 +16,8 @@ class SchedulesParticipants
    */
   public function GetRows(): array
   {
-    $sql = '
-      select
-        * 
-      from ' . DB_PROJECT . '.schedule_participants
-    ';
-    return $this->db->pl_query( $sql, true );
+    $sql = 'select * from ' . DB_PROJECT . '.schedule_participants';
+    return $this->db->pl_query_prepared( $sql, [], true );
   }
 
   /**
@@ -37,9 +33,11 @@ class SchedulesParticipants
         * 
       from ' . DB_PROJECT . '.schedule_participants
       where
-        schedule_id2 = "' . $this->db->esc( $schedule_id2 ) . '"
+        schedule_id2 = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$schedule_id2];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 
   /**
@@ -50,17 +48,16 @@ class SchedulesParticipants
    */
   public function GetEvents( string $participant_id2 ): array
   {
-    $db = new pl_model();
-
-    // Buscamos los horarios relacionados al participante
     $sql = '
       select
         s.*
       from ' . DB_PROJECT . '.schedule_participants s
       left join ' . DB_PROJECT . '.participants p on s.participant_id = p.participant_id
       where
-        p.participant_id2 = "' . $db->esc( $participant_id2 ) . '"
+        p.participant_id2 = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$participant_id2];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }

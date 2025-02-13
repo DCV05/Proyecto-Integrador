@@ -2,11 +2,11 @@
 
 class Participants
 {
-  private pl_model $db;
+  private Model $db;
 
   public function __construct()
   {
-    $this->db = new pl_model();
+    $this->db = new Model();
   }
 
   /**
@@ -16,12 +16,8 @@ class Participants
    */
   public function GetAll(): array
   {
-    $sql = '
-      select
-        * 
-      from ' . DB_PROJECT . '.participants
-    ';
-    return $this->db->pl_query( $sql, true );
+    $sql = 'select * from ' . DB_PROJECT . '.participants';
+    return $this->db->pl_query_prepared( $sql, [], true );
   }
 
   /**
@@ -37,9 +33,11 @@ class Participants
         * 
       from ' . DB_PROJECT . '.participants 
       where
-        user_id = "' . $this->db->esc( $user_id ) . '"
+        user_id = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$user_id];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 
   /**
@@ -50,16 +48,17 @@ class Participants
    */
   public function GetRow( int|string $participant_id ): array
   {
-    // Determinamos si el identificador es numérico o un string
     $field = is_numeric( $participant_id ) ? 'participant_id' : 'participant_id2';
-
+  
     $sql = '
       select
         * 
       from ' . DB_PROJECT . '.participants 
       where
-        ' . $field . ' = "' . $this->db->esc( $participant_id ) . '"
+        ' . $field . ' = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$participant_id];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }

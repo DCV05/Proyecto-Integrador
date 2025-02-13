@@ -7,7 +7,7 @@
  * Modelo de MySQL para realizar su conexión
  * 
  */
-class pl_model extends mysqli
+class Model extends mysqli
 {
   /**
    * @var string Nombre de la base de datos
@@ -95,6 +95,101 @@ class pl_model extends mysqli
     catch( mysqli_sql_exception | Exception $e )
     {
       print "\n\nError: {$e->getMessage()}\n\n";
+    }
+    finally
+    {
+      return $value;
+    }
+  }
+
+  /**
+   * Realiza una consulta SQL preparada con placeholders (?).
+   *
+   * @param string $sql         Consulta SQL con placeholders (p.ej: "SELECT * FROM usuarios WHERE id = ?").
+   * @param array  $parameters  Arreglo con valores en el mismo orden que los placeholders.
+   * @param bool   $return_all  Si es true y la consulta es SELECT, retornará todas las filas en un array.
+   *
+   * @return array|bool  Array de resultados si se trata de una consulta SELECT
+   */
+  public function pl_query_prepared( string $sql, array $parameters = [], bool $return_all = false ): array|bool
+  {
+    $db     = new Model();
+    $value  = [];
+
+    try
+    {
+      // Liberar el resultado previo si existe
+      if( !empty( $this->result ) && is_object( $this->result ) )
+        $this->result->free();
+
+      // Preparamos la sentencia
+      $stmt = $this->prepare( $sql );
+      if( !$stmt )
+        throw new Exception( 'Error during the query: ' . $this->error );
+
+      // Si hay parámetros, reemplazamos los parámetros dentro de la consutla
+      if( count( $parameters ) > 0 )
+      {
+        $types  = '';
+        $values = [];
+
+        // Detectamos tipos y asignamos
+        foreach( $parameters as $parameter )
+        {
+          // Si es un string, escapamos el parámetro
+          if( is_string( $parameter ) )
+            $parameter = $db->esc( $parameter );
+
+          // Dependiendo del tipo de parámetro añadimos un tipo específico
+          [$parameter_type, $parameter_value] = match( gettype( $parameter ) )
+          {
+              'bool'    => ['i', intval( $parameter )]
+            , 'integer' => ['i', $parameter]
+            , 'float'   => ['d', $parameter]
+            , 'null'    => ['s', null]
+            , default   => ['s', $parameter]
+          };
+
+          // Añadimos el parámetro y el tipo
+          $types    .= $parameter_type;
+          $values[] = $parameter_value;
+        }
+
+        // Preparamos el array de parámetros para bind_param
+        $bind_params = [$types];
+        foreach( $values as &$value )
+          $bind_params[] = &$value; // MYSQLI pide pasarlo por referencia obligatoriamente
+
+        /*
+          Array | bind_params
+            [0] => ss // Tipos
+            [1] => /  // Parámetros
+            [2] => test
+        */
+
+        // Reemplazamos los parámetros
+        call_user_func_array( [$stmt, 'bind_param'], $bind_params );
+      }
+
+      // Ejecutamos
+      if( $stmt->execute() )
+      {
+        // Guardamos el resultado
+        $this->result = $stmt->get_result();
+
+        // Select | fetch_all está disponible si $this->result es instancia de mysqli_result
+        if( $return_all && $this->result instanceof mysqli_result )
+          $value = $this->result->fetch_all( MYSQLI_ASSOC );
+
+        // Insert, Delete, Update
+        elseif( $this->affected_rows >= 0 )
+          $value = true;
+      }
+    }
+    catch( Exception $e )
+    {
+      print 'Error: ' . $e->getMessage();
+      $value = false;
     }
     finally
     {
@@ -243,7 +338,7 @@ class pl_model extends mysqli
     }
     else
     {
-      print "\n\nThe field <b>{$col_name}</b> already exists <b>{$table_name}</b>";
+      print "\n\nThe field <b>{$col_name}</b> already exists in <b>{$table_name}</b>";
       return 0;
     }
   }

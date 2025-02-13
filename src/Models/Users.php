@@ -2,11 +2,11 @@
 
 class Users
 {
-  private pl_model $db;
+  private Model $db;
 
   public function __construct()
   {
-    $this->db = new pl_model();
+    $this->db = new Model();
   }
 
   /**
@@ -16,12 +16,8 @@ class Users
    */
   public function GetRows(): array
   {
-    $sql = '
-      select
-        * 
-      from ' . DB_PROJECT . '.users
-    ';
-    return $this->db->pl_query( $sql, true );
+    $sql = 'select * from ' . DB_PROJECT . '.users';
+    return $this->db->pl_query_prepared( $sql, [], true );
   }
 
   /**
@@ -37,9 +33,10 @@ class Users
         * 
       from ' . DB_PROJECT . '.users
       where
-        user_id2 = "' . $this->db->esc( $user_id2 ) . '"
+        user_id2 = ?
     ';
-    $this->db->pl_query( $sql );
-    return $this->db->pl_query( $sql, true );
+    $params = [$user_id2];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }

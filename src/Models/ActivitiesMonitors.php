@@ -2,11 +2,11 @@
 
 class ActivitiesMonitors
 {
-  private pl_model $db;
+  private Model $db;
 
   public function __construct()
   {
-    $this->db = new pl_model();
+    $this->db = new Model();
   }
 
   /**
@@ -16,12 +16,8 @@ class ActivitiesMonitors
    */
   public function GetRows(): array
   {
-    $sql = '
-      select
-        * 
-      from ' . DB_PROJECT . '.activities_monitors
-    ';
-    return $this->db->pl_query( $sql, true );
+    $sql = 'select * from ' . DB_PROJECT . '.activities_monitors';
+    return $this->db->pl_query_prepared( $sql, [], true );
   }
 
   /**
@@ -38,11 +34,14 @@ class ActivitiesMonitors
         * 
       from ' . DB_PROJECT . '.activities_monitors
       where
-        activity_id = "' . $this->db->esc( $activity_id ) . '" and
-        monitor_id = "' . $this->db->esc( $monitor_id ) . '"
+        activity_id = ? and
+        monitor_id = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$activity_id, $monitor_id];
+
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
+  
 
   /**
    * Obtiene una fila específica de la tabla `activities_monitors` según `monitor_id`.
@@ -52,9 +51,7 @@ class ActivitiesMonitors
    */
   public function GetMonitorRows( int|string $monitor_id ): array
   {
-    // Determinamos si el identificador es numérico o un string
     $field = is_numeric( $monitor_id ) ? 'monitor_id' : 'monitor_id2';
-
     $sql = '
       select
           am.* 
@@ -62,8 +59,10 @@ class ActivitiesMonitors
       from ' . DB_PROJECT . '.activities_monitors am
       left join ' . DB_PROJECT . '.activities a on am.activity_id = a.activity_id
       where
-        am.' . $field . ' = "' . $this->db->esc( $monitor_id ) . '"
+        am.' . $field . ' = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$monitor_id];
+
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }

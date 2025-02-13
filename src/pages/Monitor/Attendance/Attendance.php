@@ -205,7 +205,7 @@ class MonitorAttendanceController
    */
   public function ajax_update_attendance( array $fields ): array
   {
-    $db       = new pl_model();
+    $db       = new Model();
     $result   = 0;
     $message  = '';
     $redirect = '';
@@ -260,14 +260,16 @@ class MonitorAttendanceController
           , participant_id
           , activity_id
           , ' . $column . '
-        ) values (
-            "'  . pl_random()                                   . '"
-          , '   . $db->esc( $participant[0]['participant_id'] ) . '
-          , '   . $activity[0]['activity_id']                   . '
-          , "'  . $db->esc( $fields['datetime'] )               . '"
-        )
+        ) values ( ?, ?, ?, ? )
       ';
-      $db->pl_query( $sql );
+      $params = [
+          pl_random()
+        , $participant[0]['participant_id']
+        , $activity[0]['activity_id']
+        , $fields['datetime']
+      ];
+      
+      $db->pl_query_prepared( $sql, $params );
 
       // Recargar la fila de la tabla
       $html = $this->table_row_attendance( $activity[0]['activity_id'], $participant[0]['participant_id'] );

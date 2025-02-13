@@ -2,11 +2,11 @@
 
 class Attendance
 {
-  private pl_model $db;
+  private Model $db;
 
   public function __construct()
   {
-    $this->db = new pl_model();
+    $this->db = new Model();
   }
 
   /**
@@ -16,12 +16,8 @@ class Attendance
    */
   public function GetRows(): array
   {
-    $sql = '
-      select
-        * 
-      from ' . DB_PROJECT . '.attendance
-    ';
-    return $this->db->pl_query( $sql, true );
+    $sql = 'select * from ' . DB_PROJECT . '.attendance';
+    return $this->db->pl_query_prepared( $sql, [], true );
   }
 
   /**
@@ -32,19 +28,22 @@ class Attendance
    */
   public function GetRow( int $activity_id, int $participant_id = null ): array
   {
-    // Si hemos puesto un filtro por participante, lo añadimos a la consulta
-    $where = !is_null( $participant_id )
-      ? 'and participant_id = ' . $participant_id
-      : '';
-
     $sql = '
       select
         * 
       from ' . DB_PROJECT . '.attendance
       where
-        activity_id = ' . $this->db->esc( $activity_id ) . '
-        ' . $where . '
+        activity_id = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$activity_id];
+    
+    // Añadimos el parámetro del participante
+    if( !is_null( $participant_id ) )
+    {
+      $sql      .= 'and participant_id = ?';
+      $params[] = $participant_id;
+    }
+    
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }

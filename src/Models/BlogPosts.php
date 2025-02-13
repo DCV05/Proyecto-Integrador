@@ -2,11 +2,11 @@
 
 class BlogPosts
 {
-  private pl_model $db;
+  private Model $db;
 
   public function __construct()
   {
-    $this->db = new pl_model();
+    $this->db = new Model();
   }
 
   /**
@@ -16,12 +16,8 @@ class BlogPosts
    */
   public function GetRows(): array
   {
-    $sql = '
-      select
-        * 
-      from ' . DB_PROJECT . '.posts
-    ';
-    return $this->db->pl_query( $sql, true );
+    $sql = 'select * from ' . DB_PROJECT . '.posts';
+    return $this->db->pl_query_prepared( $sql, [], true );
   }
 
   /**
@@ -37,8 +33,10 @@ class BlogPosts
         * 
       from ' . DB_PROJECT . '.posts
       where
-        post_id2 = "' . $this->db->esc( $post_id2 ) . '"
+        post_id2 = ?
     ';
-    return $this->db->pl_query( $sql, true );
+    $params = [$post_id2];
+
+    return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }
