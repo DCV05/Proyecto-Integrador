@@ -13,6 +13,7 @@
     ],
     "require": {
         "monolog/monolog": "^3.8",
-        "erguncaner/table": "dev-master"
+        "erguncaner/table": "dev-master",
+        "phpmailer/phpmailer": "^6.9"
     }
 }

@@ -113,7 +113,7 @@ INSERT INTO `user_details` (`detail_id2`, `user_id`, `user_name`, `user_email`, 
 ('D78S9A0D7A89SD7A89', 1, 'Laura Sánchez', 'tutor1@example.com', 'Madre', '11111111A', '555555555'),
 ('H7GF89F789H78F9G', 2, 'Carlos Rodríguez', 'monitor1@example.com', 'Monitor', '2222222B', '666666666');
 
-CREATE TABLE `schedule` (
+CREATE TABLE `schedule_participants` (
   `schedule_id` int(11) NOT NULL,
   `schedule_id2` varchar(32) NOT NULL,
   `participant_id` int(11) NOT NULL,
@@ -121,7 +121,18 @@ CREATE TABLE `schedule` (
   `end_day` date NOT NULL
 );
 
-INSERT INTO `schedule` (`schedule_id`, `schedule_id2`, `participant_id`, `start_day`, `end_day`) VALUES
-(1, 'DF78SF78DS9F789DS7F89SD7G89', 1, '2025-02-05', '2025-02-12');
+INSERT INTO `schedule_participants` (`schedule_id`, `schedule_id2`, `participant_id`, `start_day`, `end_day`) VALUES
+(1, 'DF78SF78DS9F789DS7F89SD7G89', 1, '2025-02-12', '2025-02-19');
+
+CREATE TABLE `schedule_monitors` (
+  `schedule_id` int(11) NOT NULL,
+  `schedule_id2` varchar(32) NOT NULL,
+  `monitor_id` int(11) NOT NULL,
+  `start_day` date NOT NULL,
+  `end_day` date NOT NULL
+);
+
+INSERT INTO `schedule_monitors` (`schedule_id`, `schedule_id2`, `monitor_id`, `start_day`, `end_day`) VALUES
+(1, 'DF78SF78DS9F789DS7F89SD7G89', 2, '2025-02-12', '2025-02-19');
 
 COMMIT;

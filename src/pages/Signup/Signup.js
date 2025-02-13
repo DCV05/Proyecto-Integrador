@@ -42,11 +42,13 @@ $( document ).ready( function() {
   // Inicializa FullCalendar en la sección de horario
   const calendar_el = $( '#calendar' )[0];
   const calendar = new FullCalendar.Calendar( calendar_el, {
-    initialView  : 'dayGridMonth',
-    timeZone     : 'local',
-    selectable   : true,
-    selectMirror : true,
-    validRange   : { start: new Date().toISOString().split( 'T' )[0], end: '2026-12-31' },
+      initialView  : 'dayGridMonth'
+    , timeZone     : 'local'
+    , selectable   : true
+    , selectMirror : true
+    , validRange   : { start: new Date().toISOString().split( 'T' )[0], end: '2026-12-31'
+    , locale       : language
+  },
 
     // Al arrastrar para seleccionar un rango
     select: info => {

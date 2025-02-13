@@ -26,11 +26,6 @@ $entries = [
     'title' => pl_label( 'activities' ),
     'link'  => '/activities',
     'icon'  => app_get_svg_icon( 'activities' )
-  ],
-  [
-    'title' => pl_label( 'account' ),
-    'link'  => '/' . $folder . '/account',
-    'icon'  => app_get_svg_icon( 'account' )
   ]
 ];
 
@@ -42,6 +37,22 @@ if( $role === 2 )
     , 'icon'  => app_get_svg_icon( 'finances' )
   ];
 }
+
+if( $role === 1 )
+{
+  $entries[] = [
+      'title' => pl_label( 'schedule' )
+    , 'link'  => '/' . $folder . '/schedule'
+    , 'icon'  => app_get_svg_icon( 'schedule' )
+  ];
+}
+
+// Añadimos el apartado de cuenta al final del sidebar
+$entries[] = [
+    'title' => pl_label( 'account' )
+  , 'link'  => '/' . $folder . '/account'
+  , 'icon'  => app_get_svg_icon( 'account' )
+];
 
 // Definimos las entradas del encabezado (heading_entries)
 global $heading_entries;

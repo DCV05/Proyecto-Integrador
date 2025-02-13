@@ -17,6 +17,7 @@ $( document ).ready( function() {
     , editable     : false  // ❌ No permite mover eventos
     , eventClick   : null   // ❌ No permite hacer click en eventos
     , dateClick    : null   // ❌ No permite hacer click en fechas para agregar eventos
+    , locale       : language
   } );
   
   calendar.render();

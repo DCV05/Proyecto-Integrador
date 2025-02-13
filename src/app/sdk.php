@@ -1,5 +1,8 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 /**
  * Inicializa la sesión y configura variables de entorno para Polaris.
  *
@@ -259,6 +262,56 @@ function pl_normalize( $string, $sep = '-' ): string
   $string = preg_replace( '/[^a-z0-9]+/', $sep, $string );
 
   return trim( $string, $sep );
+}
+
+/**
+ * Envía un correo electrónico utilizando PHPMailer con configuración básica.
+ *
+ * El correo se envía en formato HTML con un título y contenido especificados.
+ *
+ * @param string $email_address Dirección de correo final.
+ * @param string $title El título del correo.
+ * @param string $html El contenido del correo en formato HTML.
+ *
+ * @return bool
+ *
+ * @throws Exception Si ocurre un error al enviar el correo.
+ */
+function pl_send_email( string $email_address, string $title, string $html ): bool
+{
+  $value = false;
+
+  try
+  {
+    // Inicializamos el email y designamos la configuración
+    $mail = new PHPMailer( true );
+
+    $mail->isSMTP();
+    $mail->Host 		= 'localhost';
+    $mail->Port 		= 25;
+    $mail->CharSet 	= 'UTF-8';
+    $mail->Encoding = 'base64';
+
+    // Configuración del correo
+    $mail->setFrom( 'server@campamento.com', 'Campamento' );
+    $mail->addAddress( $email_address );
+
+    $mail->isHTML( true );
+    $mail->Subject 	= $title;
+    $mail->Body 		= $html;
+
+    // Enviamos el email
+    $mail->send();
+    $value = true;
+  }
+  catch( Exception $e )
+  {
+    print $e->getMessage();
+  }
+  finally
+  {
+    return $value;
+  }
 }
 
 ?>

@@ -25,7 +25,7 @@ class ParticipantController
   public function events(): string
   {
     $value          = '';
-    $mod_schedules  = new Schedules();
+    $mod_schedules  = new SchedulesParticipants();
 
     // Capturamos los eventos
     $events = $mod_schedules->GetEvents( $this->participant_id2 );

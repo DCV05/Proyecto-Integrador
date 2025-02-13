@@ -47,11 +47,14 @@ class ActivitiesMonitors
   /**
    * Obtiene una fila específica de la tabla `activities_monitors` según `monitor_id`.
    * 
-   * @param int $monitor_id ID del monitor.
+   * @param int|string $monitor_id ID del monitor.
    * @return array Datos de la relación si existe, o un array vacío si no hay resultados.
    */
-  public function GetMonitorRows( int $monitor_id ): array
+  public function GetMonitorRows( int|string $monitor_id ): array
   {
+    // Determinamos si el identificador es numérico o un string
+    $field = is_numeric( $monitor_id ) ? 'monitor_id' : 'monitor_id2';
+
     $sql = '
       select
           am.* 
@@ -59,7 +62,7 @@ class ActivitiesMonitors
       from ' . DB_PROJECT . '.activities_monitors am
       left join ' . DB_PROJECT . '.activities a on am.activity_id = a.activity_id
       where
-        am.monitor_id = "' . $this->db->esc( $monitor_id ) . '"
+        am.' . $field . ' = "' . $this->db->esc( $monitor_id ) . '"
     ';
     return $this->db->pl_query( $sql, true );
   }

@@ -1,6 +1,6 @@
 <?php
 
-class Schedules
+class SchedulesMonitors
 {
   private pl_model $db;
 
@@ -10,7 +10,7 @@ class Schedules
   }
 
   /**
-   * Obtiene todas las filas de la tabla `schedules`.
+   * Obtiene todas las filas de la tabla `schedules_monitors`.
    * 
    * @return array Lista de horarios o un array vacío si no hay resultados.
    */
@@ -19,13 +19,13 @@ class Schedules
     $sql = '
       select
         * 
-      from ' . DB_PROJECT . '.schedules
+      from ' . DB_PROJECT . '.schedule_monitors
     ';
     return $this->db->pl_query( $sql, true );
   }
 
   /**
-   * Obtiene una fila específica de la tabla `schedules` según `schedule_id2`.
+   * Obtiene una fila específica de la tabla `schedules_monitors` según `schedule_id2`.
    * 
    * @param string $schedule_id2 Identificador del horario.
    * @return array Datos del horario si existe, o un array vacío si no hay resultados.
@@ -35,7 +35,7 @@ class Schedules
     $sql = '
       select
         * 
-      from ' . DB_PROJECT . '.schedules
+      from ' . DB_PROJECT . '.schedule_monitors
       where
         schedule_id2 = "' . $this->db->esc( $schedule_id2 ) . '"
     ';
@@ -43,24 +43,23 @@ class Schedules
   }
 
   /**
-   * Obtiene los eventos de un participante en formato JSON para un calendario.
+   * Obtiene los eventos de un monitor en formato JSON para un calendario.
    * 
-   * @param string $participant_id ID del participante.
+   * @param string $monitor_id ID del monitor.
    * @return array Array de eventos.
    */
-  public function GetEvents( string $participant_id2 ): array
+  public function GetEvents( string $monitor_id2 ): array
   {
-    $db     = new pl_model();
-    $value  = '';
+    $db = new pl_model();
 
-    // Buscamos los horarios relacionados al participante
+    // Buscamos los horarios relacionados al monitor
     $sql = '
       select
         s.*
-      from ' . DB_PROJECT . '.schedule s
-      left join ' . DB_PROJECT . '.participants p on s.participant_id = p.participant_id
+      from ' . DB_PROJECT . '.schedule_monitors s
+      left join ' . DB_PROJECT . '.users u on s.monitor_id = u.user_id
       where
-        p.participant_id2 = "' . $db->esc( $participant_id2 ) . '"
+        u.user_id2 = "' . $db->esc( $monitor_id2 ) . '"
     ';
     return $this->db->pl_query( $sql, true );
   }
