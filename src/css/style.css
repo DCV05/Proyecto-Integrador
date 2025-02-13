@@ -731,3 +731,7 @@ section {
   padding-left: 2rem !important;
   padding-right: 2rem !important;
 }
+
+.fc-toolbar-title {
+  text-transform: capitalize;
+}
