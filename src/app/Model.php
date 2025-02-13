@@ -118,7 +118,7 @@ class Model extends mysqli
 
     try
     {
-      // Liberar el resultado previo si existe
+      // Liberamos el resultado previo si existe
       if( !empty( $this->result ) && is_object( $this->result ) )
         $this->result->free();
 
@@ -261,7 +261,6 @@ class Model extends mysqli
 
    /**
    * Función para capturar el último ID insertado
-   * @param mysqli $db
    * @return mixed $value
    *  */ 
   public function get_last_id(): mixed
@@ -309,22 +308,23 @@ class Model extends mysqli
    * @param string $col_type
    * @param string $col_capacity
    */
-  public function pl_migration_add_column( string $table_name, string $col_name, string $col_type, string $col_capacity = null ): int
+  public function pl_migration_add_column( string $table_name, string $col_name, string $col_type, string $col_capacity = null ): bool
   {
-    // Comprobamos si existe ua columna con ese nombre
+    $value = false;
+
+    // Comprobamos si existe una columna con ese nombre
     $table_fields = $this->pl_describe( $table_name );
-    $in_table     = false;
 
-    // Si el campo aparece en la tabla, lo mostramos
-    foreach( $table_fields as $key => $value )
+    do
     {
-      if( $col_name == $value )
-        $in_table = true;
-    }
+      // Si el campo aparece en la tabla, no procesamos la consulta
+      if( array_key_exists( $col_name, $table_fields ) )
+      {
+        print "\n\nThe field <b>{$col_name}</b> already exists in <b>{$table_name}</b>";
+        break;
+      }
 
-    // En el caso de que no esté en la tabla, añadimos la columna
-    if( $in_table == false )
-    {
+      // En el caso de que no esté en la tabla, añadimos la columna
       $str_capacity = '';
 
       // Si tiene capacidad, la añadimos en el SQL
@@ -334,13 +334,13 @@ class Model extends mysqli
       $sql = "alter table " . $this->db_name . ".{$table_name} add {$col_name} {$col_type}{$str_capacity}"; 
       $this->pl_query( $sql );
 
-      return 1;
-    }
-    else
-    {
-      print "\n\nThe field <b>{$col_name}</b> already exists in <b>{$table_name}</b>";
-      return 0;
-    }
+      // Si llegamos hasta aquí, está todo ok
+      $value = true;
+      break;
+
+    } while( false );
+
+    return $value;
   }
 
   /**
@@ -350,30 +350,30 @@ class Model extends mysqli
    *  */ 
   public function pl_migration_remove_column( string $table_name, string $col_name ): int
   {
-    $in_table = false;
+    $value = false;
 
-    // Capturamos los campos de la tabla
+    // Comprobamos si existe una columna con ese nombre
     $table_fields = $this->pl_describe( $table_name );
 
-    // Iteramos los campos y comprobamos si estamos intentando eliminar una columna no existente
-    foreach( $table_fields as $none => $value )
+    do
     {
-      if( $value == $col_name )
-        $in_table = true;
-    }
-
-    // Si la columna existe en la tabla, la devolvemos
-    if( $in_table )
-    {
+      // Si el campo aparece en la tabla, no procesamos la consulta
+      if( !array_key_exists( $col_name, $table_fields ) )
+      {
+        print "\n\nThe field <b>{$col_name}</b> does not exist in <b>{$table_name}</b>";
+        break;
+      }
+  
       $sql = "alter table " . $this->db_name . ".{$table_name} drop column {$col_name}";
       $this->pl_query( $sql );
-      return 1;
-    }
-    else
-    {
-      print "\n\nThe field <b>{$col_name}</b> does not exist in <b>{$table_name}</b>";
-      return 0;
-    }
+
+      // Si llegamos hasta aquí, está todo ok
+      $value = true;
+      break;
+
+    } while( false );
+
+    return $value;
   }
 
   /**
@@ -417,17 +417,17 @@ class Model extends mysqli
    */
   public function pl_migration_create_database( $db_name ): void
   {
-    $sql = "create database `{$db_name}`";
+    $sql = "create database if not exists `{$db_name}`";
     $this->pl_query( $sql );
   }
 
   /**
-   * Función para borrar una bas de datos
+   * Función para borrar una base de datos
    * @param string $db_name
    */
   public function pl_migration_drop_database( string $db_name ): void
   {
-    $sql = "drop database {$db_name}";
+    $sql = "drop database if not exists {$db_name}";
     $this->pl_query( $sql );
   }
 }
