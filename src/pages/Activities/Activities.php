@@ -545,7 +545,7 @@ class ActivitiesController
       // --------------------------------------------------------------------------------------------------------------
 
       // Buscamos si la actividad existe
-      $activity = ( new Activities() )->GetRow( $fields['aid2'] );
+      $activity = ( new Activities() )->GetRow( $fields['aid2'] )[0];
       if( $activity )
         $activity_id = $activity['activity_id'];
       else

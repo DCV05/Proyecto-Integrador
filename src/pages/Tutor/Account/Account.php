@@ -26,11 +26,11 @@ class TutorAccountController
    */
   public function table_users(): string
   {
-    $value            = '';
+    $value             = '';
     $mod_user_detailss = new UserDetails();
 
     // Capturamos todas las cuentas relacionadas con el usuario de la sesión
-    $users = $mod_user_detailss->GetRows( $_SESSION['app']['user']['user_id'] );
+    $users = $mod_user_detailss->GetRowsUser( $_SESSION['app']['user']['user_id'] );
 
     /*
       Array | account
@@ -189,7 +189,7 @@ class TutorAccountController
 
       // Botón de calendario
       $schedule_icon = '
-        <a href="/tutor/participant?pid2=' . $participant['participant_id2'] . '" class="white-svg cursor-pointer p-2 rounded-lg bg-orange-600 flex items-center justify-center">
+        <a href="/participant?pid2=' . $participant['participant_id2'] . '" class="white-svg cursor-pointer p-2 rounded-lg bg-orange-600 flex items-center justify-center">
           ' . app_get_svg_icon( 'schedule' ) . '
         </a>
       ';
@@ -264,7 +264,7 @@ class TutorAccountController
 
     // Botón de calendario
     $schedule_icon = '
-      <a href="/tutor/participant?pid2=' . $participant['participant_id2'] . '" class="white-svg cursor-pointer p-2 rounded-lg bg-orange-600 flex items-center justify-center">
+      <a href="/participant?pid2=' . $participant['participant_id2'] . '" class="white-svg cursor-pointer p-2 rounded-lg bg-orange-600 flex items-center justify-center">
         ' . app_get_svg_icon( 'schedule' ) . '
       </a>
     ';
@@ -507,7 +507,7 @@ class TutorAccountController
     do
     {
       // Buscamos los datos del usuario solicitado
-      $user_detail = $mod_user_details->GetRow( $fields['id2'] );
+      $user_detail = $mod_user_details->GetRow( $fields['id2'] )[0];
       if( !$user_detail )
         break;
       
@@ -601,7 +601,7 @@ class TutorAccountController
     do
     {
       // Buscamos los datos del usuario solicitado
-      $user_detail = $mod_user_details->GetRow( $fields['id2'] );
+      $user_detail = $mod_user_details->GetRow( $fields['id2'] )[0];
       if( !$user_detail )
         break;
 

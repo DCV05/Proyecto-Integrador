@@ -19,7 +19,7 @@ INSERT INTO `polaris_pages` (`url`, `redirect`, `page_title`, `file`, `title_seo
 ('/debug', '', 'Debug', 'Debug/Debug', 'Debug'),
 ('/tutor/account', '', 'Account', 'Tutor/Account/Account', 'Account'),
 ('/tutor/desktop', '', 'Desktop', 'Tutor/Desktop/Desktop', 'Desktop'),
-('/tutor/participant', '', 'Participant', 'Tutor/Participant/Participant', 'Participante'),
+('/participant', '', 'Participant', 'Participant/Participant', 'Participante'),
 ('/monitor/desktop', '', 'Desktop', 'Monitor/Desktop/Desktop', 'Desktop'),
 ('/monitor/account', '', 'Account', 'Monitor/Account/Account', 'Account'),
 ('/activity', '', 'Activity', 'Activity/Activity', 'Activity'),

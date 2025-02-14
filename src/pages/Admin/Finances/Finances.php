@@ -43,7 +43,7 @@ class AdminFinancesController
     foreach( $payments as $payment )
     {
       // Capturamos los datos del usuario vinculado
-      $user_details = $mod_user_details->GetRows( $payment['user_id'] )[0];
+      $user_details = $mod_user_details->GetRowsUser( $payment['user_id'] )[0];
       $user         = $mod_users->GetRow( $user_details['user_id'] )[0];
 
       // Generamos el select de estado del pago
@@ -126,7 +126,7 @@ class AdminFinancesController
     $payment = $mod_payments->GetRow( $payment_id2 )[0];
 
     // Capturamos los datos del usuario vinculado
-    $user_details = $mod_user_details->GetRows( $payment['user_id'] )[0];
+    $user_details = $mod_user_details->GetRowsUser( $payment['user_id'] )[0];
     $user         = $mod_users->GetRow( $user_details['user_id'] )[0];
 
     // Generamos el select de estado del pago
@@ -253,8 +253,9 @@ class AdminFinancesController
         , $email_html
       );
 
+      // $user['user_email']
       // Enviamos el email
-      $sent = pl_send_email( $user['user_email'], $title, $email_html );
+      $sent = pl_send_email( 'daniel.correa@kodalogic.com', $title, $email_html );
       if( $sent )
       {
         $alert = '
@@ -267,12 +268,16 @@ class AdminFinancesController
       else
       {
         $alert = '
-          <div id="alert-email" class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center max-w-xs p-4 text-white bg-green-600 rounded-lg shadow-lg" role="alert">
+          <div id="alert-email" class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center max-w-xs p-4 text-white bg-red-600 rounded-lg shadow-lg" role="alert">
             ' . app_get_svg_icon( 'exclamation' ) . '
             <div class="ml-3 text-sm font-normal">Error</div>
           </div>
         ';
       }
+
+      // --------------------------------------------------------------------------------------------------------------
+      // ELEMENTS
+      // --------------------------------------------------------------------------------------------------------------
 
       // Rellenamos los objetos a actualizar
       $kwargs   = ['elem' => '#alert-email'];

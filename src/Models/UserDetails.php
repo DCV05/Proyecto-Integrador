@@ -10,12 +10,24 @@ class UserDetails
   }
 
   /**
+   * Obtiene todas las filas de la tabla `user_details`
+   * 
+   * @param int $user_id ID del usuario.
+   * @return array Lista de detalles del usuario o un array vacío si no hay resultados.
+   */
+  public function GetRows(): array
+  {
+    $sql = 'select * from ' . DB_PROJECT . '.user_details';
+    return $this->db->pl_query_prepared( $sql, [], true );
+  }
+
+  /**
    * Obtiene todas las filas de la tabla `user_details` asociadas a un usuario.
    * 
    * @param int $user_id ID del usuario.
    * @return array Lista de detalles del usuario o un array vacío si no hay resultados.
    */
-  public function GetRows( int $user_id ): array
+  public function GetRowsUser( int $user_id ): array
   {
     $sql = '
       select

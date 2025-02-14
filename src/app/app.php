@@ -32,6 +32,18 @@ $entries = [
 if( $role === 2 )
 {
   $entries[] = [
+      'title' => pl_label( 'participants' )
+    , 'link'  => '/participants'
+    , 'icon'  => app_get_svg_icon( 'kids' )
+  ];
+
+  $entries[] = [
+      'title' => pl_label( 'users' )
+    , 'link'  => '/users'
+    , 'icon'  => app_get_svg_icon( 'users' )
+  ];
+
+  $entries[] = [
       'title' => pl_label( 'finances' )
     , 'link'  => '/' . $folder . '/finances'
     , 'icon'  => app_get_svg_icon( 'finances' )
@@ -39,7 +51,19 @@ if( $role === 2 )
 }
 
 if( $role === 1 )
-{
+{  
+  $entries[] = [
+      'title' => pl_label( 'participants' )
+    , 'link'  => '/participants'
+    , 'icon'  => app_get_svg_icon( 'kids' )
+  ];
+
+  $entries[] = [
+      'title' => pl_label( 'users' )
+    , 'link'  => '/users'
+    , 'icon'  => app_get_svg_icon( 'users' )
+  ];
+
   $entries[] = [
       'title' => pl_label( 'schedule' )
     , 'link'  => '/' . $folder . '/schedule'
@@ -79,7 +103,7 @@ $heading_entries = array_merge( $entries, [
     'title'           => pl_label( 'participants' ),
     'link'            => '/participants',
     'icon'            => app_get_svg_icon( 'account' ),
-    'layout_buttons'  => true
+    'layout_buttons'  => false
   ],
   [
     'title'           => '<a href="/activities" class="hover:underline">' . pl_label( 'participants' ) . '</a>' . '/' . pl_label( 'participant' ),
@@ -98,12 +122,18 @@ $heading_entries = array_merge( $entries, [
     'link'            => '/' . $folder . '/attendance',
     'icon'            => app_get_svg_icon( 'attendance' ),
     'layout_buttons'  => false
-  ]
+  ],
+  [
+    'title'           => pl_label( 'users' ),
+    'link'            => '/users',
+    'icon'            => app_get_svg_icon( 'users' ),
+    'layout_buttons'  => false
+  ],
 ] );
   
 // Colores de los svg
 global $colors;
-$colors = ['blue', 'green', 'orange'];
+$colors = ['blue', 'emerald', 'cyan', 'orange', 'indigo', 'lime'];
 
 // URL actual
 global $current_url;
@@ -398,6 +428,8 @@ function app_get_svg_icon( string $name ): string
     , 'plus'        => '<i class="text-4xl fa-regular fa-plus"></i>'
     , 'paper-icon'  => '<i class="text-xl fa-light fa-paper-plane"></i>'
     , 'exclamation' => '<i class="text-xl fa-light fa-circle-exclamation"></i>'
+    , 'users'       => '<i class="text-3xl fa-light fa-users"></i>'
+    , 'kids'        => '<i class="text-3xl fa-solid fa-child-reaching"></i>'
     , 'cloud'       => '<svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/></svg>'
   ];
 
