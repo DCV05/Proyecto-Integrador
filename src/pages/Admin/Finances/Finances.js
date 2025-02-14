@@ -14,6 +14,18 @@ $( document ).ready( function() {
     // Mandamos el email
     send_email( { 'uid2': uid2, 'pid2': pid2 } );
   } );
+
+  $( document ).on( 'change', '#payment-status', function() {
+    
+    // Capturamos los datos de la fila
+    let option  = $( this ).find( ':selected' ).val();
+    let pid2    = $( this ).parent().parent().attr( 'id' );
+    pid2 = pid2.replace( 'row-', '' );
+
+    // Enviamos el evento al servidor
+    change_payment_status( { 'pid2': pid2, 'option': option } );
+  } );
+
 } );
 
 // Función para enviar un email al usuario
@@ -35,27 +47,20 @@ function send_email( ids ) {
     } );
 }
 
-window.show_alert = function( kwargs ) {
-  if( !kwargs.elem ) return; // Evita errores si el elemento no existe
+function change_payment_status( ids ) {
 
-  var $elem = $( kwargs.elem );
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'change_payment_status', ids )
+    .then( function( data ) {
 
-  // Aseguramos que el elemento tenga la clase de transición (si usas el CSS de arriba)
-  $elem.addClass( 'alert' );
-
-  // Muestra el elemento: establecemos display y opacidad inicial
-  $elem.css( {
-    display: 'flex',
-    opacity: 1
-  } );
-
-  // Después de 3 segundos, iniciamos el fade out cambiando la opacidad a 0
-  setTimeout( () => {
-    $elem.css( 'opacity', 0 );
-  }, 3000 );
-
-  // Removemos el elemento después de 3.5 segundos (dando tiempo a que la transición se complete)
-  setTimeout( () => {
-    $elem.remove();
-  }, 3500 );
+      // Si el resultado es correcto, mostramos los popups
+      if( data.result = 1 && data.elements )
+        pl_dom( data.elements );
+      else
+        generate_error_message( form, data.message );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
 }

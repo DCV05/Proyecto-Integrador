@@ -299,7 +299,7 @@ class ActivitiesController
       $_SESSION['layout_mode'] = $fields['layout'];
 
       // Rellenamos los objetos a actualizar
-      $html =app_layout_buttons();
+      $html = app_layout_buttons();
       $elements[] = ['selector' => '#layout_buttons', 'method_name' => 'update' , 'value' => $html];
   
       // Según el layout_mode, mostramos el grid o la tabla

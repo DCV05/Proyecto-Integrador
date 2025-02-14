@@ -62,15 +62,3 @@ function update_attendance( data ) {
       console.error( error );
     } );
 }
-
-window.highlight_row = function( kwargs ) {
-  if( !kwargs.elem ) return; // Evita errores si el elemento no existe
-
-  // Agrega la clase con el borde
-  $( kwargs.elem ).addClass( 'bg-' + kwargs.color + '-100' );
-
-  // Elimina el borde después de 3 segundos
-  setTimeout( () => {
-    $( kwargs.elem ).removeClass( 'bg-' + kwargs.color + '-100' );
-  }, 3000 );
-}

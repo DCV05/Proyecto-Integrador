@@ -83,3 +83,40 @@ function validate_email( email ) {
   const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return email_pattern.test( email );
 }
+
+window.show_alert = function( kwargs ) {
+  if( !kwargs.elem ) return; // Evita errores si el elemento no existe
+
+  var $elem = $( kwargs.elem );
+
+  // Aseguramos que el elemento tenga la clase de transición (si usas el CSS de arriba)
+  $elem.addClass( 'alert' );
+
+  // Muestra el elemento: establecemos display y opacidad inicial
+  $elem.css( {
+    display: 'flex',
+    opacity: 1
+  } );
+
+  // Después de 3 segundos, iniciamos el fade out cambiando la opacidad a 0
+  setTimeout( () => {
+    $elem.css( 'opacity', 0 );
+  }, 3000 );
+
+  // Eliminamos el elemento después de 3.5 segundos (dando tiempo a que la transición se complete)
+  setTimeout( () => {
+    $elem.remove();
+  }, 3500 );
+}
+
+window.highlight_row = function( kwargs ) {
+  if( !kwargs.elem ) return; // Evita errores si el elemento no existe
+
+  // Agrega la clase con el borde
+  $( kwargs.elem ).addClass( 'bg-' + kwargs.color + '-100' );
+
+  // Elimina el borde después de 3 segundos
+  setTimeout( () => {
+    $( kwargs.elem ).removeClass( 'bg-' + kwargs.color + '-100' );
+  }, 3000 );
+}
