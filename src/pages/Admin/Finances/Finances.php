@@ -206,6 +206,7 @@ class AdminFinancesController
   {
     $value        = [];
     $mod_payments = new Payments();
+    $mod_users    = new Users();
 
     // Inicializamos las variables de la llamada AJAX
     $result     = 0;
@@ -238,6 +239,7 @@ class AdminFinancesController
 
       // Capturamos los datos del usuario y del pago
       $payment  = $mod_payments->GetRow( $fields['pid2'] )[0];
+      $user     = $mod_users->GetRow( $fields['uid2'] );
 
       // Formateamos los datos para el email
       $amount = number_format( $payment['amount'], 2 ) . ' €';
@@ -252,7 +254,7 @@ class AdminFinancesController
       );
 
       // Enviamos el email
-      $sent = pl_send_email( 'daniel.correa@kodalogic.com', $title, $email_html );
+      $sent = pl_send_email( $user['user_email'], $title, $email_html );
       if( $sent )
       {
         $alert = '
