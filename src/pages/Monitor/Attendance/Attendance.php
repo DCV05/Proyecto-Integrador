@@ -45,7 +45,7 @@ class MonitorAttendanceController
       <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
         <h2 class="text-2xl font-semibold text-gray-900">' . $this->activity['activity_name'] . '</h2>
         <p class="text-gray-600 mt-2">' . nl2br( $this->activity['activity_description'] ) . '</p>
-        <p class="text-gray-500 text-sm mt-2">' . date('F j, Y - H:i', strtotime( $this->activity['activity_time'] ) ) . '</p>
+        <p class="text-gray-500 text-sm mt-2">' . date('d-m-Y - H:i', strtotime( $this->activity['activity_time'] ) ) . '</p>
       </div>
     ';
 

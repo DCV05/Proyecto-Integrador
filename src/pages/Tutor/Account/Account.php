@@ -69,7 +69,7 @@ class TutorAccountController
         , 'user_relationship' => new TableCell( $user['user_relationship'] )
         , 'user_dni'          => new TableCell( $user['user_dni'] )
         , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
-        , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 edit-icon-container'] )
+        , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 icon-container'] )
       ];
 
       // Añadimos la fila
@@ -132,7 +132,7 @@ class TutorAccountController
       , 'user_relationship' => new TableCell( $user['user_relationship'] )
       , 'user_dni'          => new TableCell( $user['user_dni'] )
       , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
-      , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 edit-icon-container'] )
+      , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 icon-container'] )
     ];
 
     // Retornamos la fila de tabla generada
@@ -199,8 +199,8 @@ class TutorAccountController
           'participant_name'              => new TableCell( $participant['participant_name'] )
         , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'] )
         , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
-        , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 edit-icon-container schedule-icon'] )
-        , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 edit-icon-container'] )
+        , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 icon-container schedule-icon'] )
+        , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 icon-container'] )
       ];
 
       // Añadimos la fila
@@ -274,8 +274,8 @@ class TutorAccountController
         'participant_name'              => new TableCell( $participant['participant_name'] )
       , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'] )
       , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
-      , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 edit-icon-container schedule-icon'] )
-      , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 edit-icon-container'] )
+      , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 icon-container schedule-icon'] )
+      , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 icon-container'] )
     ];
 
     // Creamos la fila con `TableRow`

@@ -117,12 +117,14 @@
   font-weight: 400;
   src: url(https://kodalogic.polarik.com/k/apps/kodalogic/assets/fonts/lufga-webfont/LufgaThin.woff) format("woff");
 }
+
 html,
 body {
   font-family: "Inter", sans-serif;
   font-weight: 400;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 .body-text {
@@ -594,16 +596,11 @@ section {
 }
 
 .table-ui tbody tr td {
-  padding: 1.25rem 1rem;
+  max-height: 70px !important;
+  padding: 0 1rem;
+  height: 4rem;
   font-size: 0.875rem;
   color: #535862;
-}
-
-.table-ui tbody tr td:first-child {
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
 }
 
 .table-ui tbody tr td img {
@@ -717,12 +714,27 @@ section {
   color: white;
 }
 
-.edit-icon-container {
+.icon-container {
   padding: 0.50rem;
   border-radius: 0.75rem;
 }
 
-.edit-icon-container div i {
+.icon-container div {
+  transition: all .2s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+}
+
+.icon-container:hover div {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1,1.1);
+  -ms-transform: scale(1.1,1.1); /* IE 9 */
+  -webkit-transform: scale(1.1,1.1); /* Safari and Chrome */
+}
+
+.icon-container div i {
   font-size: 1.5rem;
   color: white;
 }
@@ -734,4 +746,8 @@ section {
 
 .fc-toolbar-title {
   text-transform: capitalize;
+}
+
+.alert {
+  transition: opacity 0.5s ease;
 }

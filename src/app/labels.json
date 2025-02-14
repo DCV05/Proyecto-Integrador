@@ -11,6 +11,14 @@
     "es": "Información de emergencia",
     "en": "Emergency information"
   },
+  "user_name": {
+    "es": "Nombre del usuario",
+    "en": "User name"
+  },
+  "email_sent": {
+    "es": "Correo enviado correctamente!",
+    "en": "Email correctly sent!"
+  },
   "legal_tutor_info": {
     "es": "Información del tutor legal",
     "en": "Legal tutor information"

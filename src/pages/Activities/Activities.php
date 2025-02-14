@@ -89,8 +89,8 @@ class ActivitiesController
           </div>
         ';
 
-        $cells['edit_icon']   = new TableCell( $edit_icon   , ['class' => 'text-center w-12 edit-icon-container'] );
-        $cells['delete_icon'] = new TableCell( $delete_icon , ['class' => 'text-center w-12 delete-icon-container'] );
+        $cells['edit_icon']   = new TableCell( $edit_icon   , ['class' => 'text-center w-12 icon-container'] );
+        $cells['delete_icon'] = new TableCell( $delete_icon , ['class' => 'text-center w-12 icon-container'] );
       }
 
       // Añadimos la fila
@@ -109,8 +109,8 @@ class ActivitiesController
     {
       // Botón para agregar una actividad
       $button = '
-        <button id="btn-add-activity" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-600 w-full">
-          ' . pl_label( 'add_activity' ) . '
+        <button id="btn-add-activity" class="rounded-lg text-center w-full">
+          ' . app_get_svg_icon( 'plus' ) . '
         </button>
       ';
 
@@ -179,8 +179,8 @@ class ActivitiesController
         </div>
       ';
 
-      $cells['edit_icon']   = new TableCell( $edit_icon   , ['class' => 'text-center w-12 edit-icon-container'] );
-      $cells['delete_icon'] = new TableCell( $delete_icon , ['class' => 'text-center w-12 delete-icon-container'] );
+      $cells['edit_icon']   = new TableCell( $edit_icon   , ['class' => 'text-center w-12 icon-container'] );
+      $cells['delete_icon'] = new TableCell( $delete_icon , ['class' => 'text-center w-12 icon-container'] );
     }
 
     // Creamos la fila con `TableRow`
@@ -221,7 +221,7 @@ class ActivitiesController
             <div class="p-6 space-y-4">
               <h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">' . $activity['activity_name'] . '</h3>
               <p class="text-sm text-gray-500">' . $short_description . '</p>
-              <div class="text-sm font-medium text-indigo-600">' . date( 'F j, Y - H:i', strtotime( $activity['activity_time'] ) ) . '</div>
+              <div class="text-sm font-medium text-indigo-600">' . date( 'd-m-Y - H:i', strtotime( $activity['activity_time'] ) ) . '</div>
             </div>
           </a>
         </div>
@@ -270,7 +270,7 @@ class ActivitiesController
           <div class="p-6 space-y-4">
             <h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">' . $activity['activity_name'] . '</h3>
             <p class="text-sm text-gray-500">' . $short_description . '</p>
-            <div class="text-sm font-medium text-indigo-600">' . date( 'F j, Y - H:i', strtotime( $activity['activity_time'] ) ) . '</div>
+            <div class="text-sm font-medium text-indigo-600">' . date( 'd-m-Y - H:i', strtotime( $activity['activity_time'] ) ) . '</div>
           </div>
         </a>
       </div>

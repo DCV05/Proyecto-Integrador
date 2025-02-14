@@ -287,13 +287,17 @@ function pl_send_email( string $email_address, string $title, string $html ): bo
     $mail = new PHPMailer( true );
 
     $mail->isSMTP();
-    $mail->Host 		= 'localhost';
-    $mail->Port 		= 25;
+    $mail->Host = 'smtp.gmail.com'; // Usa el SMTP de tu proveedor
+    $mail->SMTPAuth = true;
+    $mail->Username = 'campamento.phpmailer@gmail.com';
+    $mail->Password = 'khdm ketu nuxq npmq';
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
     $mail->CharSet 	= 'UTF-8';
     $mail->Encoding = 'base64';
 
     // Configuración del correo
-    $mail->setFrom( 'server@campamento.com', 'Campamento' );
+    $mail->setFrom( 'campamento.phpmailer@gmail.com', 'Campamento' );
     $mail->addAddress( $email_address );
 
     $mail->isHTML( true );
