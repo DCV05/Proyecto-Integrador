@@ -2,6 +2,7 @@ let counter_tutors        = 1;
 let counter_participants  = 1;
 
 const sections = $( 'form section' );
+let calendar;
 
 // Índice actual de la sección visible
 let current_section = 0;
@@ -268,7 +269,7 @@ function render_calendar() {
 
   // Inicializa FullCalendar en la sección de horario
   const calendar_el = $( '#calendar' )[0];
-  const calendar = new FullCalendar.Calendar( calendar_el, {
+  calendar = new FullCalendar.Calendar( calendar_el, {
       initialView  : 'dayGridMonth'
     , timeZone     : 'local'
     , selectable   : true
@@ -324,5 +325,7 @@ function render_calendar() {
     events: []
   } );
   
+
   calendar.render();
+  $( window ).resize();
 }
