@@ -54,7 +54,7 @@
                   [[ label | legal_tutor ]] 1
                   <span class="icon">+</span>
                 </button>
-                <div class="faq-content hidden pb-3 text-gray-400">
+                <div class="faq-content pb-3 text-gray-400">
                   [[ func | &custom_input | tutor_full_name_0 | text ]]
     
                   [[ func | &custom_input | tutor_relationship_0 | text ]]
@@ -111,10 +111,10 @@
                   [[ label | participant ]] 1
                   <span class="icon">+</span>
                 </button>
-                <div class="faq-content hidden pb-3 text-gray-400">
+                <div class="faq-content pb-3 text-gray-400">
                   [[ func | &custom_input | participant_full_name_0 | text ]]
 
-                  [[ func | &custom_input | participant_birth_date_0 | datetime ]]
+                  [[ func | &custom_input | participant_birth_date_0 | date ]]
 
                   [[ func | &custom_textarea | participant_allergies_0 ]]
         
@@ -229,7 +229,7 @@
 
           [[ func | &custom_input | participant_full_name | text ]]
 
-          [[ func | &custom_input | participant_birth_date | datetime-local ]]
+          [[ func | &custom_input | participant_birth_date | date ]]
 
           [[ func | &custom_textarea | participant_allergies ]]
 

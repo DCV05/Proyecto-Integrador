@@ -16,6 +16,18 @@ let selected_days = [];
 
 $( document ).ready( function() {
 
+  // Dates
+
+  // Obtener el año actual
+  const today         = new Date();
+  const current_year  = today.getFullYear();
+  
+  const min_date = `${current_year - 9}-01-01`; // 1 de enero de hace 9 años
+  const max_date = `${current_year - 6}-12-31`; // 31 de diciembre de hace 6 años
+  
+  // Aplicar restricciones a todos los inputs de tipo date
+  $( 'input[type="date"]' ).attr( 'min', min_date ).attr( 'max', max_date );
+
   render_calendar();
 
   // ------------------------------------------------------------------------------
@@ -50,7 +62,7 @@ $( document ).ready( function() {
     e.stopImmediatePropagation();
 
     // Evento de checkeo en submit
-    $( this ).find( 'input:not([type="button"])' ).each( function() {
+    $( this ).find( '#register-form input:not([type="button"], [type="file"])' ).each( function() {
       incorrect_input = check_inputs( $( this ) );
 
       // Si es incorrecto, el formulario no se podrá mandar
@@ -91,9 +103,6 @@ $( document ).ready( function() {
     // Modificamos el name de los inputs
     $html.find( 'input:not([type="button"]), textarea' ).each( function() {
 
-      if( $( this ).attr( 'type' ) == 'file' )
-        console.log( $( this ) );
-
       // Modificamos el name y el id
       let name_counter = $( this ).attr( 'name' ) + '_' + counter;
       $( this ).attr( 'name', name_counter );
@@ -116,14 +125,14 @@ $( document ).ready( function() {
       counter_tutors += 1;
 
     // Asegurar que los nuevos inputs tengan el evento de validación
-    $html.find( 'input:not([type="button"])' ).on( 'input', update_form );
+    $html.find( 'input:not([type="button"], [type="file"])' ).on( 'input', update_form );
 
     // Disparar actualización manualmente para verificar si el botón debe habilitarse
     update_form();
   } );
 
   // Evento para actualizar el formulario
-  $( document ).on( 'input', 'input:not([type="button"])', update_form );
+  $( document ).on( 'input', 'input:not([type="button"], [type="file"])', update_form );
 
   // Borrar un bloque de tutor
   $( document ).on( 'click', '.remove_tutor, .remove_participant', function() {
@@ -197,7 +206,7 @@ function update_form() {
   let has_error   = false;
   
   // Capturamos todos los inputs de la sección
-  $( sections[current_section] ).find( 'input:not([type="button"])' ).each( function() {
+  $( sections[current_section] ).find( 'input:not([type="button"], [type="file"])' ).each( function() {
 
     // Capturamos el valor del input
     let input_val = $( this ).val();
