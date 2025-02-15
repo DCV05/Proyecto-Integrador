@@ -17,6 +17,26 @@ $( document ).ready( function() {
       $( '#dropdown_panel' ).addClass( 'hidden' );
   } );
 
+  // Abrir menú hamburguesa
+  $( '#hamburger_button' ).on( 'click', function() {
+    $( '#hamburger_menu' ).removeClass( '-translate-x-full' ).addClass( 'translate-x-0' );
+    $( '#main-navbar' ).removeClass( 'z-50' );
+  });
+
+  // Cerrar menú hamburguesa
+  $( '#close_hamburger' ).on( 'click', function() {
+    $( '#hamburger_menu' ).removeClass( 'translate-x-0' ).addClass( '-translate-x-full' );
+    $( '#main-navbar' ).addClass( 'z-50' );
+  } );
+
+  // Cerrar menú al hacer clic fuera
+  $( document ).on( 'click', function( event ) {
+    if( !$( event.target ).closest( '#hamburger_menu, #hamburger_button' ).length ) {
+      $( '#hamburger_menu' ).removeClass( 'translate-x-0' ).addClass( '-translate-x-full' );
+      $( '#main-navbar' ).addClass( 'z-50' );
+    }
+  } );
+
 } );
 
 function check_inputs( input, show_alert = true ) {

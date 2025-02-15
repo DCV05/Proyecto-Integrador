@@ -246,13 +246,54 @@ function app_panel_render_tree(): string
   return $value;
 }
 
+function app_panel_hamburger_menu(): string
+{
+  global $entries, $current_url, $colors;
+
+  $value = '
+    <button id="hamburger_button" class="md:hidden bg-blue-500 text-white px-2 py-1.5 rounded-lg z-50">
+      ' . app_get_svg_icon( 'menu' ) . '
+    </button>
+
+    <div id="hamburger_menu" class="fixed top-0 left-0 w-full h-fit bg-white shadow-lg transform -translate-x-full transition-transform duration-300 overflow-y-auto" style="z-index: 1000;">
+      <div class="relative">
+        <button id="close_hamburger" class="absolute top-0 right-4 text-4xl p-2" style="z-index: 1000;">&times;</button>
+      </div>
+      <div class="p-4 space-y-2 mt-10">
+  ';
+
+  // Generamos las opciones del menú usando `app_panel_render_tree()`
+  foreach( $entries as $entry_index => $entry )
+  {
+    $link   = $entry['link'] ?? '';
+    $color  = $colors[$entry_index] ?? 'blue';
+    $bold   = $current_url == $link ? 'font-bold bg-gray-100' : '';
+    $icon   = !empty( $entry['icon'] ) ? '<div class="w-9 h-9 bg-' . $color . '-500 shadow-landing white-svg text-i-2xl tree-icon-container">' . $entry['icon'] . '</div>' : '';
+
+    $value .= sprintf(
+      '<a href="%s" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transform transition duration-300 rounded-lg %s">
+        %s
+        <p class="text-base">%s</p>
+      </a>',
+      $link, $bold, $icon, $entry['title']
+    );
+  }
+
+  $value .= '
+      </div>
+    </div>
+  ';
+
+  return $value;
+}
+
 function app_panel_interface(): string
 {
   $html = '
     <div class="background"></div>
     <div class="overlay"></div>
 
-    <nav class="fixed w-full left-0 top-0 bg-transparent shadow-landing-reverse z-50">
+    <nav id="main-navbar" class="fixed w-full left-0 top-0 bg-transparent shadow-landing-reverse z-50">
       <div class="h-16 flex flex-row gap-4 items-center">
 
         <div class="flex flex-col flex-1 items-start p-4">
@@ -298,10 +339,11 @@ function app_panel_interface(): string
     
     <!--' . app_panel_aside() . '-->
 
-    <nav class="fixed left-64 top-16 bg-white w-[calc(100%-16rem)] z-20 shadow-landing">
+    <nav class="fixed left-0 md:left-64 top-16 bg-white w-full md:w-[calc(100%-16rem)] z-20 shadow-landing">
       <div class="h-16 flex flex-row gap-4 items-center space-x-4 px-2 py-3">
-        <div class="flex flex-row gap-4 flex-1 justify-start items-center p-2.5">
+        <div class="flex flex-row gap-4 flex-1 justify-between items-center p-2.5">
           ' . app_panel_heading() . '
+          ' . app_panel_hamburger_menu() . '
         </div>
       </div>
     </nav>
@@ -430,6 +472,7 @@ function app_get_svg_icon( string $name ): string
     , 'exclamation' => '<i class="text-xl fa-light fa-circle-exclamation"></i>'
     , 'users'       => '<i class="text-3xl fa-light fa-users"></i>'
     , 'kids'        => '<i class="text-3xl fa-solid fa-child-reaching"></i>'
+    , 'menu'        => '<i class="text-xl fa-solid fa-bars"></i>'
     , 'cloud'       => '<svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/></svg>'
   ];
 
