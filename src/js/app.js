@@ -17,6 +17,20 @@ $( document ).ready( function() {
       $( '#dropdown_panel' ).addClass( 'hidden' );
   } );
 
+  $( document ).on( 'click', '.toggle-password', function() {
+    let input_id = $( this ).data( 'target' ); // Captura el ID del input
+    let input = $( '#' + input_id );
+    let icon = $( this ).find( 'i' );
+
+    if ( input.attr( 'type' ) === 'password' ) {
+      input.attr( 'type', 'text' );
+      icon.removeClass( 'fa-eye' ).addClass( 'fa-eye-slash' ); // Cambia el icono
+    } else {
+      input.attr( 'type', 'password' );
+      icon.removeClass(' fa-eye-slash' ).addClass( 'fa-eye' ); // Vuelve al icono original
+    }
+  } );
+
   // Abrir menú hamburguesa
   $( '#hamburger_button' ).on( 'click', function() {
     $( '#hamburger_menu' ).removeClass( '-translate-x-full' ).addClass( 'translate-x-0' );

@@ -556,15 +556,28 @@ function app_organize_dates( array $dates ): array
 
 function app_custom_input( string $name, string $type ): string
 {
+  $eye_icon = '';
+
+  // Si el tipo es "password", añadimos el icono de ojo
+  if( $type === 'password' )
+  {
+    $eye_icon = '
+      <button type="button" class="toggle-password absolute right-3 top-11 transform -translate-y-1/2 text-gray-500" data-target="' . $name . '">
+        <i class="fa-regular fa-eye"></i>
+      </button>
+    ';
+  }
+
   $input_html = '
-    <div>
+    <div class="relative">
       <label for="' . $name . '" class="custom-label">' . pl_label( $name ) . '</label>
       <input
         type="' . $type . '"
         name="' . $name . '"
         id="' . $name . '"
         placeholder="' . pl_label( $name . '_placeholder' ) . '"
-        class="custom-input transform transition duration-300 mt-1">
+        class="custom-input transform transition duration-300 mt-1 pr-10">
+      ' . $eye_icon . '
     </div>
   ';
 
