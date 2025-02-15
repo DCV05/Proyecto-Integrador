@@ -511,4 +511,37 @@ function app_organize_dates( array $dates ): array
   return $value;
 }
 
+function app_custom_input( string $name, string $type ): string
+{
+  $input_html = '
+    <div>
+      <label for="' . $name . '" class="custom-label">' . pl_label( $name ) . '</label>
+      <input
+        type="' . $type . '"
+        name="' . $name . '"
+        id="' . $name . '"
+        placeholder="' . pl_label( $name . '_placeholder' ) . '"
+        class="custom-input transform transition duration-300 mt-1">
+    </div>
+  ';
+
+  return $input_html;
+}
+
+function app_custom_textarea( string $name, $value = '' ): string
+{
+  $textarea_html = '
+    <div>
+      <label for="' . $name . '" class="custom-label">' . pl_label( $name ) . '</label>
+      <textarea
+        id="' . $name . '"
+        name="' . $name . '"
+        class="custom-input transform transition duration-300 mt-1"
+      >' . $value . '</textarea>
+    </div>
+  ';
+
+  return $textarea_html;
+}
+
 ?>

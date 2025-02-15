@@ -15,13 +15,17 @@
     "es": "Nombre del usuario",
     "en": "User name"
   },
+  "tutor_legal_email": {
+    "es": "michael.scott@dundermifflin.com",
+    "en": "michael.scott@dundermifflin.com"
+  },
   "email_sent": {
     "es": "Correo enviado correctamente!",
     "en": "Email correctly sent!"
   },
   "legal_tutor_info": {
-    "es": "Información del tutor legal",
-    "en": "Legal tutor information"
+    "es": "Información legal",
+    "en": "tutor information"
   },
   "payment_info": {
     "es": "Información de pago",
@@ -187,9 +191,9 @@
     "es": "Marcar como contacto de emergencia",
     "en": "Mark as emergency contact"
   },
-  "add_legal_tutor": {
-    "es": "Añadir tutor legal",
-    "en": "Add legal tutor"
+  "add_new_legal_tutor": {
+    "es": "Añadir un nuevo tutor legal",
+    "en": "Add a new legal tutor"
   },
   "remove_legal_tutor": {
     "es": "Eliminar tutor legal",
@@ -216,8 +220,8 @@
     "en": "Legal tutors"
   },
   "legal_tutor_photo": {
-    "es": "Fotografía del tutor legal",
-    "en": "Legal tutor photography"
+    "es": "Fotografía legal",
+    "en": "tutor photography"
   },
   "participants_section": {
     "es": "Participantes",
@@ -315,14 +319,42 @@
     "es": "Ingrese la fecha de nacimiento",
     "en": "Enter birth date"
   },
+  "participant_name": {
+    "es": "Nombre del participante",
+    "en": "Participant Name"
+  },
   "participant_name_placeholder": {
+    "es": "Ingrese el nombre del participante",
+    "en": "Enter participant name"
+  },
+
+  "participant_name_0": {
+    "es": "Nombre del participante",
+    "en": "Participant Name"
+  },
+  "participant_name_0_placeholder": {
     "es": "Diego Sánchez",
     "en": "e.g. Diego Sánchez"
   },
+
+  "participant_birth_date": {
+    "es": "Fecha de nacimiento",
+    "en": "Birth Date"
+  },
   "participant_birth_date_placeholder": {
+    "es": "Ingrese la fecha de nacimiento",
+    "en": "Enter birth date"
+  },
+
+  "participant_birth_date_0": {
+    "es": "Fecha de nacimiento",
+    "en": "Birth Date"
+  },
+  "participant_birth_date_0_placeholder": {
     "es": "2016-03-10",
     "en": "e.g. 2016-03-10"
   },
+
   "participant_full_name": {
     "es": "Nombre completo del participante",
     "en": "Participant Full Name"
@@ -331,10 +363,16 @@
     "es": "Ingrese el nombre completo",
     "en": "Enter full name"
   },
-  "participant_birth_date": {
-    "es": "Fecha de nacimiento",
-    "en": "Birth Date"
+
+  "participant_full_name_0": {
+    "es": "Nombre completo del participante",
+    "en": "Participant Full Name"
   },
+  "participant_full_name_0_placeholder": {
+    "es": "Diego Sánchez",
+    "en": "e.g. Jim Halpert"
+  },
+
   "participant_allergies": {
     "es": "Alergias",
     "en": "Allergies"
@@ -343,6 +381,16 @@
     "es": "Ingrese las alergias si las hay",
     "en": "Enter allergies if any"
   },
+
+  "participant_allergies_0": {
+    "es": "Alergias",
+    "en": "Allergies"
+  },
+  "participant_allergies_0_placeholder": {
+    "es": "Ingrese las alergias si las hay",
+    "en": "Enter allergies if any"
+  },
+
   "participant_special_needs": {
     "es": "Necesidades especiales",
     "en": "Special Needs"
@@ -351,6 +399,16 @@
     "es": "Ingrese las necesidades especiales",
     "en": "Enter special needs"
   },
+
+  "participant_special_needs_0": {
+    "es": "Necesidades especiales",
+    "en": "Special Needs"
+  },
+  "participant_special_needs_0_placeholder": {
+    "es": "Ingrese las necesidades especiales",
+    "en": "Enter special needs"
+  },
+
   "participant_medical_treatment": {
     "es": "Tratamiento médico",
     "en": "Medical Treatment"
@@ -359,9 +417,22 @@
     "es": "Ingrese el tratamiento médico si aplica",
     "en": "Enter medical treatment if applicable"
   },
+
+  "participant_medical_treatment_0": {
+    "es": "Tratamiento médico",
+    "en": "Medical Treatment"
+  },
+  "participant_medical_treatment_0_placeholder": {
+    "es": "Ingrese el tratamiento médico si aplica",
+    "en": "Enter medical treatment if applicable"
+  },
   "send-button": {
     "es": "Enviar",
     "en": "Send"
+  },
+  "no_allergies": {
+    "es": "Sin alergias",
+    "en": "No alergies"
   },
   "has_account": {
     "es": "¿Tienes ya una cuenta?",
@@ -487,8 +558,104 @@
     "es": "Seleccione la fecha y hora",
     "en": "Select date & time"
   },
+  "user_email": {
+    "es": "Correo electrónico",
+    "en": "Email"
+  },
+  "user_email_placeholder": {
+    "es": "michael.scott@dundermifflin.com",
+    "en": "michael.scott@dundermifflin.com"
+  },
+  "user_password": {
+    "es": "Contraseña",
+    "en": "Password"
+  },
+  "user_password_placeholder": {
+    "es": "••••••••",
+    "en": "••••••••"
+  },
   "activity_example_description": {
     "es": "Los niños trabajan juntos como astronautas en una misión espacial, resolviendo desafíos y explorando un nuevo planeta mientras fortalecen su espíritu de equipo.",
     "en": "Children work together as astronauts on a space mission, solving challenges and exploring a new planet while strengthening their teamwork."
+  },
+  "tutor_full_name": {
+    "es": "Nombre completo",
+    "en": "Full Name"
+  },
+  "tutor_full_name_placeholder": {
+    "es": "Carlos Ramírez",
+    "en": "Michael Scott"
+  },
+  "tutor_relationship": {
+    "es": "Parentesco",
+    "en": "Relationship"
+  },
+  "tutor_relationship_placeholder": {
+    "es": "Padre",
+    "en": "Father"
+  },
+  "tutor_email": {
+    "es": "Correo electrónico",
+    "en": "Email"
+  },
+  "tutor_email_placeholder": {
+    "es": "carlos.ramirez@email.com",
+    "en": "michael.scott@dundermifflin.com"
+  },
+  "tutor_dni": {
+    "es": "DNI",
+    "en": "ID"
+  },
+  "tutor_dni_placeholder": {
+    "es": "12345678A",
+    "en": "987654321"
+  },
+  "tutor_phone_number": {
+    "es": "Teléfono",
+    "en": "Phone Number"
+  },
+  "tutor_phone_number_placeholder": {
+    "es": "+34 612 34 56 78",
+    "en": "+1 555 987 6543"
+  },
+  "tutor_full_name_0": {
+    "es": "Nombre completo",
+    "en": "Full Name"
+  },
+  "tutor_full_name_0_placeholder": {
+    "es": "Ana López",
+    "en": "Pam Beesly"
+  },
+  "tutor_relationship_0": {
+    "es": "Parentesco",
+    "en": "Relationship"
+  },
+  "tutor_relationship_0_placeholder": {
+    "es": "Madre",
+    "en": "Mother"
+  },
+  "tutor_email_0": {
+    "es": "Correo electrónico",
+    "en": "Email"
+  },
+  "tutor_email_0_placeholder": {
+    "es": "ana.lopez@email.com",
+    "en": "pam.beesly@dundermifflin.com"
+  },
+  "tutor_dni_0": {
+    "es": "DNI",
+    "en": "ID"
+  },
+  "tutor_dni_0_placeholder": {
+    "es": "87654321B",
+    "en": "123456789"
+  },
+  "tutor_phone_number_0": {
+    "es": "Teléfono",
+    "en": "Phone Number"
+  },
+  "tutor_phone_number_0_placeholder": {
+    "es": "+34 722 45 67 89",
+    "en": "+1 555 123 9876"
   }
 }

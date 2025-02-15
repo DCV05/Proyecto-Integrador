@@ -715,11 +715,11 @@ section {
 }
 
 .icon-container {
-  padding: 0.50rem;
+  padding: 0.50rem !important;
   border-radius: 0.75rem;
 }
 
-.icon-container div {
+.icon-container div, .icon-container a {
   transition: all .2s ease-in-out;
   -webkit-transition: all .2s ease-in-out;
   -moz-transition: all .2s ease-in-out;
@@ -727,14 +727,14 @@ section {
   -ms-transition: all .2s ease-in-out;
 }
 
-.icon-container:hover div {
+.icon-container:hover div, .icon-container:hover a {
   -webkit-transform: scale(1.1);
   transform: scale(1.1,1.1);
   -ms-transform: scale(1.1,1.1); /* IE 9 */
   -webkit-transform: scale(1.1,1.1); /* Safari and Chrome */
 }
 
-.icon-container div i {
+.icon-container div i, .icon-container a i {
   font-size: 1.5rem;
   color: white;
 }

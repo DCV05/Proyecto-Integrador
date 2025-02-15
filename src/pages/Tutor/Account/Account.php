@@ -52,6 +52,7 @@ class TutorAccountController
     $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )          , ['id' => 'dni_col']           ) );
     $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ) , ['id' => 'phone_number_col']  ) );
     $table->addColumn( 'edit_icon'        , new TableColumn( ''                         , ['id' => 'edit_icon']         ) );
+    $table->addColumn( 'delete_icon'      , new TableColumn( ''                         , ['id' => 'delete_icon']       ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $users as $user )
@@ -59,6 +60,12 @@ class TutorAccountController
       $edit_icon = '
         <div data-type="user" data-id2="' . $user['detail_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
           ' . app_get_svg_icon( 'pen' ) . '
+        </div>
+      ';
+
+      $delete_icon = '
+        <div data-type="user" data-aid2="' . $user['detail_id2'] . '" class="delete-icon cursor-pointer p-2 rounded-lg bg-red-600 flex items-center justify-center white-svg">
+          ' . app_get_svg_icon( 'trash' ) . '
         </div>
       ';
 
@@ -70,6 +77,7 @@ class TutorAccountController
         , 'user_dni'          => new TableCell( $user['user_dni'] )
         , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
         , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 icon-container'] )
+        , 'delete_icon'       => new TableCell( $delete_icon, ['class' => 'text-center w-10 icon-container'] )
       ];
 
       // Añadimos la fila
@@ -170,6 +178,7 @@ class TutorAccountController
     $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['id' => 'p_medical_treatment'] ) );
     $table->addColumn( 'schedule_icon'                , new TableColumn( ''                             , ['id' => 'schedule_icon']       ) );
     $table->addColumn( 'edit_icon'                    , new TableColumn( ''                             , ['id' => 'edit_icon']           ) );
+    $table->addColumn( 'delete_icon'                  , new TableColumn( ''                             , ['id' => 'delete_icon']         ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $participants as $participant )
@@ -179,6 +188,10 @@ class TutorAccountController
         $medical_treatment = substr( $participant['participant_medical_treatment'], 0, 50 ) . '...';
       else
         $medical_treatment = $participant['participant_medical_treatment'];
+
+      // -------–-------–-------–-------–-------–-------–-------–
+      // Botones
+      // -------–-------–-------–-------–-------–-------–-------–
       
       // Botón de editar
       $edit_icon = '
@@ -194,6 +207,13 @@ class TutorAccountController
         </a>
       ';
 
+      // Botón de borrar
+      $delete_icon = '
+        <div data-type="user" data-id2="' . $participant['participant_id2'] . '" class="delete-icon cursor-pointer p-2 rounded-lg bg-red-600 flex items-center justify-center white-svg">
+          ' . app_get_svg_icon( 'trash' ) . '
+        </div>
+      ';
+
       // Definimos las celdas
       $cells = [
           'participant_name'              => new TableCell( $participant['participant_name'] )
@@ -201,6 +221,7 @@ class TutorAccountController
         , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
         , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 icon-container schedule-icon'] )
         , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 icon-container'] )
+        , 'delete_icon'                 => new TableCell( $delete_icon, ['class' => 'text-center w-12 icon-container'] )
       ];
 
       // Añadimos la fila

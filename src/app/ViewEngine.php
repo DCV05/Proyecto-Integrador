@@ -108,6 +108,9 @@ class ViewEngine
 				$func_parts 				= array_map( 'trim', explode( '|', $func_name ) );
 				$callable_func_name = $func_parts[1];
 
+				// Eliminamos todos los parámetros menos los argumentos de funciones
+				unset( $func_parts[0], $func_parts[1] );
+
 				// Controlamos que vuelvan a llamar a la función index
 				if( $callable_func_name == 'index' )
 					throw new Exception( 'INDEX method cannot be executed again' );
@@ -118,16 +121,16 @@ class ViewEngine
 				// Calculamos el nombre de la función
 				$callable_func_name = $is_global
 					? 'app_' . substr( $callable_func_name, 1 )
-					: $callable_func_name
-				;
+					: $callable_func_name;
 
 				// Si tiene un parámetro, ejecutamos la función o método con el parámetro
-				if( isset( $func_parts[2] ) ) // Funciones y métodos con parámetros
+				if( !empty( $func_parts ) ) // Funciones y métodos con parámetros
 				{
 					// Ejecutamos la función
+					// Desempaquetamos todos los parámetros como argumentos independientes utilizando `...`
 					$func_result = $is_global
-						? $callable_func_name( $func_parts[2] )
-						: $this->controller->$callable_func_name( $func_parts[2] );
+						? $callable_func_name( ...$func_parts )
+						: $this->controller->$callable_func_name( ...$func_parts );
 				}
 				else // Funciones y métodos sin parámetros
 				{

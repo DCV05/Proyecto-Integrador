@@ -111,8 +111,10 @@ class Model extends mysqli
    *
    * @return array|bool  Array de resultados si se trata de una consulta SELECT
    */
-  public function pl_query_prepared( string $sql, array $parameters = [], bool $return_all = false ): array|bool
+  public function pl_query_prepared( string $sql, array $parameters = [], bool $return_all = false, bool $save = false ): array|bool
   {
+    global $logger;
+
     $db     = new Model();
     $value  = [];
 
@@ -188,11 +190,19 @@ class Model extends mysqli
     }
     catch( Exception $e )
     {
+      $logger->info( 'SQL Error: ' . $e->getMessage() );
+      $logger->info( $this->get_prepared_sql( $sql, $parameters ) );
       print 'Error: ' . $e->getMessage();
-      $value = false;
+
+      // Lanzamos el error
+      throw $e;
     }
     finally
     {
+      // Logging de consulta
+      if( $save )
+        $logger->info( $this->get_prepared_sql( $sql, $parameters ) );
+
       return $value;
     }
   }
@@ -429,6 +439,20 @@ class Model extends mysqli
   {
     $sql = "drop database if not exists {$db_name}";
     $this->pl_query( $sql );
+  }
+
+  public function get_prepared_sql( string $sql, array $parameters ): string
+  {
+    $final_sql = array_reduce( $parameters, function( $query, $param ): array|string|null {
+
+      // Si el parámetro es un string añadimos las comillas
+      if( !is_numeric( $param ) )
+        $param = '"' . addslashes( $param ) . '"';
+
+      return preg_replace( '/\?/', $param, $query, 1 );
+    }, $sql );
+
+    return $final_sql;
   }
 }
 

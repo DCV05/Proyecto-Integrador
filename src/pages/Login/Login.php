@@ -60,11 +60,17 @@ class LoginController
       // Buscamos si existe un usuario con las credenciales recibidas
       $sql = '
         select
-          *
-        from ' . DB_PROJECT . '.users
+            u.*
+          , ud.detail_id
+          , ud.detail_id2
+        from ' . DB_PROJECT . '.users u
+        left join ' . DB_PROJECT . '.user_details ud on ud.user_id = u.user_id
         where
-          user_email = ? and
-          enabled = 1
+          u.user_email = ? and
+          u.enabled = 1
+        order by
+          ud.detail_id
+        limit 1
       ';
       $params = [$fields['email']];
       $db->pl_query_prepared( $sql, $params );
@@ -88,7 +94,7 @@ class LoginController
         $message = pl_label( 'incorrect_user_or_password' );
         break;
       }
-      
+
       // Calculamos la foto de perfil y el nombre del fichero
       $assets_dir = match( intval( $row['role'] ) )
       {
@@ -96,7 +102,7 @@ class LoginController
         , 1 => ASSETS_PATH . '/panel/monitors'
         , 2 => ASSETS_PATH . '/panel/admins'
       };
-      $file_name = pl_number_id( $row['user_id'] ) . '_' . $row['user_id2'];
+      $file_name = pl_number_id( $row['detail_id'] ) . '_' . $row['detail_id2'];
       
       // Buscamos el fichero y capturamos la imagen
       $files = glob( $assets_dir . '/' . $file_name . '.*' );

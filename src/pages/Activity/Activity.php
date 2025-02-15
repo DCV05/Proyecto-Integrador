@@ -193,10 +193,14 @@ class ActivityController
     $value .= '</select>';
 
     // Botón para agregar participante
-    $value .= '
-      <button id="btn-add-participant" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-600 w-full">
-        ' . pl_label( 'add_participant' ) . '
-      </button>
+    $value = '
+      <div class="flex gap-2">
+
+        ' . $value . '
+        <button id="btn-add-participant" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-600 w-full">
+          ' . pl_label( 'add_participant' ) . '
+        </button>
+      </div>
     ';
 
     return $value;

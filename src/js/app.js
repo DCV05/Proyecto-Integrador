@@ -17,37 +17,46 @@ $( document ).ready( function() {
       $( '#dropdown_panel' ).addClass( 'hidden' );
   } );
 
-  $( document ).on( 'click', function( e ) {
-
-    // Cerramos el toggle si hacemos click fuera del dropdown
-    if( !$( e.target ).closest( '#dropdown_button, #dropdown_panel' ).length ){
-      $( '#dropdown_panel' ).addClass( 'hidden' );
-      open = false;
-    }
-  } );
-
 } );
-
 
 function check_inputs( input, show_alert = true ) {
   let has_error = false;
+  let message;
 
   // Capturamos el valor del input
   let input_val = input.val();
   if( input_val == null || input_val == '' ) {
+    message = 'Campo requerido';
     has_error = true;
-
-    // Mostramos la alerta
-    if( show_alert )
-      generate_error_message( input.parent(), 'Campo requerido' );
   }
 
   // Comprobamos que el valor del input email es válido
-  if( input.attr( 'type' ) == 'email' && has_error == false ) {
-    // Si no es un email válido, mostramos una alerta
-    if( !validate_email( input_val ) && show_alert )
-      generate_error_message( input.parent(), 'Email inválido' );
+  if( has_error == false && input.attr( 'type' ) == 'email' ) {
+    if( !validate_email( input_val ) ) {
+      message   = 'Email no válido';
+      has_error = true;
+    }
   }
+
+  // Capturamos el ID del input, evitando errores si no existe
+  let input_id = input.attr( 'id' ) || '';
+
+  if( has_error == false && input_id.includes( 'dni' ) ) {
+    if( !validate_dni( input_val ) ) {
+      message   = 'DNI no válido';
+      has_error = true;
+    }
+  }
+  else if( has_error == false && input_id.includes( 'phone' ) ) {
+    if( !validate_phone_number( input_val ) ) {
+      message   = 'Teléfono no válido';
+      has_error = true;
+    }
+  }
+
+  // Mostramos la alerta si es necesario
+  if( has_error == true && show_alert == true )
+    generate_error_message( input.parent(), message );
 
   return has_error;
 }
@@ -82,6 +91,18 @@ function generate_error_message( elem, alert_message ) {
 function validate_email( email ) {
   const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return email_pattern.test( email );
+}
+
+// Función para validar el formato del DNI
+function validate_dni( dni ) {
+  const regex = /^[0-9]{8}[A-Za-z]$/; // Formato DNI español: 8 dígitos + letra
+  return regex.test( dni );
+}
+
+// Función para validar el formato del teléfono
+function validate_phone_number( phone_number ) {
+  const regex = /^[0-9]{9}$/;
+  return regex.test( phone_number );
 }
 
 window.show_alert = function( kwargs ) {
