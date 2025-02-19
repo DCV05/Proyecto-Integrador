@@ -600,4 +600,63 @@ function app_custom_textarea( string $name, $value = '' ): string
   return $textarea_html;
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+// Landing
+// ----------------------------------------------------------------------------------------------------------------
+
+function app_landing_navbar( $center = false ): string
+{
+  $margin = $center == false
+    ? 'ml-32'
+    : 'mx-auto';
+
+  $html = '
+    <nav id="main-navbar" class="bg-transparent fixed top-0 w-full z-50 transform transition">
+      <div class="flex items-center w-fit ' . $margin . ' space-x-12">
+        
+        <div class="py-5">
+          <a class="inline-flex" href="/" title="Campament">
+            <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">
+              ' . pl_label( 'campament' ) . '
+            </span>
+          </a>
+        </div>
+
+        <div class="py-3 flex flex-row items-center gap-12 text-gray-700">
+          <a href="#activities" class="hover:text-blue-500 cursor-pointer transition">' . pl_label( 'activities' ) . '</a>
+          <a href="/contact" class="hover:text-blue-500 cursor-pointer transition">' . pl_label( 'contact' ) . '</a>
+          <a href="/login" class="apple-button-secondary transition bg-white">' . pl_label( 'login' ) . '</a>
+        </div>
+
+        <div class="flex flex-row items-center gap-12">
+          <a href="/signup" class="apple-button transition">' . pl_label( 'signup' ) . '</a>
+        </div>
+
+      </div>
+    </nav>
+  ';
+
+  return $html;
+}
+
+function app_landing_footer(): string
+{
+  $html = '
+    <footer class="mx-auto mt-24 shadow-landing py-3">
+      <div class="grid lg:grid-cols-5 gap-12 items-center mx-auto">
+        <div class="lg:col-span-5 text-center">
+          <a class="inline-flex" href="/" title="Campament">
+            <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">
+              ' . pl_label( 'campament' ) . '
+            </span>
+          </a>
+          <p class="text-sm text-gray-500 mt-4">&copy; 2024 Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  ';
+
+  return $html;
+}
+
 ?>

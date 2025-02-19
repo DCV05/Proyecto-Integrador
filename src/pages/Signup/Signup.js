@@ -14,10 +14,7 @@ let current_section = 0;
 // Array para almacenar los días seleccionados (formato "YYYY-MM-DD")
 let selected_days = [];
 
-
 $( document ).ready( function() {
-
-  // Dates
 
   // Obtener el año actual
   const today         = new Date();

@@ -1,6 +1,6 @@
 <?php
 
-class DebugController
+class IndexController
 {
   public function index(): void
   {

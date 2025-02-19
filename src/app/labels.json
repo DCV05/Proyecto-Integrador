@@ -417,7 +417,10 @@
     "es": "Ingrese el tratamiento médico si aplica",
     "en": "Enter medical treatment if applicable"
   },
-
+  "add_new_participant": {
+    "es": "Añadir un nuevo participante",
+    "en": "Add a new participant"
+  },
   "participant_medical_treatment_0": {
     "es": "Tratamiento médico",
     "en": "Medical Treatment"
@@ -657,5 +660,33 @@
   "tutor_phone_number_0_placeholder": {
     "es": "+34 722 45 67 89",
     "en": "+1 555 123 9876"
+  },
+  "name": {
+    "es": "Nombre",
+    "en": "Name"
+  },
+  "relationship": {
+    "es": "Parentesco",
+    "en": "Relationship"
+  },
+  "role": {
+    "es": "Rol",
+    "en": "Role"
+  },
+  "dni": {
+    "es": "DNI",
+    "en": "ID"
+  },
+  "contact": {
+    "es": "Contacto",
+    "en": "Contact"
+  },
+  "login": {
+    "es": "Iniciar sesión",
+    "en": "Login"
+  },
+  "signup": {
+    "es": "Crear cuenta",
+    "en": "Sign up"
   }
 }

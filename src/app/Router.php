@@ -80,7 +80,11 @@ class Router
         $this->uri = rtrim( $this->uri, '/' );
 
       // Comprobamos que no sea un archivo CSS, JS o HTML
-      $allowed_extensions = ['.css', '.js', '.html', '.png', '.webp', '.jpeg', '.jpg'];
+      $allowed_extensions = [
+          '.css', '.js', '.html'
+        , '.png', '.webp', '.jpeg', '.jpg'
+        , '.gif', '.mp4', '.webm', '.ogg', '.mov', '.avi', '.wmv', '.flv'
+      ];
       foreach( $allowed_extensions as $extension )
       {
         if( str_ends_with( $this->uri, $extension ) && file_exists( 'src/' . $this->uri ) )
@@ -90,6 +94,14 @@ class Router
           {
               '.css'  => 'text/css'
             , '.js'   => 'text/javascript'
+            , '.gif'  => 'image/gif'
+            , '.mp4'  => 'video/mp4'
+            , '.webm' => 'video/webm'
+            , '.ogg'  => 'video/ogg'
+            , '.mov'  => 'video/quicktime'
+            , '.avi'  => 'video/x-msvideo'
+            , '.wmv'  => 'video/x-ms-wmv'
+            , '.flv'  => 'video/x-flv'
             , default => mime_content_type( 'src/' . $this->uri )
           };
 

@@ -53,7 +53,7 @@ class UsersController
     // Columnas
     $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' )         , ['id' => 'name_col']          ) );
     $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )        , ['id' => 'email_col']         ) );
-    $table->addColumn( 'user_relationship', new TableColumn( pl_label( 'relationship' ) , ['id' => 'relationship_col']  ) );
+    $table->addColumn( 'user_role'        , new TableColumn( pl_label( 'role' )         , ['id' => 'role_col']          ) );
     $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )          , ['id' => 'dni_col']           ) );
     $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ) , ['id' => 'phone_number_col']  ) );
     
@@ -64,7 +64,7 @@ class UsersController
       $cells = [
           'user_name'         => new TableCell( $user['user_name'] )
         , 'user_email'        => new TableCell( $user['user_email'] )
-        , 'user_relationship' => new TableCell( $user['user_relationship'] )
+        , 'user_role'         => new TableCell( $user['user_relationship'] )
         , 'user_dni'          => new TableCell( $user['user_dni'] )
         , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
       ];

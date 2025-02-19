@@ -329,68 +329,6 @@ h3 {
   }
 }
 
-.apple-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  
-  width: 24rem;
-  height: 42rem;
-  padding: 1.5rem;
-  border-radius: 1.5rem;
-  color: white;
-
-  background-size: cover;
-  background-position: center;
-  scroll-snap-align: start;
-}
-
-@media (max-width: 1024px) {
-  .apple-card {
-    width: 20rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .apple-card {
-    width: 18rem;
-  }
-}
-
-.apple-card-snap {
-  padding: 0.55rem;
-  background-color: #333336;
-}
-
-.apple-snap {
-  padding: 0;
-  background-color: #dedee2;
-}
-
-.apple-card-snap, .apple-snap {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.apple-card-snap:hover svg {
-  fill: #fff;
-}
-
-.apple-snap:hover {
-  background-color: #e6e6e6;
-}
-
-section {
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
 .scrollbar-none {
   -ms-overflow-style: none; /* IE y Edge antiguos */
   scrollbar-width: none;    /* Firefox */
@@ -402,25 +340,6 @@ section {
 
 .shadow-landing {
   box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
-}
-
-.hero-section {
-  position: relative;
-  min-height: 100vh;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.apple-button {
-  border-radius: 1.5rem;
-  color: white;
-  padding: 0.5rem 2rem;
-  background-color: #0071e3;
-  width: fit-content;
 }
 
 .prev-btn, .next-btn {

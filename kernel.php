@@ -15,7 +15,7 @@
  * --------------------------------------------------------------------------------------------------------------------
  *  
  * Núcleo del framework Polaris.
- * Este script es el punto de entrada principal y el corazón del sistema, encargado de:
+ * Este script es el punto de entrada principal y el núcleo del sistema, encargado de:
  *  
  * - Configuración de CORS y gestión de cabeceras HTTP.
  * - Inicialización del framework y carga de archivos esenciales.

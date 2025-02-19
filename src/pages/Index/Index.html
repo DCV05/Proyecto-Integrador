@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[[ polaris.page.title_seo ]]</title>
+  [[ func | &headers ]]
+  <link rel="stylesheet" href="/css/landing.css">
+  <script src="/js/landing.js"></script>
+
+</head>
+<body>
+
+  <header>
+    [[ func | &landing_navbar ]]
+  </header>
+
+  <main class="min-h-screen h-full overflow-x-hidden space-y-16 ml-auto">
+    <section>
+      <div class="relative flex items-center justify-between h-screen mx-auto">
+        <div class="w-1/2 max-w-2xl ml-32">
+          <h1 class="main-title font-semibold mb-4">Crea, Programa y Domina la Robótica</h1>
+          <p class="subtitle mb-6">Un campamento donde los niños diseñan robots, aprenden programación y disfrutan de la tecnología con retos divertidos y educativos.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="apple-button transition">Ver actividades</a>
+            <a href="#" class="apple-button-secondary transition">Contacta con nosotros →</a>
+          </div>
+        </div>
+          
+        <div class="relative w-1/2 h-full overflow-hidden transform skew-x-[-6deg] origin-bottom-left h-full z-25">
+          <div class="transform skew-x-[6deg] origin-bottom-left h-full">
+            <img id="hero-photo" src="[[ polaris.assets ]]/img/hero_photo.webp" alt="Hero Image" class="w-full object-cover"/>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <main class="min-h-screen h-full overflow-x-hidden space-y-32 container mx-auto mt-24">
+
+    <section>
+      <div class="grid lg:grid-cols-5 gap-12 items-center mx-auto">
+
+        <div class="col-span-3 flex justify-start items-center">
+          <img class="rounded-xl h-[32rem]" src="[[ polaris.assets ]]/img/detail1.webp" alt="Niño contruyendo un robot">
+        </div>
+
+        <div class="col-span-2 flex flex-col space-y-6 max-w-2xl">
+          <h2 class="huge-title font-semibold">Aprendizaje 100% Práctico</h2>
+          <p class="subtitle mb-6">
+            Los niños no solo observan, sino que construyen y programan sus propios robots desde el primer día.
+            
+            <br><br>
+
+            Todo el aprendizaje es a través de la experiencia, usando herramientas adaptadas a su edad para que puedan experimentar con sensores, motores y programación de forma divertida.
+          </p>
+          <a href="/activities" class="apple-button">
+            Explora Más
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <div class="grid lg:grid-cols-5 gap-12 items-center mx-auto">
+
+        <div class="col-span-2 flex flex-col space-y-6 max-w-2xl">
+          <h2 class="text-4xl font-semibold">Dos Niveles de Dificultad Según la Edad</h2>
+          <p class="text-xl">
+            El campamento se adapta a cada grupo:
+          </p>
+
+          <ul class="text-xl space-y-3">
+            <li><strong>6 a 9 años</strong> → Robótica con LEGO, programación visual y primeros desafíos de construcción.</li>
+            <li><strong>10 a 14 años</strong> → Arduino, sensores avanzados, código real y competiciones de robótica.</li>
+          </ul>
+          <a href="#activities" class="apple-button">
+            Conoce Más
+          </a>
+        </div>
+        
+        <div class="col-span-3 flex justify-end items-center">
+          <video src="[[ polaris.assets ]]/img/detail2.mp4" autoplay loop loading="lazy" class="rounded-xl w-[48rem]"></video>
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <div class="grid lg:grid-cols-5 gap-12 items-center mx-auto">
+
+        <div class="col-span-3 flex justify-start items-center">
+          <img class="rounded-xl h-[32rem]" src="[[ polaris.assets ]]/img/detail3.webp" alt="Niño contruyendo un robot">
+        </div>
+
+        <div class="col-span-2 flex flex-col space-y-6 max-w-2xl">
+          <h2 class="text-4xl font-semibold">Retos y Competencias de Robótica</h2>
+          <p class="text-xl">
+            Cada niño pone a prueba sus habilidades en desafíos emocionantes como:
+          </p>
+
+          <ul class="text-xl space-y-3">
+            <li><strong>Batalla de Sumo:</strong> Construye y programa un robot para empujar al oponente fuera del ring.</li>
+            <li><strong>Carrera de Robots:</strong> Supera obstáculos y programa tu robot para llegar primero a la meta.</li>
+            <li><strong>Misión de Rescate:</strong> Diseña un robot autónomo capaz de encontrar y transportar objetos.</li>
+          </ul>
+
+          <a href="/signup" class="apple-button">
+            Regístrate
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <main class="min-h-screen h-full space-y-32 mt-24" id="activities">
+    <section>
+  
+      <h2 class="text-5xl font-semibold ml-[7.5rem]">Descubre nuestras actividades.</h2>
+      <div id="snap-container" class="transition transform flex overflow-x-auto gap-6 py-12 items-center w-full snap-x snap-mandatory scrollbar-none">
+        <div class="apple-card snap-center flex-none w-[16rem]">&nbsp;</div>
+  
+        <div class="text-black apple-card snap-center flex-none bg-[url([[ polaris.assets ]]/img/rover.jpg)] transition hover:scale-105 duration-300 origin-center">
+          <div class="absolute inset-0 overlay-bg flex flex-col items-start justify-start z-10 p-6 space-y-6 hidden" id="overlay">
+            <div class="text-black">
+              <p class="text-sm uppercase opacity-80">Exploración y Tecnología</p>
+              <h2 class="text-3xl font-bold">Construye tu Explorador Robótico</h2>
+            </div>
+            <div class="body-text text-black">
+              Los niños diseñarán y ensamblarán su propio rover robótico, equipado con motores y sensores, para explorar terrenos simulados. Aprenderán sobre movilidad autónoma, adaptación a obstáculos y el uso de programación para controlar su explorador.
+              <br><br>
+              Esta actividad fomenta la creatividad y el pensamiento lógico, permitiéndoles experimentar con ingeniería mecánica y robótica.
+            </div>
+            <div class="absolute right-6 bottom-6 z-50 flex justify-end">
+              <button type="button" class="revert-change-snap apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
+                  <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="not-overlay">
+            <div>
+              <p class="text-sm uppercase opacity-80">Exploración y Tecnología</p>
+              <h2 class="text-3xl font-bold">Construye tu Explorador Robótico</h2>
+            </div>
+            <div class="flex justify-end">
+              <button type="button" class="change-snap absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
+                  <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      
+        <div class="text-black apple-card snap-center flex-none bg-[url([[ polaris.assets ]]/img/drone.jpg)] transition hover:scale-105 duration-300 origin-center">
+          <div class="absolute inset-0 overlay-bg flex flex-col items-start justify-start z-10 p-6 space-y-6 hidden" id="overlay">
+            <div class="text-black">
+              <p class="text-sm uppercase opacity-80">Estrategia y Compentencia</p>
+              <h2 class="text-3xl font-bold">Vuelo de Drones</h2>
+            </div>
+            <div class="body-text text-black">
+              Una competencia emocionante donde los participantes pilotarán drones a través de un circuito lleno de obstáculos. Los niños aprenderán sobre estabilidad, control y maniobrabilidad, además de conceptos básicos de aerodinámica.
+              
+              <br><br>
+              Esta actividad mejora la coordinación ojo-mano y desarrolla habilidades de precisión y toma de decisiones bajo presión.
+            </div>
+            <div class="absolute right-6 bottom-6 z-50 flex justify-end">
+              <button type="button" class="revert-change-snap apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
+                  <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="not-overlay">
+            <div>
+              <p class="text-sm uppercase opacity-80">Estrategia y Compentencia</p>
+              <h2 class="text-3xl font-bold">Vuelo de Drones</h2>
+            </div>
+            <div class="flex justify-end">
+              <button type="button" class="change-snap absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
+                  <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      
+        <div class="text-black apple-card snap-center flex-none bg-[url([[ polaris.assets ]]/img/kids_building_robot.jpg)] transition hover:scale-105 duration-300 origin-center">
+          <div class="absolute inset-0 overlay-bg flex flex-col items-start justify-start z-10 p-6 space-y-6 hidden" id="overlay">
+            <div class="text-black">
+              <p class="text-sm uppercase opacity-80">Estrategia y Compentencia</p>
+              <h2 class="text-3xl font-bold">El Último Guerrero en Pie</h2>
+            </div>
+            <div class="body-text text-black">
+              Enfrenta tu robot en un combate de sumo donde el objetivo es empujar al oponente fuera del ring. Los niños diseñarán, programarán y optimizarán sus robots para mejorar su estabilidad y fuerza.
+              
+              <br><br>
+              Aprenderán sobre sensores de proximidad, estrategias de defensa y ataque, y la importancia del ajuste mecánico en la robótica de competencia.
+            </div>
+            <div class="absolute right-6 bottom-6 z-50 flex justify-end">
+              <button type="button" class="revert-change-snap apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
+                  <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="not-overlay">
+            <div>
+              <p class="text-sm uppercase opacity-80">Estrategia y Compentencia</p>
+              <h2 class="text-3xl font-bold">El Último Guerrero en Pie</h2>
+            </div>
+            <div class="flex justify-end">
+              <button type="button" class="change-snap absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
+                  <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      
+        <div class="text-black apple-card snap-center flex-none bg-[url([[ polaris.assets ]]/img/catapult.jpg)] transition hover:scale-105 duration-300 origin-center">
+          <div class="absolute inset-0 overlay-bg flex flex-col items-start justify-start z-10 p-6 space-y-6 hidden" id="overlay">
+            <div class="text-black">
+              <p class="text-sm uppercase opacity-80">Ingeniería y Puntería</p>
+              <h2 class="text-3xl font-bold">Construye tu Catapulta Robótica</h2>
+            </div>
+            <div class="body-text text-black">
+              Usando principios de ingeniería y mecánica, los niños diseñarán y construirán una catapulta robótica capaz de lanzar proyectiles con precisión. Experimentarán con diferentes ángulos de lanzamiento, tensión de los materiales y programación de mecanismos automatizados para optimizar su puntería.
+              <br><br>
+              Esta actividad combina creatividad, resolución de problemas y habilidades matemáticas.
+            </div>
+            <div class="absolute right-6 bottom-6 z-50 flex justify-end">
+              <button type="button" class="revert-change-snap apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
+                  <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="not-overlay">
+            <div>
+              <p class="text-sm uppercase opacity-80">Ingeniería y Puntería</p>
+              <h2 class="text-3xl font-bold">Construye tu Catapulta Robótica</h2>
+            </div>
+            <div class="flex justify-end">
+              <button type="button" class="change-snap absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
+                  <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      
+        <div class="apple-card snap-center flex-none bg-[url([[ polaris.assets ]]/img/lamp.png)] transition hover:scale-105 duration-300 origin-center relative">
+
+          <div class="absolute inset-0 overlay-bg flex flex-col items-start justify-start z-10 p-6 space-y-6 hidden" id="overlay">
+            <div class="text-black">
+              <p class="text-sm uppercase opacity-80">Innovación y Energía</p>
+              <h2 class="text-3xl font-bold">Crea tu propia Bombilla</h2>
+            </div>
+
+            <div class="body-text text-black">
+              Los participantes aprenderán sobre energías renovables y la importancia de la electricidad en la robótica. Construirán circuitos eléctricos básicos, explorando el uso de paneles solares, motores y LEDs.
+              <br><br>
+              Descubrirán cómo los circuitos eléctricos alimentan los robots y experimentarán con conexiones en serie y paralelo para optimizar el consumo energético.
+            </div>
+
+            <div class="absolute right-6 bottom-6 z-50 flex justify-end">
+              <button type="button" class="revert-change-snap apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
+                  <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="not-overlay">
+            <div>
+              <p class="text-sm uppercase opacity-80">Innovación y Energía</p>
+              <h2 class="text-3xl font-bold">Crea tu propia Bombilla</h2>
+            </div>
+            
+            <div class="flex justify-end">
+              <button type="button" class="change-snap absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
+                  <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+  
+        <div class="apple-card snap-center flex-none w-[45rem]">&nbsp;</div>
+      </div>
+  
+      <div class="flex justify-end flex-row gap-4 mr-[22.5rem]">
+        <button id="prev-snap" type="button" class="apple-snap rotate-180 transform transition duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36" height="36" fill="#616163">
+            <path d="M23.5587,16.916 C24.1447,17.4999987 24.1467,18.446 23.5647,19.034 L16.6077,26.056 C16.3147,26.352 15.9287,26.4999987 15.5427,26.4999987 C15.1607,26.4999987 14.7787,26.355 14.4867,26.065 C13.8977,25.482 13.8947,24.533 14.4777,23.944 L20.3818,17.984 L14.4408,12.062 C13.8548,11.478 13.8528,10.5279 14.4378,9.941 C15.0218,9.354 15.9738,9.353 16.5588,9.938 L23.5588,16.916 L23.5587,16.916 Z"></path>
+          </svg>
+        </button>
+  
+        <button id="next-snap" type="button" class="apple-snap transform transition duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36" height="36" fill="#616163">
+            <path d="M23.5587,16.916 C24.1447,17.4999987 24.1467,18.446 23.5647,19.034 L16.6077,26.056 C16.3147,26.352 15.9287,26.4999987 15.5427,26.4999987 C15.1607,26.4999987 14.7787,26.355 14.4867,26.065 C13.8977,25.482 13.8947,24.533 14.4777,23.944 L20.3818,17.984 L14.4408,12.062 C13.8548,11.478 13.8528,10.5279 14.4378,9.941 C15.0218,9.354 15.9738,9.353 16.5588,9.938 L23.5588,16.916 L23.5587,16.916 Z"></path>
+          </svg>
+        </button>
+      </div>
+    
+    </section>
+  </main>
+
+  [[ func | &landing_footer ]]
+
+  <script src="[[ polaris.actual_dir ]]/[[ polaris.page.page_title ]].js"></script>
+
+</body>
+</html>
