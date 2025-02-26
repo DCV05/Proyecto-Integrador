@@ -8,52 +8,40 @@
   <link rel="stylesheet" href="/css/landing.css">
   <script src="/js/landing.js"></script>
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 
   <header>
     [[ func | &landing_navbar | true ]]
   </header>
 
-  <main class="h-[42rem] mt-12 grid place-items-center">
+  <main class="flex-1 flex items-center justify-center mt-32">
     <div class="grid grid-cols-1 gap-2 w-full max-w-xl">
       <h2 class="text-left text-4xl font-bold tracking-tight text-gray-900">
-        [[ label | login_button ]]
+        [[ label | contact ]]
       </h2>
 
       <div class="bg-white shadow-xl rounded-lg p-8 w-full space-y-6">
         
-        <form id="login-form" class="space-y-4">
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">[[ label | email ]]</label>
-            <input id="email" name="email" type="text" autocomplete="email" placeholder="johndoe@example.com"
-              class="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300">
-          </div>
-          
-          <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">[[ label | password ]]</label>
-            <input id="password" name="password" type="password"
-              class="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300">
-          </div>
-          
-          <div class="flex justify-center items-center text-sm">
-            <a href="/recover-password" class="text-center text-sm text-indigo-600 hover:underline">[[ label | forgot_password_button ]]</a>
-          </div>
+        <form id="contact-form" class="space-y-4">
+          [[ func | &custom_input | email | email ]]
+          [[ func | &custom_input | email_subject | text | 0 ]]
+          [[ func | &custom_textarea | message ]]
           
           <div class="grid grid-cols-2 gap-4 mt-4">
-            <button type="submit" class="w-full py-2 px-4 text-white bg-indigo-600 rounded-lg transform transition duration-300 hover:bg-indigo-500 shadow-md">
-              [[ label | login_button ]]
+            <button type="submit" class="apple-button" disabled>
+              [[ label | submit_button ]]
             </button>
-            <a href="/signup" class="w-full py-2 px-4 text-indigo-600 border border-indigo-600 rounded-lg transform transition duration-300 hover:bg-indigo-600 hover:text-white shadow-md text-center">
-              [[ label | create_account_button ]]
-            </a>
           </div>
         </form>
+
       </div>
     </div>
   </main>
 
-  <script src="[[ polaris.actual_dir ]]/[[ polaris.page.page_title ]].js"></script>
+  <footer>
+    [[ func | &landing_footer | false ]]
+  </footer>
 
-  [[ func | &landing_footer ]]
+  <script src="[[ polaris.actual_dir ]]/[[ polaris.page.page_title ]].js"></script>
 </body>
 </html>

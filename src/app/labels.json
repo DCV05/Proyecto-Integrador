@@ -688,5 +688,25 @@
   "signup": {
     "es": "Crear cuenta",
     "en": "Sign up"
+  },
+  "email_placeholder": {
+    "es": "michael.scott@dundermifflin.com",
+    "en": "michael.scott@dundermifflin.com"
+  },
+  "email_subject": {
+    "es": "Asunto",
+    "en": "Email subject"
+  },
+  "submit_button": {
+    "es": "Enviar",
+    "en": "Send"
+  },
+  "message": {
+    "es": "Mensaje",
+    "en": "Message"
+  },
+  "required_field": {
+    "es": "Campo requerido",
+    "en": "Required field"
   }
 }

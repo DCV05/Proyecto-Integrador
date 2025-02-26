@@ -554,9 +554,13 @@ function app_organize_dates( array $dates ): array
   return $value;
 }
 
-function app_custom_input( string $name, string $type ): string
+function app_custom_input( string $name, string $type, int $placeholder = 1 ): string
 {
   $eye_icon = '';
+
+  $placeholder_text = $placeholder == 1
+    ? pl_label( $name . '_placeholder' )
+    : '';
 
   // Si el tipo es "password", añadimos el icono de ojo
   if( $type === 'password' )
@@ -575,7 +579,7 @@ function app_custom_input( string $name, string $type ): string
         type="' . $type . '"
         name="' . $name . '"
         id="' . $name . '"
-        placeholder="' . pl_label( $name . '_placeholder' ) . '"
+        placeholder="' . $placeholder_text . '"
         class="custom-input transform transition duration-300 mt-1 pr-10">
       ' . $eye_icon . '
     </div>
@@ -584,7 +588,7 @@ function app_custom_input( string $name, string $type ): string
   return $input_html;
 }
 
-function app_custom_textarea( string $name, $value = '' ): string
+function app_custom_textarea( string $name, string $value = '' ): string
 {
   $textarea_html = '
     <div>
@@ -639,10 +643,15 @@ function app_landing_navbar( $center = false ): string
   return $html;
 }
 
-function app_landing_footer(): string
+function app_landing_footer( $margin = true ): string
 {
+  $margin_footer = $margin == true
+    ? 'mt-16'
+    : '';
+
+
   $html = '
-    <footer class="mx-auto mt-24 shadow-landing py-3">
+    <footer class="mx-auto ' . $margin_footer . ' shadow-landing py-3">
       <div class="grid lg:grid-cols-5 gap-12 items-center mx-auto">
         <div class="lg:col-span-5 text-center">
           <a class="inline-flex" href="/" title="Campament">
@@ -650,7 +659,14 @@ function app_landing_footer(): string
               ' . pl_label( 'campament' ) . '
             </span>
           </a>
-          <p class="text-sm text-gray-500 mt-4">&copy; 2024 Todos los derechos reservados.</p>
+          <nav class="mt-4">
+            <ul class="flex justify-center space-x-6 text-sm text-gray-500">
+              <li><a href="/index" class="hover:text-blue-500">Home</a></li>
+              <li><a href="/contact" class="hover:text-blue-500">Contact</a></li>
+              <li><a href="/login" class="hover:text-blue-500">Login</a></li>
+              <li><a href="/signup" class="hover:text-blue-500">Signup</a></li>
+            </ul>
+          </nav>
         </div>
       </div>
     </footer>
