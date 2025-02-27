@@ -20,7 +20,7 @@ class AdminFinancesController
    * 
    * @return string HTML de la tabla de pagos.
    */
-  public function table_finances(): string
+  public function table_finances( string $where = '' ): string
   {
     $value            = '';
     $mod_users        = new Users();
@@ -28,10 +28,10 @@ class AdminFinancesController
     $mod_user_details = new UserDetails();
 
     // Capturamos todos los pagos relacionados con el usuario actual
-    $payments = $mod_payments->GetRows();
+    $payments = $mod_payments->GetRows( $where );
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'payments_table', 'class' => 'table-ui'] );
+    $table = new Table( ['id' => 'payments_table', 'class' => 'p-table'] );
     $table->addColumn( 'payment_id2' , new TableColumn( pl_label( 'payment_id2' )   ) );
     $table->addColumn( 'user_name'   , new TableColumn( pl_label( 'user_name' )     ) );
     $table->addColumn( 'amount'      , new TableColumn( pl_label( 'amount' )        ) );
@@ -47,12 +47,12 @@ class AdminFinancesController
       $user         = $mod_users->GetRow( $user_details['user_id'] )[0];
 
       // Generamos el select de estado del pago
-      if( $payment['status'] !== 'Paid' )
+      if( $payment['status'] !== 1 )
       {
         $status_html = '
-          <select id="payment-status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5">
-            <option value="Pending" selected>Pending</option>
-            <option value="Paid">Paid</option>
+          <select id="payment-status" class="p-select">
+            <option value="0" selected>Pending</option>
+            <option value="1">Paid</option>
           </select>
         ';
 
@@ -65,7 +65,7 @@ class AdminFinancesController
       }
       else
       {
-        $status_html  = '<span class="bg-blue-100 text-blue-800 text-sm font-medium px-3.5 py-1 rounded-lg">' . ucfirst( $payment['status'] ) . '</span>';
+        $status_html  = '<span class="p-tag-blue">' . pl_label( 'paid' ) . '</span>';
         $email_icon   = '';
       }
 
@@ -130,12 +130,12 @@ class AdminFinancesController
     $user         = $mod_users->GetRow( $user_details['user_id'] )[0];
 
     // Generamos el select de estado del pago
-    if( $payment['status'] !== 'Paid' )
+    if( $payment['status'] !== 1 )
     {
       $status_html = '
-        <select id="payment-status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5">
-          <option value="Pending" selected>Pending</option>
-          <option value="Paid">Paid</option>
+        <select id="payment-status" class="p-select">
+          <option value="0" selected>Pending</option>
+          <option value="1">Paid</option>
         </select>
       ';
 
@@ -148,7 +148,7 @@ class AdminFinancesController
     }
     else
     {
-      $status_html  = '<span class="bg-blue-100 text-blue-800 text-sm font-medium px-3.5 py-1 rounded-lg">' . ucfirst( $payment['status'] ) . '</span>';
+      $status_html  = '<span class="p-tag-blue">' . pl_label( 'paid' ) . '</span>';
       $email_icon   = '';
     }
 
@@ -192,9 +192,56 @@ class AdminFinancesController
     return $value;
   }
 
-  // ------------------------------------------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------
   // AJAX
-  // ------------------------------------------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------
+
+  public function ajax_form_search( array $fields ): array
+  {
+    $value  = [];
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    $db = new Model();
+
+    do
+    {
+      // Creamos el filtro
+      $where = ' where 1 = 1'; // Base para concatenar con AND
+
+      if( !empty( $fields['query'] ) )
+        $where .= ' and payment_id2 like "%' . $db->esc( $fields['query'] ) . '%"';
+      
+      if( !empty( $fields['status'] ) || $fields['status'] !== '' )
+        $where .= ' and status = ' . $db->esc( $fields['status'] );
+
+      // Recargamos el HTML filtrado
+      $html = $this->table_finances( $where );
+
+      // Rellenamos los objetos a actualizar
+      $elements = [
+        ['selector' => '#payments_table', 'method_name'  => 'update' , 'value' => $html]
+      ];
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    return $value;
+  }
 
   /**
    * Manda un email al usuario del pago vinculado

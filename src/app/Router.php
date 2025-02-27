@@ -82,7 +82,7 @@ class Router
       // Comprobamos que no sea un archivo CSS, JS o HTML
       $allowed_extensions = [
           '.css', '.js', '.html'
-        , '.png', '.webp', '.jpeg', '.jpg'
+        , '.png', '.webp', '.jpeg', '.jpg', '.svg'
         , '.gif', '.mp4', '.webm', '.ogg', '.mov', '.avi', '.wmv', '.flv'
       ];
       foreach( $allowed_extensions as $extension )

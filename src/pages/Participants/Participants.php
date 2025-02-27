@@ -11,7 +11,6 @@ class ParticipantsController
   {
     // Control de seguridad
     app_security();
-
     return;
   }
 
@@ -24,7 +23,7 @@ class ParticipantsController
    * 
    * @return string HTML de la tabla de participantes.
    */
-  public function table_participants(): string
+  public function table_participants( string $where = '' ): string
   {
     global $role;
 
@@ -35,10 +34,10 @@ class ParticipantsController
     if( $role === 0 )
       $participants = $mod_participants->GetRows( $_SESSION['app']['user']['user_id'] );
     else
-      $participants = $mod_participants->GetAll();
+      $participants = $mod_participants->GetAll( $where );
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'participants_table', 'class' => 'table-ui'] );
+    $table = new Table( ['id' => 'participants_table', 'class' => 'p-table'] );
 
     // Columnas
     $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' )             , ['id' => 'p_name_col']          ) );
@@ -57,7 +56,7 @@ class ParticipantsController
 
       // Botón de calendario
       $schedule_icon = '
-        <a href="/participant?pid2=' . $participant['participant_id2'] . '" class="white-svg cursor-pointer p-2 rounded-lg bg-orange-600 flex items-center justify-center">
+        <a href="/participant?pid2=' . $participant['participant_id2'] . '" class="p-button">
           ' . app_get_svg_icon( 'schedule' ) . '
         </a>
       ';
@@ -84,7 +83,47 @@ class ParticipantsController
     return $value;
   }
 
-    /**
+  // --------------------------------------------------------------------------------
+  // AJAX
+  // --------------------------------------------------------------------------------
+
+  public function ajax_form_search( array $fields ): array
+  {
+    $value  = [];
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    do
+    {
+      // Recargamos el HTML de la fila actualizada
+      $html = $this->table_participants( $fields['query'] );
+
+      // Rellenamos los objetos a actualizar
+      $elements = [
+        ['selector' => '#participants_table', 'method_name'  => 'update' , 'value' => $html]
+      ];
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    return $value;
+  }
+
+  /**
    * Obtiene y muestra un popup con los detalles del usuario seleccionado.
    * 
    * @param array $fields Contiene el identificador del usuario (`id2`).
@@ -135,27 +174,12 @@ class ParticipantsController
               </svg>
             </button>
 
-            <div class="modal_content">
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_name' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_name'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_birth_date'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_allergies'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_special_needs' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_special_needs'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_medical_treatment' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_medical_treatment'] . '</div>
-              </div>
+            <div class="modal_content space-y-5">
+              ' . app_custom_input( 'participant_name', 'text', $participant['participant_name'] ) . '
+              ' . app_custom_input( 'participant_birth_date', 'date', $participant['participant_birth_date'] ) . '
+              ' . app_custom_textarea( 'participant_allergies', $participant['participant_allergies'] ) . '
+              ' . app_custom_textarea( 'participant_special_needs', $participant['participant_special_needs'] ) . '
+              ' . app_custom_textarea( 'participant_medical_treatment', $participant['participant_medical_treatment'] ) . '
             </div>
 
           </div>

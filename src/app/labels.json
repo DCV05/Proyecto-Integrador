@@ -708,5 +708,33 @@
   "required_field": {
     "es": "Campo requerido",
     "en": "Required field"
+  },
+  "clean_filters": {
+    "es": "Limpiar filtros",
+    "en": "Clean filters"
+  },
+  "add-activity": {
+    "es": "Añadir actividad",
+    "en": "Add activity"
+  },
+  "search": {
+    "es": "Buscar",
+    "en": "Search"
+  },
+  "filters": {
+    "es": "Filtros",
+    "en": "Filters"
+  },
+  "paid": {
+    "es": "Pagado",
+    "en": "Paid"
+  },
+  "pending": {
+    "es": "Pendiente",
+    "en": "Pending"
+  },
+  "view-all": {
+    "es": "Ver todos",
+    "en": "View all"
   }
 }

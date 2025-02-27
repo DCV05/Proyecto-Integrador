@@ -329,6 +329,54 @@ h3 {
   }
 }
 
+/* VARIABLES > REM
+======================================================================================================================
+Son las medidas en pí­xeles con su correspondiente valor en rem                                                      */
+
+:root {
+  
+  /* Valores del 1 al 100 */
+  --1px:.0625rem;--2px:.125rem;--3px:.1875rem;--4px:.250rem;--5px:.3125rem;--6px:.375rem;--7px:.4375rem;--8px:.5rem;--9px:.5625rem;--10px:.625rem;--11px:.6875rem;--12px:.750rem;--13px:.8125rem;--14px:.875rem;--15px:.9375rem;--16px:1rem;--17px:1.0625rem;--18px:1.125rem;--19px:1.1875rem;--20px:1.250rem;--21px:1.3125rem;--22px:1.375rem;--23px:1.4375rem;--24px:1.500rem;--25px:1.5625rem;--26px:1.625rem;--27px:1.6875rem;--28px:1.750rem;--29px:1.8125rem;--30px:1.875rem;--31px:1.9375rem;--32px:2rem;--33px:2.0625rem;--34px:2.125rem;--35px:2.1875rem;--36px:2.250rem;--37px:2.3125rem;--38px:2.375rem;--39px:2.4375rem;--40px:2.500rem;--41px:2.5625rem;--42px:2.625rem;--43px:2.6875rem;--44px:2.750rem;--45px:2.8125rem;--46px:2.875rem;--47px:2.9375rem;--48px:3rem;--49px:3.0625rem;--50px:3.125rem;--51px:3.1875rem;--52px:3.250rem;--53px:3.3125rem;--54px:3.375rem;--55px:3.4375rem;--56px:3.500rem;--57px:3.5625rem;--58px:3.625rem;--59px:3.6875rem;--60px:3.750rem;--61px:3.8125rem;--62px:3.875rem;--63px:3.9375rem;--64px:4rem;--65px:4.0625rem;--66px:4.125rem;--67px:4.1875rem;--68px:4.250rem;--69px:4.3125rem;--70px:4.375rem;--71px:4.4375rem;--72px:4.500rem;--73px:4.5625rem;--74px:4.625rem;--75px:4.6875rem;--76px:4.750rem;--77px:4.8125rem;--78px:4.875rem;--79px:4.9375rem;--80px:5rem;--81px:5.0625rem;--82px:5.125rem;--83px:5.1875rem;--84px:5.250rem;--85px:5.3125rem;--86px:5.375rem;--87px:5.4375rem;--88px:5.500rem;--89px:5.5625rem;--90px:5.625rem;--91px:5.6875rem;--92px:5.750rem;--93px:5.8125rem;--94px:5.875rem;--95px:5.9375rem;--96px:6rem;--97px:6.0625rem;--98px:6.125rem;--99px:6.1875rem;--100px:6.250rem;
+  --font-size: 1.500rem;
+}
+
+/* VARIABLES > TIPOGRAFÍA
+======================================================================================================================
+Definición de las variables tipográficas                                                                            */
+
+:root {
+  --font-general: "Manager";
+  --font-icons  : "Material Symbols Outlined";
+  --col-blue    : "#3b82f6";
+  --col-green   : "#10b981";
+  --col-blue2   : "#06b6d4";
+  --col-orange  : "#f97316";
+  --col-purple  : "#6366f1";
+  --col-green2  : "#84cc16";
+}
+
+.text-blue    { color: var(--col-blue) !important;   } .bg-blue   { background-color: var(--col-blue) !important;   }
+.text-green   { color: var(--col-green) !important;  } .bg-green  { background-color: var(--col-green) !important;  }
+.text-blue2   { color: var(--col-blue2) !important;  } .bg-blue2  { background-color: var(--col-blue2) !important;  }
+.text-orange  { color: var(--col-orange) !important; } .bg-orange { background-color: var(--col-orange) !important; }
+.text-purple  { color: var(--col-purple) !important; } .bg-purple { background-color: var(--col-purple) !important; }
+.text-green2  { color: var(--col-green2) !important; } .bg-green2 { background-color: var(--col-green2) !important; }
+
+.icon {
+  font-family: var(--font-icons);
+  font-weight: 300;
+  font-style: normal;
+  font-size: var(--font-size) !important;
+  line-height: 0.9;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
 .scrollbar-none {
   -ms-overflow-style: none; /* IE y Edge antiguos */
   scrollbar-width: none;    /* Firefox */
@@ -635,7 +683,6 @@ h3 {
 
 .icon-container {
   padding: 0.50rem !important;
-  border-radius: 0.75rem;
 }
 
 .icon-container div, .icon-container a {
@@ -655,7 +702,6 @@ h3 {
 
 .icon-container div i, .icon-container a i {
   font-size: 1.5rem;
-  color: white;
 }
 
 .px-4-imp {
@@ -669,4 +715,237 @@ h3 {
 
 .alert {
   transition: opacity 0.5s ease;
+}
+
+/* ---------------------------------------- */
+/* POLARIS COMPONENTS                       */
+/* ---------------------------------------- */
+
+/* -------------------- POLARIS TABLE -------------------- */
+.p-table {
+  border-collapse: separate; /* Permite el border-radius */
+  border-spacing: 0; /* Elimina separación entre celdas */
+  border-radius: 12px;
+  width: 100%;
+  border: 1px solid #E9EAEB;
+  margin-bottom: 1rem;
+}
+
+.p-table thead th,
+.p-table tbody tr td {
+  border-bottom: 1px solid #E9EAEB;
+  font-size: var( --14px );
+  text-align: left;
+}
+
+.p-table tbody tr:last-child td {
+  border: 0;
+}
+
+.p-table thead th:first-child {
+  border-top-left-radius: 10px !important;
+}
+
+.p-table thead th:last-child {
+  border-top-right-radius: 10px !important;
+}
+
+.p-table thead th {
+  border-radius: 0 !important;
+  padding: 0.5rem 1rem;
+  font-weight: normal;
+  background-color: #FAFAFA;
+}
+
+.p-table tbody tr td {
+  padding: 0.75rem 1rem;
+}
+
+.p-table thead th a {
+  color: #717680;
+  text-decoration: none;
+}
+
+.p-shadow {
+  box-shadow: inset 0 #FAFAFA, 0 1px 4px 0 #0a0d120d;
+}
+
+.p-border {
+  border: 1px #D5D7DA solid;
+}
+
+/* ------------------- POLARIS BUTTON/INPUT ------------------- */
+.p-button,
+.p-input,
+.p-control {
+  background-color: white;
+  border: 1px #D5D7DA solid;
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: #414651;
+  text-decoration: none;
+  box-shadow: inset 0 -2px 0 0 #FAFAFA, 0 1px 2px 0 #0a0d120d;
+  display: flex;
+  gap: 0.25rem;
+  transition: background-color 0.2s;
+  font-size: var( --15px );
+}
+
+.p-button {
+  padding: 8px 12px;
+  font-size: var( --15px );
+  text-align: center;
+}
+
+.p-button:hover,
+.p-button:hover *,
+.p-input:hover,
+.p-input:hover * {
+  background-color: #FAFAFA;
+  color: #414651;
+}
+
+.p-button > i:first-child,
+.p-input > i:first-child {
+  margin-left: -4px;
+}
+
+.p-button > i:last-child,
+.p-input > i:last-child {
+  margin-right: -4px;
+}
+
+/* -------------------- POLARISK SELECT -------------------- */
+.p-select {
+  background-color: white;
+  border: 1px solid #D5D7DA;
+  border-radius: 8px;
+  box-shadow: inset 0 -2px 0 0 #FAFAFA, 0 1px 2px 0 #0a0d120d;
+  display: block;
+  color: #414651;
+  text-decoration: none;
+  padding: 9.8px 14px;
+  width: auto;
+  font-size: var( --15px );
+}
+
+.p-select:hover {
+  background-color: #FAFAFA;
+}
+
+/* -------------------- POLARIS CONTROL -------------------- */
+
+.p-control {
+  padding: 7.3px 14px;
+  align-items: center;
+}
+
+/* Hover solo en el contenedor */
+.p-control {
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.p-control:hover {
+  background-color: #FAFAFA;
+  color: #414651;
+}
+
+/* Que los hijos hereden sin su propia transición */
+.p-control input {
+  background-color: inherit;
+  transition: none;
+  outline: none;
+}
+
+.p-control > i {
+  font-weight: 500;
+  transition: none;
+}
+
+.p-control > i:first-child {
+  margin-left: -4px;
+}
+
+.p-control > i:last-child {
+  margin-right: -4px;
+}
+
+/* -------------------- POLARIS CARD -------------------- */
+.p-card {
+  background-color: white;
+  border: 1px solid #D5D7DA;
+  padding: 20px;
+  border-radius: 8px;
+  color: #414651;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: inset 0 -2px 0 0 #FAFAFA, 0 1px 2px 0 #0a0d120d;
+}
+
+/* -------------------- MINI COMPONENTS -------------------- */ 
+
+.p-header {
+  font-size: var( --24px );
+  color: black;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.p-block {
+  background: #F6F6F6;
+  padding: 20px 15px;
+  margin-bottom: 20px;
+  border-radius: 0.5rem;
+}
+
+.p-mini-block {
+  background-color: white;
+  border: 1px #D5D7DA solid;
+  padding: 8px;
+  border-radius: 8px;
+  color: #414651;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: inset 0 -2px 0 0 #FAFAFA, 0 1px 2px 0 #0a0d120d;
+}
+
+.p-mini-icon {
+  font-size: var( --24px ) !important;
+}
+
+.p-tag-blue,
+.p-tag-green,
+.p-tag-pink,
+.p-tag-orange {
+  padding: 4px 10px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  width: fit-content;
+}
+
+.p-tag-blue {
+  color: #175CD3;
+  background-color: #eff8ff;
+  border: 2px #B2DDFF solid;
+}
+
+.p-tag-green {
+  color: #067647;
+  background-color: #ABEFC6;
+  border: 2px #ecfdf3 solid;
+}
+
+.p-tag-pink {
+  color: #C11574;
+  background-color: #FCCEEE;
+  border: 2px #fdf2fa solid;
+}
+
+.p-tag-orange {
+  color: #d37517;
+  background-color: #ffd9b3;
+  border: 2px #ffd9b3 solid;
 }

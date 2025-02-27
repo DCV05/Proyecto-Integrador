@@ -1,5 +1,37 @@
 $( document ).ready( function() {
 
+  // Evento focus
+  $( document ).keydown( function( e ) {
+    if( ( e.metaKey || e.ctrlKey ) && e.key.toLowerCase() === 'k' ) {
+      e.preventDefault(); // Evita que se active la función por defecto del navegador
+      $( '#f_search' ).focus();
+    }
+  } );
+
+  // Evento para capturar la búsqueda en tiempo real
+  $( document ).on( 'input', '#f_search', function() {
+      update_filters();
+  } );
+
+  // Evento para capturar cambios en el filtro de estado
+  $( document ).on( 'change', '#payment-status', function() {
+    update_filters();
+  } );
+
+  // Evento para limpiar los filtros
+  $( document ).on( 'click', '#clean-filters', function() {
+    $( '#f_search' ).val( '' );
+    $( '#payment-status' ).val( '' );
+    update_filters();
+  } );
+
+  // Función para actualizar los filtros y llamar a form_search()
+  function update_filters() {
+    let query = $( '#f_search' ).val();
+    let status = $( '#payment-status' ).find( ':selected' ).val();
+    form_search( { query, status } );
+  }
+
   $( document ).on( 'click', '.email-icon', function( e ) {
 
     // Evitamos los demás eventos
@@ -54,6 +86,24 @@ function change_payment_status( ids ) {
     .then( function( data ) {
 
       // Si el resultado es correcto, mostramos los popups
+      if( data.result = 1 && data.elements )
+        pl_dom( data.elements );
+      else
+        generate_error_message( form, data.message );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
+function form_search( array_search ) {
+
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'form_search', array_search )
+    .then( function( data ) {
+
+      // Si el resultado es correcto, redirigmos al panel
       if( data.result = 1 && data.elements )
         pl_dom( data.elements );
       else

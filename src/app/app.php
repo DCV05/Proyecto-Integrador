@@ -173,19 +173,19 @@ function app_layout_buttons(): string
 
   // HTML radio buttons
   $value = '
-    <div id="layout_buttons" class="flex gap-2">
+    <div id="layout_buttons" class="flex gap-3">
       <button 
           id="button_grid" 
-          class="py-2 px-3 ' . $grid_checked . ' transform transition duration-300 rounded-lg" 
+          class="p-border p-shadow ' . $grid_checked . ' cursor-pointer p-2 rounded-lg flex items-center justify-center transform transition duration-300" 
           type="button">
-        <i class="fa-solid fa-grid-2"></i>
+        <i class="icon">dashboard</i>
       </button>
 
       <button 
           id="button_table" 
-          class="py-2 px-3 ' . $list_checked . ' transform transition duration-300 rounded-lg" 
+          class="p-border p-shadow ' . $list_checked . ' cursor-pointer p-2 rounded-lg flex items-center justify-center transform transition duration-300" 
           type="button">
-        <i class="fa-solid fa-list-ul"></i>
+        <i class="icon">list</i>
       </button>
     </div>
   ';
@@ -205,6 +205,7 @@ function app_headers(): string
     <script src="https://kit.fontawesome.com/870c4283ef.js" crossorigin="anonymous"></script>
     <script src="/js/app.js"></script>
     <script src="/js/script.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
   ';
 
   return $headers;
@@ -454,25 +455,25 @@ function app_panel_aside(): string
  * @param string $name Nombre del icono.
  * @return string Código SVG del icono.
  */
-function app_get_svg_icon( string $name ): string
+function app_get_svg_icon( string $name, string $color = 'black' ): string
 {
   $icons = [
-      'desktop'     => '<i class="text-3xl fa-light fa-house"></i>'
-    , 'activities'  => '<i class="text-3xl fa-light fa-person-running"></i>'
-    , 'account'     => '<i class="text-3xl fa-light fa-user"></i>'
-    , 'schedule'    => '<i class="text-3xl fa-light fa-calendar-days"></i>'
-    , 'attendance'  => '<i class="text-3xl fa-light fa-clipboard-user"></i>'
-    , 'finances'    => '<i class="text-3xl fa-light fa-coins"></i>'
-    , 'reports'     => '<i class="text-3xl fa-light fa-chart-line"></i>'
-    , 'pen'         => '<i class="text-3xl fa-light fa-pen"></i>'
-    , 'trash'       => '<i class="text-2xl fa-light fa-trash"></i>'
-    , 'email'       => '<i class="text-3xl fa-light fa-envelope"></i>'
-    , 'plus'        => '<i class="text-4xl fa-regular fa-plus"></i>'
-    , 'paper-icon'  => '<i class="text-xl fa-light fa-paper-plane"></i>'
-    , 'exclamation' => '<i class="text-xl fa-light fa-circle-exclamation"></i>'
-    , 'users'       => '<i class="text-3xl fa-light fa-users"></i>'
-    , 'kids'        => '<i class="text-3xl fa-solid fa-child-reaching"></i>'
-    , 'menu'        => '<i class="text-xl fa-solid fa-bars"></i>'
+      'desktop'     => '<i class="text-' . $color . ' text-3xl icon">home</i>'
+    , 'activities'  => '<i class="text-' . $color . ' text-3xl icon">directions_run</i>'
+    , 'account'     => '<i class="text-' . $color . ' text-3xl icon">person</i>'
+    , 'schedule'    => '<i class="text-' . $color . ' text-3xl icon">calendar_today</i>'
+    , 'attendance'  => '<i class="text-' . $color . ' text-3xl icon">assignment_ind</i>'
+    , 'finances'    => '<i class="text-' . $color . ' text-3xl icon">payments</i>'
+    , 'reports'     => '<i class="text-' . $color . ' text-3xl icon">show_chart</i>'
+    , 'pen'         => '<i class="text-' . $color . ' text-3xl icon">edit</i>'
+    , 'trash'       => '<i class="text-' . $color . ' text-2xl icon">delete</i>'
+    , 'email'       => '<i class="text-' . $color . ' text-3xl icon">email</i>'
+    , 'plus'        => '<i class="text-' . $color . ' text-4xl icon">add</i>'
+    , 'paper-icon'  => '<i class="text-' . $color . ' text-xl icon">send</i>'
+    , 'exclamation' => '<i class="text-' . $color . ' text-xl icon">error_outline</i>'
+    , 'users'       => '<i class="text-' . $color . ' text-3xl icon">groups</i>'
+    , 'kids'        => '<i class="text-' . $color . ' text-3xl icon">child_care</i>'
+    , 'menu'        => '<i class="text-' . $color . ' text-xl icon">menu</i>'
     , 'cloud'       => '<svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/></svg>'
   ];
 
@@ -554,7 +555,7 @@ function app_organize_dates( array $dates ): array
   return $value;
 }
 
-function app_custom_input( string $name, string $type, int $placeholder = 1 ): string
+function app_custom_input( string $name, string $type, string $value ='', int $placeholder = 1 ): string
 {
   $eye_icon = '';
 
@@ -573,14 +574,15 @@ function app_custom_input( string $name, string $type, int $placeholder = 1 ): s
   }
 
   $input_html = '
-    <div class="relative">
+    <div class="relative w-full">
       <label for="' . $name . '" class="custom-label">' . pl_label( $name ) . '</label>
       <input
         type="' . $type . '"
         name="' . $name . '"
         id="' . $name . '"
         placeholder="' . $placeholder_text . '"
-        class="custom-input transform transition duration-300 mt-1 pr-10">
+        value="' . $value . '"
+        class="p-input w-full">
       ' . $eye_icon . '
     </div>
   ';
@@ -591,12 +593,12 @@ function app_custom_input( string $name, string $type, int $placeholder = 1 ): s
 function app_custom_textarea( string $name, string $value = '' ): string
 {
   $textarea_html = '
-    <div>
+    <div class="w-full">
       <label for="' . $name . '" class="custom-label">' . pl_label( $name ) . '</label>
       <textarea
         id="' . $name . '"
         name="' . $name . '"
-        class="custom-input transform transition duration-300 mt-1"
+        class="p-input w-full"
       >' . $value . '</textarea>
     </div>
   ';

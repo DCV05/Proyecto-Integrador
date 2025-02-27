@@ -79,7 +79,7 @@ function pl_start(): void
     , 'assets'        => $complex_domain . '/assets'
     ,	'url_relative' 	=> $url_relative
     ,	'url_base' 	    => $url_base
-    ,	'url_get' 		  => $_GET
+    ,	'get' 		      => $_GET
     ,	'document_root'	=> $_SERVER['DOCUMENT_ROOT']
 
     // ACTUAL_DIR es definido en Router.php

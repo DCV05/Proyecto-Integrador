@@ -24,7 +24,7 @@ class UsersController
    * 
    * @return string HTML de la tabla de usuarios.
    */
-  public function table_users(): string
+  public function table_users( string $where = '' ): string
   {
     global $role;
     
@@ -33,9 +33,9 @@ class UsersController
 
     // Capturamos todas las cuentas relacionadas con el usuario de la sesión
     if( $role === 0 )
-      $users = $mod_user_details->GetRowsUser( $_SESSION['app']['user']['user_id'] );
+      $users = $mod_user_details->GetRowsUser( $_SESSION['app']['user']['user_id'], $where );
     else
-      $users = $mod_user_details->GetRows();
+      $users = $mod_user_details->GetRows( $where );
 
     /*
       Array | account
@@ -48,7 +48,7 @@ class UsersController
     */
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'users_table', 'class' => 'table-ui'] );
+    $table = new Table( ['id' => 'users_table', 'class' => 'p-table'] );
 
     // Columnas
     $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' )         , ['id' => 'name_col']          ) );
@@ -87,9 +87,45 @@ class UsersController
     return $value;
   }
 
-  // ------------------------------------------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------
   // AJAX
-  // ------------------------------------------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------
+
+  public function ajax_form_search( array $fields ): array
+  {
+    $value  = [];
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    do
+    {
+      // Recargamos el HTML de la fila actualizada
+      $html = $this->table_users( $fields['query'] );
+
+      // Rellenamos los objetos a actualizar
+      $elements = [
+        ['selector' => '#users_table', 'method_name'  => 'update' , 'value' => $html]
+      ];
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    return $value;
+  }
   
   /**
    * Obtiene y muestra un popup con los detalles del usuario seleccionado.
@@ -129,7 +165,7 @@ class UsersController
               </svg>
             </button>
 
-            <div class="modal_content">
+            <div class="modal_content space-y-5">
               <div>
                 <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_full_name' ) . '</label>
                 <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_name'] . '</div>

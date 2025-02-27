@@ -12,10 +12,41 @@
   [[ func | &panel_interface ]]
   
   <div class="page-content">
-    <div class="mx-auto w-full p-2 md:p-4 space-y-12">
-      <div>
-        [[ func | table_users ]]
+    <div class="mx-auto w-full p-2 md:p-4">
+
+      <div class="p-block">
+        <h6>[[ label | filters ]]</h6>
+
+        <form name="filters" id="filters" class="flex flex-row justify-between items-end gap-4 mt-2">
+          <div class="flex gap-3 items-end">
+
+            <div class="p-control">
+              <i class="icon">search</i>
+              <input 
+                type="search" 
+                name="f_search" 
+                id="f_search" 
+                placeholder="[[ label | search ]]..." 
+                autocomplete="off"
+                class="border-0"
+              >
+              <label for="f_search">
+                <img src="[[ polaris.assets ]]/img/mac_shortcut.svg" alt="Mac Shortcut">
+              </label>
+            </div>
+        
+            <div class="flex gap-3">
+              <button type="button" id="clean-filters" class="p-button">
+                <i class="icon">restart_alt</i>
+                <span>[[ label | clean_filters ]]</span>
+              </button>
+            </div>
+
+          </div>
+        </form>
       </div>
+
+        [[ func | table_users ]]
     </div>
   </div>
 

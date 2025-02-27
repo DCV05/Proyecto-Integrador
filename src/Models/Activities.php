@@ -14,9 +14,13 @@ class Activities
    * 
    * @return array Lista de actividades o un array vacío si no hay resultados.
    */
-  public function GetRows(): array
+  public function GetRows( string $where = '' ): array
   {
-    $sql = 'select * from ' . DB_PROJECT . '.activities';
+    // Filtrado
+    if( $where > '' )
+      $where = ' where activity_name_es like "%' . $where . '%" or activity_name_en like "%' . $where . '%"';
+
+    $sql = 'select * from ' . DB_PROJECT . '.activities ' . $where;
     return $this->db->pl_query_prepared( $sql, [], true );
   }
 

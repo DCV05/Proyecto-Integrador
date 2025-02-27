@@ -23,6 +23,24 @@ class ActivitiesController
     return $value;
   }
 
+  public function button_add_activity(): string
+  {
+    global $role;
+    $value = '';
+
+    if( $role === 2 )
+    {
+      $value = '
+        <button type="button" id="btn-add-activity" class="p-button">
+          <i class="icon">add</i>
+          <span>' . pl_label( 'add-activity' ) . '</span>
+        </button>
+      '; 
+    }
+
+    return $value;
+  }
+
   // --------------------------------------------------------------------------------
   // Tabla actividades
   // --------------------------------------------------------------------------------
@@ -32,7 +50,7 @@ class ActivitiesController
    * 
    * @return string HTML de la tabla de actividades.
    */
-  public function table_activities(): string
+  public function table_activities( string $where = '' ): string
   {
     global $role;
 
@@ -41,11 +59,15 @@ class ActivitiesController
 
     // Si el usuario es un monitor, mostramos únicamente sus actividades vinculadas
     $activities = $role != 1
-      ? $mod_activities->GetRows()
+      ? $mod_activities->GetRows( $where )
       : $mod_activities->GetMonitorLinkedRows( $_SESSION['app']['user']['user_id'] );
 
+    // --------------------------------------------------------------------------------
+    // Definicón de la tabla
+    // --------------------------------------------------------------------------------
+    
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'activities_table', 'class' => 'table-ui'] );
+    $table = new Table( ['id' => 'activities_table', 'class' => 'p-table'] );
     $table->addColumn( 'activity_name'       , new TableColumn( pl_label( 'activity_name' ), ['id' => 'name_col']               ) );
     $table->addColumn( 'activity_description', new TableColumn( pl_label( 'activity_description' ), ['id' => 'description_col'] ) );
     $table->addColumn( 'activity_time'       , new TableColumn( pl_label( 'activity_time' ), ['id' => 'time_col']               ) );
@@ -57,16 +79,20 @@ class ActivitiesController
       $table->addColumn( 'delete_icon', new TableColumn( '', ['id' => 'delete_icon']  ) );
     }
 
+    // --------------------------------------------------------------------------------
+    // Formateo de datos y relleno de datos de la tabla
+    // --------------------------------------------------------------------------------
+
     // Iteramos cada actividad y la añadimos a la tabla
     foreach( $activities as $activity )
     {
       // Le damos formato a los campos
-      $activity['activity_description'] = substr( $activity['activity_description'], 0, 50 ) . '...';
+      $activity['activity_description_' . DEF_LANG] = substr( $activity['activity_description_' . DEF_LANG], 0, 100 ) . '...';
 
       // Definimos las celdas
       $cells = [
-          'activity_name'        => new TableCell( $activity['activity_name'] )
-        , 'activity_description' => new TableCell( $activity['activity_description'], ['class' => 'max-w-[14rem]'] )
+          'activity_name'        => new TableCell( $activity['activity_name_' . DEF_LANG] )
+        , 'activity_description' => new TableCell( $activity['activity_description_' . DEF_LANG], ['class' => 'max-w-[14rem]'] )
         , 'activity_time'        => new TableCell( $activity['activity_time'] )
       ];
 
@@ -78,14 +104,14 @@ class ActivitiesController
       if( $role === 2 )
       {
         $edit_icon = '
-          <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
-            ' . app_get_svg_icon( 'pen' ) . '
+          <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="edit-icon p-button">
+            ' . app_get_svg_icon( 'pen', 'black' ) . '
           </div>
         ';
 
         $delete_icon = '
-          <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="delete-icon cursor-pointer p-2 rounded-lg bg-red-600 flex items-center justify-center white-svg">
-            ' . app_get_svg_icon( 'trash' ) . '
+          <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="delete-icon p-button">
+            ' . app_get_svg_icon( 'trash', 'black' ) . '
           </div>
         ';
 
@@ -99,24 +125,6 @@ class ActivitiesController
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
         , 'data-href' => '/activity?aid2=' . $activity['activity_id2']
       ] ) );
-    }
-
-    // --------------------------------------------------------------------------------
-    // ADMIN
-    // --------------------------------------------------------------------------------
-
-    if( $role === 2 )
-    {
-      // Botón para agregar una actividad
-      $button = '
-        <button id="btn-add-activity" class="rounded-lg text-center w-full">
-          ' . app_get_svg_icon( 'plus' ) . '
-        </button>
-      ';
-
-      // Botón para añadir una actividad
-      $add_button = ['activity_name' => new TableCell( $button, ['id' => 'btn-add-activity', 'colspan' => 5, 'class' => 'text-center'] )];
-      $table->addRow( new TableRow( $add_button ) );
     }
 
     // Convertimos la tabla a HTML
@@ -133,7 +141,6 @@ class ActivitiesController
   public function table_row_activities( string $activity_id2 ): string
   {
     global $role;
-
     $mod_activities = new Activities();
 
     // Capturamos los datos de la actividad
@@ -151,12 +158,12 @@ class ActivitiesController
     */
 
     // Le damos formato a los campos
-    $activity['activity_description'] = substr( $activity['activity_description'], 0, 50 ) . '...';
+    $activity['activity_description_' . DEF_LANG] = substr( $activity['activity_description_' . DEF_LANG], 0, 100 ) . '...';
 
     // Definimos las celdas
     $cells = [
-        'activity_name'        => new TableCell( $activity['activity_name'] )
-      , 'activity_description' => new TableCell( $activity['activity_description'], ['class' => 'max-w-[14rem]'] )
+        'activity_name'        => new TableCell( $activity['activity_name_' . DEF_LANG] )
+      , 'activity_description' => new TableCell( $activity['activity_description_' . DEF_LANG], ['class' => 'max-w-[14rem]'] )
       , 'activity_time'        => new TableCell( $activity['activity_time'] )
     ];
 
@@ -168,14 +175,14 @@ class ActivitiesController
     if( $role === 2 )
     {
       $edit_icon = '
-        <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
-          ' . app_get_svg_icon( 'pen' ) . '
+        <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="edit-icon p-button">
+          ' . app_get_svg_icon( 'pen', 'black' ) . '
         </div>
       ';
-  
+
       $delete_icon = '
-        <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="delete-icon cursor-pointer p-2 rounded-lg bg-red-600 flex items-center justify-center white-svg">
-          ' . app_get_svg_icon( 'trash' ) . '
+        <div data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="delete-icon p-button">
+          ' . app_get_svg_icon( 'trash', 'black' ) . '
         </div>
       ';
 
@@ -199,13 +206,13 @@ class ActivitiesController
    * 
    * @return string HTML del grid de actividades.
    */
-  public function grid_activities(): string
+  public function grid_activities( string $where = '' ): string
   {
     $value          = '';
     $mod_activities = new Activities();
 
     // Capturamos todas las actividades
-    $activities = $mod_activities->GetRows();
+    $activities = $mod_activities->GetRows( $where );
 
     // Inicializamos el contenedor del grid
     $grid_html = '<div id="activities_table" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">';
@@ -213,13 +220,12 @@ class ActivitiesController
     // Iteramos cada actividad y la añadimos al grid
     foreach( $activities as $activity )
     {
-      $short_description = substr( $activity['activity_description'], 0, 80 ) . '...';
-
+      $short_description = substr( $activity['activity_description_' . DEF_LANG], 0, 80 ) . '...';
       $grid_html .= '
         <div class="group relative bg-white shadow-lg rounded-2xl overflow-hidden transition transform hover:scale-105 hover:shadow-2xl">
           <a href="/activity?aid2=' . $activity['activity_id2'] . '" class="block w-full h-full">
             <div class="p-6 space-y-4">
-              <h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">' . $activity['activity_name'] . '</h3>
+              <h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">' . $activity['activity_name_' . DEF_LANG] . '</h3>
               <p class="text-sm text-gray-500">' . $short_description . '</p>
               <div class="text-sm font-medium text-indigo-600">' . date( 'd-m-Y - H:i', strtotime( $activity['activity_time'] ) ) . '</div>
             </div>
@@ -326,6 +332,44 @@ class ActivitiesController
     return $value;
   }
 
+  public function ajax_form_search( array $fields ): array
+  {
+    $value  = [];
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    do
+    {
+      // Recargamos el HTML de la fila actualizada
+      $html = isset( $_SESSION['layout_mode'] ) && $_SESSION['layout_mode'] == 'table'
+      ? $this->table_activities( $fields['query'] )
+      : $this->grid_activities( $fields['query'] );
+
+      // Rellenamos los objetos a actualizar
+      $elements = [
+        ['selector' => '#activities_table', 'method_name'  => 'update' , 'value' => $html]
+      ];
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    return $value;
+  }
+
     /**
    * Añade una actividad.
    * 
@@ -351,8 +395,10 @@ class ActivitiesController
 
       // Verificamos que el POST contiene todos los campos requeridos
       $required_fields = [
-          'activity_name'
-        , 'activity_description'
+          'activity_name_es'
+        , 'activity_description_es'
+        , 'activity_name_en'
+        , 'activity_description_en'
         , 'activity_time'
       ];
 
@@ -375,18 +421,21 @@ class ActivitiesController
       $sql = '
         insert into ' . DB_PROJECT . '.activities (
             activity_id2
-          , activity_name
-          , activity_description
+          , activity_name_es
+          , activity_description_es
+          , activity_name_en
+          , activity_description_en
           , activity_time
-        ) values ( ?, ?, ?, ? )
+        ) values ( ?, ?, ?, ?, ?, ? )
       ';
       $params = [
           $activity_id2
-        , $fields['activity_name']
-        , $fields['activity_description']
+        , $fields['activity_name_es']
+        , $fields['activity_description_es']
+        , $fields['activity_name_en']
+        , $fields['activity_description_en']
         , $fields['activity_time']
       ];
-      
       $db->pl_query_prepared( $sql, $params );
 
       // Recargamos el HTML de la fila actualizada
@@ -441,8 +490,10 @@ class ActivitiesController
 
       // Verificamos que el POST contiene todos los campos requeridos
       $required_fields = [
-          'activity_name'
-        , 'activity_description'
+          'activity_name_es'
+        , 'activity_description_es'
+        , 'activity_name_en'
+        , 'activity_description_en'
         , 'activity_time'
       ];
 
@@ -462,15 +513,19 @@ class ActivitiesController
 
       $sql = '
         update ' . DB_PROJECT . '.activities set
-            activity_name        = ?
-          , activity_description = ?
-          , activity_time        = ?
+            activity_name_es        = ?
+          , activity_description_es = ?
+            activity_name_en        = ?
+          , activity_description_en = ?
+          , activity_time           = ?
         where
           activity_id2 = ?
       ';
       $params = [
-          $fields['activity_name']
-        , $fields['activity_description']
+          $fields['activity_name_es']
+        , $fields['activity_description_es']
+        , $fields['activity_name_en']
+        , $fields['activity_description_en']
         , $fields['activity_time']
         , $fields['aid2']
       ];
@@ -645,14 +700,13 @@ class ActivitiesController
             </button>
 
             <form data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="account-form modal_content">
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_name' ) . '</label>
-                <input type="text" name="activity_name" placeholder="' . pl_label( 'activity_name_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $activity['activity_name'] . '">
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_description' ) . '</label>
-                <textarea name="activity_description" placeholder="' . pl_label( 'activity_description_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300">' . $activity['activity_description'] . '</textarea>
-              </div>
+
+              ' . app_custom_input( 'activity_name_es', 'text', $activity['activity_name_es'] ) . '
+              ' . app_custom_textarea( 'activity_name_es', $activity['activity_name_es'] ) . '
+
+              ' . app_custom_input( 'activity_name_en', 'text', $activity['activity_name_en'] ) . '
+              ' . app_custom_textarea( 'activity_name_en', $activity['activity_name_en'] ) . '
+
               <div>
                 <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_time' ) . '</label>
                 <input type="datetime-local" name="activity_time" placeholder="' . pl_label( 'activity_time_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . date('Y-m-d\TH:i', strtotime( $activity['activity_time'] ) ) . '">
@@ -711,7 +765,7 @@ class ActivitiesController
       // Formulario
       $html = '
         <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-scroll">
+          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
 
             <h3 class="text-2xl mb-4">' . pl_label( 'add_activity' ) . '</h3>
 
@@ -721,23 +775,22 @@ class ActivitiesController
               </svg>
             </button>
 
-            <form data-type="activity-add" class="activity-form modal_content">
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_name' ) . '</label>
-                <input type="text" name="activity_name" placeholder="' . pl_label( 'activity_name_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300">
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_description' ) . '</label>
-                <textarea name="activity_description" placeholder="' . pl_label( 'activity_description_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300"></textarea>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_time' ) . '</label>
-                <input type="datetime-local" name="activity_time" placeholder="' . pl_label( 'activity_time_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300">
+            <form data-type="activity-add" class="activity-form modal_content space-y-5">
+              ' . app_custom_input( 'activity_name_es', 'text' ) . '
+              ' . app_custom_textarea( 'activity_name_es' ) . '
+
+              ' . app_custom_input( 'activity_name_en', 'text' ) . '
+              ' . app_custom_textarea( 'activity_name_en' ) . '
+
+              <div class="w-full">
+                <label for="activity_time" class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_time' ) . '</label>
+                <input type="datetime-local" name="activity_time" placeholder="' . pl_label( 'activity_time_placeholder' ) . '" class="p-input w-full">
               </div>
 
               <div class="flex justify-end">
-                <button type="submit" class="custom-submit bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
-                  ' . pl_label( 'create-activity' ) . '
+                <button type="submit" class="p-button">
+                  <i class="icon">send</i>
+                  <span>' . pl_label( 'send' ) . '</span>
                 </button>
               </div>
             </form>

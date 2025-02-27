@@ -1,5 +1,23 @@
 $( document ).ready( function() {
 
+  // Evento focus
+  $( document ).keydown( function( e ) {
+    if( ( e.metaKey || e.ctrlKey ) && e.key.toLowerCase() === 'k' ) {
+      e.preventDefault(); // Evita que se active la función por defecto del navegador
+      $( '#f_search' ).focus();
+    }
+  } );
+
+  $( document ).on( 'input', '#f_search', function() {
+    let query = $( this ).val();
+    form_search( query );
+  } );
+
+  $( document ).on( 'click', '#clean-filters', function() {
+    $( '#f_search' ).val( '' );
+    form_search( '' );
+  } );
+
   // Evento para redirección según la fila
   $( '.table-row-link' ).on( 'click', function( e ) {
     if( !$( e.target ).closest( '.edit-icon, .delete-icon' ).length )
@@ -71,7 +89,7 @@ $( document ).ready( function() {
   // ------------------------------------------------------------------------------
 
   // Evento para cuando el usuario deje de tener el focus en un input
-  $( document ).on( 'focusout', 'input:not([type="button"]):not([type="radio"])', function() {
+  $( document ).on( 'focusout', 'input:not([type="button"]):not([type="radio"]):not([type="search"])', function() {
     check_inputs( $( this ) );
   } );
 
@@ -86,7 +104,7 @@ $( document ).ready( function() {
     e.stopImmediatePropagation();
 
     // Evento de checkeo en submit
-    $( this ).find( 'input:not([type="button"]):not([type="radio"])' ).each( function() {
+    $( this ).find( 'input:not([type="button"]):not([type="radio"]):not([type="search"])' ).each( function() {
       incorrect_input = check_inputs( $( this ) );
 
       // Si es incorrecto, el formulario no se podrá mandar
@@ -132,7 +150,6 @@ function update_layout( layout ) {
     } );
 }
 
-// Función para inciar sesión en la aplicación
 function form_submit( formdata, form, method_name ) {
 
   // Ejecutamos la función AJAX
@@ -144,6 +161,25 @@ function form_submit( formdata, form, method_name ) {
         pl_dom( data.elements );
         $( '#modal' ).remove();
       }
+      else
+        generate_error_message( form, data.message );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
+
+function form_search( query ) {
+
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'form_search', { 'query': query } )
+    .then( function( data ) {
+
+      // Si el resultado es correcto, redirigmos al panel
+      if( data.result = 1 && data.elements )
+        pl_dom( data.elements );
       else
         generate_error_message( form, data.message );
     } )
@@ -204,16 +240,4 @@ function open_add_popup() {
       // Manejo de errores
       console.error( error );
     } );
-}
-
-window.highlight_row = function( kwargs ) {
-  if( !kwargs.elem ) return; // Evita errores si el elemento no existe
-
-  // Agrega la clase con el borde
-  $( kwargs.elem ).addClass( 'bg-' + kwargs.color + '-100' );
-
-  // Elimina el borde después de 3 segundos
-  setTimeout( () => {
-    $( kwargs.elem ).removeClass( 'bg-' + kwargs.color + '-100' );
-  }, 3000 );
 }

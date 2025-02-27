@@ -14,9 +14,9 @@ class Payments
    * 
    * @return array Lista de pagos o un array vacío si no hay resultados.
    */
-  public function GetRows(): array
+  public function GetRows( string $where = '' ): array
   {
-    $sql = 'select * from ' . DB_PROJECT . '.payments';
+    $sql = 'select * from ' . DB_PROJECT . '.payments' . $where . ' order by status asc';
     return $this->db->pl_query_prepared( $sql, [], true );
   }
 

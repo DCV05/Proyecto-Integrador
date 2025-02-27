@@ -14,9 +14,13 @@ class Participants
    * 
    * @return array Lista de participantes o un array vacío si no hay resultados.
    */
-  public function GetAll(): array
+  public function GetAll( string $where = '' ): array
   {
-    $sql = 'select * from ' . DB_PROJECT . '.participants';
+    // Filtrado
+    if( $where > '' )
+      $where = ' where participant_name like "%' . $where . '%"';
+  
+    $sql = 'select * from ' . DB_PROJECT . '.participants' . $where;
     return $this->db->pl_query_prepared( $sql, [], true );
   }
 
@@ -26,14 +30,19 @@ class Participants
    * @param int $user_id ID del usuario.
    * @return array Lista de participantes o un array vacío si no hay resultados.
    */
-  public function GetRows( int $user_id ): array
+  public function GetRows( int $user_id, string $where = '' ): array
   {
+    // Filtrado
+    if( $where > '' )
+      $where = ' and participant_name like "%' . $where . '%"';
+
     $sql = '
       select
         * 
       from ' . DB_PROJECT . '.participants 
       where
         user_id = ?
+      ' .  $where . '
     ';
     $params = [$user_id];
   

@@ -55,8 +55,8 @@ class ActivityController
     // Datos de la Actividad
     $value = '
       <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
-        <h2 class="text-2xl font-semibold text-gray-900">' . $this->activity['activity_name'] . '</h2>
-        <p class="text-gray-600 mt-2">' . nl2br( $this->activity['activity_description'] ) . '</p>
+        <h2 class="text-2xl font-semibold text-gray-900">' . $this->activity['activity_name_' . DEF_LANG] . '</h2>
+        <p class="text-gray-600 mt-2">' . nl2br( $this->activity['activity_description_' . DEF_LANG] ) . '</p>
         <p class="text-gray-500 text-sm mt-2">' . date('d-m-Y - H:i', strtotime( $this->activity['activity_time'] ) ) . '</p>
       </div>
     ';
@@ -77,7 +77,7 @@ class ActivityController
     $participants = ( new ActivitiesParticipants() )->GetActivityDetails( $this->activity['activity_id'] );
 
     // Tabla de Participantes
-    $table = new Table( ['id' => 'participants_table', 'class' => 'table-ui', 'data-activity' => $this->activity['activity_id2']] );
+    $table = new Table( ['id' => 'participants_table', 'class' => 'p-table', 'data-activity' => $this->activity['activity_id2']] );
     $table->addColumn( 'participant_name'         , new TableColumn( pl_label( 'participant_name' )         , ['id' => 'p_name_col'] ) );
     $table->addColumn( 'participant_special_needs', new TableColumn( pl_label( 'participant_special_needs' ), ['id' => 'p_special_needs_col'] ) );
     $table->addColumn( 'participant_allergies'    , new TableColumn( pl_label( 'allergies' )                , ['id' => 'p_allergies_col'] ) );
@@ -91,7 +91,7 @@ class ActivityController
         : $participant['participant_allergies'];
 
       $participant['participant_special_needs'] = empty( $participant['participant_special_needs'] ) 
-        ? pl_label( 'no_allergies' ) 
+        ? ''
         : $participant['participant_special_needs'];
 
       // Definimos las celdas

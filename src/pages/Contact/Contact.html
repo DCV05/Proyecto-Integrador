@@ -24,7 +24,7 @@
         
         <form id="contact-form" class="space-y-4">
           [[ func | &custom_input | email | email ]]
-          [[ func | &custom_input | email_subject | text | 0 ]]
+          [[ func | &custom_input | email_subject | text | | 0 ]]
           [[ func | &custom_textarea | message ]]
           
           <div class="grid grid-cols-2 gap-4 mt-4">
