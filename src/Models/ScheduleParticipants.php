@@ -60,4 +60,25 @@ class SchedulesParticipants
   
     return $this->db->pl_query_prepared( $sql, $params, true );
   }
+
+    /**
+   * Obtiene los eventos de un participante en formato JSON para un calendario.
+   * 
+   * @param string $participant_id ID del participante.
+   * @return array Array de eventos.
+   */
+  public function GetActivities( string $participant_id2 ): array
+  {
+    $sql = '
+      select
+        s.*
+      from ' . DB_PROJECT . '.schedule_participants s
+      left join ' . DB_PROJECT . '.participants p on s.participant_id = p.participant_id
+      where
+        p.participant_id2 = ?
+    ';
+    $params = [$participant_id2];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true );
+  }
 }

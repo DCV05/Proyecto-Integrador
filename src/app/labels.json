@@ -764,5 +764,29 @@
   "activity_datetime_end": {
     "es": "Fecha y hora de finalización",
     "en": "End Date and Time"
+  },
+  "group_name": {
+    "es": "Nombre del grupo",
+    "en": "Group name"
+  },
+  "monitor_name": {
+    "es": "Nombre del monitor",
+    "en": "Monitor's name"
+  },
+  "schedule_and_participation": {
+    "es": "Horario y Participación",
+    "en": "Schedule and Participation"
+  },
+  "select_available_days": {
+    "es": "Selecciona los días disponibles",
+    "en": "Select available days"
+  },
+  "participant_next_activities": {
+    "es": "Las siguientes actividades del participante",
+    "en": "Participant's next activities"
+  },
+  "send": {
+    "es": "Enviar",
+    "en": "Send"
   }
 }

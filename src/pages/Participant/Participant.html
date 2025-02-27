@@ -11,6 +11,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.11.3/main.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core/locales-all.min.js"></script>
 
+  <style>
+    #calendar {
+      height: 1000px;
+      font-size: 0.8rem;
+    }
+  </style>
+
   <script>
     [[ func | events ]]
 
@@ -22,17 +29,17 @@
 
   [[ func | &panel_interface ]]
   
-  <div class="page-content">
-    <div class="mx-auto w-full p-2 md:p-4">
-      <form id="register-form" class="space-y-4">
-        <section id="tutor_section" class="flex flex-col space-y-4 max-w-6xl">
-          <h3 class="text-2xl font-semibold text-gray-700">Horario y Participación</h3>
-    
-          <h3 class="text-xl font-semibold text-gray-700">Selecciona los días disponibles</h3>
-          <div id="calendar"></div>
-    
-        </section>
-      </form>
+  <div class="page-content py-8">
+    <div class="container px-4">
+      <section id="tutor_section" class="flex flex-col space-y-6 mt-8">
+        <h3 class="text-2xl font-bold text-gray-800">
+          [[ label | schedule_and_participation ]]
+        </h3>
+        <h3 class="text-xl font-semibold text-gray-700">
+          [[ label | participant_next_activities ]]
+        </h3>
+        <div id="calendar" class="mt-4 p-mini-block"></div>
+      </section>
     </div>
   </div>
 
