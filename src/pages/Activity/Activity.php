@@ -54,10 +54,10 @@ class ActivityController
   {
     // Datos de la Actividad
     $value = '
-      <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
-        <h2 class="text-2xl font-semibold text-gray-900">' . $this->activity['activity_name_' . DEF_LANG] . '</h2>
-        <p class="text-gray-600 mt-2">' . nl2br( $this->activity['activity_description_' . DEF_LANG] ) . '</p>
-        <p class="text-gray-500 text-sm mt-2">' . date('d-m-Y - H:i', strtotime( $this->activity['activity_time'] ) ) . '</p>
+      <div class="mb-6 mt-2 space-y-5">
+        <h2 class="text-3xl font-semibold text-gray-900">' . $this->activity['activity_name_' . DEF_LANG] . '</h2>
+        <p class="text-gray-600">' . nl2br( $this->activity['activity_description_' . DEF_LANG] ) . '</p>
+        <p class="text-gray-500 text-sm">' . date('d-m-Y - H:i', strtotime( $this->activity['activity_time'] ) ) . '</p>
       </div>
     ';
 
@@ -197,8 +197,9 @@ class ActivityController
       <div class="flex gap-2">
 
         ' . $value . '
-        <button id="btn-add-participant" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-600 w-full">
-          ' . pl_label( 'add_participant' ) . '
+        <button id="btn-add-participant" class="p-button">
+          <i class="icon">plus</i>
+          <span>' . pl_label( 'add_participant' ) . '</span>
         </button>
       </div>
     ';
@@ -214,8 +215,9 @@ class ActivityController
     if( $role == 1 )
     {
       $value .= '
-        <a href="/monitor/attendance?aid2=' . $this->activity_id2 . '" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-center hover:bg-blue-600 w-full">
-          ' . pl_label( 'roll_call' ) . '
+        <a href="/monitor/attendance?aid2=' . $this->activity_id2 . '" class="p-button w-fit">
+          <i class="icon">list</i>
+          <span>' . pl_label( 'roll_call' ) . '</span>
         </a>
       ';
     }

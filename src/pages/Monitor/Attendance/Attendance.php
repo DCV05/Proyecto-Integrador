@@ -42,10 +42,10 @@ class MonitorAttendanceController
   {
     // Datos de la Actividad
     $value = '
-      <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
-        <h2 class="text-2xl font-semibold text-gray-900">' . $this->activity['activity_name'] . '</h2>
-        <p class="text-gray-600 mt-2">' . nl2br( $this->activity['activity_description'] ) . '</p>
-        <p class="text-gray-500 text-sm mt-2">' . date('d-m-Y - H:i', strtotime( $this->activity['activity_time'] ) ) . '</p>
+      <div class="mb-6 mt-2 space-y-5">
+        <h2 class="text-3xl font-semibold text-gray-900">' . $this->activity['activity_name_' . DEF_LANG] . '</h2>
+        <p class="text-gray-600">' . nl2br( $this->activity['activity_description_' . DEF_LANG] ) . '</p>
+        <p class="text-gray-500 text-sm">' . date('d-m-Y - H:i', strtotime( $this->activity['activity_time'] ) ) . '</p>
       </div>
     ';
 
@@ -66,7 +66,7 @@ class MonitorAttendanceController
     $attendances = $mod_attendance->GetAttendanceDetails( $this->activity['activity_id'] );
 
     // Tabla de Asistencia
-    $table = new Table( ['id' => 'attendance_table', 'class' => 'table-ui', 'data-activity' => $this->activity['activity_id2']] );
+    $table = new Table( ['id' => 'attendance_table', 'class' => 'p-table', 'data-activity' => $this->activity['activity_id2']] );
 
     // Columnas
     $table->addColumn( 'participant_name' , new TableColumn( pl_label( 'participant_name' ), ['id' => 'p_name_col'] ) );
@@ -83,32 +83,42 @@ class MonitorAttendanceController
       if( empty( $attendance['checkin_datetime'] ) )
       {
         $checkin_input = '
-          <button class="btn-checkin bg-green-500 text-white px-3 py-1 rounded-lg" data-pid2="' . $participant['participant_id2'] . '">
-            ' . pl_label( 'mark_checkin' ) . '
+          <button class="p-button" data-pid2="' . $participant['participant_id2'] . '">
+            <i class="icon">calendar_today</i>
+            <span>' . pl_label( 'mark_checkin' ) . '</span>
           </button>
         ';
       }
       else
       {
-        $checkin_input = '<input type="datetime-local" class="checkin-input w-full border px-2 py-1 rounded" 
+        $checkin_input = '
+        <input
+          type="datetime-local"
+          class="p-input w-fit" 
           value="' . date( 'Y-m-d\TH:i', strtotime( $attendance['checkin_datetime'] ) ) . '" 
-          data-pid2="' . $participant['participant_id2'] . '">';
+          data-pid2="' . $participant['participant_id2'] . '"
+        >';
       }
 
       // Check-out
       if( empty( $attendance['checkout_datetime'] ) )
       {
         $checkout_input = '
-          <button class="btn-checkout bg-red-500 text-white px-3 py-1 rounded-lg" data-pid2="' . $participant['participant_id2'] . '">
-            ' . pl_label( 'mark_checkout' ) . '
+          <button class="p-button" data-pid2="' . $participant['participant_id2'] . '">
+            <i class="icon">calendar_today</i>
+            <span>' . pl_label( 'mark_checkout' ) . '</span>
           </button>
         ';
       }
       else
       {
-        $checkout_input = '<input type="datetime-local" class="checkout-input w-full border px-2 py-1 rounded" 
-          value="' . date( 'Y-m-d\TH:i', strtotime( $attendance['checkout_datetime'] ) ) . '" 
-          data-pid2="' . $participant['participant_id2'] . '">';
+        $checkout_input = '
+          <input
+            type="datetime-local"
+            class="p-input w-fit" 
+            value="' . date( 'Y-m-d\TH:i', strtotime( $attendance['checkout_datetime'] ) ) . '" 
+            data-pid2="' . $participant['participant_id2'] . '"
+          >';
       }
 
       // Definimos las celdas

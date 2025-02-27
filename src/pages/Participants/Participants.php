@@ -175,11 +175,26 @@ class ParticipantsController
             </button>
 
             <div class="modal_content space-y-5">
-              ' . app_custom_input( 'participant_name', 'text', $participant['participant_name'] ) . '
-              ' . app_custom_input( 'participant_birth_date', 'date', $participant['participant_birth_date'] ) . '
-              ' . app_custom_textarea( 'participant_allergies', $participant['participant_allergies'] ) . '
-              ' . app_custom_textarea( 'participant_special_needs', $participant['participant_special_needs'] ) . '
-              ' . app_custom_textarea( 'participant_medical_treatment', $participant['participant_medical_treatment'] ) . '
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_name' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_name'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_birth_date'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md min-h-[100px]">' . $participant['participant_allergies'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_special_needs' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md min-h-[100px]">' . $participant['participant_special_needs'] . '</div>
+              </div>
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_medical_treatment' ) . '</label>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md min-h-[100px]">' . $participant['participant_medical_treatment'] . '</div>
+              </div>
             </div>
 
           </div>
