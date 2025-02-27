@@ -82,12 +82,20 @@ class ActivitiesController
     // --------------------------------------------------------------------------------
     // Formateo de datos y relleno de datos de la tabla
     // --------------------------------------------------------------------------------
-
     // Iteramos cada actividad y la añadimos a la tabla
     foreach( $activities as $activity )
     {
       // Le damos formato a los campos
       $activity['activity_description_' . DEF_LANG] = substr( $activity['activity_description_' . DEF_LANG], 0, 100 ) . '...';
+
+      $activity['activity_time'] = '
+        <div class="flex gap-3">
+          <span class="p-tag-blue">
+            ' . date( 'd/m/y | H:i', strtotime( $activity['activity_datetime_start'] ) )  . ' - '
+              . date( 'H:i', strtotime( $activity['activity_datetime_end'] ) )    . '
+          </span>
+        </div>
+      ';
 
       // Definimos las celdas
       $cells = [
@@ -160,6 +168,15 @@ class ActivitiesController
     // Le damos formato a los campos
     $activity['activity_description_' . DEF_LANG] = substr( $activity['activity_description_' . DEF_LANG], 0, 100 ) . '...';
 
+    $activity['activity_time'] = '
+      <div class="flex gap-3">
+        <span class="p-tag-blue">
+          ' . date( 'd/m/y | H:i', strtotime( $activity['activity_datetime_start'] ) )  . ' - '
+            . date( 'H:i', strtotime( $activity['activity_datetime_end'] ) )    . '
+        </span>
+      </div>
+    ';
+
     // Definimos las celdas
     $cells = [
         'activity_name'        => new TableCell( $activity['activity_name_' . DEF_LANG] )
@@ -227,7 +244,11 @@ class ActivitiesController
             <div class="p-6 space-y-4">
               <h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">' . $activity['activity_name_' . DEF_LANG] . '</h3>
               <p class="text-sm text-gray-500">' . $short_description . '</p>
-              <div class="text-sm font-medium text-indigo-600">' . date( 'd-m-Y - H:i', strtotime( $activity['activity_time'] ) ) . '</div>
+
+              <span class="p-tag-blue">
+                ' . date( 'd/m/y | H:i', strtotime( $activity['activity_datetime_start'] ) )  . ' - '
+                  . date( 'H:i', strtotime( $activity['activity_datetime_end'] ) )    . '
+              </span>
             </div>
           </a>
         </div>
@@ -276,7 +297,10 @@ class ActivitiesController
           <div class="p-6 space-y-4">
             <h3 class="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition">' . $activity['activity_name'] . '</h3>
             <p class="text-sm text-gray-500">' . $short_description . '</p>
-            <div class="text-sm font-medium text-indigo-600">' . date( 'd-m-Y - H:i', strtotime( $activity['activity_time'] ) ) . '</div>
+            <span class="p-tag-blue">
+              ' . date( 'd/m/y | H:i', strtotime( $activity['activity_datetime_start'] ) )  . ' - '
+                . date( 'H:i', strtotime( $activity['activity_datetime_end'] ) )    . '
+            </span>
           </div>
         </a>
       </div>
@@ -399,7 +423,8 @@ class ActivitiesController
         , 'activity_description_es'
         , 'activity_name_en'
         , 'activity_description_en'
-        , 'activity_time'
+        , 'activity_datetime_start'
+        , 'activity_datetime_end'
       ];
 
       foreach( $required_fields as $required_field )
@@ -425,8 +450,11 @@ class ActivitiesController
           , activity_description_es
           , activity_name_en
           , activity_description_en
-          , activity_time
-        ) values ( ?, ?, ?, ?, ?, ? )
+          , activity_datetime_start
+          , activity_datetime_end
+          , activity_tags_es
+          , activity_tags_en
+        ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )
       ';
       $params = [
           $activity_id2
@@ -434,7 +462,10 @@ class ActivitiesController
         , $fields['activity_description_es']
         , $fields['activity_name_en']
         , $fields['activity_description_en']
-        , $fields['activity_time']
+        , $fields['activity_datetime_start']
+        , $fields['activity_datetime_end']
+        , ''
+        , ''
       ];
       $db->pl_query_prepared( $sql, $params );
 
@@ -494,7 +525,8 @@ class ActivitiesController
         , 'activity_description_es'
         , 'activity_name_en'
         , 'activity_description_en'
-        , 'activity_time'
+        , 'activity_datetime_start'
+        , 'activity_datetime_end'
       ];
 
       foreach( $required_fields as $required_field )
@@ -515,9 +547,10 @@ class ActivitiesController
         update ' . DB_PROJECT . '.activities set
             activity_name_es        = ?
           , activity_description_es = ?
-            activity_name_en        = ?
+          , activity_name_en        = ?
           , activity_description_en = ?
-          , activity_time           = ?
+          , activity_datetime_start = ?
+          , activity_datetime_end   = ?
         where
           activity_id2 = ?
       ';
@@ -526,7 +559,8 @@ class ActivitiesController
         , $fields['activity_description_es']
         , $fields['activity_name_en']
         , $fields['activity_description_en']
-        , $fields['activity_time']
+        , $fields['activity_datetime_start']
+        , $fields['activity_datetime_end']
         , $fields['aid2']
       ];
       
@@ -584,7 +618,6 @@ class ActivitiesController
 
       // Verificamos que el POST contiene todos los campos requeridos
       $required_fields = ['aid2'];
-
       foreach( $required_fields as $required_field )
       {
         // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
@@ -608,14 +641,6 @@ class ActivitiesController
         $message = pl_label( 'activity_not_found' );
         break;
       }
-
-      // Borramos las vinculaciones con participaciones
-      $sql = '
-        delete from ' . DB_PROJECT . '.activities_participants
-        where
-          activity_id = ?
-      ';
-      $db->pl_query_prepared( $sql, [$activity_id] );
 
       // Borramos las vinculaciones con monitores
       $sql = '
@@ -683,13 +708,14 @@ class ActivitiesController
         Array | activity
           [activity_name] => Excursión al bosque
           [activity_description] => Caminata de exploración con los niños.
-          [activity_time] => 2025-06-15 10:00:00
+          [activity_datetime_start] => 2025-06-15 10:00:00
+          [activity_datetime_end] => 2025-06-15 12:00:00
       */
 
       // Formulario
       $html = '
         <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-scroll">
+          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
 
             <h3 class="text-2xl mb-4">' . pl_label( 'edit-activity' ) . '</h3>
 
@@ -699,22 +725,28 @@ class ActivitiesController
               </svg>
             </button>
 
-            <form data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="account-form modal_content">
+            <form data-type="activity" data-aid2="' . $activity['activity_id2'] . '" class="account-form modal_content space-y-5">
 
-              ' . app_custom_input( 'activity_name_es', 'text', $activity['activity_name_es'] ) . '
-              ' . app_custom_textarea( 'activity_name_es', $activity['activity_name_es'] ) . '
+              ' . app_custom_input( 'activity_name_es', 'text', $activity['activity_name_es'], 0 ) . '
+              ' . app_custom_textarea( 'activity_description_es', $activity['activity_description_es'] ) . '
 
-              ' . app_custom_input( 'activity_name_en', 'text', $activity['activity_name_en'] ) . '
-              ' . app_custom_textarea( 'activity_name_en', $activity['activity_name_en'] ) . '
+              ' . app_custom_input( 'activity_name_en', 'text', $activity['activity_name_en'], 0 ) . '
+              ' . app_custom_textarea( 'activity_description_en', $activity['activity_description_en'] ) . '
 
               <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_time' ) . '</label>
-                <input type="datetime-local" name="activity_time" placeholder="' . pl_label( 'activity_time_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . date('Y-m-d\TH:i', strtotime( $activity['activity_time'] ) ) . '">
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_datetime_start' ) . '</label>
+                <input type="datetime-local" name="activity_datetime_start" placeholder="' . pl_label( 'activity_datetime_start_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . date('Y-m-d\TH:i', strtotime( $activity['activity_datetime_start'] ) ) . '">
+              </div>
+
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_datetime_end' ) . '</label>
+                <input type="datetime-local" name="activity_datetime_end" placeholder="' . pl_label( 'activity_datetime_end_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . date('Y-m-d\TH:i', strtotime( $activity['activity_datetime_end'] ) ) . '">
               </div>
 
               <div class="flex justify-end">
-                <button type="submit" class="custom-submit bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
-                  ' . pl_label( 'send-button' ) . '
+                <button type="submit" class="p-button">
+                  <i class="icon">send</i>
+                  <span>' . pl_label( 'send-button' ) . '</span>
                 </button>
               </div>
             </form>
@@ -777,14 +809,19 @@ class ActivitiesController
 
             <form data-type="activity-add" class="activity-form modal_content space-y-5">
               ' . app_custom_input( 'activity_name_es', 'text' ) . '
-              ' . app_custom_textarea( 'activity_name_es' ) . '
+              ' . app_custom_textarea( 'activity_description_es' ) . '
 
               ' . app_custom_input( 'activity_name_en', 'text' ) . '
-              ' . app_custom_textarea( 'activity_name_en' ) . '
+              ' . app_custom_textarea( 'activity_description_en' ) . '
 
               <div class="w-full">
-                <label for="activity_time" class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_time' ) . '</label>
-                <input type="datetime-local" name="activity_time" placeholder="' . pl_label( 'activity_time_placeholder' ) . '" class="p-input w-full">
+                <label for="activity_datetime_start" class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_datetime_start' ) . '</label>
+                <input type="datetime-local" name="activity_datetime_start" placeholder="' . pl_label( 'activity_datetime_start_placeholder' ) . '" class="p-input w-full">
+              </div>
+
+              <div class="w-full">
+                <label for="activity_datetime_end" class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'activity_datetime_end' ) . '</label>
+                <input type="datetime-local" name="activity_datetime_end" placeholder="' . pl_label( 'activity_datetime_end_placeholder' ) . '" class="p-input w-full">
               </div>
 
               <div class="flex justify-end">

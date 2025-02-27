@@ -8,6 +8,11 @@ $( document ).ready( function() {
     }
   } );
 
+  $( document ).on( 'submit', '#filters', function( e ) {
+    e.preventDefault();
+    e.stopPropagation();
+  } );
+
   $( document ).on( 'input', '#f_search', function() {
     let query = $( this ).val();
     form_search( query );

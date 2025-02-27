@@ -180,11 +180,11 @@ class UsersController
               </div>
               <div>
                 <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_dni' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_dni'] . '</div>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md min-h-[36px]">' . $user_detail['user_dni'] . '</div>
               </div>
               <div>
                 <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'phone_number' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_phone_number'] . '</div>
+                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md min-h-[36px]">' . $user_detail['user_phone_number'] . '</div>
               </div>
             </div>
 

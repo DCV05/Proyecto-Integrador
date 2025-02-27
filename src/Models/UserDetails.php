@@ -31,7 +31,7 @@ class UserDetails
    * @param int $user_id ID del usuario.
    * @return array Lista de detalles del usuario o un array vacío si no hay resultados.
    */
-  public function GetRowsUser(  int $user_id, string $where = '' ): array
+  public function GetRowsUser( int $user_id, string $where = '' ): array
   {
     // Filtrado
     if( $where > '' )

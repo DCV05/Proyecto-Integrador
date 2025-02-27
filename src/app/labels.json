@@ -736,5 +736,33 @@
   "view-all": {
     "es": "Ver todos",
     "en": "View all"
+  },
+  "special_needs": {
+    "es": "Necesidades especiales",
+    "en": "Special Needs"
+  },
+  "activity_name_es": {
+    "es": "Nombre de la actividad (ES)",
+    "en": "Activity Name (ES)"
+  },
+  "activity_name_en": {
+    "es": "Nombre de la actividad (EN)",
+    "en": "Activity Name (EN)"
+  },
+  "activity_description_es": {
+    "es": "Descripción de la actividad (ES)",
+    "en": "Activity Description (ES)"
+  },
+  "activity_description_en": {
+    "es": "Descripción de la actividad (EN)",
+    "en": "Activity Description (EN)"
+  },
+  "activity_datetime_start": {
+    "es": "Fecha y hora de inicio",
+    "en": "Start Date and Time"
+  },
+  "activity_datetime_end": {
+    "es": "Fecha y hora de finalización",
+    "en": "End Date and Time"
   }
 }

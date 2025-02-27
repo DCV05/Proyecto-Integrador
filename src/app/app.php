@@ -102,7 +102,7 @@ $heading_entries = array_merge( $entries, [
   [
     'title'           => pl_label( 'participants' ),
     'link'            => '/participants',
-    'icon'            => app_get_svg_icon( 'account' ),
+    'icon'            => app_get_svg_icon( 'kids' ),
     'layout_buttons'  => false
   ],
   [
@@ -555,7 +555,7 @@ function app_organize_dates( array $dates ): array
   return $value;
 }
 
-function app_custom_input( string $name, string $type, string $value ='', int $placeholder = 1 ): string
+function app_custom_input( string $name, string $type, string $value = '', int $placeholder = 1 ): string
 {
   $eye_icon = '';
 
@@ -610,7 +610,7 @@ function app_custom_textarea( string $name, string $value = '' ): string
 // Landing
 // ----------------------------------------------------------------------------------------------------------------
 
-function app_landing_navbar( $center = false ): string
+function app_landing_navbar( bool $center = false ): string
 {
   $margin = $center == false
     ? 'ml-32'
@@ -650,7 +650,6 @@ function app_landing_footer( $margin = true ): string
   $margin_footer = $margin == true
     ? 'mt-16'
     : '';
-
 
   $html = '
     <footer class="mx-auto ' . $margin_footer . ' shadow-landing py-3">

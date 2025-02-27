@@ -43,9 +43,7 @@ class TutorAccountController
     */
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'users_table', 'class' => 'table-ui'] );
-
-    // Columnas
+    $table = new Table( ['id' => 'users_table', 'class' => 'p-table'] );
     $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' )         , ['id' => 'name_col']          ) );
     $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )        , ['id' => 'email_col']         ) );
     $table->addColumn( 'user_relationship', new TableColumn( pl_label( 'relationship' ) , ['id' => 'relationship_col']  ) );
@@ -58,13 +56,13 @@ class TutorAccountController
     foreach( $users as $user )
     {
       $edit_icon = '
-        <div data-type="user" data-id2="' . $user['detail_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
+        <div data-type="user" data-id2="' . $user['detail_id2'] . '" class="edit-icon p-button">
           ' . app_get_svg_icon( 'pen' ) . '
         </div>
       ';
 
       $delete_icon = '
-        <div data-type="user" data-aid2="' . $user['detail_id2'] . '" class="delete-icon cursor-pointer p-2 rounded-lg bg-red-600 flex items-center justify-center white-svg">
+        <div data-type="user" data-aid2="' . $user['detail_id2'] . '" class="delete-icon p-button">
           ' . app_get_svg_icon( 'trash' ) . '
         </div>
       ';
@@ -128,8 +126,14 @@ class TutorAccountController
     */
 
     $edit_icon = '
-      <div data-type="user" data-id2="' . $detail_id2 . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
+      <div data-type="user" data-id2="' . $detail_id2 . '" class="edit-icon p-button">
         ' . app_get_svg_icon( 'pen' ) . '
+      </div>
+    ';
+
+    $delete_icon = '
+      <div data-type="user" data-aid2="' . $user['detail_id2'] . '" class="delete-icon p-button">
+        ' . app_get_svg_icon( 'trash' ) . '
       </div>
     ';
 
@@ -141,6 +145,7 @@ class TutorAccountController
       , 'user_dni'          => new TableCell( $user['user_dni'] )
       , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
       , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 icon-container'] )
+      , 'delete_icon'       => new TableCell( $delete_icon, ['class' => 'text-center w-10 icon-container'] )
     ];
 
     // Retornamos la fila de tabla generada
@@ -170,9 +175,7 @@ class TutorAccountController
     $participants = ( new Participants() )->GetRows( $_SESSION['app']['user']['user_id'] );
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'participants_table', 'class' => 'table-ui'] );
-
-    // Columnas
+    $table = new Table( ['id' => 'participants_table', 'class' => 'p-table'] );
     $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' )             , ['id' => 'p_name_col']          ) );
     $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['id' => 'p_birth_date_col']    ) );
     $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['id' => 'p_medical_treatment'] ) );
@@ -193,23 +196,23 @@ class TutorAccountController
       // Botones
       // -------–-------–-------–-------–-------–-------–-------–
       
-      // Botón de editar
-      $edit_icon = '
-        <div data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
-          ' . app_get_svg_icon( 'pen' ) . '
-        </div>
-      ';
-
       // Botón de calendario
       $schedule_icon = '
-        <a href="/participant?pid2=' . $participant['participant_id2'] . '" class="white-svg cursor-pointer p-2 rounded-lg bg-orange-600 flex items-center justify-center">
+        <a href="/participant?pid2=' . $participant['participant_id2'] . '" class="p-button">
           ' . app_get_svg_icon( 'schedule' ) . '
         </a>
       ';
 
+      // Botón de editar
+      $edit_icon = '
+        <div data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="edit-icon p-button">
+          ' . app_get_svg_icon( 'pen' ) . '
+        </div>
+      ';
+
       // Botón de borrar
       $delete_icon = '
-        <div data-type="user" data-id2="' . $participant['participant_id2'] . '" class="delete-icon cursor-pointer p-2 rounded-lg bg-red-600 flex items-center justify-center white-svg">
+        <div data-type="user" data-id2="' . $participant['participant_id2'] . '" class="delete-icon p-button">
           ' . app_get_svg_icon( 'trash' ) . '
         </div>
       ';
@@ -221,7 +224,7 @@ class TutorAccountController
         , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
         , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 icon-container schedule-icon'] )
         , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 icon-container'] )
-        , 'delete_icon'                 => new TableCell( $delete_icon, ['class' => 'text-center w-12 icon-container'] )
+        , 'delete_icon'                   => new TableCell( $delete_icon, ['class' => 'text-center w-12 icon-container'] )
       ];
 
       // Añadimos la fila
@@ -276,18 +279,25 @@ class TutorAccountController
     else
       $medical_treatment = $participant['participant_medical_treatment'];
 
+    // Botón de calendario
+    $schedule_icon = '
+      <a href="/participant?pid2=' . $participant['participant_id2'] . '" class="p-button">
+        ' . app_get_svg_icon( 'schedule' ) . '
+      </a>
+    ';
+
     // Botón de editar
     $edit_icon = '
-      <div data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="edit-icon cursor-pointer p-2 rounded-lg bg-indigo-600 flex items-center justify-center">
+      <div data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="edit-icon p-button">
         ' . app_get_svg_icon( 'pen' ) . '
       </div>
     ';
 
-    // Botón de calendario
-    $schedule_icon = '
-      <a href="/participant?pid2=' . $participant['participant_id2'] . '" class="white-svg cursor-pointer p-2 rounded-lg bg-orange-600 flex items-center justify-center">
-        ' . app_get_svg_icon( 'schedule' ) . '
-      </a>
+    // Botón de borrar
+    $delete_icon = '
+      <div data-type="user" data-id2="' . $participant['participant_id2'] . '" class="delete-icon p-button">
+        ' . app_get_svg_icon( 'trash' ) . '
+      </div>
     ';
 
     // Definimos las celdas
@@ -297,6 +307,7 @@ class TutorAccountController
       , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
       , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 icon-container schedule-icon'] )
       , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 icon-container'] )
+      , 'delete_icon'                   => new TableCell( $delete_icon, ['class' => 'text-center w-12 icon-container'] )
     ];
 
     // Creamos la fila con `TableRow`

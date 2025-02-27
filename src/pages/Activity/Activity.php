@@ -57,7 +57,15 @@ class ActivityController
       <div class="mb-6 mt-2 space-y-5">
         <h2 class="text-3xl font-semibold text-gray-900">' . $this->activity['activity_name_' . DEF_LANG] . '</h2>
         <p class="text-gray-600">' . nl2br( $this->activity['activity_description_' . DEF_LANG] ) . '</p>
-        <p class="text-gray-500 text-sm">' . date('d-m-Y - H:i', strtotime( $this->activity['activity_time'] ) ) . '</p>
+
+        <div class="flex gap-3 items-center">
+          <span class="p-tag-blue h-fit">
+            ' . date( 'd/m/y | H:i', strtotime( $this->activity['activity_datetime_start'] ) )  . ' - '
+              . date( 'H:i', strtotime( $this->activity['activity_datetime_end'] ) )            . '
+          </span>
+
+          ' . $this->attendance_list_link() . '
+        </div>
       </div>
     ';
 
@@ -72,9 +80,12 @@ class ActivityController
   public function table_participants(): string
   {
     global $role;
+    $value                  = '';
+    $mod_groups             = new Groups();
+    $mod_group_participants = new GroupParticipants();
 
     // Buscamos los participantes relacionados con esta actividad
-    $participants = ( new ActivitiesParticipants() )->GetActivityDetails( $this->activity['activity_id'] );
+    $groups = $mod_groups->GetRows();
 
     // Tabla de Participantes
     $table = new Table( ['id' => 'participants_table', 'class' => 'p-table', 'data-activity' => $this->activity['activity_id2']] );
@@ -83,39 +94,33 @@ class ActivityController
     $table->addColumn( 'participant_allergies'    , new TableColumn( pl_label( 'allergies' )                , ['id' => 'p_allergies_col'] ) );
 
     // Iteramos cada participante relacionado con la actividad
-    foreach( $participants as $participant )
+    foreach( $groups as $group )
     {
-      // Formateamos los datos si son largos
-      $participant['participant_allergies'] = empty( $participant['participant_allergies'] ) 
-        ? pl_label( 'no_allergies' ) 
-        : $participant['participant_allergies'];
-
-      $participant['participant_special_needs'] = empty( $participant['participant_special_needs'] ) 
-        ? ''
-        : $participant['participant_special_needs'];
-
-      // Definimos las celdas
-      $cells = [
-          'participant_name'          => new TableCell( $participant['participant_name'] )
-        , 'participant_special_needs' => new TableCell( $participant['participant_special_needs'], ['class' => 'max-w-[14rem]'] )
-        , 'participant_allergies'     => new TableCell( $participant['participant_allergies'], ['class' => 'max-w-[14rem]'] )
-      ];
-
-      // Añadimos la fila
-      $table->addRow( new TableRow( $cells, [
-          'id'    => 'row-' . $participant['participant_id2']
-        , 'class' => 'hover:bg-gray-100'
-      ] ) );
-    }
-
-    if( $role === 0 )
-    {
-      $select = $this->participant_select();
-      if( $select > '' )
+      // Capturo los participantes del grupo
+      $participants = $mod_group_participants->GetRow( $group['group_id'] );
+      foreach( $participants as $participant )
       {
-        // Botón para añadir participante
-        $add_button = ['participant_name' => new TableCell( $select )];
-        $table->addRow( new TableRow( $add_button ) );
+        // Formateamos los datos si son largos
+        $participant['participant_allergies'] = empty( $participant['participant_allergies'] ) 
+          ? pl_label( 'no_allergies' ) 
+          : $participant['participant_allergies'];
+
+        $participant['participant_special_needs'] = empty( $participant['participant_special_needs'] ) 
+          ? ''
+          : $participant['participant_special_needs'];
+
+        // Definimos las celdas
+        $cells = [
+            'participant_name'          => new TableCell( $participant['participant_name'] )
+          , 'participant_special_needs' => new TableCell( $participant['participant_special_needs'], ['class' => 'max-w-[14rem]'] )
+          , 'participant_allergies'     => new TableCell( $participant['participant_allergies'], ['class' => 'max-w-[14rem]'] )
+        ];
+
+        // Añadimos la fila
+        $table->addRow( new TableRow( $cells, [
+            'id'    => 'row-' . $participant['participant_id2']
+          , 'class' => 'hover:bg-gray-100'
+        ] ) );
       }
     }
     
@@ -152,60 +157,6 @@ class ActivityController
 
     return $row->html();
   }
-  
-  /**
-   * Genera un select con los participantes del usuario que NO están inscritos en la actividad.
-   * 
-   * @return string HTML del select con los participantes disponibles.
-   */
-  public function participant_select(): string
-  {
-    $value = '';
-
-    // ---------------------------–---------------------------–---------------------------–
-    // Obtención de datos
-    // ---------------------------–---------------------------–---------------------------–
-
-    // Obtenemos todos los participantes del tutor
-    $all_participants        = ( new Participants() )->GetRows( $_SESSION['app']['user']['user_id'] );
-    $registered_participants = ( new ActivitiesParticipants() )->GetActivityDetails( $this->activity['activity_id'] );
-
-    // Extraemos los participant_id2 de los ya inscritos
-    $registered_ids = array_column( $registered_participants, 'participant_id2' );
-
-    // Filtramos los participantes que NO están en la actividad
-    $available_participants = array_filter( $all_participants, function( $participant ) use ( $registered_ids ): bool {
-      return !in_array( $participant['participant_id2'], $registered_ids );
-    } );
-
-    // Si no hay participantes disponibles, mostramos una alerta
-    if( empty( $available_participants ) )
-      return '';
-
-    // ---------------------------–---------------------------–---------------------------–
-    // Generamos el select
-    // ---------------------------–---------------------------–---------------------------–
-
-    $value = '<select id="participant_select" class="border px-4 py-2 rounded-lg w-full text-center" colspan="3">';
-    foreach( $available_participants as $participant )
-      $value .= '<option value="' . $participant['participant_id2'] . '">' . $participant['participant_name'] . '</option>';
-    
-    $value .= '</select>';
-
-    // Botón para agregar participante
-    $value = '
-      <div class="flex gap-2">
-
-        ' . $value . '
-        <button id="btn-add-participant" class="p-button">
-          <i class="icon">plus</i>
-          <span>' . pl_label( 'add_participant' ) . '</span>
-        </button>
-      </div>
-    ';
-
-    return $value;
-  }
 
   public function attendance_list_link(): string
   {
@@ -224,93 +175,78 @@ class ActivityController
 
     return $value;
   }
-  
+
   /**
-   * Agrega un participante a la actividad.
+   * Genera la tabla de grupos en la actividad.
    * 
-   * @param array $fields Contiene `participant_id2` y `activity_id2`.
-   * @return array Respuesta con resultado, mensaje y actualización de la tabla.
+   * @return string HTML de la tabla de grupos.
    */
-  public function ajax_add_participant( array $fields ): array
+  public function table_groups(): string
   {
-    $db               = new Model();
-    $mod_participants = new Participants();
-    $mod_activities   = new Activities();
+    global $role;
 
-    $result   = 0;
-    $message  = '';
-    $redirect = '';
-    $elements = [];
+    $value            = '';
+    $mod_groups       = new Groups();
+    $mod_user_details = new UserDetails();
 
-    do
+    // Buscamos los grupos relacionados con esta actividad
+    $groups = $mod_groups->GetRows();
+
+    // Tabla de Grupos
+    $table = new Table( ['id' => 'groups_table', 'class' => 'p-table', 'data-activity' => $this->activity['activity_id2']] );
+    $table->addColumn( 'group_name'  , new TableColumn( pl_label( 'group_name' )  , ['id' => 'g_name_col'] ) );
+    $table->addColumn( 'monitor_name', new TableColumn( pl_label( 'monitor_name' ), ['id' => 'g_monitor_col'] ) );
+
+    // Iteramos cada grupo relacionado con la actividad
+    foreach( $groups as $group )
     {
-      // --------------------------------------------------------------------------------------------------------------
-      // Verificación de campos
-      // --------------------------------------------------------------------------------------------------------------
+      // Buscamos el monitor relacionado
+      $monitor = $mod_user_details->GetRowsUser( $group['monitor_id'] )[0];
 
-      // Verificamos que el POST contiene todos los campos requeridos
-      $required_fields = [
-          'pid2'
-        , 'aid2'
+      // Definimos las celdas
+      $cells = [
+          'group_name'   => new TableCell( pl_label( 'group' ) . ' ' . ( $group['group_id'] + 1 ) )
+        , 'monitor_name' => new TableCell( $monitor['user_name'], ['class' => 'max-w-[14rem]'] )
       ];
 
-      foreach( $required_fields as $required_field )
-      {
-        // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
-        if( !array_key_exists( $required_field, $fields ) )
-        {
-          $message = pl_label( 'required_field' ) . ': ' . $required_field;
-          break 2;
-        }
-      }
+      // Añadimos la fila
+      $table->addRow( new TableRow( $cells, [
+          'id'    => 'row-' . $group['group_id2']
+        , 'class' => 'hover:bg-gray-100'
+      ] ) );
+    }
+    
+    return $table->html();
+  }
 
-      // Validamos si la actividad existe
-      $activity = $mod_activities->GetRow( $fields['aid2'] )[0];
-      if( empty( $activity ) )
-      {
-        $message = pl_label( 'activity_not_found' );
-        break;
-      }
+  /**
+   * Genera una fila en la tabla de grupos en la actividad.
+   * 
+   * @return string HTML de la tabla de grupos.
+   */
+  public function table_row_groups( int $group_id ): string
+  {
+    // Capturamos los datos del grupo solicitado
+    $group = ( new Groups() )->GetRow( $group_id )[0];
+    
+    // Formateamos los datos si son largos
+    $group['monitor_relacionado'] = empty( $group['monitor_relacionado'] )
+      ? pl_label( 'no_monitor' )
+      : substr( $group['monitor_relacionado'], 0, 100 ) . '...';
 
-      // Validamos si el participante existe y pertenece al tutor actual
-      $participant = $mod_participants->GetRow( $fields['pid2'] );
-      if( empty( $participant ) )
-      {
-        $message = pl_label( 'participant_not_found' );
-        break;
-      }
-
-      // Insertamos el nuevo registro
-      $sql = '
-        insert into ' . DB_PROJECT . '.activities_participants (
-            activity_id
-          , participant_id
-        ) values ( ?, ? )
-      ';
-      $params = [
-          $activity['activity_id']
-        , $participant[0]['participant_id']
-      ];
-      
-      $db->pl_query_prepared( $sql, $params );
-
-      // Recargamos la tabla de participantes
-      $html = $this->table_participants();
-      $elements = [
-        ['selector' => '#participants_table', 'method_name' => 'update', 'value' => $html]
-      ];
-
-      $result = 1;
-      break;
-
-    } while( false );
-
-    return [
-        'result'   => $result
-      , 'message'  => $message
-      , 'redirect' => $redirect
-      , 'elements' => $elements
+    // Definimos las celdas
+    $cells = [
+        'group_name'          => new TableCell( $group['group_name'] )
+      , 'monitor_relacionado' => new TableCell( $group['monitor_relacionado'], ['class' => 'max-w-[14rem]'] )
     ];
+
+    // Añadimos la fila
+    $row = new TableRow( $cells, [
+        'id'    => 'row-' . $group['group_id2']
+      , 'class' => 'hover:bg-gray-100'
+    ] );
+
+    return $row->html();
   }
 }
 
