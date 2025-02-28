@@ -62,7 +62,7 @@ class TutorAccountController
       ';
 
       $delete_icon = '
-        <div data-type="user" data-aid2="' . $user['detail_id2'] . '" class="delete-icon p-button">
+        <div data-type="user" data-id2="' . $user['detail_id2'] . '" class="delete-icon p-button">
           ' . app_get_svg_icon( 'trash' ) . '
         </div>
       ';
@@ -122,7 +122,7 @@ class TutorAccountController
     ';
 
     $delete_icon = '
-      <div data-type="user" data-aid2="' . $user['detail_id2'] . '" class="delete-icon p-button">
+      <div data-type="user" data-id2="' . $user['detail_id2'] . '" class="delete-icon p-button">
         ' . app_get_svg_icon( 'trash' ) . '
       </div>
     ';
@@ -202,7 +202,7 @@ class TutorAccountController
 
       // Botón de borrar
       $delete_icon = '
-        <div data-type="user" data-id2="' . $participant['participant_id2'] . '" class="delete-icon p-button">
+        <div data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="delete-icon p-button">
           ' . app_get_svg_icon( 'trash' ) . '
         </div>
       ';
@@ -278,7 +278,7 @@ class TutorAccountController
 
     // Botón de borrar
     $delete_icon = '
-      <div data-type="user" data-id2="' . $participant['participant_id2'] . '" class="delete-icon p-button">
+      <div data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="delete-icon p-button">
         ' . app_get_svg_icon( 'trash' ) . '
       </div>
     ';
@@ -418,7 +418,8 @@ class TutorAccountController
         // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
         if( !array_key_exists( $required_field, $fields ) )
         {
-          $message = pl_label( 'required_field' ) . ': ' . $required_field;
+          // Mostramos una alerta
+          $elements = app_generate_alert( true, pl_label( 'required_field' ) . ': ' . $required_field );
           break 2;
         }
       }
@@ -459,11 +460,13 @@ class TutorAccountController
       $html = $this->table_row_users( $detail_id2 );
 
       // Rellenamos los objetos a actualizar
+      $elements = app_generate_alert( false, pl_label( 'changes-applied' ) );
+
       $kwargs   = ['elem' => '#row-' . $detail_id2, 'color' => 'green'];
-      $elements = [
+      $elements = array_merge( $elements, [
           ['selector' => '#users_table tbody tr:last', 'method_name'  => 'insertBefore', 'value' => $html]
         , ['selector' => '#row-' . $detail_id2, 'method_name' => 'execute', 'func_name' => 'highlight_row', 'kwargs' => $kwargs]
-      ];
+      ] );
 
       // Si llega hasta aquí, está todo OK
       $result = 1;
@@ -511,6 +514,184 @@ class TutorAccountController
   }
 
   /**
+   * Edita los datos de un user y actualiza la vista dinámicamente.
+   * 
+   * @param array $fields Datos del user a actualizar.
+   * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
+   */
+  public function ajax_edit_user( array $fields ): array
+  {
+    $value  = [];
+    $db     = new Model();
+
+    // Inicializamos las variables de la llamada AJAX
+    $result   = 0;
+    $message  = '';
+    $redirect = '';
+    $elements = [];
+
+    do
+    {
+      // --------------------------------------------------------------------------------------------------------------
+      // Verificación de campos
+      // --------------------------------------------------------------------------------------------------------------
+
+      // Verificamos que el POST contiene todos los campos requeridos
+      $required_fields = [
+          'user_name'
+        , 'user_relationship'
+        , 'user_email'
+        , 'user_dni'
+        , 'user_phone_number'
+      ];
+
+      foreach( $required_fields as $required_field )
+      {
+        // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
+        if( !array_key_exists( $required_field, $fields ) )
+        {
+          // Mostramos una alerta
+          $elements = app_generate_alert( true, pl_label( 'required_field' ) . ': ' . $required_field );
+          break 2;
+        }
+      }
+
+      // --------------------------------------------------------------------------------------------------------------
+      // Edit
+      // --------------------------------------------------------------------------------------------------------------
+
+      $sql = '
+        update ' . DB_PROJECT . '.user_details set
+            user_name         = ?
+          , user_relationship = ?
+          , user_email        = ?
+          , user_dni          = ?
+          , user_phone_number = ?
+        where
+          user_id = ? and
+          detail_id2 = ?
+      ';
+      $params = [
+          $fields['user_name']
+        , $fields['user_relationship']
+        , $fields['user_email']
+        , $fields['user_dni']
+        , $fields['user_phone_number']
+        , $_SESSION['app']['user']['user_id']
+        , $fields['id2']
+      ];
+      $db->pl_query_prepared( $sql, $params );
+
+      // Recargamos el HTML de la fila actualizada
+      $html = $this->table_row_users( $fields['id2'] );
+
+      // Rellenamos los objetos a actualizar
+      $elements = app_generate_alert( false, pl_label( 'changes-applied' ) );
+      $kwargs   = ['elem' => '#row-' . $fields['id2'], 'color' => 'green'];
+      $elements = array_merge( $elements, [
+          ['selector' => '#row-' . $fields['id2'], 'method_name' => 'update' , 'value'      => $html]
+        , ['selector' => '#row-' . $fields['id2'], 'method_name' => 'execute', 'func_name'  => 'highlight_row', 'kwargs' => $kwargs]
+      ] );
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'    => $result
+      , 'message'   => $message
+      , 'redirect'  => $redirect
+      , 'elements'  => $elements
+    ];
+
+    $db->close();
+    return $value;
+  }
+  
+  /**
+   * Borra los datos de un usuario
+   * 
+   * @param array $fields Datos del usuario a eliminar.
+   * @return array Respuesta con resultado, mensaje y posible redirección.
+   */
+  public function ajax_delete_user( array $fields ): array
+  {
+    $value  = [];
+    $db     = new Model();
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    do
+    {
+      // --------------------------------------------------------------------------------------------------------------
+      // Verificación de campos
+      // --------------------------------------------------------------------------------------------------------------
+
+      // Verificamos que el POST contiene todos los campos requeridos
+      $required_fields = ['id2'];
+      foreach( $required_fields as $required_field )
+      {
+        // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
+        if( !array_key_exists( $required_field, $fields ) )
+        {
+          // Mostramos una alerta
+          $elements = app_generate_alert( true, pl_label( 'required_field' ) . ': ' . $required_field );
+          break 2;
+        }
+      }
+
+      // --------------------------------------------------------------------------------------------------------------
+      // Delete
+      // --------------------------------------------------------------------------------------------------------------
+
+      // Buscamos si la usuario existe
+      $user_detail = ( new UserDetails() )->GetRow( $fields['id2'] )[0];
+      if( $user_detail )
+        $detail_id = $user_detail['detail_id'];
+      else
+      {
+        $message = pl_label( 'user_detail_not_found' );
+        break;
+      }
+
+      // Borramos las vinculaciones con monitores
+      $sql = '
+        delete from ' . DB_PROJECT . '.user_details
+        where
+          detail_id = ?
+      ';
+      $db->pl_query_prepared( $sql, [$detail_id] );
+
+      // Rellenamos los objetos a actualizar
+      $elements = app_generate_alert( false, pl_label( 'changes-applied' ) );
+      $elements = array_merge( $elements, [
+        ['selector' => '#row-' . $fields['id2'], 'method_name' => 'remove']
+      ] );
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    $db->close();
+    return $value;
+  }
+
+  /**
    * Crea un participante
    * 
    * @param array $fields Datos del user a actualizar.
@@ -544,7 +725,8 @@ class TutorAccountController
         // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
         if( !array_key_exists( $required_field, $fields ) )
         {
-          $message = pl_label( 'required_field' ) . ': ' . $required_field;
+          // Mostramos una alerta
+          $elements = app_generate_alert( true, pl_label( 'required_field' ) . ': ' . $required_field );
           break 2;
         }
       }
@@ -613,11 +795,13 @@ class TutorAccountController
       $html = $this->table_row_participants( $participant_id2 );
 
       // Rellenamos los objetos a actualizar
+      $elements = app_generate_alert( false, pl_label( 'changes-applied' ) );
+
       $kwargs   = ['elem' => '#row-' . $participant_id2, 'color' => 'green'];
-      $elements = [
+      $elements = array_merge( $elements, [
           ['selector' => '#participants_table tbody tr:last', 'method_name'  => 'insertBefore', 'value' => $html]
         , ['selector' => '#row-' . $participant_id2, 'method_name' => 'execute', 'func_name' => 'highlight_row', 'kwargs' => $kwargs]
-      ];
+      ] );
 
       // Si llega hasta aquí, está todo OK
       $result = 1;
@@ -636,100 +820,6 @@ class TutorAccountController
     return $value;
   }
 
-  /**
-   * Edita los datos de un user y actualiza la vista dinámicamente.
-   * 
-   * @param array $fields Datos del user a actualizar.
-   * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
-   */
-  public function ajax_edit_user( array $fields ): array
-  {
-    $value  = [];
-    $db     = new Model();
-
-    // Inicializamos las variables de la llamada AJAX
-    $result   = 0;
-    $message  = '';
-    $redirect = '';
-    $elements = [];
-
-    do
-    {
-      // --------------------------------------------------------------------------------------------------------------
-      // Verificación de campos
-      // --------------------------------------------------------------------------------------------------------------
-
-      // Verificamos que el POST contiene todos los campos requeridos
-      $required_fields = [
-          'user_name'
-        , 'user_relationship'
-        , 'user_email'
-        , 'user_dni'
-        , 'user_phone_number'
-      ];
-
-      foreach( $required_fields as $required_field )
-      {
-        // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
-        if( !array_key_exists( $required_field, $fields ) )
-        {
-          $message = pl_label( 'required_field' ) . ': ' . $required_field;
-          break 2;
-        }
-      }
-
-      // --------------------------------------------------------------------------------------------------------------
-      // Edit
-      // --------------------------------------------------------------------------------------------------------------
-
-      $sql = '
-        update ' . DB_PROJECT . '.user_details set
-            user_name         = ?
-          , user_relationship = ?
-          , user_email        = ?
-          , user_dni          = ?
-          , user_phone_number = ?
-        where
-          user_id = ? and
-          detail_id2 = ?
-      ';
-      $params = [
-          $fields['user_name']
-        , $fields['user_relationship']
-        , $fields['user_email']
-        , $fields['user_dni']
-        , $fields['user_phone_number']
-        , $_SESSION['app']['user']['user_id']
-        , $fields['id2']
-      ];
-      $db->pl_query_prepared( $sql, $params );
-
-      // Recargamos el HTML de la fila actualizada
-      $html = $this->table_row_users( $fields['id2'] );
-
-      // Rellenamos los objetos a actualizar
-      $kwargs   = ['elem' => '#row-' . $fields['id2'], 'color' => 'green'];
-      $elements = [
-          ['selector' => '#row-' . $fields['id2'], 'method_name' => 'update' , 'value'      => $html]
-        , ['selector' => '#row-' . $fields['id2'], 'method_name' => 'execute', 'func_name'  => 'highlight_row', 'kwargs' => $kwargs]
-      ];
-
-      // Si llega hasta aquí, está todo OK
-      $result = 1;
-      break;
-
-    } while( false );
-    
-    $value = [
-        'result'    => $result
-      , 'message'   => $message
-      , 'redirect'  => $redirect
-      , 'elements'  => $elements
-    ];
-
-    $db->close();
-    return $value;
-  }
 
   /**
    * Edita los datos de un participante y actualiza la base de datos.
@@ -768,7 +858,8 @@ class TutorAccountController
         // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
         if( !array_key_exists( $required_field, $fields ) )
         {
-          $message = pl_label( 'required_field' ) . ': ' . $required_field;
+          // Mostramos una alerta
+          $elements = app_generate_alert( true, pl_label( 'required_field' ) . ': ' . $required_field );
           break 2;
         }
       }
@@ -804,11 +895,93 @@ class TutorAccountController
       $html = $this->table_row_participants( $fields['id2'] );
 
       // Rellenamos los objetos a actualizar
+      $elements = app_generate_alert( false, pl_label( 'changes-applied' ) );
       $kwargs   = ['elem' => '#row-' . $fields['id2'], 'color' => 'green'];
-      $elements = [
+      $elements = array_merge( $elements, [
           ['selector' => '#row-' . $fields['id2'], 'method_name' => 'update' , 'value'      => $html]
         , ['selector' => '#row-' . $fields['id2'], 'method_name' => 'execute', 'func_name'  => 'highlight_row', 'kwargs' => $kwargs]
-      ];
+      ] );
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    $db->close();
+    return $value;
+  }
+
+  /**
+   * Borra los datos de una actividad
+   * 
+   * @param array $fields Datos de la actividad a eliminar.
+   * @return array Respuesta con resultado, mensaje y posible redirección.
+   */
+  public function ajax_delete_participant( array $fields ): array
+  {
+    $value  = [];
+    $db     = new Model();
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    do
+    {
+      // --------------------------------------------------------------------------------------------------------------
+      // Verificación de campos
+      // --------------------------------------------------------------------------------------------------------------
+
+      // Verificamos que el POST contiene todos los campos requeridos
+      $required_fields = ['id2'];
+      foreach( $required_fields as $required_field )
+      {
+        // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
+        if( !array_key_exists( $required_field, $fields ) )
+        {
+          // Mostramos una alerta
+          $elements = app_generate_alert( true, pl_label( 'required_field' ) . ': ' . $required_field );
+          break 2;
+        }
+      }
+
+      // --------------------------------------------------------------------------------------------------------------
+      // Delete
+      // --------------------------------------------------------------------------------------------------------------
+
+      // Buscamos si la actividad existe
+      $participant = ( new Participants() )->GetRow( $fields['id2'] )[0];
+      if( $participant )
+        $participant_id = $participant['participant_id'];
+      else
+      {
+        $message = pl_label( 'participant_not_found' );
+        break;
+      }
+
+      // Borramos las vinculaciones con monitores
+      $sql = '
+        delete from ' . DB_PROJECT . '.participants
+        where
+          participant_id = ?
+      ';
+      $db->pl_query_prepared( $sql, [$participant_id] );
+
+      // Rellenamos los objetos a actualizar
+      $elements = app_generate_alert( false, pl_label( 'changes-applied' ) );
+      $elements = array_merge( $elements, [
+        ['selector' => '#row-' . $fields['id2'], 'method_name' => 'remove']
+      ] );
 
       // Si llega hasta aquí, está todo OK
       $result = 1;
@@ -923,26 +1096,26 @@ class TutorAccountController
       // Construcción del contenido del modal
       // --------------------------------------------------------------------------------------------------------------
       $content = '
-        <div class="modal_content">
+        <div class="modal_content space-y-5">
           <div>
             <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'user_full_name' ) . '</label>
-            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_name'] . '</div>
+            <div class="p-input">' . $user_detail['user_name'] . '</div>
           </div>
           <div>
             <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'user_relationship' ) . '</label>
-            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_relationship'] . '</div>
+            <div class="p-input">' . $user_detail['user_relationship'] . '</div>
           </div>
           <div>
             <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'email' ) . '</label>
-            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_email'] . '</div>
+            <div class="p-input">' . $user_detail['user_email'] . '</div>
           </div>
           <div>
             <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'user_dni' ) . '</label>
-            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_dni'] . '</div>
+            <div class="p-input">' . $user_detail['user_dni'] . '</div>
           </div>
           <div>
             <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'phone_number' ) . '</label>
-            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_phone_number'] . '</div>
+            <div class="p-input">' . $user_detail['user_phone_number'] . '</div>
           </div>
         </div>
       ';
@@ -1090,26 +1263,26 @@ class TutorAccountController
       // Construcción del contenido del modal
       // --------------------------------------------------------------------------------------------------------------
       $content = '
-        <div class="modal_content">
+        <div class="modal_content space-y-5">
           <div>
             <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_name' ) . '</label>
-            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_name'] . '</div>
+            <div class="p-input">' . $participant['participant_name'] . '</div>
           </div>
           <div>
             <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
-            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_birth_date'] . '</div>
+            <div class="p-input">' . $participant['participant_birth_date'] . '</div>
           </div>
           <div>
             <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>
-            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_allergies'] . '</div>
+            <div class="p-input min-h-[36px]">' . $participant['participant_allergies'] . '</div>
           </div>
           <div>
             <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_special_needs' ) . '</label>
-            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_special_needs'] . '</div>
+            <div class="p-input min-h-[36px]">' . $participant['participant_special_needs'] . '</div>
           </div>
           <div>
             <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_medical_treatment' ) . '</label>
-            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_medical_treatment'] . '</div>
+            <div class="p-input min-h-[36px]">' . $participant['participant_medical_treatment'] . '</div>
           </div>
         </div>
       ';

@@ -21,6 +21,29 @@ $( document ).ready( function() {
     }
   } );
 
+  $( document ).on( 'click', '.delete-icon', function( e ) {
+
+    // Evitamos los demás eventos
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    let confirm_prompt = navigator.language = 'es-ES'
+      ? '¿Estás seguro de querer borrar esta actividad?'
+      : 'Are you sure you want to delete this activity?';
+
+    let is_sure = confirm( confirm_prompt );
+    if( !is_sure )
+      return;
+
+    // Capturamos el tipo de item que queremos editar
+    let id2   = $( this ).data( 'id2' );
+    let type  = $( this ).data( 'type' );
+
+    // Dependiendo del tipo de item ejecutamos un método u otro
+    ( type === 'user' ? delete_user : delete_participant )( { 'id2': id2 } );
+  } );
+
   // Evento focus en búsqueda general
   $( document ).keydown( function( e ) {
     if( ( e.metaKey || e.ctrlKey ) && e.key.toLowerCase() === 'k' ) {
@@ -189,10 +212,28 @@ function form_submit( formdata, form ) {
     } );
 }
 
+function delete_user( id2 ) {
+  pl_ajax_post( 'delete_user', id2 )
+    .then( function( data ) {
+      if( data.elements )
+        pl_dom( data.elements );
+    } )
+    .catch( console.error );
+}
+
+function delete_participant( id2 ) {
+  pl_ajax_post( 'delete_participant', id2 )
+    .then( function( data ) {
+      if( data.elements )
+        pl_dom( data.elements );
+    } )
+    .catch( console.error );
+}
+
 function form_search_participants( query ) {
   pl_ajax_post( 'form_search_participants', { 'query': query } )
     .then( function( data ) {
-      if( data.result == 1 && data.elements )
+      if( data.elements )
         pl_dom( data.elements );
       else
         generate_error_message( '#filters_participants', data.message );
@@ -203,7 +244,7 @@ function form_search_participants( query ) {
 function form_search_users( query ) {
   pl_ajax_post( 'form_search_users', { 'query': query })
     .then( function( data ) {
-      if( data.result == 1 && data.elements )
+      if( data.elements )
         pl_dom(data.elements);
       else
         generate_error_message( '#filters_users', data.message );

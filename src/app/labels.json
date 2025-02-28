@@ -716,5 +716,45 @@
   "participants_count": {
     "es": "Número de participantes",
     "en": "Participant count"
+  },
+  "user_full_name": {
+    "es": "Nombre completo",
+    "en": "Full name"
+  },
+  "user_full_name_placeholder": {
+    "es": "Juan Pérez García",
+    "en": "John Smith"
+  },
+  "changes-applied": {
+    "es": "Cambios aplicados con éxito.",
+    "en": "Changes applied successfully."
+  },
+  "user_relationship": {
+    "es": "Parentesco",
+    "en": "Relationship"
+  },
+  "user_name_placeholder": {
+    "es": "Carlos Ramírez",
+    "en": "Michael Scott"
+  },
+  "user_relationship_placeholder": {
+    "es": "Padre, Madre, Tutor legal",
+    "en": "Father, Mother, Legal tutor"
+  },
+  "user_dni": {
+    "es": "DNI/NIE",
+    "en": "ID Number"
+  },
+  "user_dni_placeholder": {
+    "es": "12345678X",
+    "en": "A1234567B"
+  },
+  "user_phone_number": {
+    "es": "Número de teléfono",
+    "en": "Phone number"
+  },
+  "user_phone_number_placeholder": {
+    "es": "+34 678 123 456",
+    "en": "+1 555 789 1234"
   }
 }

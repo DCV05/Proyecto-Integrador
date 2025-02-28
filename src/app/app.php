@@ -65,12 +65,6 @@ if( $role === 1 )
   ];
 
   $entries[] = [
-      'title' => pl_label( 'users' )
-    , 'link'  => '/users'
-    , 'icon'  => app_get_svg_icon( 'users' )
-  ];
-
-  $entries[] = [
       'title' => pl_label( 'groups' )
     , 'link'  => '/groups'
     , 'icon'  => app_get_svg_icon( 'group' )
