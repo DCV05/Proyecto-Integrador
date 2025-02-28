@@ -1,16 +1,60 @@
 $( document ).ready( function() {
 
+  $( document ).on( 'click', '#btn-add-tutor, #btn-add-participant', function( e ) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+  
+    ( this.id === 'btn-add-tutor' ? open_add_popup_user : open_add_popup_participant )();
+  } );
+
   $( document ).on( 'click', '.table-row', function( e ) {
     if( !e.target ) return; // Si no existe e.target, salir de la función
 
-    // Verificar si el elemento clicado tiene la clase 'fa-calendar-days'
-    if( $( e.target ).hasClass( 'fa-calendar-days' ) ) {
+    // Verificar si el elemento clicado tiene la clase 'icon'
+    if( $( e.target ).hasClass( 'icon' ) ) {
       e.preventDefault();
 
       // Obtener el enlace padre más cercano
       var link = $( e.target ).closest( 'a' ).attr( 'href' );
       if( link ) window.location.href = link; // Redirigir manualmente
     }
+  } );
+
+  // Evento focus en búsqueda general
+  $( document ).keydown( function( e ) {
+    if( ( e.metaKey || e.ctrlKey ) && e.key.toLowerCase() === 'k' ) {
+      e.preventDefault();
+      $( '#filters_participants #f_search' ).focus();
+    }
+  } );
+
+  // Prevención de envío de formularios sin procesar AJAX
+  $( document ).on( 'submit', '#filters_participants, #filters_users', function( e ) {
+    e.preventDefault();
+    e.stopPropagation();
+  } );
+
+  // Manejo de eventos para cada formulario de búsqueda
+  $( document ).on( 'input', '#filters_participants #f_search', function() {
+    let query = $( this ).val();
+    form_search_participants( query );
+  } );
+
+  $( document ).on( 'input', '#filters_users #f_search', function() {
+    let query = $( this ).val();
+    form_search_users( query );
+  } );
+
+  // Manejo de botones de limpieza para cada formulario
+  $( document ).on( 'click', '#filters_participants #clean-filters', function() {
+    $( '#filters_participants #f_search' ).val( '' );
+    form_search_participants( '' );
+  } );
+
+  $( document ).on( 'click', '#filters_users #clean-filters', function() {
+    $( '#filters_users #f_search' ).val( '' );
+    form_search_users( '' );
   } );
 
   $( document ).on( 'click', '.edit-icon, .table-row', function( e ) {
@@ -61,12 +105,12 @@ $( document ).ready( function() {
   // ------------------------------------------------------------------------------
 
   // Evento para cuando el usuario deje de tener el focus en un input
-  $( document ).on( 'focusout', 'input:not([type="button"]):not([type="radio"])', function() {
+  $( document ).on( 'focusout', 'input:not([type="button"]):not([type="radio"]):not([type="search"])', function() {
     check_inputs( $( this ) );
   } );
 
   // Evento del Submit
-  $( document ).on( 'submit', '.account-form, .participant-form', function( e ) {
+  $( document ).on( 'submit', '.tutor-form, .participant-form, .add-tutor-form, .add-participant-form', function( e ) {
 
     let has_error = false;
 
@@ -76,7 +120,7 @@ $( document ).ready( function() {
     e.stopImmediatePropagation();
 
     // Evento de checkeo en submit
-    $( this ).find( 'input:not([type="button"]):not([type="radio"])' ).each( function() {
+    $( this ).find( 'input:not([type="button"]):not([type="radio"]):not([type="search"])' ).each( function() {
       incorrect_input = check_inputs( $( this ) );
 
       // Si es incorrecto, el formulario no se podrá mandar
@@ -108,11 +152,19 @@ function form_submit( formdata, form ) {
   // Dependiendo del tipo de formulario que sea, ejecutamos un método u otro
   switch( $( form ).data( 'type' ) ) {
     case 'user':
-      method_name = 'edit_tutor';
+      method_name = 'edit_user';
       break;
 
     case 'participant':
       method_name = 'edit_participant';
+      break;
+
+    case 'add_user':
+      method_name = 'add_user';
+      break;
+
+    case 'add_participant':
+      method_name = 'add_participant';
       break;
   
     default:
@@ -137,6 +189,28 @@ function form_submit( formdata, form ) {
     } );
 }
 
+function form_search_participants( query ) {
+  pl_ajax_post( 'form_search_participants', { 'query': query } )
+    .then( function( data ) {
+      if( data.result == 1 && data.elements )
+        pl_dom( data.elements );
+      else
+        generate_error_message( '#filters_participants', data.message );
+    } )
+    .catch( console.error );
+}
+
+function form_search_users( query ) {
+  pl_ajax_post( 'form_search_users', { 'query': query })
+    .then( function( data ) {
+      if( data.result == 1 && data.elements )
+        pl_dom(data.elements);
+      else
+        generate_error_message( '#filters_users', data.message );
+    } )
+    .catch( console.error );
+}
+
 // Función para inciar sesión en la aplicación
 function open_popup( method_name, id2 ) {
 
@@ -150,6 +224,40 @@ function open_popup( method_name, id2 ) {
       }
       else
         generate_error_message( form, data.message );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
+// Función para abrir un popup
+function open_add_popup_user( uid2 ) {
+
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'popup_add_user', uid2 )
+    .then( function( data ) {
+
+      // Si el resultado es correcto, mostramos los popups
+      if( data.result = 1 && data.elements )
+        pl_dom( data.elements );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
+// Función para abrir un popup
+function open_add_popup_participant( pid2 ) {
+
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'popup_add_participant', pid2 )
+    .then( function( data ) {
+
+      // Si el resultado es correcto, mostramos los popups
+      if( data.result = 1 && data.elements )
+        pl_dom( data.elements );
     } )
     .catch( function( error ) {
       // Manejo de errores

@@ -24,20 +24,20 @@ class TutorAccountController
    * 
    * @return string HTML de la tabla de usuarios.
    */
-  public function table_users(): string
+  public function table_tutors( string $where = '' ): string
   {
     $value             = '';
     $mod_user_detailss = new UserDetails();
 
     // Capturamos todas las cuentas relacionadas con el usuario de la sesión
-    $users = $mod_user_detailss->GetRowsUser( $_SESSION['app']['user']['user_id'] );
+    $users = $mod_user_detailss->GetRowsUser( $_SESSION['app']['user']['user_id'], $where );
 
     /*
       Array | account
         [detail_id] => 4
         [user_id] => 11
         [user_name] => Daniel
-        [user_email] => tutor1@example.com
+        [user_email] => user1@example.com
         [user_dni] => 34213213
         [user_phone_number] => 644753740
     */
@@ -88,17 +88,7 @@ class TutorAccountController
     }
 
     // Convertimos la tabla a HTML
-    $table_html = $table->html();
-  
-    // --------------------------------------------------------------------------
-    // Encapsulamos
-    // --------------------------------------------------------------------------
-
-    $value = '
-      <h2 class="subtitle font-semibold my-4">' . pl_label( 'users' ) . '</h2>
-      ' . $table_html . '
-    ';  
-
+    $value = $table->html();
     return $value;
   }
 
@@ -120,7 +110,7 @@ class TutorAccountController
         [detail_id] => 4
         [user_id] => 11
         [user_name] => Daniel
-        [user_email] => tutor1@example.com
+        [user_email] => user1@example.com
         [user_dni] => 34213213
         [user_phone_number] => 644753740
     */
@@ -167,12 +157,12 @@ class TutorAccountController
    * 
    * @return string HTML de la tabla de participantes.
    */
-  public function table_participants(): string
+  public function table_participants( string $where = '' ): string
   {
     $value = '';
 
     // Capturamos todas las cuentas relacionadas con el usuario de la sesión
-    $participants = ( new Participants() )->GetRows( $_SESSION['app']['user']['user_id'] );
+    $participants = ( new Participants() )->GetRows( $_SESSION['app']['user']['user_id'], $where );
 
     // Inicializamos la tabla y sus columnas
     $table = new Table( ['id' => 'participants_table', 'class' => 'p-table'] );
@@ -237,14 +227,7 @@ class TutorAccountController
     }
 
     // Convertimos la tabla a HTML
-    $table_html = $table->html();
-
-    // Encapsulamos
-    $value = '
-      <h2 class="subtitle font-semibold my-4">' . pl_label( 'participants' ) . '</h2>
-      ' . $table_html . '
-    ';
-
+    $value = $table->html();
     return $value;
   }
 
@@ -326,22 +309,349 @@ class TutorAccountController
   // AJAX
   // ------------------------------------------------------------------------------------------------------------------
   
+  public function ajax_form_search_participants( array $fields ): array
+  {
+    $value = [];
+
+    // Inicializamos las variables de la llamada AJAX
+    $result   = 0;
+    $message  = '';
+    $redirect = '';
+    $elements = [];
+
+    do
+    {
+      // Recargamos el HTML de la tabla de participantes
+      $html = $this->table_participants( $fields['query'] );
+
+      // Rellenamos los objetos a actualizar
+      $elements = [
+        ['selector' => '#participants_table', 'method_name' => 'update', 'value' => $html]
+      ];
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    return $value;
+  }
+  
+  public function ajax_form_search_users( array $fields ): array
+  {
+    $value = [];
+
+    // Inicializamos las variables de la llamada AJAX
+    $result   = 0;
+    $message  = '';
+    $redirect = '';
+    $elements = [];
+
+    do
+    {
+      // Recargamos el HTML de la tabla de usuarios
+      $html = $this->table_users( $fields['query'] );
+
+      // Rellenamos los objetos a actualizar
+      $elements = [
+        ['selector' => '#users_table', 'method_name' => 'update', 'value' => $html]
+      ];
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    return $value;
+  }
+
   /**
-   * Edita los datos de un tutor y actualiza la vista dinámicamente.
+   * Crea un usuario
    * 
-   * @param array $fields Datos del tutor a actualizar.
+   * @param array $fields Datos del user a actualizar.
    * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
    */
-  public function ajax_edit_tutor( array $fields ): array
+  public function ajax_add_user( array $fields ): array
   {
     $value  = [];
     $db     = new Model();
 
     // Inicializamos las variables de la llamada AJAX
-    $result     = 0;
-    $message    = '';
-    $redirect   = '';
-    $elements   = [];
+    $result   = 0;
+    $message  = '';
+    $redirect = '';
+    $elements = [];
+
+    do
+    {
+      // --------------------------------------------------------------------------------------------------------------
+      // Verificación de campos
+      // --------------------------------------------------------------------------------------------------------------
+
+      // Verificamos que el POST contiene todos los campos requeridos
+      $required_fields = [
+          'user_name'
+        , 'user_relationship'
+        , 'user_email'
+        , 'user_dni'
+        , 'user_phone_number'
+      ];
+
+      foreach( $required_fields as $required_field )
+      {
+        // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
+        if( !array_key_exists( $required_field, $fields ) )
+        {
+          $message = pl_label( 'required_field' ) . ': ' . $required_field;
+          break 2;
+        }
+      }
+
+      // --------------------------------------------------------------------------------------------------------------
+      // Insert
+      // --------------------------------------------------------------------------------------------------------------
+
+      $detail_id2 = pl_random();
+      $sql = '
+        insert into ' . DB_PROJECT . '.user_details (
+            detail_id2
+          , user_id
+          , user_name
+          , user_relationship
+          , user_email
+          , user_dni
+          , user_phone_number
+        ) values ( ?, ?, ?, ?, ?, ?, ? )
+      ';
+      
+      $params = [
+          $detail_id2
+        , $_SESSION['app']['user']['user_id']
+        , $fields['user_name']
+        , $fields['user_relationship']
+        , $fields['user_email']
+        , $fields['user_dni']
+        , $fields['user_phone_number']
+      ];
+      
+      $db->pl_query_prepared( $sql, $params );
+
+      // Capturamos el ID del nuevo user
+      $detail_id = $db->get_last_id();
+
+      // Recargamos el HTML de la fila actualizada
+      $html = $this->table_row_users( $detail_id2 );
+
+      // Rellenamos los objetos a actualizar
+      $kwargs   = ['elem' => '#row-' . $detail_id2, 'color' => 'green'];
+      $elements = [
+          ['selector' => '#users_table tbody tr:last', 'method_name'  => 'insertBefore', 'value' => $html]
+        , ['selector' => '#row-' . $detail_id2, 'method_name' => 'execute', 'func_name' => 'highlight_row', 'kwargs' => $kwargs]
+      ];
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+
+      // ------------------------------------------------------------------------------
+      // Subida de foto de perfil
+      // ------------------------------------------------------------------------------
+
+      if( empty( $fields['user_image_upload'] ) || $fields['user_image_upload']['size'] > 0 )
+        break;
+
+      // Generamos el nombre del directorio de destino. Si no existe lo creamos
+      $dir = ASSETS_PATH . '/panel/users';
+      if( !is_dir( $dir ) && !@mkdir( $dir ) )
+      {
+        $message = pl_label( 'error-create-dir' );
+        break;
+      }
+      
+      // Calculamos la ruta de la imagen y el nombre final
+      $source     = $fields['user_image_upload']['name'];
+      $extension  = pathinfo( $source, PATHINFO_EXTENSION );
+      $target     = $dir . '/' . pl_number_id( $detail_id ) . '_' . $detail_id2 . '.' . $extension;
+      
+      // Movemos el fichero temporal al directorio final
+      if( !move_uploaded_file( $fields['user_image_upload']['tmp_name'], $target ) )
+      {
+        $message = pl_label( 'error-upload' );
+        break;
+      }
+
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'    => $result
+      , 'message'   => $message
+      , 'redirect'  => $redirect
+      , 'elements'  => $elements
+    ];
+
+    $db->close();
+    return $value;
+  }
+
+  /**
+   * Crea un participante
+   * 
+   * @param array $fields Datos del user a actualizar.
+   * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
+   */
+  public function ajax_add_participant( array $fields ): array
+  {
+    $value  = [];
+    $db     = new Model();
+
+    // Inicializamos las variables de la llamada AJAX
+    $result   = 0;
+    $message  = '';
+    $redirect = '';
+    $elements = [];
+
+    do
+    {
+      // --------------------------------------------------------------------------------------------------------------
+      // Verificación de campos
+      // --------------------------------------------------------------------------------------------------------------
+
+      // Verificamos que el POST contiene todos los campos requeridos
+      $required_fields = [
+          'participant_name'
+        , 'participant_birth_date'
+      ];
+
+      foreach( $required_fields as $required_field )
+      {
+        // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
+        if( !array_key_exists( $required_field, $fields ) )
+        {
+          $message = pl_label( 'required_field' ) . ': ' . $required_field;
+          break 2;
+        }
+      }
+
+      // --------------------------------------------------------------------------------------------------------------
+      // Insert
+      // --------------------------------------------------------------------------------------------------------------
+
+      // Insertamos los datos del nuevo participante
+      $participant_id2 = pl_random();
+      $sql = '
+        insert into ' . DB_PROJECT . '.participants (
+            participant_id2
+          , user_id
+          , participant_name
+          , participant_birth_date
+          , participant_allergies
+          , participant_special_needs
+          , participant_medical_treatment
+        ) values ( ?, ?, ?, ?, ?, ?, ? )
+      ';
+
+      $params = [
+          $participant_id2
+        , $_SESSION['app']['user']['user_id']
+        , $fields['participant_name']
+        , $fields['participant_birth_date']
+        , $fields['participant_allergies']          ?? ''
+        , $fields['participant_special_needs']      ?? ''
+        , $fields['participant_medical_treatment']  ?? ''
+      ];
+
+      $db->pl_query_prepared( $sql, $params );
+
+      // Capturamos el ID del nuevo user
+      $participant_id = $db->get_last_id();
+
+      // ------------------------------------------------------------------------------
+      // Subida de foto de perfil
+      // ------------------------------------------------------------------------------
+
+      if( !empty( $fields['participant_image_upload'] ) && $fields['participant_image_upload']['size'] > 0 )
+      {
+        // Generamos el nombre del directorio de destino. Si no existe lo creamos
+        $dir = ASSETS_PATH . '/panel/participants';
+        if( !is_dir( $dir ) && !@mkdir( $dir ) )
+        {
+          $message = pl_label( 'error-create-dir' );
+          continue;
+        }
+
+        // Calculamos la ruta de la imagen y el nombre final
+        $source     = $fields['participant_image_upload']['name'];
+        $extension  = pathinfo( $source, PATHINFO_EXTENSION );
+        $target     = $dir . '/' . pl_number_id( $participant_id ) . '_' . $participant_id2 . '.' . $extension;
+        
+        // Movemos el fichero temporal al directorio final
+        if( !move_uploaded_file( $fields['participant_image_upload']['tmp_name'], $target ) )
+        {
+          $message = pl_label( 'error-upload' );
+          continue;
+        }
+      }
+
+      // Recargamos el HTML de la fila actualizada
+      $html = $this->table_row_participants( $participant_id2 );
+
+      // Rellenamos los objetos a actualizar
+      $kwargs   = ['elem' => '#row-' . $participant_id2, 'color' => 'green'];
+      $elements = [
+          ['selector' => '#participants_table tbody tr:last', 'method_name'  => 'insertBefore', 'value' => $html]
+        , ['selector' => '#row-' . $participant_id2, 'method_name' => 'execute', 'func_name' => 'highlight_row', 'kwargs' => $kwargs]
+      ];
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'    => $result
+      , 'message'   => $message
+      , 'redirect'  => $redirect
+      , 'elements'  => $elements
+    ];
+
+    $db->close();
+    return $value;
+  }
+
+  /**
+   * Edita los datos de un user y actualiza la vista dinámicamente.
+   * 
+   * @param array $fields Datos del user a actualizar.
+   * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
+   */
+  public function ajax_edit_user( array $fields ): array
+  {
+    $value  = [];
+    $db     = new Model();
+
+    // Inicializamos las variables de la llamada AJAX
+    $result   = 0;
+    $message  = '';
+    $redirect = '';
+    $elements = [];
 
     do
     {
@@ -392,7 +702,6 @@ class TutorAccountController
         , $_SESSION['app']['user']['user_id']
         , $fields['id2']
       ];
-      
       $db->pl_query_prepared( $sql, $params );
 
       // Recargamos el HTML de la fila actualizada
@@ -543,57 +852,30 @@ class TutorAccountController
       if( !$user_detail )
         break;
       
-      // Formulario
-      $html = '
-        <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
+      // --------------------------------------------------------------------------------------------------------------
+      // Construcción del contenido del modal
+      // --------------------------------------------------------------------------------------------------------------
+      $content = '
+        <form data-type="user" data-id2="' . $user_detail['detail_id2'] . '" class="tutor-form modal_content space-y-5">
+          ' . app_custom_input( 'user_name'         , 'text', $user_detail['user_name'] )         . '
+          ' . app_custom_input( 'user_relationship' , 'text', $user_detail['user_relationship'] ) . '
+          ' . app_custom_input( 'user_email'        , 'text', $user_detail['user_email'] )        . '
+          ' . app_custom_input( 'user_dni'          , 'text', $user_detail['user_dni'] )          . '
+          ' . app_custom_input( 'user_phone_number' , 'tel', $user_detail['user_phone_number'] )  . '
 
-            <h3 class="text-2xl mb-4">' . pl_label( 'edit_legal_tutor' ) . '</h3>
-
-            <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
+          <div class="flex justify-end">
+            <button type="submit" class="p-button">
+              <i class="icon">send</i>
+              <span>' . pl_label( 'send-button' ) . '</span>
             </button>
-
-            <form data-type="user" data-id2="' . $user_detail['detail_id2'] . '" class="account-form modal_content">
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_full_name' ) . '</label>
-                <input type="text" name="user_name" placeholder="' . pl_label( 'legal_tutor_full_name_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $user_detail['user_name'] . '">
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_relationship' ) . '</label>
-                <input type="text" name="user_relationship" placeholder="' . pl_label( 'legal_tutor_relationship_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $user_detail['user_relationship'] . '">
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'email' ) . '</label>
-                <input type="text" name="user_email" placeholder="' . pl_label( 'legal_tutor_email_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $user_detail['user_email'] . '">
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_dni' ) . '</label>
-                <input type="text" name="user_dni" placeholder="' . pl_label( 'legal_tutor_dni_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $user_detail['user_dni'] . '">
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'phone_number' ) . '</label>
-                <input type="tel" id="user_phone_number" name="user_phone_number" placeholder="' . pl_label( 'legal_tutor_phone_1' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $user_detail['user_phone_number'] . '">
-              </div>
-
-              <div class="flex justify-end">
-                <button type="submit" class="custom-submit bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
-                  ' . pl_label( 'send-button' ) . '
-                </button>
-              </div>
-            </form>
-
           </div>
-        </div>
+        </form>
       ';
 
-      // Rellenamos los objetos a actualizar
-      $elements = [
-          ['selector' => 'body'       , 'method_name' => 'append', 'value' => $html]
-        , ['selector' => '.card_modal', 'method_name' => 'css'   , 'value' => 'flex', 'css' => 'display']
-      ];
+      // --------------------------------------------------------------------------------------------------------------
+      // Generamos el modal con `app_generate_modal`
+      // --------------------------------------------------------------------------------------------------------------
+      $elements = app_generate_modal( pl_label( 'edit_user' ), $content );
 
       // Si llega hasta aquí, está todo OK
       $result = 1;
@@ -637,51 +919,38 @@ class TutorAccountController
       if( !$user_detail )
         break;
 
-      // Formulario
-      $html = '
-        <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
-
-            <h3 class="text-2xl mb-4">' . pl_label( 'legal_tutor' ) . '</h3>
-
-            <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-            </button>
-
-            <div class="modal_content">
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_full_name' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_name'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_relationship' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_relationship'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'email' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_email'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_dni' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_dni'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'phone_number' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_phone_number'] . '</div>
-              </div>
-            </div>
-
+      // --------------------------------------------------------------------------------------------------------------
+      // Construcción del contenido del modal
+      // --------------------------------------------------------------------------------------------------------------
+      $content = '
+        <div class="modal_content">
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'user_full_name' ) . '</label>
+            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_name'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'user_relationship' ) . '</label>
+            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_relationship'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'email' ) . '</label>
+            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_email'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'user_dni' ) . '</label>
+            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_dni'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'phone_number' ) . '</label>
+            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_phone_number'] . '</div>
           </div>
         </div>
       ';
 
-      // Rellenamos los objetos a actualizar
-      $elements = [
-          ['selector' => 'body'       , 'method_name' => 'append', 'value' => $html]
-        , ['selector' => '.card_modal', 'method_name' => 'css'   , 'value' => 'flex', 'css' => 'display']
-      ];
+      // --------------------------------------------------------------------------------------------------------------
+      // Generamos el modal con `app_generate_modal`
+      // --------------------------------------------------------------------------------------------------------------
+      $elements = app_generate_modal( pl_label( 'add_tutor' ), $content );
 
       // Si llega hasta aquí, está todo OK
       $result = 1;
@@ -738,57 +1007,30 @@ class TutorAccountController
           [participant_medical_treatment] => No aplica
       */
 
-      // Formulario
-      $html = '
-        <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
+        // --------------------------------------------------------------------------------------------------------------
+        // Construcción del contenido del modal
+        // --------------------------------------------------------------------------------------------------------------
+        $content = '
+          <form data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="tutor-form modal_content space-y-5">
+            ' . app_custom_input( 'participant_name'                , 'text', $participant['participant_name'] )        . '
+            ' . app_custom_input( 'participant_birth_date'          , 'date', $participant['participant_birth_date'] )  . '
+            ' . app_custom_textarea( 'participant_allergies'        , $participant['participant_allergies'] )           . '
+            ' . app_custom_textarea( 'participant_special_needs'    , $participant['participant_special_needs'] )       . '
+            ' . app_custom_textarea( 'participant_medical_treatment', $participant['participant_medical_treatment'] )   . '
 
-            <h3 class="text-2xl mb-4">' . pl_label( 'edit_participant' ) . '</h3>
+            <div class="flex justify-end">
+              <button type="submit" class="p-button">
+                <i class="icon">send</i>
+                <span>' . pl_label( 'send-button' ) . '</span>
+              </button>
+            </div>
+          </form>
+        ';
 
-            <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-            </button>
-
-            <form data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="account-form modal_content">
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_full_name' ) . '</label>
-                <input type="text" name="participant_name" placeholder="' . pl_label( 'participant_full_name_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $participant['participant_name'] . '">
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
-                <input type="date" name="participant_birth_date" placeholder="' . pl_label( 'participant_birth_date_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $participant['participant_birth_date'] . '">
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>
-                <textarea name="participant_allergies" placeholder="' . pl_label( 'participant_allergies_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300">' . $participant['participant_allergies'] . '</textarea>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_special_needs' ) . '</label>
-                <textarea name="participant_special_needs" placeholder="' . pl_label( 'participant_special_needs_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300">' . $participant['participant_special_needs'] . '</textarea>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_medical_treatment' ) . '</label>
-                <textarea name="participant_medical_treatment" placeholder="' . pl_label( 'participant_medical_treatment_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300">' . $participant['participant_medical_treatment'] . '</textarea>
-              </div>
-
-              <div class="flex justify-end">
-                <button type="submit" class="custom-submit bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
-                  ' . pl_label( 'send-button' ) . '
-                </button>
-              </div>
-            </form>
-
-          </div>
-        </div>
-      ';
-
-      // Rellenamos los objetos a actualizar
-      $elements = [
-          ['selector' => 'body'       , 'method_name' => 'append', 'value' => $html]
-        , ['selector' => '.card_modal', 'method_name' => 'css'   , 'value' => 'flex', 'css' => 'display']
-      ];
+        // --------------------------------------------------------------------------------------------------------------
+        // Generamos el modal con `app_generate_modal`
+        // --------------------------------------------------------------------------------------------------------------
+        $elements = app_generate_modal( pl_label( 'participant' ), $content );
 
       // Si llega hasta aquí, está todo OK
       $result = 1;
@@ -805,7 +1047,6 @@ class TutorAccountController
 
     return $value;
   }
-
 
   /**
    * Obtiene y muestra un popup con los detalles del usuario seleccionado.
@@ -845,51 +1086,38 @@ class TutorAccountController
           [participant_medical_treatment] => No aplica
       */
 
-      // Formulario
-      $html = '
-        <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
-
-            <h3 class="text-2xl mb-4">' . pl_label( 'participant' ) . '</h3>
-
-            <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-            </button>
-
-            <div class="modal_content">
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_name' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_name'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_birth_date'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_allergies'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_special_needs' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_special_needs'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_medical_treatment' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_medical_treatment'] . '</div>
-              </div>
-            </div>
-
+      // --------------------------------------------------------------------------------------------------------------
+      // Construcción del contenido del modal
+      // --------------------------------------------------------------------------------------------------------------
+      $content = '
+        <div class="modal_content">
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_name' ) . '</label>
+            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_name'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
+            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_birth_date'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>
+            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_allergies'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_special_needs' ) . '</label>
+            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_special_needs'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_medical_treatment' ) . '</label>
+            <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_medical_treatment'] . '</div>
           </div>
         </div>
       ';
 
-      // Rellenamos los objetos a actualizar
-      $elements = [
-          ['selector' => 'body'       , 'method_name' => 'append', 'value' => $html]
-        , ['selector' => '.card_modal', 'method_name' => 'css'   , 'value' => 'flex', 'css' => 'display']
-      ];
+      // --------------------------------------------------------------------------------------------------------------
+      // Generamos el modal con `app_generate_modal`
+      // --------------------------------------------------------------------------------------------------------------
+      $elements = app_generate_modal( pl_label( 'participant' ), $content );
 
       // Si llega hasta aquí, está todo OK
       $result = 1;
@@ -906,6 +1134,110 @@ class TutorAccountController
 
     return $value;
   }
+
+  /**
+   * Formulario de creación de un nuevo usuario
+   * 
+   * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
+   */
+  public function ajax_popup_add_user(): array
+  {
+    $value = [];
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    do
+    {
+      $form_content = '
+        <form data-type="add_user" class="add-tutor-form modal_content space-y-5">
+          ' . app_custom_input( 'user_name', 'text' )         . '
+          ' . app_custom_input( 'user_email', 'email' )       . '
+          ' . app_custom_input( 'user_relationship', 'text' ) . '
+          ' . app_custom_input( 'user_dni', 'text' )          . '
+          ' . app_custom_input( 'user_phone_number', 'text' ) . '
+
+          <div class="flex justify-end">
+            <button type="submit" class="p-button">
+              <i class="icon">send</i>
+              <span>' . pl_label( 'send-button' ) . '</span>
+            </button>
+          </div>
+        </form>
+      ';
+      
+      $elements = app_generate_modal( pl_label( 'add_tutor' ), $form_content );
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    return $value;
+  }
+
+  /**
+   * Formulario de creación de un nuevo participante
+   * 
+   * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
+   */
+  public function ajax_popup_add_participant(): array
+  {
+    $value = [];
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    do
+    {
+      $form_content = '
+        <form data-type="add_participant" class="add-participant-form modal_content space-y-5">
+          ' . app_custom_input( 'participant_name', 'text' )     . '
+          ' . app_custom_input( 'participant_birth_date', 'date' )    . '
+          ' . app_custom_textarea( 'participant_allergies' )          . '
+          ' . app_custom_textarea( 'participant_medical_treatment' )  . '
+      
+          <div class="flex justify-end">
+            <button type="submit" class="p-button">
+              <i class="icon">send</i>
+              <span>' . pl_label( 'send-button' ) . '</span>
+            </button>
+          </div>
+        </form>
+      ';
+      
+      $elements = app_generate_modal( pl_label( 'add_participant' ), $form_content );
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    return $value;
+  }
+
 }
 
 ?>

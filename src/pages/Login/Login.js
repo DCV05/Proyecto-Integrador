@@ -5,7 +5,7 @@ $( document ).ready( function() {
   // ------------------------------------------------------------------------------
 
   // Evento para cuando el usuario deje de tener el focus en un input
-  $( document ).on( 'focusout', 'input:not([type="button"]):not([type="radio"])', function() {
+  $( document ).on( 'focusout', 'input:not([type="button"]):not([type="radio"]):not([type="search"])', function() {
     check_inputs( $( this ) );
   } );
 
@@ -20,7 +20,7 @@ $( document ).ready( function() {
     e.stopImmediatePropagation();
 
     // Evento de checkeo en submit
-    $( this ).find( 'input:not([type="button"]):not([type="radio"])' ).each( function() {
+    $( this ).find( 'input:not([type="button"]):not([type="radio"]):not([type="search"])' ).each( function() {
       incorrect_input = check_inputs( $( this ) );
 
       // Si es incorrecto, el formulario no se podrá mandar

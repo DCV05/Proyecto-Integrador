@@ -44,6 +44,12 @@ if( $role === 2 )
   ];
 
   $entries[] = [
+      'title' => pl_label( 'groups' )
+    , 'link'  => '/groups'
+    , 'icon'  => app_get_svg_icon( 'group' )
+  ];
+
+  $entries[] = [
       'title' => pl_label( 'finances' )
     , 'link'  => '/' . $folder . '/finances'
     , 'icon'  => app_get_svg_icon( 'finances' )
@@ -62,6 +68,12 @@ if( $role === 1 )
       'title' => pl_label( 'users' )
     , 'link'  => '/users'
     , 'icon'  => app_get_svg_icon( 'users' )
+  ];
+
+  $entries[] = [
+      'title' => pl_label( 'groups' )
+    , 'link'  => '/groups'
+    , 'icon'  => app_get_svg_icon( 'group' )
   ];
 
   $entries[] = [
@@ -92,6 +104,18 @@ $heading_entries = array_merge( $entries, [
     'link'            => '/activities',
     'icon'            => app_get_svg_icon( 'activities' ),
     'layout_buttons'  => true
+  ],
+  [
+    'title'           => pl_label( 'groups' ),
+    'link'            => '/groups',
+    'icon'            => app_get_svg_icon( 'group' ),
+    'layout_buttons'  => false
+  ],
+  [
+    'title'           => '<a href="/groups" class="hover:underline">' . pl_label( 'groups' ) . '</a>' . '/' . pl_label( 'group' ),
+    'link'            => '/group',
+    'icon'            => app_get_svg_icon( 'group' ),
+    'layout_buttons'  => false
   ],
   [
     'title'           => '<a href="/activities" class="hover:underline">' . pl_label( 'activities' ) . '</a>' . '/' . pl_label( 'activity' ),
@@ -471,9 +495,11 @@ function app_get_svg_icon( string $name, string $color = 'black' ): string
     , 'plus'        => '<i class="text-' . $color . ' text-4xl icon">add</i>'
     , 'paper-icon'  => '<i class="text-' . $color . ' text-xl icon">send</i>'
     , 'exclamation' => '<i class="text-' . $color . ' text-xl icon">error_outline</i>'
-    , 'users'       => '<i class="text-' . $color . ' text-3xl icon">groups</i>'
+    , 'check'       => '<i class="text-' . $color . ' text-xl icon">check</i>'
+    , 'users'       => '<i class="text-' . $color . ' text-3xl icon">person</i>'
     , 'kids'        => '<i class="text-' . $color . ' text-3xl icon">child_care</i>'
     , 'menu'        => '<i class="text-' . $color . ' text-xl icon">menu</i>'
+    , 'group'       => '<i class="text-' . $color . ' text-xl icon">group</i>'
     , 'cloud'       => '<svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/></svg>'
   ];
 
@@ -598,12 +624,91 @@ function app_custom_textarea( string $name, string $value = '' ): string
       <textarea
         id="' . $name . '"
         name="' . $name . '"
-        class="p-input w-full"
+        class="p-input w-full min-h-[36px]"
       >' . $value . '</textarea>
     </div>
   ';
 
   return $textarea_html;
+}
+
+/**
+ * Genera un alert de éxito o error y devuelve el HTML junto con los elementos para actualizar el DOM.
+ * 
+ * @param bool   $is_error Indica si es un error (true) o éxito (false).
+ * @param string $message  Mensaje a mostrar en la alerta.
+ * @return array<string,mixed> Contiene el alert HTML y el array elements para la actualización del DOM.
+ */
+function app_generate_alert( bool $is_error, string $message ): array
+{
+  // --------------------------------------------------------------------------------------------------------------
+  // Definimos el color y el icono en función de si es un error o un éxito
+  // --------------------------------------------------------------------------------------------------------------
+
+  $color = $is_error ? 'bg-red-600' : 'bg-green-600';
+  $icon  = $is_error ? app_get_svg_icon( 'exclamation', 'white' ) : app_get_svg_icon( 'check', 'white' );
+
+  // --------------------------------------------------------------------------------------------------------------
+  // Generamos el HTML del alert
+  // --------------------------------------------------------------------------------------------------------------
+
+  $alert = '
+    <div id="p-alert" class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center max-w-xs px-3 py-2 text-white ' . $color . ' rounded-lg shadow-lg" role="alert">
+      ' . $icon . '
+      <div class="ml-3 text-sm font-normal">' . $message . '</div>
+    </div>
+  ';
+
+  // --------------------------------------------------------------------------------------------------------------
+  // Definimos los elementos para actualizar el DOM
+  // --------------------------------------------------------------------------------------------------------------
+
+  $kwargs   = ['elem' => '#p-alert'];
+  $elements = [
+      ['selector' => 'body'    , 'method_name' => 'append' , 'value' => $alert]
+    , ['selector' => '#p-alert', 'method_name' => 'execute', 'func_name'  => 'show_alert', 'kwargs' => $kwargs]
+  ];
+
+  return $elements;
+}
+
+/**
+ * Genera un modal con título y contenido dinámico.
+ * 
+ * @param string $title     Título del modal.
+ * @param string $content   Contenido del formulario dentro del modal.
+ * @return array<string,mixed> Elementos para actualizar el DOM.
+ */
+function app_generate_modal( string $title, string $content ): array
+{
+  // --------------------------------------------------------------------------------------------------------------
+  // Construcción del HTML del modal
+  // --------------------------------------------------------------------------------------------------------------
+  $html = '
+  <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
+
+      <h3 class="text-2xl mb-4">' . $title . '</h3>
+
+      <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      ' . $content . '
+
+    </div>
+  </div>
+  ';
+
+  // --------------------------------------------------------------------------------------------------------------
+  // Rellenamos los objetos a actualizar
+  // --------------------------------------------------------------------------------------------------------------
+  return [
+      ['selector' => 'body'       , 'method_name' => 'append', 'value' => $html]
+    , ['selector' => '.card_modal', 'method_name' => 'css'   , 'value' => 'flex', 'css' => 'display']
+  ];
 }
 
 // ----------------------------------------------------------------------------------------------------------------

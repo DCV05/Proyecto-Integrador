@@ -23,10 +23,6 @@
     "es": "Correo enviado correctamente!",
     "en": "Email correctly sent!"
   },
-  "legal_tutor_info": {
-    "es": "Información legal",
-    "en": "tutor information"
-  },
   "payment_info": {
     "es": "Información de pago",
     "en": "Payment information"
@@ -143,34 +139,6 @@
     "es": "¿Algún tipo de atención especial que este campamento deba considerar?",
     "en": "Any special attention this camp should consider?"
   },
-  "legal_tutor_relationship": {
-    "es": "Parentesco",
-    "en": "Relationship"
-  },
-  "legal_tutor_full_name": {
-    "es": "Nombre completo",
-    "en": "Full Name"
-  },
-  "legal_tutor_dni": {
-    "es": "DNI",
-    "en": "ID"
-  },
-  "legal_tutor_birth_date": {
-    "es": "Fecha de nacimiento",
-    "en": "Date of Birth"
-  },
-  "legal_tutor_address": {
-    "es": "Dirección",
-    "en": "Address"
-  },
-  "legal_tutor_phone_1": {
-    "es": "Teléfono 1",
-    "en": "Phone 1"
-  },
-  "legal_tutor_phone_2": {
-    "es": "Teléfono 2",
-    "en": "Phone 2"
-  },
   "email": {
     "es": "Correo electrónico",
     "en": "Email"
@@ -191,14 +159,6 @@
     "es": "Marcar como contacto de emergencia",
     "en": "Mark as emergency contact"
   },
-  "add_new_legal_tutor": {
-    "es": "Añadir un nuevo tutor legal",
-    "en": "Add a new legal tutor"
-  },
-  "remove_legal_tutor": {
-    "es": "Eliminar tutor legal",
-    "en": "Remove legal tutor"
-  },
   "my_account": {
     "es": "Mi cuenta",
     "en": "My account"
@@ -207,21 +167,9 @@
     "es": "Cerrar sesión",
     "en": "Log out"
   },
-  "edit_legal_tutor": {
-    "es": "Editar tutor legal",
-    "en": "Edit legal tutor"
-  },
   "edit_participant": {
     "es": "Editar participante",
     "en": "Edit participant"
-  },
-  "legal_tutors_section": {
-    "es": "Tutores legales",
-    "en": "Legal tutors"
-  },
-  "legal_tutor_photo": {
-    "es": "Fotografía legal",
-    "en": "tutor photography"
   },
   "participants_section": {
     "es": "Participantes",
@@ -286,42 +234,6 @@
   "schedule": {
     "es": "Calendario",
     "en": "Schedule"
-  },
-  "legal_tutor": {
-    "es": "Tutor legal",
-    "en": "Legal tutor"
-  },
-  "legal_tutor_relationship_placeholder": {
-    "es": "Padre",
-    "en": "Father"
-  },
-  "legal_tutor_full_name_placeholder": {
-    "es": "Carlos Ramírez",
-    "en": "Michael Scott"
-  },
-  "legal_tutor_dni_placeholder": {
-    "es": "123456789",
-    "en": "987654321"
-  },
-  "legal_tutor_phone_1_placeholder": {
-    "es": "+34 612 34 56 78",
-    "en": "+1 987 654 3210"
-  },
-  "legal_tutor_phone_2_placeholder": {
-    "es": "+34 722 45 67 89",
-    "en": "+1 876 543 2109"
-  },
-  "legal_tutor_email_placeholder": {
-    "es": "correo@tutorlegal.com",
-    "en": "e.g. legaltutor@example.com"
-  },
-  "legal_tutor_birth_date_placeholder": {
-    "es": "Ingrese la fecha de nacimiento",
-    "en": "Enter birth date"
-  },
-  "participant_name": {
-    "es": "Nombre del participante",
-    "en": "Participant Name"
   },
   "participant_name_placeholder": {
     "es": "Ingrese el nombre del participante",
@@ -788,5 +700,21 @@
   "send": {
     "es": "Enviar",
     "en": "Send"
+  },
+  "groups": {
+    "es": "Grupos",
+    "en": "Groups"
+  },
+  "tutors": {
+    "es": "Tutores",
+    "en": "Tutors"
+  },
+  "add_tutor": {
+    "es": "Añadir tutor",
+    "en": "Add tutor"
+  },
+  "participants_count": {
+    "es": "Número de participantes",
+    "en": "Participant count"
   }
 }

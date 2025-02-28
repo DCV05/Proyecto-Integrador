@@ -14,9 +14,9 @@ class Groups
    * 
    * @return array Lista de actividades o un array vacío si no hay resultados.
    */
-  public function GetRows(): array
+  public function GetRows( string $where = '' ): array
   {
-    $sql = 'select * from ' . DB_PROJECT . '.groups';
+    $sql = 'select * from ' . DB_PROJECT . '.groups ' . $where;
     return $this->db->pl_query_prepared( $sql, [], true );
   }
 
@@ -36,6 +36,25 @@ class Groups
         monitor_id = ?
     ';
     $params = [$this->db->esc( $monitor_id )];
+    return $this->db->pl_query_prepared( $sql, $params, true );
+  }
+
+  /**
+   * Obtiene una fila específica de la tabla `groups` según `group_id2`.
+   * 
+   * @param string $group_id2 Identificador de la actividad.
+   * @return array Datos de la actividad si existe, o un array vacío si no hay resultados.
+   */
+  public function GetGroupId2( string $group_id2 ): array
+  {
+    $sql = '
+      select
+        * 
+      from ' . DB_PROJECT . '.groups
+      where
+        group_id2 = ?
+    ';
+    $params = [$this->db->esc( $group_id2 )];
     return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }

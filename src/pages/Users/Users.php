@@ -157,7 +157,7 @@ class UsersController
         <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
 
-            <h3 class="text-2xl mb-4">' . pl_label( 'legal_tutor' ) . '</h3>
+            <h3 class="text-2xl mb-4">' . pl_label( 'user' ) . '</h3>
 
             <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -167,11 +167,11 @@ class UsersController
 
             <div class="modal_content space-y-5">
               <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_full_name' ) . '</label>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'user_name' ) . '</label>
                 <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_name'] . '</div>
               </div>
               <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_relationship' ) . '</label>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'user_relationship' ) . '</label>
                 <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_relationship'] . '</div>
               </div>
               <div>
@@ -179,7 +179,7 @@ class UsersController
                 <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $user_detail['user_email'] . '</div>
               </div>
               <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'legal_tutor_dni' ) . '</label>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'user_dni' ) . '</label>
                 <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md min-h-[36px]">' . $user_detail['user_dni'] . '</div>
               </div>
               <div>

@@ -302,36 +302,9 @@ class AdminFinancesController
 
       // $user['user_email']
       // Enviamos el email
-      $sent = pl_send_email( 'daniel.correa@kodalogic.com', $title, $email_html );
-      if( $sent )
-      {
-        $alert = '
-          <div id="alert-email" class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center max-w-xs px-3 py-2 text-white bg-green-600 rounded-lg shadow-lg" role="alert">
-            ' . app_get_svg_icon( 'paper-icon' ) . '
-            <div class="ml-3 text-sm font-normal">' . pl_label( 'email_sent' ) . '</div>
-          </div>
-        ';
-      }
-      else
-      {
-        $alert = '
-          <div id="alert-email" class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center max-w-xs p-4 text-white bg-red-600 rounded-lg shadow-lg" role="alert">
-            ' . app_get_svg_icon( 'exclamation' ) . '
-            <div class="ml-3 text-sm font-normal">Error</div>
-          </div>
-        ';
-      }
-
-      // --------------------------------------------------------------------------------------------------------------
-      // ELEMENTS
-      // --------------------------------------------------------------------------------------------------------------
-
-      // Rellenamos los objetos a actualizar
-      $kwargs   = ['elem' => '#alert-email'];
-      $elements = [
-          ['selector' => 'body'        , 'method_name' => 'append' , 'value' => $alert]
-        , ['selector' => '#alert-email', 'method_name' => 'execute', 'func_name'  => 'show_alert', 'kwargs' => $kwargs]
-      ];
+      $sent     = pl_send_email( 'daniel.correa@kodalogic.com', $title, $email_html );
+      $message  = $sent === true ? pl_label( 'email_sent' ) : 'Error';
+      $elements = app_generate_alert( !$sent, $message );
 
       // Si llega hasta aquí, está todo OK
       $result = 1;

@@ -394,7 +394,7 @@ class ActivitiesController
     return $value;
   }
 
-    /**
+  /**
    * Añade una actividad.
    * 
    * @param array $fields Datos de la actividad a crear.

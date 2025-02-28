@@ -87,14 +87,14 @@ class MonitorAttendanceController
       $checkin_input = $this->app_generate_check_component(
           $entry['participant_id2']
         , 'checkin'
-        , !empty( $entry['checkin_datetime'] ) ? date( 'Y-m-d\TH:i', strtotime( $entry['checkin_datetime'] ) ): null
+        , !is_null( $entry['checkin_datetime'] ) ? date( 'Y-m-d\TH:i', strtotime( $entry['checkin_datetime'] ) ): null
       );
 
       // Check-out
       $checkout_input = $this->app_generate_check_component(
           $entry['participant_id2']
         , 'checkout'
-        , !empty( $entry['checkout_datetime'] ) ? date( 'Y-m-d\TH:i', strtotime( $entry['checkout_datetime'] ) ): null
+        , !is_null( $entry['checkout_datetime'] ) ? date( 'Y-m-d\TH:i', strtotime( $entry['checkout_datetime'] ) ): null
       );
 
       // Definimos las celdas
@@ -142,14 +142,14 @@ class MonitorAttendanceController
     $checkin_input = $this->app_generate_check_component(
         $participant['participant_id2']
       , 'checkin'
-      , !empty( $entry['checkin_datetime'] ) ? date( 'Y-m-d\TH:i', strtotime( $attendance['checkin_datetime'] ) ): null
+      , !is_null( $attendance['checkin_datetime'] ) ? date( 'Y-m-d\TH:i', strtotime( $attendance['checkin_datetime'] ) ): null
     );
 
     // Check-out
     $checkout_input = $this->app_generate_check_component(
         $participant['participant_id2']
       , 'checkout'
-      , !empty( $entry['checkout_datetime'] ) ? date( 'Y-m-d\TH:i', strtotime( $attendance['checkout_datetime'] ) ): null
+      , !is_null( $attendance['checkout_datetime'] ) ? date( 'Y-m-d\TH:i', strtotime( $attendance['checkout_datetime'] ) ): null
     );
 
     // Definimos las celdas
@@ -279,12 +279,12 @@ class MonitorAttendanceController
     $value = '';
 
     // Si el participante no ha hecho check-in, mostramos un botón
-    if( empty( $checkin_datetime ) )
+    if( empty( $check_datetime ) )
     {
       $value = '
         <button class="p-button btn-' . $label . '" data-pid2="' . $participant_id2 . '">
           <i class="icon">calendar_today</i>
-          <span>' . $label . '</span>
+          <span>' . pl_label( $label ) . '</span>
         </button>
       ';
     }
