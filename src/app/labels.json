@@ -163,6 +163,14 @@
     "es": "Mi cuenta",
     "en": "My account"
   },
+  "fill_participant_schedule_title": {
+    "es": "Rellenar el horario de los participantes",
+    "en": "Fill in the participant's schedule"
+  },
+  "fill_participant_schedule_description": {
+    "es": "Selecciona un participante y marca los días en los que asistirá. Cuando hayas terminado, envía el formulario para guardar los horarios.",
+    "en": "Select a participant and mark the days they will attend. Once done, submit the form to save the schedules."
+  },
   "log_out": {
     "es": "Cerrar sesión",
     "en": "Log out"
@@ -170,6 +178,10 @@
   "edit_participant": {
     "es": "Editar participante",
     "en": "Edit participant"
+  },
+  "edit_user": {
+    "es": "Editar usuario",
+    "en": "Edit user"
   },
   "participants_section": {
     "es": "Participantes",
@@ -760,5 +772,191 @@
   "user_phone_number_placeholder": {
     "es": "+34 678 123 456",
     "en": "+1 555 789 1234"
+  },
+
+  "hero_title": {
+    "es": "Crea, Programa y Domina la Robótica",
+    "en": "Create, Code, and Master Robotics"
+  },
+  "hero_subtitle": {
+    "es": "Un campamento donde los niños diseñan robots, aprenden programación y disfrutan de la tecnología con retos divertidos y educativos.",
+    "en": "A camp where kids design robots, learn programming, and enjoy technology with fun and educational challenges."
+  },
+  "view_activities": {
+    "es": "Ver actividades",
+    "en": "View activities"
+  },
+  "contact_us": {
+    "es": "Contacta con nosotros →",
+    "en": "Contact us →"
+  },
+  "learning_title": {
+    "es": "Aprendizaje 100% Práctico",
+    "en": "100% Hands-on Learning"
+  },
+  "learning_description": {
+    "es": "Los niños no solo observan, sino que construyen y programan sus propios robots desde el primer día.",
+    "en": "Kids don’t just observe, they build and program their own robots from day one."
+  },
+  "learning_experience": {
+    "es": "Todo el aprendizaje es a través de la experiencia, usando herramientas adaptadas a su edad para que puedan experimentar con sensores, motores y programación de forma divertida.",
+    "en": "All learning is hands-on, using age-appropriate tools so kids can experiment with sensors, motors, and programming in a fun way."
+  },
+  "explore_more": {
+    "es": "Explora Más",
+    "en": "Explore More"
+  },
+  "difficulty_levels": {
+    "es": "Dos Niveles de Dificultad Según la Edad",
+    "en": "Two Difficulty Levels by Age"
+  },
+  "difficulty_description": {
+    "es": "El campamento se adapta a cada grupo:",
+    "en": "The camp adapts to each group:"
+  },
+  "difficulty_6_9_age": {
+    "es": "6 a 9 años",
+    "en": "6 to 9 years"
+  },
+  "difficulty_6_9": {
+    "es": "Robótica con LEGO, programación visual y primeros desafíos de construcción.",
+    "en": "LEGO robotics, visual programming, and first construction challenges."
+  },
+  "difficulty_10_14_age": {
+    "es": "10 a 14 años",
+    "en": "10 to 14 years"
+  },
+  "difficulty_10_14": {
+    "es": "Arduino, sensores avanzados, código real y competiciones de robótica.",
+    "en": "Arduino, advanced sensors, real coding, and robotics competitions."
+  },
+  "learn_more": {
+    "es": "Conoce Más",
+    "en": "Learn More"
+  },
+  "robotics_challenges": {
+    "es": "Retos y Competencias de Robótica",
+    "en": "Robotics Challenges and Competitions"
+  },
+  "robotics_description": {
+    "es": "Cada niño pone a prueba sus habilidades en desafíos emocionantes como:",
+    "en": "Each child tests their skills in exciting challenges such as:"
+  },
+  "sumo_battle": {
+    "es": "Batalla de Sumo:",
+    "en": "Sumo Battle:"
+  },
+  "sumo_battle_description": {
+    "es": "Construye y programa un robot para empujar al oponente fuera del ring.",
+    "en": "Build and program a robot to push the opponent out of the ring."
+  },
+  "robot_race": {
+    "es": "Carrera de Robots:",
+    "en": "Robot Race:"
+  },
+  "robot_race_description": {
+    "es": "Supera obstáculos y programa tu robot para llegar primero a la meta.",
+    "en": "Overcome obstacles and program your robot to reach the finish line first."
+  },
+  "rescue_mission": {
+    "es": "Misión de Rescate:",
+    "en": "Rescue Mission:"
+  },
+  "rescue_mission_description": {
+    "es": "Diseña un robot autónomo capaz de encontrar y transportar objetos.",
+    "en": "Design an autonomous robot capable of finding and transporting objects."
+  },
+  "sign_up": {
+    "es": "Regístrate",
+    "en": "Sign Up"
+  },
+
+  "discover_activities": {
+    "es": "Descubre nuestras actividades.",
+    "en": "Discover our activities."
+  },
+  "exploration_technology": {
+    "es": "Exploración y Tecnología",
+    "en": "Exploration and Technology"
+  },
+  "robotic_explorer_title": {
+    "es": "Construye tu Explorador Robótico",
+    "en": "Build Your Robotic Explorer"
+  },
+  "robotic_explorer_description": {
+    "es": "Los niños diseñarán y ensamblarán su propio rover robótico, equipado con motores y sensores, para explorar terrenos simulados. Aprenderán sobre movilidad autónoma, adaptación a obstáculos y el uso de programación para controlar su explorador.",
+    "en": "Children will design and assemble their own robotic rover, equipped with motors and sensors, to explore simulated terrains. They will learn about autonomous mobility, obstacle adaptation, and programming to control their explorer."
+  },
+  "robotic_explorer_benefits": {
+    "es": "Esta actividad fomenta la creatividad y el pensamiento lógico, permitiéndoles experimentar con ingeniería mecánica y robótica.",
+    "en": "This activity fosters creativity and logical thinking, allowing them to experiment with mechanical engineering and robotics."
+  },
+
+  "strategy_competition": {
+    "es": "Estrategia y Competencia",
+    "en": "Strategy and Competition"
+  },
+  "drone_flight_title": {
+    "es": "Vuelo de Drones",
+    "en": "Drone Flight"
+  },
+  "drone_flight_description": {
+    "es": "Una competencia emocionante donde los participantes pilotarán drones a través de un circuito lleno de obstáculos. Los niños aprenderán sobre estabilidad, control y maniobrabilidad, además de conceptos básicos de aerodinámica.",
+    "en": "An exciting competition where participants will pilot drones through an obstacle-filled circuit. Kids will learn about stability, control, and maneuverability, as well as basic aerodynamics concepts."
+  },
+  "drone_flight_benefits": {
+    "es": "Esta actividad mejora la coordinación ojo-mano y desarrolla habilidades de precisión y toma de decisiones bajo presión.",
+    "en": "This activity enhances hand-eye coordination and develops precision and decision-making skills under pressure."
+  },
+  "last_robot_standing_title": {
+    "es": "El Último Guerrero en Pie",
+    "en": "The Last Robot Standing"
+  },
+  "last_robot_standing_description": {
+    "es": "Enfrenta tu robot en un combate de sumo donde el objetivo es empujar al oponente fuera del ring. Los niños diseñarán, programarán y optimizarán sus robots para mejorar su estabilidad y fuerza.",
+    "en": "Face your robot in a sumo battle where the goal is to push the opponent out of the ring. Kids will design, program, and optimize their robots to improve stability and strength."
+  },
+  "last_robot_standing_benefits": {
+    "es": "Aprenderán sobre sensores de proximidad, estrategias de defensa y ataque, y la importancia del ajuste mecánico en la robótica de competencia.",
+    "en": "They will learn about proximity sensors, defensive and offensive strategies, and the importance of mechanical tuning in competitive robotics."
+  },
+  "engineering_precision": {
+    "es": "Ingeniería y Puntería",
+    "en": "Engineering and Precision"
+  },
+  "robotic_catapult_title": {
+    "es": "Construye tu Catapulta Robótica",
+    "en": "Build Your Robotic Catapult"
+  },
+  "robotic_catapult_description": {
+    "es": "Usando principios de ingeniería y mecánica, los niños diseñarán y construirán una catapulta robótica capaz de lanzar proyectiles con precisión. Experimentarán con diferentes ángulos de lanzamiento, tensión de los materiales y programación de mecanismos automatizados para optimizar su puntería.",
+    "en": "Using engineering and mechanical principles, children will design and build a robotic catapult capable of launching projectiles with precision. They will experiment with different launch angles, material tension, and automated mechanism programming to optimize their aim."
+  },
+  "robotic_catapult_benefits": {
+    "es": "Esta actividad combina creatividad, resolución de problemas y habilidades matemáticas.",
+    "en": "This activity combines creativity, problem-solving, and mathematical skills."
+  },
+  "innovation_energy": {
+    "es": "Innovación y Energía",
+    "en": "Innovation and Energy"
+  },
+  "create_lightbulb_title": {
+    "es": "Crea tu propia Bombilla",
+    "en": "Create Your Own Lightbulb"
+  },
+  "create_lightbulb_description": {
+    "es": "Los participantes aprenderán sobre energías renovables y la importancia de la electricidad en la robótica. Construirán circuitos eléctricos básicos, explorando el uso de paneles solares, motores y LEDs.",
+    "en": "Participants will learn about renewable energies and the importance of electricity in robotics. They will build basic electrical circuits, exploring the use of solar panels, motors, and LEDs."
+  },
+  "create_lightbulb_benefits": {
+    "es": "Descubrirán cómo los circuitos eléctricos alimentan los robots y experimentarán con conexiones en serie y paralelo para optimizar el consumo energético.",
+    "en": "They will discover how electrical circuits power robots and experiment with series and parallel connections to optimize energy consumption."
+  },
+
+  "missing_schedule": {
+    "es": "Calendario sin rellenar",
+    "en": "Missing schedule"
   }
+
+  
 }

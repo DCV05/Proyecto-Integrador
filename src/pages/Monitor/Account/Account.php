@@ -6,6 +6,8 @@ class MonitorAccountController
   {
     // Control de seguridad
     app_security();
+    app_restrict();
+    
     return;
   }
 

@@ -13,6 +13,7 @@ class MonitorAttendanceController
   {
     // Control de seguridad
     app_security();
+    app_restrict();
 
     $mod_activities = new Activities();
 

@@ -63,6 +63,7 @@ class LoginController
             u.*
           , ud.detail_id
           , ud.detail_id2
+          , ud.is_main
         from ' . DB_PROJECT . '.users u
         left join ' . DB_PROJECT . '.user_details ud on ud.user_id = u.user_id
         where

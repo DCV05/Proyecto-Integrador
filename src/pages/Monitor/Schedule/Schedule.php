@@ -6,6 +6,10 @@ class MonitorScheduleController
 
   public function index(): void
   {
+    // Control de seguridad
+    app_security();
+    app_restrict();
+
     // Capturamos el id2 del monitor
     $this->monitor_id2 = $_SESSION['app']['user']['user_id2'];
     return;

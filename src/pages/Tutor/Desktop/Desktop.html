@@ -5,6 +5,25 @@
   <metaname="viewport" content="width=device-width, initial-scale=1.0">
   <title>[[ polaris.page.title_seo ]]</title>
   [[ func | &headers ]]
+
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.11.3/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core/locales-all.min.js"></script>
+
+  <style>
+    #calendar {
+      height: 50vh;
+      font-size: 0.8rem;
+    }
+  </style>
+
+  <script>
+    const language = '[[ DEF_LANG ]]';
+  </script>
+
+  [[ func | calendars ]]
+
 </head>
 
 <body class="overflow-hidden flex flex-col min-h-screen relative">
@@ -13,6 +32,7 @@
   
   <div class="page-content">
     <div class="px-8 py-6">
+
       [[ func | content ]]
     </div>
   </div>

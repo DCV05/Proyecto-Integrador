@@ -11,6 +11,7 @@ class TutorAccountController
   {
     // Control de seguridad
     app_security();
+    app_restrict();
 
     return;
   }
@@ -571,6 +572,7 @@ class TutorAccountController
           user_id = ? and
           detail_id2 = ?
       ';
+      
       $params = [
           $fields['user_name']
         , $fields['user_relationship']
@@ -581,6 +583,23 @@ class TutorAccountController
         , $fields['id2']
       ];
       $db->pl_query_prepared( $sql, $params );
+
+      // Cambiamos el correo si es la cuenta principal
+      if( $_SESSION['app']['user']['is_main'] == 1 )
+      {
+        // Modificamos el correo del usuario
+        $sql = '
+          update ' . DB_PROJECT . '.users set
+            user_email = ?
+          where
+            user_id = ?
+        ';
+        $params = [
+            $fields['user_email']
+          , $_SESSION['app']['user']['user_id']
+        ];
+        $db->pl_query_prepared( $sql, $params );
+      }
 
       // Recargamos el HTML de la fila actualizada
       $html = $this->table_row_users( $fields['id2'] );

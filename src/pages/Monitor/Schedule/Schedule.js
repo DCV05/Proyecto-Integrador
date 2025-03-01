@@ -7,7 +7,7 @@ $( document ).ready( function() {
   // Inicializa FullCalendar en la sección de horario
   const calendar_el = $( '#calendar' )[0];
   const calendar = new FullCalendar.Calendar( calendar_el, {
-      initialView  : 'dayGridMonth'
+      initialView  : 'dayGridWeek'
     , timeZone     : 'local'
     , selectable   : false  // ❌ No permite seleccionar rangos de fechas
     , selectMirror : false  // ❌ No permite reflejar la selección

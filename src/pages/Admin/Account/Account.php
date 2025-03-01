@@ -6,11 +6,13 @@ class AdminAccountController
   {
     // Control de seguridad
     app_security();
+    app_restrict();
+
     return;
   }
 
   // --------------------------------------------------------------------------------
-  // Detalles de la cueanta
+  // Detalles de la cuenta
   // --------------------------------------------------------------------------------
 
   /**

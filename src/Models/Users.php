@@ -32,7 +32,7 @@ class Users
 
     $sql = '
       select
-        user_id, user_id2, user_email, role, enabled 
+        user_id, user_id2, user_email, role, enabled , has_schedule
       from ' . DB_PROJECT . '.users 
       where
         ' . $field . ' = ?

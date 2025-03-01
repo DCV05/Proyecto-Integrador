@@ -150,7 +150,7 @@ class SignupController
         // ------------------------------------------------------------------------------
 
         // Insertamos cada nuevo tutor
-        foreach( $tutors as $tutor )
+        foreach( $tutors as $tutor_id => $tutor )
         {
           $detail_id2 = pl_random();
           $sql = '
@@ -162,9 +162,11 @@ class SignupController
               , user_email
               , user_dni
               , user_phone_number
-            ) values ( ?, ?, ?, ?, ?, ?, ? )
+              , is_main
+            ) values ( ?, ?, ?, ?, ?, ?, ?, ? )
           ';
           
+          $is_main = $tutor_id == 0 ? 1 : 0;
           $params = [
               $detail_id2
             , $user_id
@@ -173,6 +175,7 @@ class SignupController
             , $tutor['tutor_email']
             , $tutor['tutor_dni']
             , $tutor['tutor_phone_number']
+            , $is_main
           ];
           
           $db->pl_query_prepared( $sql, $params );
@@ -268,44 +271,6 @@ class SignupController
               $message = pl_label( 'error-upload' );
               continue;
             }
-          }
-        }
-
-        // ------------------------------------------------------------------------------
-        // Calendario
-        // ------------------------------------------------------------------------------
-
-        if( $fields['schedule_days'] )
-        {
-          // Capturamos las fechas del calendario y las organizamos por grupos
-          $dates          = explode( ',', $fields['schedule_days'] );
-          $schedule_days  = app_organize_dates( $dates );
-    
-          // Iteramos cada grupo
-          foreach( $schedule_days as $group )
-          {
-            // Capturamos los mínimos y los más máximos
-            $start_date = array_shift( $group );
-            $end_date   = count( $group ) > 0 ? array_pop( $group ) : $start_date;
-
-            // Insertamos las horas en la base de datos
-            $sql = '
-              insert into ' . DB_PROJECT . '.schedule_participants (
-                  schedule_id2
-                , participant_id
-                , start_day
-                , end_day
-              ) values ( ?, ?, ?, ? )
-            ';
-            
-            $params = [
-                pl_random()
-              , $participant_id
-              , $start_date
-              , $end_date
-            ];
-            
-            $db->pl_query_prepared( $sql, $params );
           }
         }
       

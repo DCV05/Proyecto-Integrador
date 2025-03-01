@@ -4,6 +4,12 @@ class AdminDesktopController
 {
   public function index(): void
   {
+    global $role;
+
+    // Control de seguridad
+    app_security();
+    app_restrict();
+
     return;
   }
 

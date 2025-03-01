@@ -35,7 +35,7 @@ $( document ).ready( function() {
   $( '#hamburger_button' ).on( 'click', function() {
     $( '#hamburger_menu' ).removeClass( '-translate-x-full' ).addClass( 'translate-x-0' );
     $( '#main-navbar' ).removeClass( 'z-50' );
-  });
+  } );
 
   // Cerrar menú hamburguesa
   $( '#close_hamburger' ).on( 'click', function() {
@@ -174,4 +174,217 @@ window.highlight_row = function( kwargs ) {
   setTimeout( () => {
     $( kwargs.elem ).removeClass( 'bg-' + kwargs.color + '-100' );
   }, 3000 );
+}
+
+// --------------------------------------------------------------------------------------------------------------
+// Calendario
+// --------------------------------------------------------------------------------------------------------------
+
+calendar_instances = [];
+
+/**
+ * Obtiene los días seleccionados desde el atributo data-selection del calendario.
+ * 
+ * @param {HTMLElement} calendar_el - Elemento HTML del calendario.
+ * @returns {Array} Lista de días seleccionados.
+ */
+function get_selected_days( calendar_el ) {
+  let data_selection = $( calendar_el ).attr( 'data-selection' );
+  return data_selection ? JSON.parse( data_selection ) : [];
+}
+
+/**
+ * Guarda los días seleccionados en el atributo data-selection del calendario.
+ * 
+ * @param {HTMLElement} calendar_el - Elemento HTML del calendario.
+ * @param {Array} selected_days - Lista de días seleccionados.
+ */
+function save_selected_days( calendar_el, selected_days ) {
+  $( calendar_el ).attr( 'data-selection', JSON.stringify( selected_days ) );
+}
+
+/**
+ * Formatea una fecha en el formato "YYYY-MM-DD".
+ * 
+ * @param {Date} date - Objeto Date a formatear.
+ * @returns {string} Fecha en formato "YYYY-MM-DD".
+ */
+function format_date( date ) {
+  const year  = date.getFullYear();
+  const month = String( date.getMonth() + 1 ).padStart( 2, '0' );
+  const day   = String( date.getDate() ).padStart( 2, '0' );
+  return `${ year }-${ month }-${ day }`;
+}
+
+/**
+ * Actualiza el texto que muestra los días seleccionados en el calendario.
+ * 
+ * @param {HTMLElement} calendar_el - Elemento HTML del calendario.
+ */
+function update_display( calendar_el ) {
+  let selected_days = get_selected_days( calendar_el );
+  $( '#selected_days_display' ).text( selected_days.sort().join( ', ' ) );
+}
+
+/**
+ * Agrega una fecha seleccionada al calendario si aún no está marcada.
+ * 
+ * @param {string} date_str - Fecha en formato "YYYY-MM-DD".
+ * @param {HTMLElement} calendar_el - Elemento HTML del calendario.
+ */
+function add_date( date_str, calendar_el ) {
+  let selected_days = get_selected_days( calendar_el );
+
+  if( !selected_days.includes( date_str ) ) {
+    selected_days.push( date_str );
+    save_selected_days( calendar_el, selected_days );
+
+    calendar_instances[calendar_el.id].addEvent( {
+      title: '✔',         // Muestra un "tick" en la fecha seleccionada.
+      start: date_str,    // Fecha del evento.
+      allDay: true,       // Indica que el evento dura todo el día.
+      classNames: ['selected-day'] // Clase CSS para destacar la fecha.
+    } );
+  }
+
+  update_display( calendar_el );
+}
+
+/**
+ * Renderiza un calendario FullCalendar en el elemento especificado.
+ * 
+ * @param {HTMLElement} calendar_el - Elemento HTML donde se renderizará el calendario.
+ */
+function render_calendar( calendar_el ) {
+  
+  let selected_days = get_selected_days( calendar_el );
+
+  // Inicializa FullCalendar en la sección de horario
+  const calendar = new FullCalendar.Calendar( calendar_el, {
+      initialView  : 'dayGridMonth' // Vista predeterminada en modo "mes"
+    , timeZone     : 'local' // Usa la zona horaria local
+    , selectable   : true // Permite la selección de fechas
+    , selectMirror : true // Refleja la selección antes de confirmarla
+    , locale       : language // Usa el idioma definido en la variable global
+    , validRange   : { start: new Date().toISOString().split( 'T' )[0], end: '2026-12-31' } // Rango de fechas permitido
+    
+    // Maneja la selección de un rango de fechas en el calendario
+    , select: info => {
+        if( info.end - info.start === 86400000 ) // Si se selecciona solo un día, no hacer nada
+          return;
+
+        let current = new Date( info.start );
+        while( current < info.end ) { // Iterar sobre cada día en el rango seleccionado
+
+          let date_str = format_date( current );
+          if( !selected_days.includes( date_str ) ) {
+            selected_days.push( date_str );
+            calendar_instances[calendar_el.id].addEvent( {
+              title: '✔', // Marca el día seleccionado con un tick
+              start: date_str,
+              allDay: true,
+              classNames: ['selected-day']
+            } );
+          }
+
+          current.setDate( current.getDate() + 1 ); // Avanzar al siguiente día
+        }
+        
+        save_selected_days( calendar_el, selected_days );
+        update_display( calendar_el );
+      }
+
+    // Maneja el clic en un día del calendario
+    , dateClick: info => {
+        let date_str = info.dateStr;
+        let selected_days = get_selected_days( calendar_el );
+
+        if( selected_days.includes( date_str ) ) { // Si la fecha ya está seleccionada, eliminarla
+          selected_days = selected_days.filter( day => day !== date_str );
+
+          let events = calendar_instances[calendar_el.id].getEvents();
+          events.forEach( event => {
+            if( event.startStr === date_str )
+              event.remove();
+          } );
+
+        } else // Si no está seleccionada, agregarla
+          add_date( date_str, calendar_el );
+
+        save_selected_days( calendar_el, selected_days );
+        update_display( calendar_el );
+      }
+
+    , eventColor: 'rgba(0,123,255,0.5)' // Color de fondo de los eventos seleccionados
+    , events: [] // Inicialmente sin eventos
+  } );
+
+  // Guardamos la instancia correctamente en el objeto global
+  calendar_instances[calendar_el.id] = calendar;
+
+  calendar.render(); // Renderiza el calendario en el DOM
+
+  // Forzar el ajuste de tamaño de todos los calendarios visibles
+  force_resize_all_calendars();
+
+  // Reajustar tamaños cuando la ventana cambie de tamaño
+  $( window ).resize( () => {
+    force_resize_all_calendars();
+  } );
+
+  // Configurar los eventos de cambio de calendario en el sidebar
+  setup_sidebar_events();
+}
+
+/**
+ * Fuerza el ajuste de tamaño en todos los calendarios visibles después de un breve retraso.
+ */
+function force_resize_all_calendars() {
+  setTimeout( () => {
+    $( '.calendar-container:visible' ).each( function() {
+      if( calendar_instances[this.id] )
+        calendar_instances[this.id].updateSize(); // Ajusta el tamaño del calendario
+    } );
+  }, 300 ); // Se espera 300ms para garantizar que el DOM esté completamente renderizado
+}
+
+/**
+ * Fuerza el ajuste de tamaño en el primer calendario de la lista, si existe.
+ */
+function force_resize_first_calendar() {
+  let calendar_ids = window.CALENDAR_IDS;
+
+  setTimeout( () => {
+    if( calendar_ids.length > 0 ) {
+      let first_calendar_id = calendar_ids[0]; 
+      if( calendar_instances[first_calendar_id] )
+        calendar_instances[first_calendar_id].updateSize(); // Ajusta solo el primer calendario
+    }
+  }, 300 ); // Se espera 300ms para asegurar que el calendario está visible
+}
+
+/**
+ * Configura los eventos para cambiar entre calendarios al hacer clic en los participantes del sidebar.
+ */
+function setup_sidebar_events() {
+  $( document ).on( 'click', '.participant-selector', function() {
+    // Ocultar todos los calendarios
+    $( '.calendar-container' ).addClass( '!hidden' );
+
+    // Remover bg-gray-100 de todos los selectores
+    $( '.participant-selector' ).removeClass( 'bg-gray-100' );
+
+    // Mostrar el calendario seleccionado
+    var target = $( this ).data( 'target' );
+    $( '#' + target ).removeClass( '!hidden' );
+
+    // Agregar bg-gray-100 al selector activo
+    $( this ).addClass( 'bg-gray-100' );
+
+    if( calendar_instances[target] ) {
+      setTimeout( () => {
+        calendar_instances[target].updateSize();
+      }, 100 );
+    }
+  } );
 }

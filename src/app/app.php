@@ -169,9 +169,38 @@ if( strlen( $current_url ) > 1 )
 // Control de seguridad
 function app_security(): void
 {
+  // Si el usuario no ha iniciado sesión, redirigimos al login
   if( empty( $_SESSION['app']['user'] ) )
     pl_redirect( '/login' );
 }
+
+// Control de seguridad
+function app_restrict(): void
+{
+  global $current_url, $role;
+
+  // Definir rutas restringidas y los roles permitidos
+  $restricted_routes = [
+      '/admin/account'     => [2]
+    , '/admin/desktop'     => [2]
+    , '/finances'          => [2]
+    , '/monitor/account'   => [1]
+    , '/monitor/attendance'=> [1]
+    , '/monitor/desktop'   => [1]
+    , '/monitor/schedule'  => [1]
+    , '/tutor/account'     => [0]
+    , '/tutor/desktop'     => [0]
+  ];
+
+  // Comprobar si la URL actual tiene restricciones
+  foreach( $restricted_routes as $route => $allowed_roles )
+  {
+    if( strpos( $current_url, $route ) === 0 && !in_array( $role, $allowed_roles ) )
+      pl_redirect('/'); // Redirige a la página principal si no tiene acceso
+  }
+}
+
+
 
 function app_layout_buttons(): string
 {
@@ -674,27 +703,27 @@ function app_generate_alert( bool $is_error, string $message ): array
  * @param string $content   Contenido del formulario dentro del modal.
  * @return array<string,mixed> Elementos para actualizar el DOM.
  */
-function app_generate_modal( string $title, string $content ): array
+function app_generate_modal( string $title, string $content, string $max_width = 'max-w-2xl' ): array
 {
   // --------------------------------------------------------------------------------------------------------------
   // Construcción del HTML del modal
   // --------------------------------------------------------------------------------------------------------------
   $html = '
-  <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-    <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
+    <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl ' . $max_width . ' w-full max-h-[80vh]">
 
-      <h3 class="text-2xl mb-4">' . $title . '</h3>
+        <h3 class="text-2xl mb-4">' . $title . '</h3>
 
-      <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-      </button>
+        <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
 
-      ' . $content . '
+        ' . $content . '
 
+      </div>
     </div>
-  </div>
   ';
 
   // --------------------------------------------------------------------------------------------------------------
