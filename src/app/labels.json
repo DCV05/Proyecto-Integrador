@@ -345,6 +345,10 @@
     "es": "Enviar",
     "en": "Send"
   },
+  "cancel-button": {
+    "es": "Cancelar",
+    "en": "Cancel"
+  },
   "no_allergies": {
     "es": "Sin alergias",
     "en": "No alergies"

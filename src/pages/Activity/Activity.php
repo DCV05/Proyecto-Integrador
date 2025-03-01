@@ -41,6 +41,18 @@ class ActivityController
     return ['activity_id2', 'activity'];
   }
 
+  public function content(): string
+  {
+    global $role;
+    $value = '';
+
+    $value = $role == 0
+      ? $this->table_participants()
+      : $this->table_groups();
+
+    return $value;
+  }
+
   // --------------------------------------------------------------------------------
   // Detalles de la actividad
   // --------------------------------------------------------------------------------
@@ -124,7 +136,8 @@ class ActivityController
       }
     }
     
-    return $table->html();
+    $value = $table->html();
+    return $value;
   }
 
   /**

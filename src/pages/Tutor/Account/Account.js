@@ -29,8 +29,8 @@ $( document ).ready( function() {
     e.stopImmediatePropagation();
 
     let confirm_prompt = navigator.language = 'es-ES'
-      ? '¿Estás seguro de querer borrar esta actividad?'
-      : 'Are you sure you want to delete this activity?';
+      ? '¿Estás seguro de querer borrarlo?'
+      : 'Are you sure you want to delete this?';
 
     let is_sure = confirm( confirm_prompt );
     if( !is_sure )

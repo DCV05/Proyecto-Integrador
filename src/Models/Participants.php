@@ -70,4 +70,25 @@ class Participants
   
     return $this->db->pl_query_prepared( $sql, $params, true );
   }
+
+  /**
+   * Obtiene el `user_id` de la tabla `users` asociado a un participante según `id2`.
+   * 
+   * @param string $participant_id2 Identificador alfanumérico del participante.
+   * @return array Datos del usuario si existe, o un array vacío si no hay resultados.
+   */
+  public function GetUserIdByParticipant( string $participant_id2 ): array
+  {
+    $sql = '
+      select
+        u.user_id
+      from ' . DB_PROJECT . '.participants p
+      left join ' . DB_PROJECT . '.users u on p.user_id = u.user_id
+      where
+        p.participant_id2 = ?
+    ';
+    $params = [$participant_id2];
+
+    return $this->db->pl_query_prepared( $sql, $params, true );
+  }
 }

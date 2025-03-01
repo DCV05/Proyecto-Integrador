@@ -72,9 +72,34 @@ $( document ).ready( function() {
     $( '#modal' ).remove();
   } );
 
+  // Evento para abrir el popup con al tabla de datos de la familia
+  $( document ).on( 'click', '.family-icon', function( e ) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    let id2 = $( this ).data( 'id2' );
+    open_family_popup( { 'id2': id2 } );
+  } );
+
 } );
 
-// Función para inciar sesión en la aplicación
+function open_family_popup( id2 ) {
+
+  // Ejecutamos la función AJAX
+  pl_ajax_post( 'popup_family', id2 )
+    .then( function( data ) {
+
+      // Si el resultado es correcto, mostramos los popups
+      if( data.elements )
+        pl_dom( data.elements );
+    } )
+    .catch( function( error ) {
+      // Manejo de errores
+      console.error( error );
+    } );
+}
+
 function open_popup( method_name, id2 ) {
 
   // Ejecutamos la función AJAX

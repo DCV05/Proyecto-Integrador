@@ -26,11 +26,11 @@ class TutorAccountController
    */
   public function table_tutors( string $where = '' ): string
   {
-    $value             = '';
-    $mod_user_detailss = new UserDetails();
+    $value            = '';
+    $mod_user_details = new UserDetails();
 
     // Capturamos todas las cuentas relacionadas con el usuario de la sesión
-    $users = $mod_user_detailss->GetRowsUser( $_SESSION['app']['user']['user_id'], $where );
+    $users = $mod_user_details->GetRowsUser( $_SESSION['app']['user']['user_id'], $where );
 
     /*
       Array | account
@@ -1036,7 +1036,12 @@ class TutorAccountController
           ' . app_custom_input( 'user_dni'          , 'text', $user_detail['user_dni'] )          . '
           ' . app_custom_input( 'user_phone_number' , 'tel', $user_detail['user_phone_number'] )  . '
 
-          <div class="flex justify-end">
+          <div class="flex justify-end gap-3">
+            <button type="button" class="p-button close_modal">
+              <i class="icon">cancel</i>
+              <span>' . pl_label( 'cancel-button' ) . '</span>
+            </button>
+
             <button type="submit" class="p-button">
               <i class="icon">send</i>
               <span>' . pl_label( 'send-button' ) . '</span>
@@ -1191,7 +1196,12 @@ class TutorAccountController
             ' . app_custom_textarea( 'participant_special_needs'    , $participant['participant_special_needs'] )       . '
             ' . app_custom_textarea( 'participant_medical_treatment', $participant['participant_medical_treatment'] )   . '
 
-            <div class="flex justify-end">
+            <div class="flex justify-end gap-3">
+              <button type="button" class="p-button close_modal">
+                <i class="icon">cancel</i>
+                <span>' . pl_label( 'cancel-button' ) . '</span>
+              </button>
+
               <button type="submit" class="p-button">
                 <i class="icon">send</i>
                 <span>' . pl_label( 'send-button' ) . '</span>
@@ -1333,7 +1343,12 @@ class TutorAccountController
           ' . app_custom_input( 'user_dni', 'text' )          . '
           ' . app_custom_input( 'user_phone_number', 'text' ) . '
 
-          <div class="flex justify-end">
+          <div class="flex justify-end gap-3">
+            <button type="button" class="p-button close_modal">
+              <i class="icon">cancel</i>
+              <span>' . pl_label( 'cancel-button' ) . '</span>
+            </button>
+
             <button type="submit" class="p-button">
               <i class="icon">send</i>
               <span>' . pl_label( 'send-button' ) . '</span>
@@ -1384,7 +1399,12 @@ class TutorAccountController
           ' . app_custom_textarea( 'participant_allergies' )          . '
           ' . app_custom_textarea( 'participant_medical_treatment' )  . '
       
-          <div class="flex justify-end">
+          <div class="flex justify-end gap-3">
+            <button type="button" class="p-button close_modal">
+              <i class="icon">cancel</i>
+              <span>' . pl_label( 'cancel-button' ) . '</span>
+            </button>
+
             <button type="submit" class="p-button">
               <i class="icon">send</i>
               <span>' . pl_label( 'send-button' ) . '</span>

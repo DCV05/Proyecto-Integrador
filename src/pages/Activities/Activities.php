@@ -58,9 +58,7 @@ class ActivitiesController
     $mod_activities = new Activities();
 
     // Si el usuario es un monitor, mostramos únicamente sus actividades vinculadas
-    $activities = $role != 1
-      ? $mod_activities->GetRows( $where )
-      : $mod_activities->GetMonitorLinkedRows( $_SESSION['app']['user']['user_id'] );
+    $activities = $mod_activities->GetRows( $where );
 
     // --------------------------------------------------------------------------------
     // Definicón de la tabla

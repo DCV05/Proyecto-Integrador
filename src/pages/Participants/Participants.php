@@ -45,6 +45,7 @@ class ParticipantsController
     $table->addColumn( 'participant_allergies'        , new TableColumn( pl_label( 'allergies' )        , ['id' => 'p_allergies_col']     ) );
     $table->addColumn( 'participant_special_needs'    , new TableColumn( pl_label( 'special_needs' )    , ['id' => 'p_special_needs_col'] ) );
     $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['id' => 'p_medical_treatment'] ) );
+    $table->addColumn( 'family_icon'                  , new TableColumn( ''                             , ['id' => 'family_icon']         ) );
     $table->addColumn( 'schedule_icon'                , new TableColumn( ''                             , ['id' => 'schedule_icon']       ) );
 
     // Iteramos cada cuenta y la añadimos a la tabla
@@ -55,6 +56,13 @@ class ParticipantsController
         $medical_treatment = substr( $participant['participant_medical_treatment'], 0, 50 ) . '...';
       else
         $medical_treatment = $participant['participant_medical_treatment'];
+
+      // Botón para ver los padres
+      $family_icon = '
+        <div data-type="participant" data-id2="' . $participant['participant_id2'] . '" class="family-icon p-button">
+          ' . app_get_svg_icon( 'family' ) . '
+        </div>
+      ';
 
       // Botón de calendario
       $schedule_icon = '
@@ -70,6 +78,7 @@ class ParticipantsController
         , 'participant_allergies'         => new TableCell( $participant['participant_allergies'] )
         , 'participant_special_needs'     => new TableCell( $participant['participant_special_needs'] )
         , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
+        , 'family_icon'                   => new TableCell( $family_icon, ['class' => 'text-center w-12 icon-container family-icon'] )
         , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 icon-container schedule-icon'] )
       ];
 
@@ -79,6 +88,61 @@ class ParticipantsController
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
         , 'data-type' => 'participant_info'
         , 'data-id2'  => $participant['participant_id2']
+      ] ) );
+    }
+
+    // Convertimos la tabla a HTML
+    $value = $table->html();
+    return $value;
+  }
+
+  /**
+   * Genera la tabla de usuarios relacionados al usuario autenticado.
+   * 
+   * @return string HTML de la tabla de usuarios.
+   */
+  public function table_tutors( int $user_id ): string
+  {
+    $value            = '';
+    $mod_user_details = new UserDetails();
+
+    // Capturamos todas las cuentas relacionadas con el usuario de la sesión
+    $users = $mod_user_details->GetRowsUser( $user_id );
+
+    /*
+      Array | account
+        [detail_id] => 4
+        [user_id] => 11
+        [user_name] => Daniel
+        [user_email] => user1@example.com
+        [user_dni] => 34213213
+        [user_phone_number] => 644753740
+    */
+
+    // Inicializamos la tabla y sus columnas
+    $table = new Table( ['id' => 'users_table', 'class' => 'p-table'] );
+    $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' )         , ['id' => 'name_col']          ) );
+    $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )        , ['id' => 'email_col']         ) );
+    $table->addColumn( 'user_relationship', new TableColumn( pl_label( 'relationship' ) , ['id' => 'relationship_col']  ) );
+    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )          , ['id' => 'dni_col']           ) );
+    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ) , ['id' => 'phone_number_col']  ) );
+    
+    // Iteramos cada cuenta y la añadimos a la tabla
+    foreach( $users as $user )
+    {
+      // Definimos las celdas
+      $cells = [
+          'user_name'         => new TableCell( $user['user_name'] )
+        , 'user_email'        => new TableCell( $user['user_email'] )
+        , 'user_relationship' => new TableCell( $user['user_relationship'] )
+        , 'user_dni'          => new TableCell( $user['user_dni'] )
+        , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
+      ];
+
+      // Añadimos la fila
+      $table->addRow( new TableRow( $cells, [
+          'id'        => 'row-' . $user['detail_id2']
+        , 'class'     => 'hover:bg-gray-100'
       ] ) );
     }
 
@@ -165,52 +229,95 @@ class ParticipantsController
           [participant_medical_treatment] => No aplica
       */
 
-      // Formulario
-      $html = '
-        <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh]">
-
-            <h3 class="text-2xl mb-4">' . pl_label( 'participant' ) . '</h3>
-
-            <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-            </button>
-
-            <div class="modal_content space-y-5">
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_name' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_name'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md">' . $participant['participant_birth_date'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md min-h-[100px]">' . $participant['participant_allergies'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_special_needs' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md min-h-[100px]">' . $participant['participant_special_needs'] . '</div>
-              </div>
-              <div>
-                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_medical_treatment' ) . '</label>
-                <div class="custom-input mt-1 transform transition duration-300 bg-gray-100 p-2 rounded-md min-h-[100px]">' . $participant['participant_medical_treatment'] . '</div>
-              </div>
-            </div>
-
+      // --------------------------------------------------------------------------------------------------------------
+      // Construcción del contenido del modal
+      // --------------------------------------------------------------------------------------------------------------
+      $content = '
+        <div class="modal_content space-y-5">
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_name' ) . '</label>
+            <div class="p-input">' . $participant['participant_name'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_birth_date' ) . '</label>
+            <div class="p-input">' . $participant['participant_birth_date'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_allergies' ) . '</label>
+            <div class="p-input min-h-[36px]">' . $participant['participant_allergies'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_special_needs' ) . '</label>
+            <div class="p-input min-h-[36px]">' . $participant['participant_special_needs'] . '</div>
+          </div>
+          <div>
+            <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'participant_medical_treatment' ) . '</label>
+            <div class="p-input min-h-[36px]">' . $participant['participant_medical_treatment'] . '</div>
           </div>
         </div>
       ';
 
-      // Rellenamos los objetos a actualizar
-      $elements = [
-          ['selector' => 'body'       , 'method_name' => 'append', 'value' => $html]
-        , ['selector' => '.card_modal', 'method_name' => 'css'   , 'value' => 'flex', 'css' => 'display']
-      ];
+      // --------------------------------------------------------------------------------------------------------------
+      // Generamos el modal con `app_generate_modal`
+      // --------------------------------------------------------------------------------------------------------------
+      $elements = app_generate_modal( pl_label( 'participant' ), $content );
+      
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
 
+    } while( false );
+    
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    return $value;
+  }
+
+  /**
+   * Obtiene y muestra un popup con los detalles de la familia del usuario seleccionado.
+   * 
+   * @param array $fields Contiene el identificador del usuario (`id2`).
+   * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
+   */
+  public function ajax_popup_family( array $fields ): array
+  {
+    $value            = [];
+    $mod_participants = new Participants();
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    do
+    {
+      // Buscamos el usuario vinculado
+      $user = $mod_participants->GetUserIdByParticipant( $fields['id2'] );
+      if( empty( $user[0]['user_id'] ) )
+      {
+        // Mostramos una alerta
+        $elements = app_generate_alert( true, pl_label( 'user_not_exists' ) );
+        break;
+      }
+      else
+        $user_id = $user[0]['user_id'];
+
+      // --------------------------------------------------------------------------------------------------------------
+      // Construcción del contenido del modal
+      // --------------------------------------------------------------------------------------------------------------
+      $content = $this->table_tutors( $user_id );
+
+      // --------------------------------------------------------------------------------------------------------------
+      // Generamos el modal con `app_generate_modal`
+      // --------------------------------------------------------------------------------------------------------------
+      $elements = app_generate_modal( pl_label( 'tutors' ), $content );
+      
       // Si llega hasta aquí, está todo OK
       $result = 1;
       break;
