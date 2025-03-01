@@ -359,7 +359,7 @@ class TutorAccountController
     do
     {
       // Recargamos el HTML de la tabla de usuarios
-      $html = $this->table_users( $fields['query'] );
+      $html = $this->table_tutors( $fields['query'] );
 
       // Rellenamos los objetos a actualizar
       $elements = [

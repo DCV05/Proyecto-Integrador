@@ -741,6 +741,14 @@
     "es": "Añadir tutor",
     "en": "Add tutor"
   },
+  "add_group": {
+    "es": "Añadir grupo",
+    "en": "Add group"
+  },
+  "add-group": {
+    "es": "Añadir grupo",
+    "en": "Add group"
+  },
   "participants_count": {
     "es": "Número de participantes",
     "en": "Participant count"

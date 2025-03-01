@@ -34,6 +34,7 @@ class GroupParticipants
       select
           gp.* 
         , p.*
+        , g.group_id
       from ' . DB_PROJECT . '.group_participants gp
       left join ' . DB_PROJECT . '.groups g on gp.group_id = g.group_id
       left join ' . DB_PROJECT . '.participants p on gp.participant_id = p.participant_id
