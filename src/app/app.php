@@ -69,12 +69,6 @@ if( $role === 1 )
     , 'link'  => '/groups'
     , 'icon'  => app_get_svg_icon( 'group' )
   ];
-
-  $entries[] = [
-      'title' => pl_label( 'schedule' )
-    , 'link'  => '/' . $folder . '/schedule'
-    , 'icon'  => app_get_svg_icon( 'schedule' )
-  ];
 }
 
 // Añadimos el apartado de cuenta al final del sidebar
@@ -127,12 +121,6 @@ $heading_entries = array_merge( $entries, [
     'title'           => '<a href="/activities" class="hover:underline">' . pl_label( 'participants' ) . '</a>' . '/' . pl_label( 'participant' ),
     'link'            => '/participant',
     'icon'            => app_get_svg_icon( 'account' ),
-    'layout_buttons'  => false
-  ],
-  [
-    'title'           => pl_label( 'schedule' ),
-    'link'            => '/' . $folder . '/schedule',
-    'icon'            => app_get_svg_icon( 'schedule' ),
     'layout_buttons'  => false
   ],
   [

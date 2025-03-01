@@ -186,7 +186,7 @@ function add_participant( pid2 ) {
   // Añadimos un nuevo participante
   pl_ajax_post( 'add_participant', pid2 )
     .then( function( data ) {
-      if( data.result === 1 )
+      if( data.elements )
         pl_dom( data.elements );
     } )
     .catch( function( error ) {

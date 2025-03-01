@@ -175,6 +175,18 @@
     "es": "Cerrar sesión",
     "en": "Log out"
   },
+  "group_size": {
+    "es": "Tamaño del grupo",
+    "en": "Group size"
+  },
+  "group_at_maximum_capacity": {
+    "es": "El grupo ha alcanzado su capacidad máxima",
+    "en": "The group has reached its maximum capacity"
+  },
+  "edit_group": {
+    "es": "Editar grupo",
+    "en": "Edit group"
+  },
   "edit_participant": {
     "es": "Editar participante",
     "en": "Edit participant"

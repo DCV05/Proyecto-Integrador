@@ -7,7 +7,6 @@ use erguncaner\Table\TableRow;
 
 class GroupController
 {
-
   public string $group_id2;
 
   public function index(): void
@@ -35,7 +34,6 @@ class GroupController
   public function table_participants( string $where = '' ): string
   {
     global $role;
-
     $value = '';
 
     // Capturamos los grupos
@@ -348,7 +346,6 @@ class GroupController
 
       // Verificamos que el POST contiene todos los campos requeridos
       $required_fields = ['participant_select'];
-
       foreach( $required_fields as $required_field )
       {
         // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
@@ -365,7 +362,7 @@ class GroupController
       // --------------------------------------------------------------------------------------------------------------
 
       // Capturamos los grupos
-      $mod_groups_participants  = new GroupParticipants();
+      $mod_groups_participants = new GroupParticipants();
       $group_participants = $mod_groups_participants->GetRow( $this->group_id2 );
       if( empty( $group_participants ) )
       {
@@ -377,6 +374,18 @@ class GroupController
       {
         $group_id         = $group_participants[0]['group_id'];
         $participant_id2  = $group_participants[0]['participant_id2'];
+      }
+      
+      // Cargamos el grupo
+      $mod_groups = new Groups();
+      $group = $mod_groups->GetGroupId2( $this->group_id2 )[0];
+
+      // Verificamos que el grupo tiene los participantes máximos
+      if( $group['group_size'] === count( $group_participants ) )
+      {
+        // Mostramos una alerta
+        $elements = app_generate_alert( true, pl_label( 'group_at_maximum_capacity' ) );
+        break;
       }
 
       // Buscamos el participante vinculado al submit
@@ -410,7 +419,6 @@ class GroupController
 
       // Rellenamos los objetos a actualizar
       $elements = app_generate_alert( false, pl_label( 'changes-applied' ) );
-
       $kwargs   = ['elem' => '#row-' . $participant_id2, 'color' => 'green'];
       $elements = array_merge( $elements, [
           ['selector' => '#participants_table tbody tr:last', 'method_name'  => 'insertBefore', 'value' => $html]
@@ -484,6 +492,10 @@ class GroupController
         $message = pl_label( 'participant_not_found' );
         break;
       }
+
+      // Cargamos el grupo
+      $mod_groups = new Groups();
+      $group = $mod_groups->GetGroupId2( $this->group_id2 )[0];
 
       // Borramos las vinculaciones con monitores
       $sql = '
