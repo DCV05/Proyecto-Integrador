@@ -39,6 +39,7 @@ class Groups
     return $this->db->pl_query_prepared( $sql, $params, true );
   }
 
+
   /**
    * Obtiene una fila específica de la tabla `groups` según `group_id2`.
    * 

@@ -661,6 +661,14 @@
     "es": "Pago pendiente",
     "en": "Pending payment"
   },
+  "no_events_today": {
+    "es": "No hay eventos",
+    "en": "No events"
+  },
+  "no_reminders_today": {
+    "es": "No hay recordatorios",
+    "en": "No reminders"
+  },
   "pending": {
     "es": "Pendiente",
     "en": "Pending"

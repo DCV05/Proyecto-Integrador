@@ -33,15 +33,20 @@ class TutorDesktopController
     }
 
     // Filtramos las actividades a aquellas que estén en el tramo en el que el participante esté en el campamento
-    $filtered_activities = array_filter( $activities, function( $activity ) use( $events ): bool {
+    $activities_id2 = [];
+    $filtered_activities = array_filter( $activities, function( $activity ) use( $events, &$activities_id2 ): bool {
 
       // Pasamos el datetime a fecha
       $activity_date = date( 'Y-m-d', strtotime( $activity['activity_datetime_start'] ) );
 
       // Iteramos sobre cada evento y comprobamos si la actividad cae en alguno de los rangos
-      foreach( $events as $event ) {
-        if( $activity_date <= $event['end_day'] )
+      foreach( $events as $event )
+      {
+        if( $activity_date <= $event['end_day'] && !in_array( $activity['activity_id2'], $activities_id2 ) )
+        {
+          array_push( $activities_id2, $activity['activity_id2'] );
           return true; // La actividad está dentro de este intervalo
+        }
       }
       
       return false; // Ningún evento incluye la fecha de la actividad
