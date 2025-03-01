@@ -261,6 +261,7 @@ class GroupsController
       $required_fields = [
           'group_name'
         , 'group_size'
+        , 'monitor_select'
       ];
 
       foreach( $required_fields as $required_field )
@@ -292,6 +293,17 @@ class GroupsController
         break;
       }
 
+      // Buscamos el monitor_id
+      $mod_users_details = new UserDetails();
+      $monitor = $mod_users_details->GetRow( $fields['monitor_select'] );
+      if( !empty( $monitor[0] ) )
+        $monitor_id = $monitor[0]['user_id'];
+      else
+      {
+        $elements = app_generate_alert( true, pl_label( 'monitor_not_found' ) );
+        break;
+      }
+
       // Generamos un identificador único para el grupo
       $group_id2 = pl_random();
       $sql = '
@@ -306,7 +318,7 @@ class GroupsController
           $group_id2
         , $fields['group_name']
         , $fields['group_size']
-        , 0
+        , $monitor_id ?? 0
       ];
       $db->pl_query_prepared( $sql, $params );
 
@@ -362,6 +374,7 @@ class GroupsController
       $required_fields = [
           'group_name'
         , 'group_size'
+        , 'monitor_select'
       ];
 
       foreach( $required_fields as $required_field )
@@ -371,6 +384,17 @@ class GroupsController
           $elements = app_generate_alert( true, pl_label( 'required_field' ) . ': ' . $required_field );
           break 2;
         }
+      }
+
+      // Buscamos el monitor_id
+      $mod_users_details = new UserDetails();
+      $monitor = $mod_users_details->GetRow( $fields['monitor_select'] );
+      if( !empty( $monitor[0] ) )
+        $monitor_id = $monitor[0]['user_id'];
+      else
+      {
+        $elements = app_generate_alert( true, pl_label( 'monitor_not_found' ) );
+        break;
       }
 
       // --------------------------------------------------------------------------------------------------------------
@@ -387,7 +411,7 @@ class GroupsController
       $params = [
           $fields['group_name']
         , $fields['group_size']
-        , $fields['monitor_id'] ?? 0
+        , $monitor_id ?? 0
         , $fields['gid2']
       ];
 
@@ -396,7 +420,7 @@ class GroupsController
       // --------------------------------------------------------------------------------------------------------------
       // Generamos la alerta de éxito
       // --------------------------------------------------------------------------------------------------------------
-      $elements = app_generate_alert( false, pl_label( 'update_success' ) );
+      $elements = app_generate_alert( false, pl_label( 'changes-applied' ) );
 
       // Recargamos el HTML de la fila actualizada
       $html = $this->table_row_groups( $fields['gid2'] );
@@ -521,12 +545,42 @@ class GroupsController
     $redirect   = '';
     $elements   = [];
 
+    $db = new Model( DB_PROJECT );
+
     do
     {
-        // --------------------------------------------------------------------------------------------------------------
-        // Formulario
-        // --------------------------------------------------------------------------------------------------------------
-        $html = '
+      // Capturamos los monitores sin grupo asignado
+      $sql = '
+        select
+          u.user_id, ud.*
+        from users u
+        left join groups g on u.user_id = g.monitor_id
+        left join user_details ud on u.user_id = ud.user_id
+        where
+          u.role = 1 and
+          g.monitor_id is null
+      ';
+      $monitors = $db->pl_query_prepared( $sql, [], true );
+
+      // Generamos el select
+      $select = '';
+      foreach( $monitors as $monitor_id => $monitor )
+      {
+        $selected = $monitor_id == 0 ? 'selected' : '';
+        $select   .= '<option ' . $selected . ' value="' . $monitor['detail_id2'] . '">' . $monitor['user_name'] . '</option>';
+      }
+
+      // Encapsulamos
+      $select = '
+        <select id="monitor_select" name="monitor_select" class="p-select">
+          ' . $select . '
+        </select>
+      ';
+
+      // --------------------------------------------------------------------------------------------------------------
+      // Formulario
+      // --------------------------------------------------------------------------------------------------------------
+      $html = '
         <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
 
@@ -540,6 +594,7 @@ class GroupsController
 
             <form data-type="add-group-form" class="add-group-form modal_content space-y-5">
               ' . app_custom_input( 'group_name', 'text' ) . '
+              ' . $select . '
 
               <div class="w-full">
                 <label for="group_size" class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'group_size' ) . '</label>
@@ -557,92 +612,6 @@ class GroupsController
           </div>
         </div>
       ';
-
-        // --------------------------------------------------------------------------------------------------------------
-        // Rellenamos los objetos a actualizar
-        // --------------------------------------------------------------------------------------------------------------
-        $elements = [
-            ['selector' => 'body'       , 'method_name' => 'append', 'value' => $html]
-          , ['selector' => '.card_modal', 'method_name' => 'css'   , 'value' => 'flex', 'css' => 'display']
-        ];
-
-        // Si llega hasta aquí, está todo OK
-        $result = 1;
-        break;
-
-    } while( false );
-
-    $value = [
-        'result'   => $result
-      , 'message'  => $message
-      , 'redirect' => $redirect
-      , 'elements' => $elements
-    ];
-
-    return $value;
-  }
-
-  /**
-   * Obtiene y muestra un popup con el formulario para editar un grupo.
-   * 
-   * @param array $fields Contiene el identificador del grupo (`gid2`).
-   * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
-   */
-  public function ajax_popup_edit( array $fields ): array
-  {
-    $value       = [];
-    $mod_groups  = new Groups();
-
-    // Inicializamos las variables de la llamada AJAX
-    $result     = 0;
-    $message    = '';
-    $redirect   = '';
-    $elements   = [];
-
-    do
-    {
-      // --------------------------------------------------------------------------------------------------------------
-      // Buscamos los datos del grupo solicitado
-      // --------------------------------------------------------------------------------------------------------------
-      $group = $mod_groups->GetGroupId2( $fields['gid2'] )[0];
-      if( empty( $group ) )
-        break;
-
-      // --------------------------------------------------------------------------------------------------------------
-      // Formulario
-      // --------------------------------------------------------------------------------------------------------------
-      $html = '
-      <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-
-          <h3 class="text-2xl mb-4">' . pl_label( 'edit_group' ) . '</h3>
-
-          <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          </button>
-
-          <form data-type="edit-group-form" data-gid2="' . $group['group_id2'] . '" class="edit-group-form modal_content space-y-5">
-
-            ' . app_custom_input( 'group_name', 'text', $group['group_name'], 0 ) . '
-
-            <div>
-              <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'group_size' ) . '</label>
-              <input type="number" name="group_size" placeholder="' . pl_label( 'group_size_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $group['group_size'] . '">
-            </div>
-
-            <div class="flex justify-end">
-              <button type="submit" class="p-button">
-                <i class="icon">send</i>
-                <span>' . pl_label( 'send-button' ) . '</span>
-              </button>
-            </div>
-          </form>
-
-        </div>
-      </div>
-    ';
 
       // --------------------------------------------------------------------------------------------------------------
       // Rellenamos los objetos a actualizar
@@ -665,6 +634,125 @@ class GroupsController
       , 'elements' => $elements
     ];
 
+    $db->close();
+    return $value;
+  }
+
+  /**
+   * Obtiene y muestra un popup con el formulario para editar un grupo.
+   * 
+   * @param array $fields Contiene el identificador del grupo (`gid2`).
+   * @return array Respuesta con resultado, mensaje, redirección y elementos a modificar en el DOM.
+   */
+  public function ajax_popup_edit( array $fields ): array
+  {
+    $value       = [];
+    $mod_groups  = new Groups();
+
+    // Inicializamos las variables de la llamada AJAX
+    $result     = 0;
+    $message    = '';
+    $redirect   = '';
+    $elements   = [];
+
+    $db = new Model( DB_PROJECT );
+
+    do
+    {
+      // --------------------------------------------------------------------------------------------------------------
+      // Buscamos los datos del grupo solicitado
+      // --------------------------------------------------------------------------------------------------------------
+      $group = $mod_groups->GetGroupId2( $fields['gid2'] )[0];
+      if( empty( $group ) )
+        break;
+
+      // Capturamos los monitores sin grupo asignado
+      $sql = '
+        select
+          u.user_id, ud.*
+        from users u
+        left join groups g on u.user_id = g.monitor_id
+        left join user_details ud on u.user_id = ud.user_id
+        where
+          u.role = 1 and
+          g.monitor_id is null
+      ';
+      $monitors = $db->pl_query_prepared( $sql, [], true );
+
+      // Generamos el select
+      $select = '';
+      foreach( $monitors as $monitor_id => $monitor )
+      {
+        $selected = $monitor_id == 0 ? 'selected' : '';
+        $select   .= '<option ' . $selected . ' value="' . $monitor['detail_id2'] . '">' . $monitor['user_name'] . '</option>';
+      }
+
+      // Encapsulamos
+      $select = '
+        <select id="monitor_select" name="monitor_select" class="p-select">
+          ' . $select . '
+        </select>
+      ';
+
+      // --------------------------------------------------------------------------------------------------------------
+      // Formulario
+      // --------------------------------------------------------------------------------------------------------------
+      $html = '
+        <div id="modal" class="card_modal hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div class="modal_content relative bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+
+            <h3 class="text-2xl mb-4">' . pl_label( 'edit_group' ) . '</h3>
+
+            <button class="close_modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Cerrar">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+
+            <form data-type="edit-group-form" data-gid2="' . $group['group_id2'] . '" class="edit-group-form modal_content space-y-5">
+
+              ' . app_custom_input( 'group_name', 'text', $group['group_name'], 0 ) . '
+              ' . $select . '
+
+              <div>
+                <label class="custom-label block text-sm font-medium text-gray-700">' . pl_label( 'group_size' ) . '</label>
+                <input type="number" name="group_size" placeholder="' . pl_label( 'group_size_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $group['group_size'] . '">
+              </div>
+
+              <div class="flex justify-end">
+                <button type="submit" class="p-button">
+                  <i class="icon">send</i>
+                  <span>' . pl_label( 'send-button' ) . '</span>
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      ';
+
+      // --------------------------------------------------------------------------------------------------------------
+      // Rellenamos los objetos a actualizar
+      // --------------------------------------------------------------------------------------------------------------
+      $elements = [
+          ['selector' => 'body'       , 'method_name' => 'append', 'value' => $html]
+        , ['selector' => '.card_modal', 'method_name' => 'css'   , 'value' => 'flex', 'css' => 'display']
+      ];
+
+      // Si llega hasta aquí, está todo OK
+      $result = 1;
+      break;
+
+    } while( false );
+
+    $value = [
+        'result'   => $result
+      , 'message'  => $message
+      , 'redirect' => $redirect
+      , 'elements' => $elements
+    ];
+
+    $db->close();
     return $value;
   }
 
