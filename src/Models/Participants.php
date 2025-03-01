@@ -34,14 +34,15 @@ class Participants
   {
     // Filtrado
     if( $where > '' )
-      $where = ' and participant_name like "%' . $where . '%"';
+      $where = ' and p.participant_name like "%' . $where . '%"';
 
     $sql = '
       select
-        * 
-      from ' . DB_PROJECT . '.participants 
+        p.*, gp.*
+      from ' . DB_PROJECT . '.participants p
+      left join ' . DB_PROJECT . '.group_participants gp on p.participant_id = gp.participant_id
       where
-        user_id = ?
+        p.user_id = ?
       ' .  $where . '
     ';
     $params = [$user_id];

@@ -377,6 +377,38 @@ Definición de las variables tipográficas                                      
   -webkit-font-smoothing: antialiased;
 }
 
+#calendar-dashboard {
+  width: 90vw;
+  max-width: 67vw;
+  height: 45vh;
+  max-height: 80vh;
+  font-size: 1rem;
+  overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+  #calendar-dashboard {
+    width: 80vw;
+    max-width: none;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #calendar-dashboard {
+    width: 90vw;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #calendar-dashboard {
+    width: 100%;
+    min-height: 30vh;
+    font-size: 0.8rem;
+  }
+}
+
 .scrollbar-none {
   -ms-overflow-style: none; /* IE y Edge antiguos */
   scrollbar-width: none;    /* Firefox */

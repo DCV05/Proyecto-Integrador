@@ -45,41 +45,21 @@ class Activities
   }
 
   /**
-   * Obtiene la actividad asociada a un participante específico.
+   * Obtiene la actividad asociada a un grupo específico.
    * 
-   * @param int $participant_id ID del participante.
+   * @param int $group_id ID del grupo.
    * @return array Datos de la actividad si existe, o un array vacío si no hay resultados.
    */
-  public function GetParticipantLinkedRows( int $participant_id ): array
+  public function GetGroupLinkedRows( int $group_id ): array
   {
     $sql = '
       select
         a.*
       from ' . DB_PROJECT . '.activities a
-      left join ' . DB_PROJECT . '.activities_participants ap on a.activity_id = ap.activity_id
+      left join ' . DB_PROJECT . '.group_activities ag on a.activity_id = ag.activity_id
       where
-        ap.participant_id = ?';
-    $params = [$participant_id];
-
-    return $this->db->pl_query_prepared( $sql, $params, true );
-  }
-
-  /**
-   * Obtiene la actividad asociada a un participante específico.
-   * 
-   * @param int $monitor_id ID del participante.
-   * @return array Datos de la actividad si existe, o un array vacío si no hay resultados.
-   */
-  public function GetMonitorLinkedRows( int $monitor_id ): array
-  {
-    $sql = '
-      select
-        a.*
-      from ' . DB_PROJECT . '.activities a
-      left join ' . DB_PROJECT . '.activities_monitors am on a.activity_id = am.activity_id
-      where
-        am.monitor_id = ?';
-    $params = [$monitor_id];
+        ag.group_id = ?';
+    $params = [$group_id];
     
     return $this->db->pl_query_prepared( $sql, $params, true );
   }

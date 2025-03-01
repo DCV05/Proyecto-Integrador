@@ -657,6 +657,10 @@
     "es": "Pagado",
     "en": "Paid"
   },
+  "pending_payment": {
+    "es": "Pago pendiente",
+    "en": "Pending payment"
+  },
   "pending": {
     "es": "Pendiente",
     "en": "Pending"
@@ -956,6 +960,14 @@
   "missing_schedule": {
     "es": "Calendario sin rellenar",
     "en": "Missing schedule"
+  },
+  "reminders": {
+    "es": "Recordatorios",
+    "en": "Reminders"
+  },
+  "events": {
+    "es": "Eventos",
+    "en": "Events"
   }
 
   

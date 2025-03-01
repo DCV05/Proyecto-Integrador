@@ -109,17 +109,20 @@ define( 'DB_SYS'      , $config['mysql']['db_sys']      );
 define( 'DB_PROJECT'  , $config['mysql']['db_project']  );
 
 // ---------------------------------------------------------------------------------------------------------------------
-// CARGADO DE MODELOS
+// CARGADO DE MODELOS Y COMPONENTES
 // ---------------------------------------------------------------------------------------------------------------------
 
-// Capturamos los modelos definidos en el directorio src/Models
-$models = glob( __DIR__ . '/src/Models/*.php' );
-foreach( $models as $model )
+// Capturamos las clases definidas en el directorio src/Models y src/Components
+$models     = glob( __DIR__ . '/src/Models/*.php' );
+$components = glob( __DIR__ . '/src/Components/*.php' );
+
+$files = array_merge( $models, $components );
+foreach( $files as $file )
 {
   // Si es una clase, la incluímos
   try
   {
-    require_once( $model );
+    require_once( $file );
   }
   catch( Exception $e )
   {

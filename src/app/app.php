@@ -399,7 +399,7 @@ function app_panel_interface(): string
     <aside class="hidden md:block fixed h-full left-0 top-16 bg-white shadow-landing-reverse z-50">
       <div class="w-64 flex flex-col">
         
-        <div class="overflow-y-auto mt-2">
+        <div class="overflow-y-auto mt-2 space-y-2">
           ' . app_panel_render_tree() . '      
         </div>
 
