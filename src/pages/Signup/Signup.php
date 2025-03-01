@@ -26,6 +26,7 @@ class SignupController
     $result     = 0;
     $message    = '';
     $redirect   = '';
+    $elements   = [];
 
     do
     {
@@ -44,7 +45,6 @@ class SignupController
         , 'tutor_full_name_0'
         , 'tutor_dni_0'
         , 'tutor_email_0'
-        , 'schedule_days'
       ];
 
       foreach( $required_fields as $required_field )
@@ -52,7 +52,7 @@ class SignupController
         // En el caso de que el post no contenga todos los campos requeridos, mostramos una alerta
         if( !array_key_exists( $required_field, $fields ) )
         {
-          $message = pl_label( 'required_field' ) . ': ' . $required_field;
+          $elements = app_generate_alert( true, pl_label( 'required_field' ) . ': ' . $required_field );
           break 2;
         }
       }
@@ -114,7 +114,7 @@ class SignupController
         $db->pl_query_prepared( $sql, $params );
         if( $db->next_row() )
         {
-          $message = 'El usuario con el email: ' . $fields['user_email'] . ' ya existe.';
+          $elements = app_generate_alert( true, pl_label( 'user_exists' ) . ': ' . $fields['user_email'] );
           break;
         }
 
@@ -194,7 +194,7 @@ class SignupController
           $dir = ASSETS_PATH . '/panel/tutors';
           if( !is_dir( $dir ) && !@mkdir( $dir ) )
           {
-            $message = pl_label( 'error-create-dir' );
+            $elements = app_generate_alert( true, 'error-create-dir' );
             continue;
           }
           
@@ -206,7 +206,7 @@ class SignupController
           // Movemos el fichero temporal al directorio final
           if( !move_uploaded_file( $tutor['tutor_image_upload']['tmp_name'], $target ) )
           {
-            $message = pl_label( 'error-upload' );
+            $elements = app_generate_alert( true, 'error-upload' );
             continue;
           }
         }
@@ -256,7 +256,7 @@ class SignupController
             $dir = ASSETS_PATH . '/panel/participants';
             if( !is_dir( $dir ) && !@mkdir( $dir ) )
             {
-              $message = pl_label( 'error-create-dir' );
+              $elements = app_generate_alert( true, 'error-create-dir' );
               continue;
             }
 
@@ -268,7 +268,7 @@ class SignupController
             // Movemos el fichero temporal al directorio final
             if( !move_uploaded_file( $participant['participant_image_upload']['tmp_name'], $target ) )
             {
-              $message = pl_label( 'error-upload' );
+              $elements = app_generate_alert( true, 'error-upload' );
               continue;
             }
           }
@@ -285,7 +285,7 @@ class SignupController
       catch( Exception $e )
       {
         $db->rollback();
-        $message = 'Error: ' . $e->getMessage();
+        $elements = app_generate_alert( true, 'Error' );
         break;
       }
 
@@ -295,6 +295,7 @@ class SignupController
         'result'    => $result
       , 'message'   => $message
       , 'redirect'  => $redirect
+      , 'elements'  => $elements
     ];
 
     $db->close();
