@@ -9,11 +9,12 @@ class MonitorDesktopController
     app_restrict();
 
     global $participants, $events, $filtered_activities;
+    $events = $filtered_activities = [];
 
-    $mod_schedules          = new SchedulesParticipants();
-    $mod_activities         = new Activities();
-    $mod_groups             = new Groups();
-    $mod_groups_participants = new GroupParticipants();
+    $mod_schedules            = new SchedulesParticipants();
+    $mod_activities           = new Activities();
+    $mod_groups               = new Groups();
+    $mod_groups_participants  = new GroupParticipants();
 
     // Capturamos el grupo del monitor
     $group = $mod_groups->GetRow( $_SESSION['app']['user']['user_id'] );

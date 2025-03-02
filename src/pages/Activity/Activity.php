@@ -194,9 +194,32 @@ class ActivityController
     global $role;
     $value = '';
 
-    if( $role == 1 )
+    $mod_groups           = new Groups();
+    $mod_group_activities = new GroupActivities();
+
+    // Buscamos si el monitor está relacionado con esta actividad
+    $group = $mod_groups->GetRow( $_SESSION['app']['user']['user_id'] );
+    if( empty( $group[0] ) )
+      return '';
+    else
+      $group_id = $group[0]['group_id'];
+
+    // Buscamos las actividades relacionadas
+    $group_activities = $mod_group_activities->GetRow( $group_id );
+    $found = false;
+    foreach( $group_activities as $activity )
     {
-      $value .= '
+      if( $this->activity_id2 === $activity['activity_id2'] )
+      {
+        $found = true;
+        break;
+      }
+    }
+
+    // Solo si se encontró coincidencia y el rol es 1 (monitor), añadimos el enlace
+    if( $found && $role == 1 )
+    {
+      $value = '
         <a href="/monitor/attendance?aid2=' . $this->activity_id2 . '" class="p-button w-fit">
           <i class="icon">list</i>
           <span>' . pl_label( 'roll_call' ) . '</span>

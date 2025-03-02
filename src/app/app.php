@@ -330,34 +330,12 @@ function app_panel_interface(): string
     <div class="overlay"></div>
 
     <nav id="main-navbar" class="fixed w-full left-0 top-0 bg-transparent shadow-landing-reverse z-50">
-      <div class="h-16 flex flex-row gap-4 items-center">
+      <div class="h-16 flex flex-row gap-4 items-center justify-between">
 
         <div class="flex flex-col flex-1 items-start p-4">
           <a class="inline-flex" href="/" title="kodalogic">
             <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">' . pl_label( 'campament' ) . '</span>
           </a>
-        </div>
-
-        <div class="hidden md:flex flex-row flex-1 items-center gap-4 p-4">
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="32" height="32" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </div>
-        
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="32" height="32" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </div>
-
-          <div class="relative w-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" name="query" id="query" placeholder="Search" class="text-base rounded-md py-2 pl-10 pr-3 w-full border-0 shadow-panel bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300">
-          </div>
         </div>
 
         <div class="flex flex-col flex-1 items-end p-4 relative">

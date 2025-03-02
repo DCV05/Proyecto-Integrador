@@ -133,7 +133,7 @@ INSERT INTO `activities` (`activity_id`, `activity_id2`, `activity_name_es`, `ac
 
 
 CREATE TABLE `attendance` (
-  `attendance_id` int(11) NOT NULL,
+  `attendance_id` INT AUTO_INCREMENT PRIMARY KEY,
   `attendance_id2` varchar(32) NOT NULL,
   `activity_id` int(11) NOT NULL,
   `participant_id` int(11) NOT NULL,
@@ -146,6 +146,7 @@ INSERT INTO `attendance` (`attendance_id`, `attendance_id2`, `activity_id`, `par
 (2, '255663C9FD7B3E17D4D7ECC261E4ED8C', 1, 2, '2025-02-28 10:35:00', NULL);
 
 ALTER TABLE `attendance`
+  DROP PRIMARY KEY,
   ADD PRIMARY KEY (`attendance_id`),
   ADD UNIQUE KEY `unique_attendance` (`activity_id`,`participant_id`);
 
@@ -171,42 +172,43 @@ CREATE TABLE `payments` (
   `payment_id` INT AUTO_INCREMENT PRIMARY KEY,
   `payment_id2` varchar(32) NOT NULL,
   `user_id` INT NOT NULL,
-  `status` VARCHAR(32) NOT NULL,
+  `status` INT NOT NULL,
   `amount` FLOAT NOT NULL,
   `payment_date` DATE NOT NULL,
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`)
 );
 
 INSERT INTO `payments` (`payment_id2`, `user_id`, `status`, `amount`, `payment_date`) VALUES
-('A1B2C3D4E5F6G7H8', 1, 'Paid', 150.00, '2025-02-20'),
-('I9J8K7L6M5N4O3P2', 2, 'Pending', 200.00, '2025-02-21'),
-('Q1R2S3T4U5V6W7X8', 3, 'Paid', 180.00, '2025-02-22'),
-('Y9Z8A7B6C5D4E3F2', 4, 'Pending', 220.00, '2025-02-23'),
-('T2U1V9W8X7Y6Z5A4', 5, 'Paid', 170.00, '2025-02-24'),
-('B2C3D4E5F6G7H8I9', 6, 'Pending', 250.00, '2025-02-25'),
-('C3D4E5F6G7H8I9J8', 7, 'Paid', 160.00, '2025-02-26'),
-('D4E5F6G7H8I9J8K7', 8, 'Pending', 190.00, '2025-02-27'),
-('E5F6G7H8I9J8K7L6', 9, 'Paid', 200.00, '2025-02-28'),
-('F6G7H8I9J8K7L6M5', 10, 'Pending', 210.00, '2025-03-01');
+('A1B2C3D4E5F6G7H8', 1, 1, 150.00, '2025-02-20'),
+('I9J8K7L6M5N4O3P2', 2, 0, 200.00, '2025-02-21'),
+('Q1R2S3T4U5V6W7X8', 3, 1, 180.00, '2025-02-22'),
+('Y9Z8A7B6C5D4E3F2', 4, 0, 220.00, '2025-02-23'),
+('T2U1V9W8X7Y6Z5A4', 5, 1, 170.00, '2025-02-24'),
+('B2C3D4E5F6G7H8I9', 6, 0, 250.00, '2025-02-25'),
+('C3D4E5F6G7H8I9J8', 7, 1, 160.00, '2025-02-26'),
+('D4E5F6G7H8I9J8K7', 8, 0, 190.00, '2025-02-27'),
+('E5F6G7H8I9J8K7L6', 9, 1, 200.00, '2025-02-28'),
+('F6G7H8I9J8K7L6M5', 10,0, 210.00, '2025-03-01');
 
 CREATE TABLE `schedule_participants` (
   `schedule_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `schedule_id2`  varchar(32) NOT NULL,
   `participant_id` INT NOT NULL,
   `start_day` DATE NOT NULL,
   `end_day` DATE NOT NULL,
   FOREIGN KEY (`participant_id`) REFERENCES `participants`(`participant_id`)
 );
 
-INSERT INTO `schedule_participants` (`participant_id`, `start_day`, `end_day`) VALUES
-(1, '2025-03-02', '2025-03-16'),
-(2, '2025-03-03', '2025-03-17'),
-(3, '2025-03-04', '2025-03-18'),
-(4, '2025-03-05', '2025-03-19'),
-(5, '2025-03-06', '2025-03-20'),
-(6, '2025-03-07', '2025-03-21'),
-(7, '2025-03-08', '2025-03-22'),
-(8, '2025-03-09', '2025-03-23'),
-(9, '2025-03-10', '2025-03-24'),
-(10, '2025-03-11', '2025-03-25');
+INSERT INTO `schedule_participants` (`schedule_id2`, `participant_id`, `start_day`, `end_day`) VALUES
+('D7S89FG789DF7G89DS79', 1, '2025-03-02', '2025-03-16'),
+('HV6546G56G4G6456G456', 2, '2025-03-03', '2025-03-17'),
+('G645645G645VHRTBHYTN', 3, '2025-03-04', '2025-03-18'),
+('VHRJTDGBFGJRDTERGTRY', 4, '2025-03-05', '2025-03-19'),
+('6GB675UETB6U5ETVGEV5', 5, '2025-03-06', '2025-03-20'),
+('GF8D6789H6GD7F8F9678', 6, '2025-03-07', '2025-03-21'),
+('FDSYFG78DTYS76D8FTD6', 7, '2025-03-08', '2025-03-22'),
+('8GDF9YG89SDFH78IHUIA', 8, '2025-03-09', '2025-03-23'),
+('GHFD7S8RCAYFGDUBGDIU', 9, '2025-03-10', '2025-03-24'),
+('FVDFUGHF7DS8VYD7IHUI', 10, '2025-03-11', '2025-03-25');
 
 COMMIT;

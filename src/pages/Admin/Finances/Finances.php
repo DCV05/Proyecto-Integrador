@@ -142,7 +142,7 @@ class AdminFinancesController
 
       // Botón para enviar un email al usuario
       $email_icon = '
-        <div data-uid2="' . $user['user_id2'] . '" data-pid2="' . $payment['payment_id2'] . '" class="email-icon cursor-pointer p-2 rounded-lg bg-orange-600 flex items-center justify-center">
+        <div data-uid2="' . $user['user_id2'] . '" data-pid2="' . $payment['payment_id2'] . '" class="email-icon p-button cursor-pointer">
           ' . app_get_svg_icon( 'email' ) . '
         </div>
       ';
@@ -371,7 +371,7 @@ class AdminFinancesController
           payment_id2 = ?
       ';
       $params = [$fields['option'], $fields['pid2']];
-      $db->pl_query_prepared( $sql, $params );
+      $db->pl_query_prepared( $sql, $params, false, true );
 
       // Recargamos la fila
       $html = $this->table_row_finances( $fields['pid2'] );

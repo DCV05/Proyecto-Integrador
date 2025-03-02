@@ -1,5 +1,19 @@
 $( document ).ready( function() {
 
+  // Obtener el año actual
+  const today         = new Date();
+  const current_year  = today.getFullYear();
+  
+  const min_date = `${current_year - 9}-01-01`; // 1 de enero de hace 9 años
+  const max_date = `${current_year - 6}-12-31`; // 31 de diciembre de hace 6 años
+  
+  $( document ).on( 'focus', 'input[type="date"]', function() {
+    if( !$( this ).data( 'minmaxSet' ) ) {
+      $( this ).attr( 'min', min_date ).attr( 'max', max_date );
+      $( this ).data( 'minmaxSet', true );
+    }
+  } );
+
   $( document ).on( 'click', '#btn-add-tutor, #btn-add-participant', function( e ) {
     e.preventDefault();
     e.stopPropagation();

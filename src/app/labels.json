@@ -195,6 +195,14 @@
     "es": "Cerrar sesión",
     "en": "Log out"
   },
+  "group_name_placeholder": {
+    "es": "Grupo A",
+    "en": "Group A"
+  },
+  "group_size_placeholder": {
+    "es": "4",
+    "en": "4"
+  },
   "group_size": {
     "es": "Tamaño del grupo",
     "en": "Group size"

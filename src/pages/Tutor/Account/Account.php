@@ -76,8 +76,10 @@ class TutorAccountController
         , 'user_dni'          => new TableCell( $user['user_dni'] )
         , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
         , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 icon-container'] )
-        , 'delete_icon'       => new TableCell( $delete_icon, ['class' => 'text-center w-10 icon-container'] )
       ];
+
+      if( $user['is_main'] === 0 )
+        $cells['delete_icon'] = new TableCell( $delete_icon, ['class' => 'text-center w-10 icon-container'] );
 
       // Añadimos la fila
       $table->addRow( new TableRow( $cells, [
@@ -136,8 +138,10 @@ class TutorAccountController
       , 'user_dni'          => new TableCell( $user['user_dni'] )
       , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
       , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 icon-container'] )
-      , 'delete_icon'       => new TableCell( $delete_icon, ['class' => 'text-center w-10 icon-container'] )
     ];
+
+    if( $user['is_main'] === 0 )
+      $cells['delete_icon'] = new TableCell( $delete_icon, ['class' => 'text-center w-10 icon-container'] );
 
     // Retornamos la fila de tabla generada
     $table_row = new TableRow( $cells, [
@@ -439,7 +443,8 @@ class TutorAccountController
           , user_email
           , user_dni
           , user_phone_number
-        ) values ( ?, ?, ?, ?, ?, ?, ? )
+          , is_main
+        ) values ( ?, ?, ?, ?, ?, ?, ?, ? )
       ';
       
       $params = [
@@ -450,6 +455,7 @@ class TutorAccountController
         , $fields['user_email']
         , $fields['user_dni']
         , $fields['user_phone_number']
+        , 0
       ];
       
       $db->pl_query_prepared( $sql, $params );
@@ -1416,6 +1422,7 @@ class TutorAccountController
           ' . app_custom_input( 'participant_name', 'text' )     . '
           ' . app_custom_input( 'participant_birth_date', 'date' )    . '
           ' . app_custom_textarea( 'participant_allergies' )          . '
+          ' . app_custom_textarea( 'participant_special_needs' )  . '
           ' . app_custom_textarea( 'participant_medical_treatment' )  . '
       
           <div class="flex justify-end gap-3">
