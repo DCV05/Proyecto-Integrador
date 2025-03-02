@@ -168,7 +168,8 @@ class ParticipantsController
     do
     {
       // Recargamos el HTML de la fila actualizada
-      $html = $this->table_participants( $fields['query'] );
+      $where = ' where p.participant_name like "%' . $fields['query'] . '%"';
+      $html = $this->table_participants( $where );
 
       // Rellenamos los objetos a actualizar
       $elements = [

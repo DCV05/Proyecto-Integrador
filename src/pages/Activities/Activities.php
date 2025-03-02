@@ -648,6 +648,14 @@ class ActivitiesController
       ';
       $db->pl_query_prepared( $sql, [$activity_id] );
 
+      // Borramos las vinculaciones con monitores
+      $sql = '
+        delete from ' . DB_PROJECT . '.group_activities
+        where
+          activity_id = ?
+      ';
+      $db->pl_query_prepared( $sql, [$activity_id] );
+
       // Borramos la actividad
       $sql = '
         delete from ' . DB_PROJECT . '.activities
