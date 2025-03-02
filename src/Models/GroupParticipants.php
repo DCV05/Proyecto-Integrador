@@ -44,6 +44,6 @@ class GroupParticipants
     ';
     $params = [$group_id];
   
-    return $this->db->pl_query_prepared( $sql, $params, true );
+    return $this->db->pl_query_prepared( $sql, $params, true, true );
   }
 }

@@ -267,9 +267,14 @@ class ViewEngine
 		$html = file_get_contents( $this->template_path );
 		$compiled_html = $this->compile( $html );
 
-		// Guardamos el controlador en la sesión
-		if( empty( $_SESSION['controllers'][$this->controller_name] ) )
+		// Guardamos el controlador en la sesión si no existe o si está vacío
+		if(
+			empty( $_SESSION['controllers'][$this->controller_name] ) or
+			!get_object_vars( @unserialize( $_SESSION['controllers'][$this->controller_name] ) )
+		) 
+		{
 			$_SESSION['controllers'][$this->controller_name] = serialize( $this->controller );
+		}
 
 		echo $compiled_html;
 	}

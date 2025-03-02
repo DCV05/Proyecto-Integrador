@@ -7,16 +7,23 @@ use erguncaner\Table\TableRow;
 
 class GroupController
 {
+  public array $group;
   public string $group_id2;
 
   public function index(): void
   {
     // Control de seguridad
     app_security();
+    $mod_groups = new Groups();
 
     // Capturamos el id2 del grupo
     $this->group_id2 = pl_get( 'gid2', null );
     if( !$this->group_id2 )
+      pl_redirect( '/groups' );
+
+    // Buscamos en la DB la actividad. En caso de que no exista, redirigimos al activities
+    $this->group = $mod_groups->GetGroupId2( $this->group_id2 )[0];
+    if( empty( $this->group ) )
       pl_redirect( '/groups' );
 
     return;
@@ -364,24 +371,9 @@ class GroupController
       // Capturamos los grupos
       $mod_groups_participants = new GroupParticipants();
       $group_participants = $mod_groups_participants->GetRow( $this->group_id2 );
-      if( empty( $group_participants ) )
-      {
-        // Mostramos una alerta
-        $elements = app_generate_alert( true, 'Error' );
-        break;
-      }
-      else
-      {
-        $group_id         = $group_participants[0]['group_id'];
-        $participant_id2  = $group_participants[0]['participant_id2'];
-      }
-      
-      // Cargamos el grupo
-      $mod_groups = new Groups();
-      $group = $mod_groups->GetGroupId2( $this->group_id2 )[0];
 
       // Verificamos que el grupo tiene los participantes máximos
-      if( $group['group_size'] === count( $group_participants ) )
+      if( $this->group['group_size'] === count( $group_participants ) )
       {
         // Mostramos una alerta
         $elements = app_generate_alert( true, pl_label( 'group_at_maximum_capacity' ) );
@@ -411,7 +403,7 @@ class GroupController
         ) values ( ?, ? )
       ';
 
-      $params = [$group_id, $participant_id];
+      $params = [$this->group['group_id'], $participant_id];
       $db->pl_query_prepared( $sql, $params );
 
       // Recargamos el HTML de la fila actualizada
@@ -421,8 +413,8 @@ class GroupController
       $elements = app_generate_alert( false, pl_label( 'changes-applied' ) );
       $kwargs   = ['elem' => '#row-' . $participant_id2, 'color' => 'green'];
       $elements = array_merge( $elements, [
-          ['selector' => '#participants_table tbody tr:last', 'method_name'  => 'insertBefore', 'value' => $html]
-        , ['selector' => '#row-' . $participant_id2, 'method_name' => 'execute', 'func_name' => 'highlight_row', 'kwargs' => $kwargs]
+          ['selector' => '#participants_table tbody', 'method_name' => 'append' , 'value' => $html]
+        , ['selector' => '#row-' . $participant_id2 , 'method_name' => 'execute', 'func_name' => 'highlight_row', 'kwargs' => $kwargs]
         , ['selector' => '#modal', 'method_name' => 'remove']
       ] );
 
