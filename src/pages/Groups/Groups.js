@@ -137,12 +137,8 @@ function form_submit( formdata, form, method_name ) {
     .then( function( data ) {
 
       // Si el resultado es correcto, redirigmos al panel
-      if( data.result = 1 && data.elements ) {
+      if( data.elements )
         pl_dom( data.elements );
-        $( '#modal' ).remove();
-      }
-      else
-        generate_error_message( form, data.message );
     } )
     .catch( function( error ) {
       // Manejo de errores
@@ -159,8 +155,6 @@ function form_search( query ) {
       // Si el resultado es correcto, redirigmos al panel
       if( data.result = 1 && data.elements )
         pl_dom( data.elements );
-      else
-        generate_error_message( form, data.message );
     } )
     .catch( function( error ) {
       // Manejo de errores
@@ -176,10 +170,8 @@ function delete_group( gid2 ) {
     .then( function( data ) {
 
       // Si el resultado es correcto, mostramos los popups
-      if( data.result = 1 && data.elements )
+      if( data.elements )
         pl_dom( data.elements );
-      else
-        generate_error_message( form, data.message );
     } )
     .catch( function( error ) {
       // Manejo de errores
@@ -195,7 +187,7 @@ function open_edit_popup( gid2 ) {
     .then( function( data ) {
 
       // Si el resultado es correcto, mostramos los popups
-      if( data.result = 1 && data.elements )
+      if( data.elements )
         pl_dom( data.elements );
     } )
     .catch( function( error ) {
@@ -212,7 +204,7 @@ function open_add_popup() {
     .then( function( data ) {
 
       // Si el resultado es correcto, mostramos los popups
-      if( data.result = 1 && data.elements )
+      if( data.elements )
         pl_dom( data.elements );
     } )
     .catch( function( error ) {

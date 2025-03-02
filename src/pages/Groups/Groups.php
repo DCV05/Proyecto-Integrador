@@ -261,7 +261,6 @@ class GroupsController
       $required_fields = [
           'group_name'
         , 'group_size'
-        , 'monitor_select'
       ];
 
       foreach( $required_fields as $required_field )
@@ -374,7 +373,6 @@ class GroupsController
       $required_fields = [
           'group_name'
         , 'group_size'
-        , 'monitor_select'
       ];
 
       foreach( $required_fields as $required_field )
@@ -430,6 +428,7 @@ class GroupsController
       $elements = array_merge( $elements, [
           ['selector' => '#row-' . $fields['gid2'], 'method_name' => 'update' , 'value' => $html]
         , ['selector' => '#row-' . $fields['gid2'], 'method_name' => 'execute', 'func_name' => 'highlight_row', 'kwargs' => $kwargs]
+        , ['selector' => '#modal', 'method_name'  => 'remove']
       ] );
 
       // Si llega hasta aquí, está todo OK
@@ -601,10 +600,15 @@ class GroupsController
                 <input type="number" name="group_size" placeholder="' . pl_label( 'group_size_placeholder' ) . '" class="p-input w-full">
               </div>
 
-              <div class="flex justify-end">
+              <div class="flex justify-end gap-3">
+                <button type="button" class="p-button close_modal">
+                  <i class="icon">cancel</i>
+                  <span>' . pl_label( 'cancel-button' ) . '</span>
+                </button>
+
                 <button type="submit" class="p-button">
                   <i class="icon">send</i>
-                  <span>' . pl_label( 'send' ) . '</span>
+                  <span>' . pl_label( 'send-button' ) . '</span>
                 </button>
               </div>
             </form>
@@ -666,7 +670,7 @@ class GroupsController
       if( empty( $group ) )
         break;
 
-      // Capturamos los monitores sin grupo asignado
+      // Capturamos los monitores sin grupo asignado o el actual
       $sql = '
         select
           u.user_id, ud.*
@@ -675,9 +679,9 @@ class GroupsController
         left join user_details ud on u.user_id = ud.user_id
         where
           u.role = 1 and
-          g.monitor_id is null
+          ( g.monitor_id is null or g.group_id2 = ? )
       ';
-      $monitors = $db->pl_query_prepared( $sql, [], true );
+      $monitors = $db->pl_query_prepared( $sql, [$fields['gid2']], true );
 
       // Generamos el select
       $select = '';
@@ -719,7 +723,12 @@ class GroupsController
                 <input type="number" name="group_size" placeholder="' . pl_label( 'group_size_placeholder' ) . '" class="custom-input mt-1 transform transition duration-300" value="' . $group['group_size'] . '">
               </div>
 
-              <div class="flex justify-end">
+              <div class="flex justify-end gap-3">
+                <button type="button" class="p-button close_modal">
+                  <i class="icon">cancel</i>
+                  <span>' . pl_label( 'cancel-button' ) . '</span>
+                </button>
+
                 <button type="submit" class="p-button">
                   <i class="icon">send</i>
                   <span>' . pl_label( 'send-button' ) . '</span>
