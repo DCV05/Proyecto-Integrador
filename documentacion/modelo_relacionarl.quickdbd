@@ -1,73 +1,90 @@
 users
 ----
 user_id PK int
-user_id2 varchar
-email varchar
-password varchar
+user_id2 varchar(32)
+user_email varchar(124)
+user_password varchar(256)
 role int
+enabled tinyint
+has_schedule tinyint
 
 user_details
 ----
 detail_id PK int
+detail_id2 varchar(32)
 user_id int FK >- users.user_id
-participant_id int FK >- participants.participant_id
-dni varchar
-phone_number varchar
+user_name varchar(256)
+user_email varchar(124)
+user_relationship varchar(128)
+user_dni varchar(9)
+user_phone_number varchar(16)
+is_main tinyint
+
+groups
+----
+group_id PK int
+group_id2 varchar(32)
+group_name varchar(100)
+monitor_id int
+group_size int
 
 participants
 ----
 participant_id PK int
-participant_id2 varchar
-full_name varchar
-birth_date date
-address varchar
-state varchar
-province varchar
-group varchar
-allergies varchar
-medical_needs varchar
-medical_treatment varchar
-special_camp_attention varchar
-other_medical_info varchar
+participant_id2 varchar(32)
+user_id int FK >- users.user_id
+participant_name varchar(100)
+participant_birth_date date
+participant_allergies text
+participant_special_needs text
+participant_medical_treatment text
+
+group_participants
+----
+relation_id PK int
+group_id int FK >- groups.group_id
+participant_id int FK >- participants.participant_id
 
 activities
 ----
 activity_id PK int
-activity_id2 varchar
-name varchar
-description varchar
-activity_date datetime
-activity_time int
-insert_date datetime
-max_participants int
+activity_id2 varchar(32)
+activity_name_es varchar(100)
+activity_name_en varchar(100)
+activity_description_es text
+activity_description_en text
+activity_tags_es varchar(128)
+activity_tags_en varchar(128)
+activity_datetime_start datetime
+activity_datetime_end datetime
 
-payments
+group_activities
 ----
-payment_id PK int
-payment_id2 varchar
-user_id int FK >- users.user_id
-amount float
-payment_date  
-status varchar
-
-activity_participant
-----
+relation_id PK int
+group_id int FK >- groups.group_id
 activity_id int FK >- activities.activity_id
-participant_id int FK >- participants.participant_id
-
-blog_posts
-----
-post_id PK int
-post_id2 varchar
-post_title varchar
-post_content varchar
-user_id int FK >- users.user_id
-insert_date datetime
 
 attendance
 ----
 attendance_id PK int
-participant_id int FK >- activity_participant.participant_id
+attendance_id2 varchar(32)
 activity_id int FK >- activities.activity_id
-check_in_date datetime
-check_out_date datetime
+participant_id int FK >- participants.participant_id
+checkin_datetime datetime
+checkout_datetime datetime
+
+payments
+----
+payment_id PK int
+payment_id2 varchar(32)
+user_id int FK >- users.user_id
+status varchar(32)
+amount float
+payment_date date
+
+schedule_participants
+----
+schedule_id PK int
+participant_id int FK >- participants.participant_id
+start_day date
+end_day date

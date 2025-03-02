@@ -37,7 +37,7 @@ class Router
     $db = new Model();
 
     try
-    {      
+    {
       // ------------------------------------------------------------------------------
       // Búsqueda de la URI
       // ------------------------------------------------------------------------------
@@ -121,9 +121,8 @@ class Router
       if( $db->next_row() )
         $row = $db->get_row();
 
-
       // Si no hay resultados, redireccionamos al home
-      if( empty( $row ) || $this->uri !== $row['url'] )
+      if( empty( $row ) || strtolower( $this->uri ) !== $row['url'] )
       {
         // Si existe el fichero 404, lo mostramos
         $file_404 = BASE_PATH . '/src/apache/errors/404.html';

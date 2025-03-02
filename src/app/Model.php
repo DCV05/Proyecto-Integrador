@@ -318,7 +318,7 @@ class Model extends mysqli
    * @param string $col_type
    * @param string $col_capacity
    */
-  public function pl_migration_add_column( string $table_name, string $col_name, string $col_type, string $col_capacity = null ): bool
+  public function pl_migration_add_column( string $table_name, string $col_name, string $col_type, ?string $col_capacity = null ): bool
   {
     $value = false;
 

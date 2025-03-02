@@ -1,60 +1,110 @@
 @startuml Campamento
+
 left to right direction
 
-rectangle "Campamento" { 
-    actor "Participante" as Participante
-    actor "Tutor/Padre" as TutorPadre
-    actor "Monitor" as Monitor
-    actor "Administrador" as Admin
-
-    rectangle "Acciones de Tutor/Padre" {
-        usecase "Registrar hijo" as UC1
-        usecase "Actualizar información del participante" as UC2
-        usecase "Ver actividades del campamento" as UC3
-        usecase "Inscribir participante a una actividad" as UC4
-        usecase "Actualizar información del tutor/padre" as UC5
-        usecase "Realizar pago" as UC6
-        usecase "Ver publicaciones del blog" as UC7
-        usecase "Iniciar/cerrar sesión" as UC8
-        TutorPadre --> UC1
-        TutorPadre --> UC2
-        TutorPadre --> UC3
-        TutorPadre --> UC4
-        TutorPadre --> UC5
-        TutorPadre --> UC6
-        TutorPadre --> UC7
-        TutorPadre --> UC8
-    }
-
-    rectangle "Acciones del Monitor" {
-        usecase "Registrar entrada/salida de participante" as UC9
-        usecase "Ver actividades asignadas" as UC10
-        usecase "Ver registros de asistencia" as UC11
-        usecase "Iniciar/cerrar sesión" as UC12
-        Monitor --> UC9
-        Monitor --> UC10
-        Monitor --> UC11
-        Monitor --> UC12
-    }
-
-    rectangle "Acciones del Administrador" {
-        usecase "Gestionar actividades (añadir, borrar y modificar)" as UC13
-        usecase "Gestionar datos de tutores y participantes" as UC14
-        usecase "Gestionar finanzas del campamento" as UC15
-        usecase "Gestionar publicaciones del blog" as UC16
-        usecase "Enviar notificaciones a tutores" as UC17
-        usecase "Iniciar/cerrar sesión" as UC18
-        Admin --> UC13
-        Admin --> UC14
-        Admin --> UC15
-        Admin --> UC16
-        Admin --> UC17
-        Admin --> UC18
-    }
-
-    rectangle "Acciones del Participante" {
-        usecase "Ser registrado por tutor" as UC19
-        Participante <-- UC19
-    }
+entity "Users" as users {
+    + user_id : int
+    + user_id2 : varchar(32)
+    + user_email : varchar(124)
+    + user_password : varchar(256)
+    + role : int <<0 = tutor, 1 = monitor, 2 = admin>>
+    + enabled : tinyint
+    + has_schedule : tinyint
 }
+
+entity "User Details" as user_details {
+    + detail_id : int
+    + detail_id2 : varchar(32)
+    + user_id : int
+    + user_name : varchar(256)
+    + user_email : varchar(124)
+    + user_relationship : varchar(128)
+    + user_dni : varchar(9)
+    + user_phone_number : varchar(16)
+    + is_main : tinyint
+}
+
+entity "Participants" as participants {
+    + participant_id : int
+    + participant_id2 : varchar(32)
+    + user_id : int
+    + participant_name : varchar(100)
+    + participant_birth_date : date
+    + participant_allergies : text
+    + participant_special_needs : text
+    + participant_medical_treatment : text
+}
+
+entity "Groups" as groups {
+    + group_id : int
+    + group_id2 : varchar(32)
+    + group_name : varchar(100)
+    + monitor_id : int
+    + group_size : int
+}
+
+entity "Group Participants" as group_participants {
+    + relation_id : int
+    + group_id : int
+    + participant_id : int
+}
+
+entity "Activities" as activities {
+    + activity_id : int
+    + activity_id2 : varchar(32)
+    + activity_name_es : varchar(100)
+    + activity_name_en : varchar(100)
+    + activity_description_es : text
+    + activity_description_en : text
+    + activity_tags_es : varchar(128)
+    + activity_tags_en : varchar(128)
+    + activity_datetime_start : datetime
+    + activity_datetime_end : datetime
+}
+
+entity "Group Activities" as group_activities {
+    + relation_id : int
+    + group_id : int
+    + activity_id : int
+}
+
+entity "Attendance" as attendance {
+    + attendance_id : int
+    + attendance_id2 : varchar(32)
+    + activity_id : int
+    + participant_id : int
+    + checkin_datetime : datetime
+    + checkout_datetime : datetime
+}
+
+entity "Payments" as payments {
+    + payment_id : int
+    + payment_id2 : varchar(32)
+    + user_id : int
+    + status : varchar(32)
+    + amount : float
+    + payment_date : date
+}
+
+entity "Schedule Participants" as schedule_participants {
+    + schedule_id : int
+    + participant_id : int
+    + start_day : date
+    + end_day : date
+}
+
+users --|> user_details : "includes"
+users --|> participants : "includes"
+users --|> payments : "includes"
+
+participants --|> schedule_participants : "includes"
+participants --|> attendance : "includes"
+participants --|> group_participants : "includes"
+
+activities --|> attendance : "includes"
+activities --|> group_activities : "includes"
+
+groups --|> group_participants : "includes"
+groups --|> group_activities : "includes"
+
 @enduml

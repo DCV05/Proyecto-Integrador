@@ -19,6 +19,14 @@
     "es": "Información del participante",
     "en": "Participant information"
   },
+  "test_label": {
+    "es": "Etiqueta de prueba",
+    "en": "Test Label"
+  },
+  "incorrect_test_label": {
+    "es": "Etiqueta de prueba incorrecta",
+    "en": "Incorrect Test Label"
+  },
   "emergency_info": {
     "es": "Información de emergencia",
     "en": "Emergency information"

@@ -14,6 +14,8 @@ rectangle "Campamento" {
         usecase "Inscribir participante a una actividad" as UC4
         usecase "Actualizar información del tutor/padre" as UC5
         usecase "Realizar pago" as UC6
+        usecase "Ver historial de pagos" as UC6b
+        usecase "Gestionar horarios del participante" as UC6c
         usecase "Ver publicaciones del blog" as UC7
         usecase "Iniciar/cerrar sesión" as UC8
         TutorPadre --> UC1
@@ -22,16 +24,20 @@ rectangle "Campamento" {
         TutorPadre --> UC4
         TutorPadre --> UC5
         TutorPadre --> UC6
+        TutorPadre --> UC6b
+        TutorPadre --> UC6c
         TutorPadre --> UC7
         TutorPadre --> UC8
     }
 
     rectangle "Acciones del Monitor" {
         usecase "Registrar entrada/salida de participante" as UC9
+        usecase "Registrar asistencia a actividad" as UC9b
         usecase "Ver actividades asignadas" as UC10
         usecase "Ver registros de asistencia" as UC11
         usecase "Iniciar/cerrar sesión" as UC12
         Monitor --> UC9
+        Monitor --> UC9b
         Monitor --> UC10
         Monitor --> UC11
         Monitor --> UC12
@@ -40,12 +46,14 @@ rectangle "Campamento" {
     rectangle "Acciones del Administrador" {
         usecase "Gestionar actividades (añadir, borrar y modificar)" as UC13
         usecase "Gestionar datos de tutores y participantes" as UC14
+        usecase "Gestionar grupos y asignaciones" as UC14b
         usecase "Gestionar finanzas del campamento" as UC15
         usecase "Gestionar publicaciones del blog" as UC16
         usecase "Enviar notificaciones a tutores" as UC17
         usecase "Iniciar/cerrar sesión" as UC18
         Admin --> UC13
         Admin --> UC14
+        Admin --> UC14b
         Admin --> UC15
         Admin --> UC16
         Admin --> UC17
@@ -54,7 +62,11 @@ rectangle "Campamento" {
 
     rectangle "Acciones del Participante" {
         usecase "Ser registrado por tutor" as UC19
+        usecase "Ver actividades inscritas" as UC19b
+        usecase "Ver horarios asignados" as UC19c
         Participante <-- UC19
+        Participante --> UC19b
+        Participante --> UC19c
     }
 }
 @enduml
