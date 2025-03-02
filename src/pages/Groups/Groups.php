@@ -201,12 +201,6 @@ class GroupsController
 
     do
     {
-      if( !$fields['query'] )
-      {
-        $message = pl_label( 'required_field' ) . ': query';
-        break;
-      } 
-
       // Filtro
       $where = ' where group_name like "%' . $fields['query'] . '%"';
 
@@ -496,6 +490,22 @@ class GroupsController
 
       // Borramos el grupo
       $sql = '
+        delete from ' . DB_PROJECT . '.group_activities
+        where
+          group_id = ?
+      ';
+      $db->pl_query_prepared( $sql, [$group_id] );
+
+      // Borramos el grupo
+      $sql = '
+        delete from ' . DB_PROJECT . '.group_participants
+        where
+          group_id = ?
+      ';
+      $db->pl_query_prepared( $sql, [$group_id] );
+
+      // Borramos el grupo
+      $sql = '
         delete from ' . DB_PROJECT . '.groups
         where
           group_id = ?
@@ -666,9 +676,14 @@ class GroupsController
       // --------------------------------------------------------------------------------------------------------------
       // Buscamos los datos del grupo solicitado
       // --------------------------------------------------------------------------------------------------------------
-      $group = $mod_groups->GetGroupGID( $fields['gid2'] )[0];
-      if( empty( $group ) )
+      $group = $mod_groups->GetGroupGID( $fields['gid2'] );
+      if( empty( $group[0] ) )
+      {
+        $elements = app_generate_alert( true, pl_label( 'group_not_found' ) );
         break;
+      }
+      else
+        $group = $group[0];
 
       // Capturamos los monitores sin grupo asignado o el actual
       $sql = '
