@@ -39,23 +39,24 @@ class Groups
     return $this->db->pl_query_prepared( $sql, $params, true );
   }
 
-
   /**
    * Obtiene una fila específica de la tabla `groups` según `group_id2`.
    * 
-   * @param string $group_id2 Identificador de la actividad.
+   * @param string $group_id Identificador de la actividad.
    * @return array Datos de la actividad si existe, o un array vacío si no hay resultados.
    */
-  public function GetGroupId2( string $group_id2 ): array
+  public function GetGroupGID( int|string $group_id ): array
   {
+    $field = is_numeric( $group_id ) ? 'group_id' : 'group_id2';
+
     $sql = '
       select
         * 
       from ' . DB_PROJECT . '.groups
       where
-        group_id2 = ?
+        ' . $field . ' = ?
     ';
-    $params = [$this->db->esc( $group_id2 )];
+    $params = [$this->db->esc( $group_id )];
     return $this->db->pl_query_prepared( $sql, $params, true );
   }
 }

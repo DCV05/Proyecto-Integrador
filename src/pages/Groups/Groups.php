@@ -131,7 +131,7 @@ class GroupsController
     $mod_user_details = new UserDetails();
 
     // Capturamos los datos del grupo
-    $group = $mod_groups->GetGroupId2( $group_id2 )[0];
+    $group = $mod_groups->GetGroupGID( $group_id2 )[0];
     if( empty( $group ) )
       return '';
 
@@ -486,7 +486,7 @@ class GroupsController
       // --------------------------------------------------------------------------------------------------------------
 
       // Buscamos si el grupo existe
-      $group = ( new Groups() )->GetGroupId2( $fields['gid2'] )[0];
+      $group = ( new Groups() )->GetGroupGID( $fields['gid2'] )[0];
       if( $group )
         $group_id = $group['group_id'];
       else
@@ -662,7 +662,7 @@ class GroupsController
       // --------------------------------------------------------------------------------------------------------------
       // Buscamos los datos del grupo solicitado
       // --------------------------------------------------------------------------------------------------------------
-      $group = $mod_groups->GetGroupId2( $fields['gid2'] )[0];
+      $group = $mod_groups->GetGroupGID( $fields['gid2'] )[0];
       if( empty( $group ) )
         break;
 

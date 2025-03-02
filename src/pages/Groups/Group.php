@@ -22,7 +22,7 @@ class GroupController
       pl_redirect( '/groups' );
 
     // Buscamos en la DB la actividad. En caso de que no exista, redirigimos al activities
-    $this->group = $mod_groups->GetGroupId2( $this->group_id2 )[0];
+    $this->group = $mod_groups->GetGroupGID( $this->group_id2 )[0];
     if( empty( $this->group ) )
       pl_redirect( '/groups' );
 
@@ -368,17 +368,37 @@ class GroupController
       // Insert
       // --------------------------------------------------------------------------------------------------------------
 
-      // Capturamos los grupos
-      $mod_groups_participants = new GroupParticipants();
-      $group_participants = $mod_groups_participants->GetRow( $this->group_id2 );
+      // Buscamos si el grupo está a su máxima capacidad
+      $sql    = '
+        select
+          gp.*, g.*
+        from ' . DB_PROJECT . '.group_participants gp
+        left join ' . DB_PROJECT . '.groups g on gp.group_id = g.group_id
+        where
+          g.group_id2 = ?
+      ';
+      $params = [$this->group_id2];
+      $group_participants = $db->pl_query_prepared( $sql, $params, true );
+      if( empty( $group_participants[0] ) )
+      {
+        // Mostramos una alerta
+        $elements = app_generate_alert( true, pl_label( 'group_not_exists' ) );
+        break;
+      }
+      else
+      {
+        $group_size         = $group_participants[0]['group_size'];
+        $participants_count = count( $group_participants );
+      }
 
-      // Verificamos que el grupo tiene los participantes máximos
-      if( $this->group['group_size'] === count( $group_participants ) )
+      if( $group_size === $participants_count )
       {
         // Mostramos una alerta
         $elements = app_generate_alert( true, pl_label( 'group_at_maximum_capacity' ) );
         break;
       }
+
+      // Capturamos el tamaño máximo del grupo y la cantidad de participantes actuales
 
       // Buscamos el participante vinculado al submit
       $mod_participants = new Participants();
@@ -484,10 +504,6 @@ class GroupController
         $message = pl_label( 'participant_not_found' );
         break;
       }
-
-      // Cargamos el grupo
-      $mod_groups = new Groups();
-      $group = $mod_groups->GetGroupId2( $this->group_id2 )[0];
 
       // Borramos las vinculaciones con monitores
       $sql = '

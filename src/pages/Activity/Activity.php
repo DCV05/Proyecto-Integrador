@@ -262,8 +262,9 @@ class ActivityController
 
       // Añadimos la fila
       $table->addRow( new TableRow( $cells, [
-          'id'    => 'row-' . $group['group_id2']
-        , 'class' => 'hover:bg-gray-100'
+          'id'        => 'row-' . $group['group_id2']
+        , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
+        , 'data-href' => '/group?gid2=' . $group['group_id2']
       ] ) );
     }
     
@@ -283,7 +284,7 @@ class ActivityController
     $mod_user_details = new UserDetails();
 
     // Capturamos los datos del grupo
-    $group = $mod_groups->GetGroupId2( $group_id2 )[0];
+    $group = $mod_groups->GetGroupGID( $group_id2 )[0];
     if( empty( $group ) )
       return '';
 
@@ -505,6 +506,8 @@ class ActivityController
         }
       }
 
+      pl_dump( $this->activity ); exit;
+
       // --------------------------------------------------------------------------------------------------------------
       // Insert
       // --------------------------------------------------------------------------------------------------------------
@@ -603,7 +606,7 @@ class ActivityController
       // --------------------------------------------------------------------------------------------------------------
 
       // Buscamos si el grupo existe
-      $group = ( new Groups() )->GetGroupId2( $fields['gid2'] )[0];
+      $group = ( new Groups() )->GetGroupGID( $fields['gid2'] )[0];
       if( $group )
         $group_id = $group['group_id'];
       else

@@ -84,37 +84,50 @@ foreach( $router->routes as $route_controller )
     continue;
   }
 
-  // Validación por si el controlador no existe
-  if( !file_exists( $controller_path ) )
-  {
-    print '404 - Controller not found';
-    continue;
-  }
+  // ---------------------------------------------------------
+  // Capturamos o generamos el hash
+  // ---------------------------------------------------------
 
-  // Capturamos la instancia de la sesión
-  if( !empty( $_SESSION['controllers'][$controller_name] ) )
-    $controller = unserialize( $_SESSION['controllers'][$controller_name] );
-  else // Instanciamos el nuevo controlador
+  // Capturamos los parámetros del POST
+  $cyphered_controller_hash = pl_get( 'pl_ch', null );
+  if( $cyphered_controller_hash )
+    $controller_hash = pl_decrypt( $cyphered_controller_hash );
+
+  // Comprobamos si hay alguna instancia previa (exactamente una) para este controlador en la sesión:
+  if( empty( $controller_hash ) )
+  {
+    $saved_instances = $_SESSION['controllers'][$controller_name] ?? [];
+    $hashes = array_keys( $saved_instances );
+
+    if( count( $hashes ) === 1 ) // Usamos la única instancia disponible
+      $controller_hash = $hashes[0];
+    else // Si no hay ninguna, o hay más de una y no sabemos cuál elegir generamos un hash nuevo
+      $controller_hash = uniqid( 'ctrl_', true );
+  }
+  
+  // ---------------------------------------------------------
+  // Deserializamos la instancia si existe
+  // ---------------------------------------------------------
+
+  $controller = null;
+  if( !empty( $_SESSION['controllers'][$controller_name][$controller_hash] ) )
+    $controller = unserialize( $_SESSION['controllers'][$controller_name][$controller_hash] );
+
+  // Si sigue null, instanciamos un controlador nuevo
+  if( !$controller )
     $controller = new $controller_name();
-
-  // Validación por si el método no existe
-  if( !method_exists( $controller, $method_name ) )
-  {
-    print '404 - Controller Method {$method_name} not found';
-    continue;
-  }
 
   // Ejecutamos el método del controlador calculado
   if( !$router->ajax )
     call_user_func( [$controller, $method_name] );
-
+  
   // -------------------------------------------------------------------------------------
   // AJAX
   // -------------------------------------------------------------------------------------
 
-  // Controlamos las peticiones POST de AJAX
   elseif( isset( $_GET['cm'] ) )
   {
+    // Controlamos las peticiones POST de AJAX
     // Determinamos qué datos enviar a la función
     if( !empty( $_FILES ) && !empty( $_POST ) )
       $data = array_merge( $_POST, $_FILES ); // Si hay archivos y datos POST, combinamos ambos
@@ -125,21 +138,11 @@ foreach( $router->routes as $route_controller )
     else
       $data = null;
 
+    // Ejecutamos la función AJAX correspondiente
     if( $data != null )
-    {
-      // Ejecutamos la función AJAX correspondiente
-      $ajax_response = call_user_func(
-          [$controller, 'ajax_' . pl_get( 'cm' )]
-        , $data
-      );
-    }
+      $ajax_response = call_user_func( [$controller, 'ajax_' . pl_get( 'cm' )], $data );
     else
-    {
-      // Ejecutamos la función AJAX correspondiente
-      $ajax_response = call_user_func(
-        [$controller, 'ajax_' . pl_get( 'cm' )]
-      );
-    }
+      $ajax_response = call_user_func( [$controller, 'ajax_' . pl_get( 'cm' )] );
 
     // Cabeceras del SUCCESS
     header( 'Content-Type: application/json' );
@@ -155,7 +158,7 @@ foreach( $router->routes as $route_controller )
   // -------------------------------------------------------------------------------------
 
   // Añadimos los parámetros y renderizamos la máscara
-  $view_engine = new ViewEngine( $mask_path, $controller, $controller_name );
+  $view_engine = new ViewEngine( $mask_path, $controller, $controller_name, $controller_hash );
   $view_engine->render_template();
 }
 

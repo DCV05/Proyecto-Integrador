@@ -23,6 +23,12 @@ $( document ).ready( function() {
     form_search( '' );
   } );
 
+  // Evento para redirección según la fila
+  $( document ).on( 'click', '.table-row-link', function( e ) {
+    if( !$( e.target ).closest( '.edit-icon, .delete-icon' ).length )
+      window.location.href = $( this ).data( 'href' );
+  } );
+
   $( document ).on( 'click', '#btn-add-group', function( e ) {
     // Evitamos los demás eventos
     e.preventDefault();

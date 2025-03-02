@@ -38,12 +38,13 @@ $( document ).ready( function() {
     check_inputs( $( this ) );
   } );
 
-  $( '#user_email' ).on( 'input', function () {
-    // Capturamos el valor del input
-    let user_email = $( this ).val();
+  function sync_emails( source, target ) {
+    let email = $( source ).val().trim();
+    $( target ).val( email );
+  }
 
-    // Insertamos este email en el primer tutor
-    $( '#tutor_email_0' ).val( user_email );
+  $( '#user_email, #tutor_email_0' ).on( 'input', function () {
+    sync_emails( this, this.id === 'user_email' ? '#tutor_email_0' : '#user_email');
   } );
 
   // Evento del Submit
@@ -184,10 +185,8 @@ function form_submit( formdata ) {
       // Si el resultado es correcto, redirigmos al panel
       if( data.result = 1 && data.redirect > '' )
         window.location.href = data.redirect;
-      else {
-        let form = $( '#register-form' );
-        generate_error_message( form, data.message );
-      }
+      else
+        pl_dom( data.elements );
     } )
     .catch( function( error ) {
       // Manejo de errores

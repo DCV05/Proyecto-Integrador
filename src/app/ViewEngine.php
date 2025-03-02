@@ -25,14 +25,20 @@ class ViewEngine
 	protected string $controller_name;
 
 	/**
+	 * @var string Hash del controlador utilizado
+	 */
+	protected string $controller_hash;
+
+	/**
 	 * En este caso, el constructor almacenará la plantilla
 	 * @param string $template_path
 	 *  */ 
-	public function __construct( string $template_path, object $controller, string $controller_name )
+	public function __construct( string $template_path, object $controller, string $controller_name, string $controller_hash )
 	{
 		$this->template_path 		= $template_path;
 		$this->controller				= $controller;
 		$this->controller_name	= $controller_name;
+		$this->controller_hash	= $controller_hash;
 	}
 
 	/**
@@ -267,14 +273,13 @@ class ViewEngine
 		$html = file_get_contents( $this->template_path );
 		$compiled_html = $this->compile( $html );
 
+		// Calculamos la llave del controlador del JS
+		$cyphered_controller_hash = pl_encrypt( $this->controller_hash );
+		$js_var = '<script>const PL_CH="' . $cyphered_controller_hash . '"</script>';
+		$compiled_html = str_replace( '</head>', $js_var . '</head>', $compiled_html );
+
 		// Guardamos el controlador en la sesión si no existe o si está vacío
-		if(
-			empty( $_SESSION['controllers'][$this->controller_name] ) or
-			!get_object_vars( @unserialize( $_SESSION['controllers'][$this->controller_name] ) )
-		) 
-		{
-			$_SESSION['controllers'][$this->controller_name] = serialize( $this->controller );
-		}
+		$_SESSION['controllers'][$this->controller_name][$this->controller_hash] = serialize( $this->controller );
 
 		echo $compiled_html;
 	}

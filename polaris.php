@@ -64,6 +64,13 @@ define( 'ASSETS_PATH', __DIR__ . '/src/assets' );
 // CARGA DEL SDK Y ARRANQUE DEL FRAMEWORK
 // ---------------------------------------------------------------------------------------------------------------------
 
+// Carga la configuración desde el archivo `crypt_config.ini`
+$crypt_config = parse_ini_file( __DIR__ . '/crypt_config.ini', true );
+
+// Llave privada de encriptación
+if( !defined( 'PL_ENCRYPT_KEY' ) )
+  define( 'PL_ENCRYPT_KEY', $crypt_config['pl_encrypt']['private_key'] );
+
 // Carga el SDK del framework y ejecuta su inicialización.
 require_once( APP_PATH . '/sdk.php' );
 pl_start();

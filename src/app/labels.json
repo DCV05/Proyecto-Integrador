@@ -1,4 +1,16 @@
 {
+  "user_info": {
+    "es": "Información del usuario",
+    "en": "User information"
+  },
+  "user": {
+    "es": "Usuario",
+    "en": "User"
+  },
+  "user_photo": {
+    "es": "Foto de perfil",
+    "en": "Profile photo"
+  },
   "account_info": {
     "es": "Información de la cuenta",
     "en": "Account information"
@@ -356,6 +368,10 @@
   "add_new_participant": {
     "es": "Añadir un nuevo participante",
     "en": "Add a new participant"
+  },
+  "add_new_user": {
+    "es": "Añadir un nuevo usuario",
+    "en": "Add a new user"
   },
   "participant_medical_treatment_0": {
     "es": "Tratamiento médico",

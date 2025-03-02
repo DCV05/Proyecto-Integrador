@@ -105,7 +105,7 @@ class SignupController
         $sql = '
           select
             *
-          from ' . DB_PROJECT . '.user_details
+          from ' . DB_PROJECT . '.users
           where
             user_email = ?
         ';
@@ -129,7 +129,8 @@ class SignupController
             , user_password
             , role
             , enabled
-          ) values ( ?, ?, ?, ?, ? )
+            , has_schedule
+          ) values ( ?, ?, ?, ?, ?, ? )
         ';
         
         $params = [
@@ -138,6 +139,7 @@ class SignupController
           , $cyphered_password
           , 0
           , 1
+          , 0
         ];
         
         $db->pl_query_prepared( $sql, $params );

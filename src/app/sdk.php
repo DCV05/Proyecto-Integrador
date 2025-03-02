@@ -240,6 +240,89 @@ function pl_get_browser_language( array $available = [], string $default = 'en' 
   return $value;
 }
 
+
+// -------------------------------------------------------------------------------
+// Funciones de encriptado de datos
+// -------------------------------------------------------------------------------
+
+/**
+ * Cifra un dato utilizando el algoritmo AES-256-CBC.
+ *
+ * El dato cifrado incluye un IV (vector de inicialización) que se utiliza
+ * para asegurar la unicidad del cifrado. El resultado se codifica en Base64
+ * y se retorna como una cadena segura para URLs.
+ *
+ * @param string $data El dato que se desea cifrar.
+ *
+ * @return string Una cadena codificada en Base64 que incluye el dato cifrado
+ *                y el vector de inicialización (IV).
+ */
+function pl_encrypt( string $data, string $encrypted_key = PL_ENCRYPT_KEY ): string
+{
+  // Algoritmo de encriptado
+  $cypher_method = 'AES-256-CBC';
+
+  // Generamos un IV para cifrar el dato
+  $iv     = openssl_random_pseudo_bytes( openssl_cipher_iv_length( $cypher_method ) );
+  $cypher = openssl_encrypt( $data, $cypher_method, $encrypted_key, 0, $iv ) ;
+  
+  // Retornamos el dato cifrado
+  $encrypted_data = base64_encode( $cypher );
+  $encrypted_iv   = base64_encode( $iv );
+
+  // Al usar el modo RAW no transformamos los espacios en +
+  return rawurlencode( $encrypted_data . '::' . $encrypted_iv );
+}
+
+/**
+ * Descifra un dato previamente cifrado con `pl_encrypt`.
+ *
+ * Separa el dato cifrado y el vector de inicialización (IV),
+ * decodifica ambos y realiza el proceso de desencriptación.
+ *
+ * @param string $crypted_data El dato cifrado que incluye el IV codificado.
+ * @param int $debug (Opcional) Si se establece a 1, imprime información de depuración.
+ *
+ * @return null|string El dato descifrado si la operación tiene éxito, o `null` en caso de error.
+ */
+function pl_decrypt( string $crypted_data, string $encrypted_key = PL_ENCRYPT_KEY, int $debug = 0 ): null|string
+{
+  // Algoritmo de encriptado
+  $cypher_method = 'AES-256-CBC';
+
+  // Decodificamos los parámetros con RAWDECODE
+  // Al usar el modo RAW, los espacios no pasan a ser +, sino que se quedan igual
+  $decoded_parameter = rawurldecode( $crypted_data );
+
+  // Separamos los datos y el IV
+  $param_parts = explode( '::', $decoded_parameter, 2 );
+  if( count( $param_parts ) !== 2 )
+    return null;
+
+  // Decodificamos en base 64
+  $decrypted_data = base64_decode( $param_parts[0] );
+  $iv             = base64_decode( $param_parts[1] );
+
+  // Extraemos el IV y comprobamos que tiene el formato correcto
+  if( !$decrypted_data || !$iv || strlen( $iv ) !== openssl_cipher_iv_length( $cypher_method ) )
+    return null;
+
+  // Desencriptamos
+  $decrypted_data = openssl_decrypt( $decrypted_data, $cypher_method, $encrypted_key, 0, $iv );
+
+  if( $debug == 1 )
+  {
+    print 'Crypted: ' . $crypted_data . '<br>';
+    print 'Decoded: ' . $decoded_parameter . '<br>';
+    print 'Decrypted: ' . $decrypted_data . '<br>';
+    print 'IV: ' . $iv . '<br>';
+    print 'IV length: ' . strlen( $iv ) . '<br>';
+    print 'Method length: ' . openssl_cipher_iv_length( $cypher_method ) . '<br><br>';
+  }
+
+  return $decrypted_data;
+}
+
 /**
  * Normaliza una cadena convirtiéndola a minúsculas, eliminando caracteres
  * acentuados o especiales y reemplazándolos por un separador. Elimina

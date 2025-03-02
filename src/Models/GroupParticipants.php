@@ -46,4 +46,30 @@ class GroupParticipants
   
     return $this->db->pl_query_prepared( $sql, $params, true, true );
   }
+
+  /**
+   * Obtiene una fila específica de la tabla `group_participants` según `participant_id` o `participant_id2`.
+   * 
+   * @param int|string $participant_id Identificador del participante (ID numérico o ID alfanumérico).
+   * @return array Datos del participante si existe, o un array vacío si no hay resultados.
+   */
+  public function GetGroupPID( int|string $participant_id, string $where = '' ): array
+  {
+    $field = is_numeric( $participant_id ) ? 'p.participant_id' : 'p.participant_id2';
+
+    $sql = '
+      select
+          gp.* 
+        , p.*
+        , g.participant_id
+      from ' . DB_PROJECT . '.group_participants gp
+      left join ' . DB_PROJECT . '.participants p on gp.participant_id = p.participant_id
+      where
+        ' . $field . ' = ?
+        ' . $where . '
+    ';
+    $params = [$participant_id];
+  
+    return $this->db->pl_query_prepared( $sql, $params, true, true );
+  }
 }

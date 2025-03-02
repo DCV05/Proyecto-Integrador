@@ -1,138 +1,129 @@
+DROP DATABASE IF EXISTS `proyecto_integrador`;
 CREATE DATABASE `proyecto_integrador`;
 USE `proyecto_integrador`;
 
-CREATE TABLE `activities` (
-  `activity_id` int(11) NOT NULL AUTO_INCREMENT,
-  `activity_id2` varchar(32) NOT NULL,
-  `activity_name` varchar(100) NOT NULL,
-  `activity_description` text NOT NULL,
-  `activity_time` datetime NOT NULL,
-  PRIMARY KEY (`activity_id`)
-);
-
-INSERT INTO `activities` (`activity_id2`, `activity_name`, `activity_description`, `activity_time`) VALUES
-('58b3d1f2bf25ba639db113ccdbd37e08', 'Misión de Exploradores', 'Los niños trabajan juntos como astronautas en una misión espacial.', '2025-01-03 15:00:00'),
-('FDUYSIFYDSUI', 'Misión de Descubrimiento', 'Exploración de un nuevo planeta con actividades interactivas.', '2025-01-04 10:30:00');
-
-CREATE TABLE `activities_monitors` (
-  `relation_id` int(11) NOT NULL AUTO_INCREMENT,
-  `activity_id` int(11) NOT NULL,
-  `monitor_id` int(11) NOT NULL,
-  PRIMARY KEY (`relation_id`)
-);
-
-INSERT INTO `activities_monitors` (`activity_id`, `monitor_id`) VALUES
-(1, 2),
-(2, 3);
-
-CREATE TABLE `activities_participants` (
-  `relation_id` int(11) NOT NULL AUTO_INCREMENT,
-  `activity_id` int(11) NOT NULL,
-  `participant_id` int(11) NOT NULL,
-  PRIMARY KEY (`relation_id`)
-);
-
-INSERT INTO `activities_participants` (`relation_id`, `activity_id`, `participant_id`) VALUES
-(1, 1, 1),
-(2, 1, 5),
-(3, 2, 1),
-(4, 2, 5);
-
-CREATE TABLE `participants` (
-  `participant_id` int(11) NOT NULL AUTO_INCREMENT,
-  `participant_id2` varchar(32) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `participant_name` varchar(100) NOT NULL,
-  `participant_birth_date` date NOT NULL,
-  `participant_allergies` text NOT NULL,
-  `participant_special_needs` text NOT NULL,
-  `participant_medical_treatment` text NOT NULL,
-  PRIMARY KEY (`participant_id`)
-);
-
-INSERT INTO `participants` (`participant_id2`, `user_id`, `participant_name`, `participant_birth_date`, `participant_allergies`, `participant_special_needs`, `participant_medical_treatment`) VALUES
-('e26b20124473be7d8ff9eb4cead70a9f', 1, 'Diego Sánchez', '2016-03-23', 'Alergia a frutos secos', 'Necesita estructura en actividades', 'Lleva EpiPen'),
-('D7S8A9D78AS9D', 2, 'Daniel Pérez', '2015-06-12', 'Sin alergias', 'Dificultades de atención', 'Ninguno');
-
-CREATE TABLE `attendance` (
-  `attendance_id` int(11) NOT NULL AUTO_INCREMENT,
-  `attendance_id2` varchar(32) NOT NULL,
-  `activity_id` int(11) NOT NULL,
-  `participant_id` int(11) NOT NULL,
-  `checkin_datetime` datetime DEFAULT NULL,
-  `checkout_datetime` datetime DEFAULT NULL,
-  PRIMARY KEY (`attendance_id`)
-);
-
-INSERT INTO `attendance` (`attendance_id2`, `activity_id`, `participant_id`, `checkin_datetime`, `checkout_datetime`) VALUES
-('f3fe12b84bb737d358e9179d253cb3fa', 1, 1, '2025-02-09 10:12:00', NULL),
-('F4E362F685EED572A68644E8CF7DA5F7', 1, 2, '2025-02-09 10:16:00', NULL);
-
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id2` varchar(32) NOT NULL,
-  `user_email` varchar(124) NOT NULL,
-  `user_password` varchar(256) NOT NULL,
-  `role` int(11) NOT NULL,
-  `enabled` tinyint(4) NOT NULL,
-  PRIMARY KEY (`user_id`)
+  `user_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id2` VARCHAR(32) NOT NULL,
+  `user_email` VARCHAR(124) NOT NULL,
+  `user_password` VARCHAR(256) NOT NULL,
+  `role` INT NOT NULL,
+  `enabled` TINYINT NOT NULL
 );
 
 INSERT INTO `users` (`user_id2`, `user_email`, `user_password`, `role`, `enabled`) VALUES
-('4476b3f8cc574da8014d6f16e6fa5de5', 'tutor1@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 0, 1),
-('dcdfe398b9540c5b78f4e90e4b57e9f3', 'monitor1@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 1, 1),
-('D8SA79D7AS89D7A89', 'admin1@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 2, 1);
+('user1', 'tutor1@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 0, 1),
+('user2', 'tutor2@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 0, 1),
+('user3', 'monitor1@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 1, 1),
+('user4', 'monitor2@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 1, 1),
+('user5', 'admin@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 2, 1);
+
+CREATE TABLE `groups` (
+  `group_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `group_name` VARCHAR(100) NOT NULL
+);
+
+INSERT INTO `groups` (`group_name`) VALUES
+('Grupo A'), ('Grupo B'), ('Grupo C'), ('Grupo D'), ('Grupo E');
+
+CREATE TABLE `participants` (
+  `participant_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `participant_id2` VARCHAR(32) NOT NULL,
+  `user_id` INT NOT NULL,
+  `group_id` INT NOT NULL,
+  `participant_name` VARCHAR(100) NOT NULL,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`),
+  FOREIGN KEY (`group_id`) REFERENCES `groups`(`group_id`)
+);
+
+INSERT INTO `participants` (`participant_id2`, `user_id`, `group_id`, `participant_name`) VALUES
+('p1', 1, 1, 'Juan Pérez'),
+('p2', 1, 1, 'María López'),
+('p3', 1, 1, 'Carlos Ruiz'),
+('p4', 2, 2, 'Ana Gómez'),
+('p5', 2, 2, 'Pedro Fernández'),
+('p6', 2, 2, 'Lucía Sánchez'),
+('p7', 3, 3, 'Jorge Herrera'),
+('p8', 3, 3, 'Laura Ramírez'),
+('p9', 3, 3, 'Diego Torres'),
+('p10', 4, 4, 'Sofía Martín'),
+('p11', 4, 4, 'David Navarro'),
+('p12', 4, 4, 'Carmen Ortega'),
+('p13', 5, 5, 'Raúl Castro'),
+('p14', 5, 5, 'Beatriz Domínguez'),
+('p15', 5, 5, 'Manuel Ríos');
+
+CREATE TABLE `activities` (
+  `activity_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `activity_id2` VARCHAR(32) NOT NULL,
+  `activity_name` VARCHAR(100) NOT NULL,
+  `activity_description` TEXT NOT NULL,
+  `activity_time` DATETIME NOT NULL
+);
+
+INSERT INTO `activities` (`activity_id2`, `activity_name`, `activity_description`, `activity_time`) VALUES
+('a1', 'Exploración Espacial', 'Misión espacial interactiva.', '2025-03-10 10:00:00'),
+('a2', 'Robótica', 'Competencia de robots.', '2025-03-11 14:00:00');
+
+CREATE TABLE `attendance` (
+  `attendance_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `activity_id` INT NOT NULL,
+  `participant_id` INT NOT NULL,
+  `checkin_datetime` DATETIME DEFAULT NULL,
+  `checkout_datetime` DATETIME DEFAULT NULL,
+  FOREIGN KEY (`activity_id`) REFERENCES `activities`(`activity_id`),
+  FOREIGN KEY (`participant_id`) REFERENCES `participants`(`participant_id`)
+);
+
+INSERT INTO `attendance` (`activity_id`, `participant_id`, `checkin_datetime`, `checkout_datetime`) VALUES
+(1, 1, '2025-03-10 09:55:00', NULL),
+(1, 2, '2025-03-10 09:57:00', NULL);
+
+CREATE TABLE `group_activities` (
+  `relation_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `group_id` INT NOT NULL,
+  `activity_id` INT NOT NULL,
+  FOREIGN KEY (`group_id`) REFERENCES `groups`(`group_id`),
+  FOREIGN KEY (`activity_id`) REFERENCES `activities`(`activity_id`)
+);
+
+INSERT INTO `group_activities` (`group_id`, `activity_id`) VALUES
+(1, 1), (2, 2);
+
+CREATE TABLE `group_participants` (
+  `relation_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `group_id` INT NOT NULL,
+  `participant_id` INT NOT NULL,
+  FOREIGN KEY (`group_id`) REFERENCES `groups`(`group_id`),
+  FOREIGN KEY (`participant_id`) REFERENCES `participants`(`participant_id`)
+);
+
+INSERT INTO `group_participants` (`group_id`, `participant_id`) VALUES
+(1, 1), (1, 2), (2, 4);
 
 CREATE TABLE `payments` (
-  `payment_id` int(11) NOT NULL AUTO_INCREMENT,
-  `payment_id2` varchar(32) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `status` varchar(32) NOT NULL,
-  `amount` float NOT NULL,
-  `payment_date` date NOT NULL,
-  PRIMARY KEY (`payment_id`)
+  `payment_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `status` VARCHAR(32) NOT NULL,
+  `amount` FLOAT NOT NULL,
+  `payment_date` DATE NOT NULL,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`)
 );
 
-INSERT INTO `payments` (`payment_id2`, `user_id`, `status`, `amount`, `payment_date`) VALUES
-('A7F8G9H7D89F7G9H', 1, 'Paid', 150.00, '2025-01-15'),
-('F4G78H97DFG897H', 2, 'Pending', 200.00, '2025-01-16');
-
-CREATE TABLE `user_details` (
-  `detail_id` int(11) NOT NULL AUTO_INCREMENT,
-  `detail_id2` varchar(32) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `user_name` varchar(256) NOT NULL,
-  `user_email` varchar(124) NOT NULL,
-  `user_relationship` varchar(128) NOT NULL,
-  `user_dni` varchar(9) NOT NULL,
-  `user_phone_number` varchar(16) NOT NULL,
-  PRIMARY KEY (`detail_id`)
-);
-
-INSERT INTO `user_details` (`detail_id2`, `user_id`, `user_name`, `user_email`, `user_relationship`, `user_dni`, `user_phone_number`) VALUES
-('D78S9A0D7A89SD7A89', 1, 'Laura Sánchez', 'tutor1@example.com', 'Madre', '11111111A', '555555555'),
-('H7GF89F789H78F9G', 2, 'Carlos Rodríguez', 'monitor1@example.com', 'Monitor', '2222222B', '666666666');
+INSERT INTO `payments` (`user_id`, `status`, `amount`, `payment_date`) VALUES
+(1, 'Paid', 150.00, '2025-02-20'),
+(2, 'Pending', 200.00, '2025-02-21');
 
 CREATE TABLE `schedule_participants` (
-  `schedule_id` int(11) NOT NULL,
-  `schedule_id2` varchar(32) NOT NULL,
-  `participant_id` int(11) NOT NULL,
-  `start_day` date NOT NULL,
-  `end_day` date NOT NULL
+  `schedule_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `participant_id` INT NOT NULL,
+  `start_day` DATE NOT NULL,
+  `end_day` DATE NOT NULL,
+  FOREIGN KEY (`participant_id`) REFERENCES `participants`(`participant_id`)
 );
 
-INSERT INTO `schedule_participants` (`schedule_id`, `schedule_id2`, `participant_id`, `start_day`, `end_day`) VALUES
-(1, 'DF78SF78DS9F789DS7F89SD7G89', 1, '2025-02-12', '2025-02-19');
-
-CREATE TABLE `schedule_monitors` (
-  `schedule_id` int(11) NOT NULL,
-  `schedule_id2` varchar(32) NOT NULL,
-  `monitor_id` int(11) NOT NULL,
-  `start_day` date NOT NULL,
-  `end_day` date NOT NULL
-);
-
-INSERT INTO `schedule_monitors` (`schedule_id`, `schedule_id2`, `monitor_id`, `start_day`, `end_day`) VALUES
-(1, 'DF78SF78DS9F789DS7F89SD7G89', 2, '2025-02-12', '2025-02-19');
+INSERT INTO `schedule_participants` (`participant_id`, `start_day`, `end_day`) VALUES
+(1, '2025-03-01', '2025-03-10'),
+(2, '2025-03-05', '2025-03-15');
 
 COMMIT;
