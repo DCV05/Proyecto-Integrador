@@ -707,13 +707,14 @@ function app_generate_modal( string $title, string $content, string $max_width =
 
 function app_landing_navbar( bool $center = false ): string
 {
-  $margin = $center == false
-    ? 'ml-32'
-    : 'mx-auto';
+  if( $center === true )
+    $margin = 'mx-auto';
+  else
+    $margin = '';
 
   $html = '
     <nav id="main-navbar" class="bg-transparent fixed top-0 w-full z-50 transform transition">
-      <div class="bg-white md:bg-transparent flex items-center justify-between w-full md:w-fit space-x-12 px-6 lg:px-12 py-0 md:py-4">
+      <div class="' . $margin . ' bg-white md:bg-transparent flex items-center justify-between w-full md:w-fit space-x-12 px-6 lg:px-12 py-0 md:py-4">
         
         <a class="py-5 inline-flex" href="/" title="Campament">
           <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">
