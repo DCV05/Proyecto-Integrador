@@ -87,6 +87,7 @@ La aplicación ha sido desarrollada utilizando una arquitectura **Modelo-Vista-C
 ```bash
 git clone git@github.com:DCV05/Proyecto-Integrador.git
 cd Proyecto-Integrador
+composer install
 ```
 
 ### 2. Configuración del Servidor Apache
