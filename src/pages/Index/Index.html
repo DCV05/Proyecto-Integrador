@@ -15,19 +15,19 @@
     [[ func | &landing_navbar ]]
   </header>
 
-  <main class="xl:min-h-screen h-full overflow-x-hidden space-y-16 ml-auto my-64 xl:mt-0">
-    <section>
+  <main class="xl:min-h-screen h-full overflow-x-hidden space-y-16 ml-auto my-32 xl:mt-0">
+    <section class="mx-5 xl:mx-0">
       <div class="relative flex flex-col xl:flex-row items-center justify-start xl:justify-between xl:h-screen mx-auto gap-12">
-        <div class="xl:w-1/2 max-w-5xl xl:max-w-2xl ml-12 xl:ml-32 text-center xl:text-left">
+        <div class="xl:w-1/2 md:max-w-5xl xl:max-w-2xl mx-auto md:ml-12 xl:ml-32 text-center xl:text-left">
           <h1 class="main-title font-semibold mb-4">[[ label | hero_title ]]</h1>
-          <p class="subtitle mb-6">[[ label | hero_subtitle ]]</p>
+          <p class="text-lg md:text-2xl mb-6">[[ label | hero_subtitle ]]</p>
           <div class="flex justify-center xl:justify-start space-x-4">
             <a href="#activities" class="apple-button transition">[[ label | view_activities ]]</a>
             <a href="/contact" class="apple-button-secondary transition">[[ label | contact_us ]]</a>
           </div>
         </div>
   
-        <div class="relative rounded-2xl xl:rounded-none mx-12 xl:mx-0 xl:w-1/2 overflow-hidden transform xl:skew-x-[-6deg] origin-bottom-left h-fit xl:h-full z-25">
+        <div class="relative rounded-2xl xl:rounded-none xl:w-1/2 overflow-hidden transform xl:skew-x-[-6deg] origin-bottom-left h-fit xl:h-full z-25">
           <div class="transform xl:skew-x-[6deg] origin-bottom-left xl:h-full">
             <img id="hero-photo" src="[[ polaris.assets ]]/img/hero_photo.webp" alt="[[ label | hero_title ]]" class="w-full object-cover"/>
           </div>
@@ -39,16 +39,16 @@
   
   <main class="min-h-screen h-full overflow-x-hidden space-y-32 container mx-auto mt-24">
   
-    <section>
+    <section class="mx-5 xl:mx-0">
       <div class="grid lg:grid-cols-5 gap-12 items-center mx-auto">
   
         <div class="col-span-3 flex justify-start items-center">
           <img class="rounded-xl h-[32rem] object-cover" src="[[ polaris.assets ]]/img/detail1.webp" alt="[[ label | learning_title ]]">
         </div>
   
-        <div class="col-span-2 flex flex-col space-y-6 max-w-2xl">
+        <div class="col-span-3 md:col-span-2 flex flex-col space-y-6 max-w-2xl">
           <h2 class="huge-title font-semibold">[[ label | learning_title ]]</h2>
-          <p class="subtitle mb-6">
+          <p class="text-lg md:text-xl mb-6">
             [[ label | learning_description ]]
             
             <br><br>
@@ -63,16 +63,16 @@
       </div>
     </section>
 
-    <section>
+    <section class="mx-5 xl:mx-0">
       <div class="grid lg:grid-cols-5 gap-12 items-center mx-auto">
     
         <div class="col-span-2 flex flex-col space-y-6 max-w-2xl">
           <h2 class="text-4xl font-semibold">[[ label | difficulty_levels ]]</h2>
-          <p class="text-xl">
+          <p class="text-lg md:text-xl">
             [[ label | difficulty_description ]]
           </p>
     
-          <ul class="text-xl space-y-3">
+          <ul class="text-lg md:text-xl space-y-3">
             <li><strong>[[ label | difficulty_6_9_age ]]</strong> → [[ label | difficulty_6_9 ]]</li>
             <li><strong>[[ label | difficulty_10_14_age ]]</strong> → [[ label | difficulty_10_14 ]]</li>
           </ul>
@@ -88,20 +88,20 @@
       </div>
     </section>
 
-    <section>
+    <section class="mx-5 xl:mx-0">
       <div class="grid lg:grid-cols-5 gap-12 items-center mx-auto">
     
         <div class="col-span-3 flex justify-start items-center">
           <img class="rounded-xl h-[32rem] object-cover" src="[[ polaris.assets ]]/img/detail3.webp" alt="[[ label | robotics_challenges ]]">
         </div>
     
-        <div class="col-span-2 flex flex-col space-y-6 max-w-2xl">
+        <div class="col-span-3 md:col-span-2 flex flex-col space-y-6 max-w-2xl">
           <h2 class="text-4xl font-semibold">[[ label | robotics_challenges ]]</h2>
-          <p class="text-xl">
+          <p class="text-lg md:text-xl">
             [[ label | robotics_description ]]
           </p>
     
-          <ul class="text-xl space-y-3">
+          <ul class="text-lg md:text-xl space-y-3">
             <li><strong>[[ label | sumo_battle ]]</strong> [[ label | sumo_battle_description ]]</li>
             <li><strong>[[ label | robot_race ]]</strong> [[ label | robot_race_description ]]</li>
             <li><strong>[[ label | rescue_mission ]]</strong> [[ label | rescue_mission_description ]]</li>
@@ -120,9 +120,9 @@
   <main class="space-y-32 mt-24 ml-0 xl:ml-16" id="activities">
     <section>
   
-      <h2 class="text-4xl xl:text-5xl font-semibold ml-12 lg:ml-[7.5rem]">[[ label | discover_activities ]]</h2>
+      <h2 class="text-4xl xl:text-5xl font-semibold ml-5 md:ml-12 lg:ml-[7.5rem]">[[ label | discover_activities ]]</h2>
       <div id="snap-container" class="transition transform flex overflow-x-auto gap-6 py-12 items-center w-full snap-x snap-mandatory scrollbar-none">
-        <div class="apple-card snap-center flex-none w-[16rem]">&nbsp;</div>
+        <div class="apple-card snap-center flex-none w-[2.5rem] md:w-[16rem]">&nbsp;</div>
       
         <div class="text-black apple-card snap-center flex-none bg-[url([[ polaris.assets ]]/img/rover.jpg)] transition hover:scale-105 duration-300 origin-center">
           <div class="absolute inset-0 overlay-bg flex flex-col items-start justify-start z-10 p-6 space-y-6 hidden" id="overlay">
@@ -303,7 +303,7 @@
         <div class="apple-card snap-center flex-none w-[45rem]">&nbsp;</div>
       </div>
   
-      <div class="flex justify-end flex-row gap-4 mr-[22.5rem]">
+      <div class="flex justify-end flex-row gap-4 mr-[2.5rem] md:mr-[22.5rem]">
         <button id="prev-snap" type="button" class="apple-snap rotate-180 transform transition duration-300">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36" height="36" fill="#616163">
             <path d="M23.5587,16.916 C24.1447,17.4999987 24.1467,18.446 23.5647,19.034 L16.6077,26.056 C16.3147,26.352 15.9287,26.4999987 15.5427,26.4999987 C15.1607,26.4999987 14.7787,26.355 14.4867,26.065 C13.8977,25.482 13.8947,24.533 14.4777,23.944 L20.3818,17.984 L14.4408,12.062 C13.8548,11.478 13.8528,10.5279 14.4378,9.941 C15.0218,9.354 15.9738,9.353 16.5588,9.938 L23.5588,16.916 L23.5587,16.916 Z"></path>

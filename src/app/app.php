@@ -184,7 +184,7 @@ function app_restrict(): void
   foreach( $restricted_routes as $route => $allowed_roles )
   {
     if( strpos( $current_url, $route ) === 0 && !in_array( $role, $allowed_roles ) )
-      pl_redirect('/'); // Redirige a la página principal si no tiene acceso
+      pl_redirect('/' ); // Redirige a la página principal si no tiene acceso
   }
 }
 
@@ -713,27 +713,39 @@ function app_landing_navbar( bool $center = false ): string
 
   $html = '
     <nav id="main-navbar" class="bg-transparent fixed top-0 w-full z-50 transform transition">
-      <div class="flex items-center w-fit ' . $margin . ' space-x-12">
+      <div class="bg-white md:bg-transparent flex items-center justify-between w-full md:w-fit space-x-12 px-6 lg:px-12 py-0 md:py-4">
         
-        <div class="py-5">
-          <a class="inline-flex" href="/" title="Campament">
-            <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">
-              ' . pl_label( 'campament' ) . '
-            </span>
-          </a>
+        <a class="py-5 inline-flex" href="/" title="Campament">
+          <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">
+            ' . pl_label( 'campament' ) . '
+          </span>
+        </a>
+      
+        <div class="hidden md:flex space-x-12">
+          <div class="py-3 hidden md:flex flex-row items-center gap-12 text-gray-700">
+            <a href="#activities" class="hover:text-blue-500 cursor-pointer transition">' . pl_label( 'activities' ) . '</a>
+            <a href="/contact" class="hover:text-blue-500 cursor-pointer transition">' . pl_label( 'contact' ) . '</a>
+            <a href="/login" class="apple-button-secondary transition bg-white">' . pl_label( 'login' ) . '</a>
+          </div>
+
+          <div class="flex flex-row items-center gap-12">
+            <a href="/signup" class="apple-button transition">' . pl_label( 'signup' ) . '</a>
+          </div>
         </div>
 
-        <div class="py-3 flex flex-row items-center gap-12 text-gray-700">
-          <a href="#activities" class="hover:text-blue-500 cursor-pointer transition">' . pl_label( 'activities' ) . '</a>
-          <a href="/contact" class="hover:text-blue-500 cursor-pointer transition">' . pl_label( 'contact' ) . '</a>
-          <a href="/login" class="apple-button-secondary transition bg-white">' . pl_label( 'login' ) . '</a>
-        </div>
-
-        <div class="flex flex-row items-center gap-12">
-          <a href="/signup" class="apple-button transition">' . pl_label( 'signup' ) . '</a>
-        </div>
+        <button id="mobile-menu-toggle" class="md:hidden focus:outline-none">
+          <i class="icon">menu</i>
+        </button>
 
       </div>
+
+      <div id="mobile-menu" class="hidden md:hidden flex-col bg-white shadow-landing p-4 space-y-3 transform transition duration-300">
+        <a href="#activities" class="hover:text-blue-500 transition">' . pl_label( 'activities' ) . '</a>
+        <a href="/contact" class="hover:text-blue-500 transition">' . pl_label( 'contact' ) . '</a>
+        <a href="/login" class="btn-secondary">' . pl_label( 'login' ) . '</a>
+        <a href="/signup" class="btn-primary">' . pl_label( 'signup' ) . '</a>
+      </div>
+
     </nav>
   ';
 
