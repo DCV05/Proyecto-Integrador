@@ -117,5 +117,14 @@ db_sys      = polaris
 db_project  = proyecto_integrador
 ```
 
+
+### 4. Configuración de AJAX
+El archivo `crypt_config.ini` debe configurarse con una llave privada de encriptación para poder realizar consultas AJAX dentro del sistema:
+
+```ini
+[pl_encrypt]
+private_key = ad05f78187c942f9dd521605fa81f1ba
+```
+
 ## Contribuciones y Contacto
 Para reportar errores o contribuir con mejoras, puedes abrir un issue en el repositorio de GitHub o contactar a **daniel.correa@kodalogic.com**.
