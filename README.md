@@ -127,5 +127,80 @@ El archivo `crypt_config.ini` debe configurarse con una llave privada de encript
 private_key = ad05f78187c942f9dd521605fa81f1ba
 ```
 
+## Flujos del sistema Polaris
+Dentro del entorno de Polaris, existen diferentes flujos y procesos que pueden facilitar el desarrollo, seguridad y escalabilidad de un proyecto. A continuación, se presentan unos diagramas con los diferentes flujos de Polaris:
+
+### **Flujo de Enrutamiento y Carga del Controlador**
+
+```mermaid
+graph TD;
+    A[Solicitud HTTP] -->|Verifica si es AJAX| B{Es una solicitud AJAX?}
+    B -- Sí --> C[Cargar Router y obtener ruta AJAX]
+    B -- No --> D[Cargar Router y obtener ruta normal]
+
+    C --> E{Ruta encontrada en la BD?}
+    E -- No --> F[Retornar error 404]
+    E -- Sí --> G[Ejecutar controlador correspondiente]
+    
+    D --> H{Existe el archivo de la ruta?}
+    H -- No --> I[Redirigir a 404]
+    H -- Sí --> J[Cargar controlador]
+
+    J --> K[Ejecutar controlador y método]
+    K --> L[Renderizar vista con ViewEngine]
+    L --> M[Respuesta al cliente]
+```
+
+
+### **Flujo de Procesamiento de AJAX**
+
+```mermaid
+graph TD;
+    A[Solicitud AJAX] -->|Captura parámetros| B[Determina el controlador y método]
+    B --> C{Método existe?}
+    C -- No --> D[Retornar error JSON]
+    C -- Sí --> E[Llamar a la función AJAX del controlador]
+    E --> F{La función devuelve datos?}
+    F -- No --> G[Retornar error JSON]
+    F -- Sí --> H[Formatear respuesta en JSON]
+    H --> I[Enviar respuesta al cliente]
+```
+
+
+### **Flujo de Renderizado con ViewEngine**
+
+```mermaid
+graph TD;
+    A[ViewEngine recibe una plantilla] -->|Carga contenido| B[Parsea etiquetas Polaris]
+    B --> C[Busca variables en la sesión y controlador]
+    C --> D{Etiqueta encontrada?}
+    
+    D -- No --> E[Reemplazar por &quot;variable no encontrada&quot;] --> F[Sustituir en plantilla]
+    D -- Sí --> F[Sustituir en plantilla]
+    
+    F --> G[Compilar plantilla]
+    G --> H[Insertar controlador en sesión]
+    H --> I[Renderizar HTML final]
+    I --> J[Enviar contenido al cliente]
+```
+
+### **Flujo de Serialización de Controladores en la Sesión**
+
+```mermaid
+graph TD;
+    A[Ejecutar un controlador] -->|Verifica existencia en sesión| B{¿Existe en $_SESSION?}
+    
+    B -- Sí --> C[Recuperar controlador desde $_SESSION]
+    B -- No --> D[Crear nueva instancia del controlador]
+    
+    D --> E[Generar un hash único para la instancia]
+    E --> F[Almacenar en el $_SESSION]
+    
+    C --> G[Ejecutar método del controlador]
+    F --> G[Ejecutar método del controlador]
+    
+    G --> H[Retornar respuesta]
+```
+
 ## Contribuciones y Contacto
 Para reportar errores o contribuir con mejoras, puedes abrir un issue en el repositorio de GitHub o contactar a **daniel.correa@kodalogic.com**.
