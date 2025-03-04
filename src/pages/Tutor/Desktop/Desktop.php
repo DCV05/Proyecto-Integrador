@@ -157,7 +157,7 @@ class TutorDesktopController
         ';
 
         // Añadir calendario
-        $calendars      .= '<div id="calendar-' . $participant_id2 . '" class="calendar-container ' . $hidden . '"></div>';
+        $calendars      .= '<div id="calendar-' . $participant_id2 . '" class="calendar-container ' . $hidden . ' h-[28rem]"></div>';
         $calendar_ids[] = '#calendar-' . $participant_id2;
       }
 

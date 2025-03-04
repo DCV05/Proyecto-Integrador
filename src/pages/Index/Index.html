@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>[[ polaris.page.title_seo ]]</title>
   [[ func | &headers ]]
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/landing.css">
   <script src="/js/landing.js"></script>
 
@@ -15,64 +16,72 @@
     [[ func | &landing_navbar ]]
   </header>
 
-  <main class="xl:min-h-screen h-full overflow-x-hidden space-y-16 ml-auto my-32 xl:mt-0">
-    <section class="mx-5 xl:mx-0">
-      <div class="relative flex flex-col xl:flex-row items-center justify-start xl:justify-between xl:h-screen mx-auto gap-12">
-        <div class="xl:w-1/2 md:max-w-5xl xl:max-w-2xl mx-auto md:ml-12 xl:ml-32 text-center xl:text-left">
-          <h1 class="main-title font-semibold mb-4">[[ label | hero_title ]]</h1>
-          <p class="text-lg md:text-2xl mb-6">[[ label | hero_subtitle ]]</p>
-          <div class="flex justify-center xl:justify-start space-x-4">
-            <a href="#activities" class="apple-button transition">[[ label | view_activities ]]</a>
-            <a href="/contact" class="apple-button-secondary transition">[[ label | contact_us ]]</a>
+
+  <main class="lg:min-h-screen h-full overflow-x-hidden ml-auto my-24 lg:mt-0">
+    <section class="px-4 md:px-[4.5rem] lg:px-0 ml-0 xl:ml-48">
+      <div class="relative flex flex-col lg:flex-row items-center justify-between lg:justify-start lg:min-h-screen h-full mx-auto gap-12 md:gap-24">
+
+        <div class="w-full lg:w-1/2 lg:ml-[4.5rem] space-y-8 text-left">
+          <h1 class="text-5xl md:text-6xl font-semibold">[[ label | hero_title ]]</h1>
+          <p class="text-lg">[[ label | hero_subtitle ]]</p>
+          <div class="flex justify-start space-x-4">
+            <a href="#activities" class="apple-button transition">
+              <span class="hidden md:block">[[ label | view_activities ]]</span>
+              <span class="block md:hidden">[[ label | activities ]]</span>
+            </a>
+            <a href="/contact" class="apple-button-secondary transition">
+              <span class="hidden md:block">[[ label | contact_us ]]</span>
+              <span class="block md:hidden">[[ label | contact ]]</span>
+            </a>
           </div>
         </div>
-  
-        <div class="relative rounded-2xl xl:rounded-none xl:w-1/2 overflow-hidden transform xl:skew-x-[-6deg] origin-bottom-left h-fit xl:h-full z-25">
-          <div class="transform xl:skew-x-[6deg] origin-bottom-left xl:h-full">
+
+        <div class="relative w-full lg:w-1/2 overflow-hidden transform lg:skew-x-[-6deg] origin-bottom-left h-full lg:h-screen z-25 rounded-2xl lg:rounded-none lg:m-0">
+          <div class="transform lg:skew-x-[6deg] origin-bottom-left h-full">
             <img id="hero-photo" src="[[ polaris.assets ]]/img/hero_photo.webp" alt="[[ label | hero_title ]]" class="w-full object-cover"/>
           </div>
         </div>
-  
+
       </div>
     </section>
   </main>
   
-  <main class="min-h-screen h-full overflow-x-hidden space-y-32 container mx-auto mt-24">
+  <main class="min-h-screen h-full overflow-x-hidden container mx-auto space-y-24 md:space-y-32">
   
-    <section class="mx-5 xl:mx-0">
-      <div class="grid lg:grid-cols-5 gap-12 items-center mx-auto">
-  
-        <div class="col-span-3 flex justify-start items-center">
+    <section>
+      <div class="px-4 flex flex-col-reverse lg:flex-row items-start gap-12 mx-auto">
+        
+        <div class="w-full lg:w-3/5 flex justify-center lg:justify-start">
           <img class="rounded-xl h-[32rem] object-cover" src="[[ polaris.assets ]]/img/detail1.webp" alt="[[ label | learning_title ]]">
         </div>
-  
-        <div class="col-span-3 md:col-span-2 flex flex-col space-y-6 max-w-2xl">
-          <h2 class="huge-title font-semibold">[[ label | learning_title ]]</h2>
-          <p class="text-lg md:text-xl mb-6">
+    
+        <div class="w-full lg:w-2/5 flex flex-col space-y-6 max-w-2xl text-left space-y-8">
+          <h2 class="text-4xl md:text-5xl font-semibold">[[ label | learning_title ]]</h2>
+          <p class="text-lg mb-6">
             [[ label | learning_description ]]
             
             <br><br>
-  
+    
             [[ label | learning_experience ]]
           </p>
           <a href="/activities" class="apple-button">
             [[ label | explore_more ]]
           </a>
         </div>
-  
+    
       </div>
     </section>
 
-    <section class="mx-5 xl:mx-0">
-      <div class="grid lg:grid-cols-5 gap-12 items-center mx-auto">
+    <section>
+      <div class="px-4 flex flex-col lg:flex-row gap-12 mx-auto">
     
-        <div class="col-span-2 flex flex-col space-y-6 max-w-2xl">
-          <h2 class="text-4xl font-semibold">[[ label | difficulty_levels ]]</h2>
-          <p class="text-lg md:text-xl">
+        <div class="w-full lg:w-2/5 flex flex-col space-y-6 max-w-2xl text-left">
+          <h2 class="text-4xl md:text-5xl font-semibold">[[ label | difficulty_levels ]]</h2>
+          <p class="text-lg">
             [[ label | difficulty_description ]]
           </p>
     
-          <ul class="text-lg md:text-xl space-y-3">
+          <ul class="text-lg space-y-3">
             <li><strong>[[ label | difficulty_6_9_age ]]</strong> → [[ label | difficulty_6_9 ]]</li>
             <li><strong>[[ label | difficulty_10_14_age ]]</strong> → [[ label | difficulty_10_14 ]]</li>
           </ul>
@@ -80,28 +89,28 @@
             [[ label | learn_more ]]
           </a>
         </div>
-    
-        <div class="col-span-3 flex justify-end items-center order-1">
-          <video src="[[ polaris.assets ]]/img/detail2.mp4" autoplay loop loading="lazy" class="rounded-xl w-[48rem] object-cover"></video>
+        
+        <div class="w-full lg:w-3/5 flex">
+          <video src="[[ polaris.assets ]]/img/detail2.mp4" autoplay loop loading="lazy" class="rounded-xl w-full lg:w-[48rem] object-cover"></video>
         </div>
     
       </div>
     </section>
 
-    <section class="mx-5 xl:mx-0">
-      <div class="grid lg:grid-cols-5 gap-12 items-center mx-auto">
-    
-        <div class="col-span-3 flex justify-start items-center">
-          <img class="rounded-xl h-[32rem] object-cover" src="[[ polaris.assets ]]/img/detail3.webp" alt="[[ label | robotics_challenges ]]">
+    <section class="overflow-hidden">
+      <div class="px-4 flex flex-col-reverse lg:flex-row gap-12 mx-auto">
+        
+        <div class="w-full lg:w-3/5 flex">
+          <img class="rounded-xl w-full h-[32rem] object-cover" src="[[ polaris.assets ]]/img/detail3.webp" alt="[[ label | robotics_challenges ]]">
         </div>
     
-        <div class="col-span-3 md:col-span-2 flex flex-col space-y-6 max-w-2xl">
-          <h2 class="text-4xl font-semibold">[[ label | robotics_challenges ]]</h2>
-          <p class="text-lg md:text-xl">
+        <div class="w-full lg:w-2/5 flex flex-col space-y-6 max-w-2xl text-left">
+          <h2 class="text-4xl md:text-5xl font-semibold">[[ label | robotics_challenges ]]</h2>
+          <p class="text-lg">
             [[ label | robotics_description ]]
           </p>
     
-          <ul class="text-lg md:text-xl space-y-3">
+          <ul class="text-lg space-y-3">
             <li><strong>[[ label | sumo_battle ]]</strong> [[ label | sumo_battle_description ]]</li>
             <li><strong>[[ label | robot_race ]]</strong> [[ label | robot_race_description ]]</li>
             <li><strong>[[ label | rescue_mission ]]</strong> [[ label | rescue_mission_description ]]</li>
@@ -113,18 +122,21 @@
         </div>
     
       </div>
+    
+      <h2 class="px-4 text-3xl md:text-5xl lg:text-5xl font-semibold mt-24">
+        [[ label | discover_activities ]]
+      </h2>
     </section>
 
   </main>
 
-  <main class="space-y-32 mt-24 ml-0 xl:ml-16" id="activities">
+  <main class="space-y-32" id="activities">
     <section>
   
-      <h2 class="text-4xl xl:text-5xl font-semibold ml-5 md:ml-12 lg:ml-[1.5rem] xl:ml-[3rem]">[[ label | discover_activities ]]</h2>
       <div id="snap-container" class="transition transform flex overflow-x-auto gap-6 py-12 items-center w-full snap-x snap-mandatory scrollbar-none">
-        <div class="apple-card snap-center flex-none w-[2.5rem] md:w-[16rem]">&nbsp;</div>
-      
-        <div class="text-black apple-card snap-center flex-none bg-[url([[ polaris.assets ]]/img/rover.jpg)] transition hover:scale-105 duration-300 origin-center">
+        <div class="hidden 2xl:flex apple-card snap-center flex-none w-[23rem] lg:w-[23rem]">&nbsp;</div>
+
+        <div class="ml-[3.8rem] 2xl:ml-[8rem] text-black apple-card snap-center flex-none bg-[url([[ polaris.assets ]]/img/rover.jpg)] transition hover:scale-105 duration-300 origin-center">
           <div class="absolute inset-0 overlay-bg flex flex-col items-start justify-start z-10 p-6 space-y-6 hidden" id="overlay">
             <div class="text-black">
               <p class="text-sm uppercase opacity-80">[[ label | exploration_technology ]]</p>
@@ -136,7 +148,7 @@
               [[ label | robotic_explorer_benefits ]]
             </div>
             <div class="absolute right-6 bottom-6 z-50 flex justify-end">
-              <button type="button" class="revert-change-snap apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
+              <button type="button" class="apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
                   <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
                 </svg>
@@ -150,7 +162,7 @@
               <h2 class="text-3xl font-bold">[[ label | robotic_explorer_title ]]</h2>
             </div>
             <div class="flex justify-end">
-              <button type="button" class="change-snap absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
+              <button type="button" class="absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
                   <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
                 </svg>
@@ -171,7 +183,7 @@
               [[ label | drone_flight_benefits ]]
             </div>
             <div class="absolute right-6 bottom-6 z-50 flex justify-end">
-              <button type="button" class="revert-change-snap apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
+              <button type="button" class="apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
                   <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
                 </svg>
@@ -185,7 +197,7 @@
               <h2 class="text-3xl font-bold">[[ label | drone_flight_title ]]</h2>
             </div>
             <div class="flex justify-end">
-              <button type="button" class="change-snap absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
+              <button type="button" class="absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
                   <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
                 </svg>
@@ -206,7 +218,7 @@
               [[ label | last_robot_standing_benefits ]]
             </div>
             <div class="absolute right-6 bottom-6 z-50 flex justify-end">
-              <button type="button" class="revert-change-snap apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
+              <button type="button" class="apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
                   <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
                 </svg>
@@ -220,7 +232,7 @@
               <h2 class="text-3xl font-bold">[[ label | last_robot_standing_title ]]</h2>
             </div>
             <div class="flex justify-end">
-              <button type="button" class="change-snap absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
+              <button type="button" class="absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
                   <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
                 </svg>
@@ -241,7 +253,7 @@
               [[ label | robotic_catapult_benefits ]]
             </div>
             <div class="absolute right-6 bottom-6 z-50 flex justify-end">
-              <button type="button" class="revert-change-snap apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
+              <button type="button" class="apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
                   <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
                 </svg>
@@ -254,7 +266,7 @@
               <h2 class="text-3xl font-bold">[[ label | robotic_catapult_title ]]</h2>
             </div>
             <div class="flex justify-end">
-              <button type="button" class="change-snap absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
+              <button type="button" class="absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
                   <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
                 </svg>
@@ -263,7 +275,7 @@
           </div>
         </div>
       
-        <div class="apple-card snap-center flex-none bg-[url([[ polaris.assets ]]/img/lamp.png)] transition hover:scale-105 duration-300 origin-center relative">
+        <div class="mr-[3.75rem] md:mr-0 apple-card snap-center flex-none bg-[url([[ polaris.assets ]]/img/lamp.png)] transition hover:scale-105 duration-300 origin-center relative">
           <div class="absolute inset-0 overlay-bg flex flex-col items-start justify-start z-10 p-6 space-y-6 hidden" id="overlay">
             <div class="text-black">
               <p class="text-sm uppercase opacity-80">[[ label | innovation_energy ]]</p>
@@ -277,7 +289,7 @@
             </div>
         
             <div class="absolute right-6 bottom-6 z-50 flex justify-end">
-              <button type="button" class="revert-change-snap apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
+              <button type="button" class="apple-snap-button bg-white rounded-full p-2 rotate-[45deg]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
                   <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
                 </svg>
@@ -292,7 +304,7 @@
             </div>
             
             <div class="flex justify-end">
-              <button type="button" class="change-snap absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
+              <button type="button" class="absolute right-6 bottom-6 apple-snap-button bg-white rounded-full p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="transform transition duration-300" viewBox="0 0 20 20" width="36" height="36" fill="#000">
                   <path d="M17.25,8.51H11.5V2.75A1.5,1.5,0,0,0,10,1.25h0a1.5,1.5,0,0,0-1.5,1.5V8.5H2.75a1.5,1.5,0,0,0,0,3H8.5v5.75a1.5,1.5,0,0,0,1.5,1.5h0a1.5,1.5,0,0,0,1.5-1.5V11.5h5.75a1.5,1.5,0,0,0,0-3Z"></path>
                 </svg>
@@ -300,10 +312,10 @@
             </div>
           </div>
         </div>
-        <div class="apple-card snap-center flex-none w-[45rem]">&nbsp;</div>
+        <div class="hidden md:flex apple-card snap-center flex-none w-[45rem]">&nbsp;</div>
       </div>
   
-      <div class="flex justify-end flex-row gap-4 mr-[2.5rem] md:mr-[22.5rem]">
+      <div class="flex justify-end flex-row gap-4 mr-[2.5rem] lg:mr-[11.5rem]">
         <button id="prev-snap" type="button" class="apple-snap rotate-180 transform transition duration-300">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36" height="36" fill="#616163">
             <path d="M23.5587,16.916 C24.1447,17.4999987 24.1467,18.446 23.5647,19.034 L16.6077,26.056 C16.3147,26.352 15.9287,26.4999987 15.5427,26.4999987 C15.1607,26.4999987 14.7787,26.355 14.4867,26.065 C13.8977,25.482 13.8947,24.533 14.4777,23.944 L20.3818,17.984 L14.4408,12.062 C13.8548,11.478 13.8528,10.5279 14.4378,9.941 C15.0218,9.354 15.9738,9.353 16.5588,9.938 L23.5588,16.916 L23.5587,16.916 Z"></path>

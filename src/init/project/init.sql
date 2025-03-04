@@ -13,7 +13,7 @@ CREATE TABLE `users` (
 );
 
 INSERT INTO `users` (`user_id`, `user_id2`, `user_email`, `user_password`, `role`, `enabled`, `has_schedule`) VALUES
-(1, 'DD7F7D89G7D897G8FD97G89D', 'tutor1@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 0, 1, 1),
+(1, 'DD7F7D89G7D897G8FD97G89D', 'tutor1@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 0, 1, 0),
 (2, 'G7F89D7F8D97G8F9D7897F98', 'tutor2@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 0, 1, 1),
 (3, 'F78GTB7DF86FD7S86G7F8D67', 'tutor3@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 0, 1, 1),
 (4, 'GUF87F6D78CVCB78678F678D', 'tutor4@example.com', '$2y$10$HxDS3vwtVn/1t/zKgG7B0.a7CxShwvwWfK9uFdJz3MhaJTm0m2vcG', 0, 1, 1),
@@ -105,7 +105,7 @@ CREATE TABLE `group_participants` (
 );
 
 INSERT INTO `group_participants` (`group_id`, `participant_id`) VALUES
-(1, 1), (1, 2), (1, 3),
+(1, 2), (1, 3),
 (2, 5), (2, 6), (3, 7),
 (3, 9), (4, 10), (4, 12),
 (5, 13), (5, 14), (5, 15);
@@ -125,11 +125,11 @@ CREATE TABLE `activities` (
 );
 
 INSERT INTO `activities` (`activity_id`, `activity_id2`, `activity_name_es`, `activity_name_en`, `activity_description_es`, `activity_description_en`, `activity_tags_es`, `activity_tags_en`, `activity_datetime_start`, `activity_datetime_end`) VALUES
-(1, 'GFY8D97D8S97G89FD78GF9D789', 'Construye tu Explorador Robótico', 'Build Your Robotic Explorer', 'Los niños diseñarán y ensamblarán su propio rover robótico, equipado con motores y sensores, para explorar terrenos simulados. Aprenderán sobre movilidad autónoma, adaptación a obstáculos y el uso de programación para controlar su explorador. Esta actividad fomenta la creatividad y el pensamiento lógico, permitiéndoles experimentar con ingeniería mecánica y robótica.', 'Children will design and assemble their own robotic rover, equipped with motors and sensors, to explore simulated terrains. They will learn about autonomous mobility, obstacle adaptation, and how to use programming to control their explorer. This activity fosters creativity and logical thinking, allowing them to experiment with mechanical engineering and robotics.', 'Exploración y Tecnología', 'Exploration and Technology', '2025-03-02 12:00:00', '2025-03-02 18:00:00'),
-(2, 'HJD98D7G87D9F78G9FD7GF98D7', 'Vuelo de Drones', 'Drone Flight', 'Una competencia emocionante donde los participantes pilotarán drones a través de un circuito lleno de obstáculos. Los niños aprenderán sobre estabilidad, control y maniobrabilidad, además de conceptos básicos de aerodinámica. Esta actividad mejora la coordinación ojo-mano y desarrolla habilidades de precisión y toma de decisiones bajo presión.', 'An exciting competition where participants will pilot drones through a circuit full of obstacles. Children will learn about stability, control, and maneuverability, as well as basic aerodynamics concepts. This activity improves hand-eye coordination and develops precision skills and decision-making under pressure.', 'Estrategia y Competencia', 'Strategy and Competition', '2025-03-02 15:00:00', '2025-03-02 17:00:00'),
-(3, 'KJH87D98G79D87F9G8FD79G8D7', 'El Último Guerrero en Pie', 'Last Warrior Standing', 'Enfrenta tu robot en un combate de sumo donde el objetivo es empujar al oponente fuera del ring. Los niños diseñarán, programarán y optimizarán sus robots para mejorar su estabilidad y fuerza. Aprenderán sobre sensores de proximidad, estrategias de defensa y ataque, y la importancia del ajuste mecánico en la robótica de competencia.', 'Face off your robot in a sumo battle where the goal is to push the opponent out of the ring. Children will design, program, and optimize their robots to improve stability and strength. They will learn about proximity sensors, defensive and attack strategies, and the importance of mechanical adjustments in competition robotics.', 'Estrategia y Competencia', 'Strategy and Competition', '2025-02-18 10:00:00', '2025-02-18 12:00:00'),
-(4, 'LKJH98D7G98F7D9G87FD98G7D9', 'Construye tu Catapulta Robótica', 'Build Your Robotic Catapult', 'Usando principios de ingeniería y mecánica, los niños diseñarán y construirán una catapulta robótica capaz de lanzar proyectiles con precisión. Experimentarán con diferentes ángulos de lanzamiento, tensión de los materiales y programación de mecanismos automatizados para optimizar su puntería. Esta actividad combina creatividad, resolución de problemas y habilidades matemáticas.', 'Using engineering and mechanical principles, children will design and build a robotic catapult capable of launching projectiles with precision. They will experiment with different launch angles, material tension, and program automated mechanisms to optimize accuracy. This activity combines creativity, problem-solving, and mathematical skills.', 'Ingeniería y Puntería', 'Engineering and Accuracy', '2025-02-18 12:00:00', '2025-02-18 14:00:00'),
-(5, 'POIU98D7F98G7D98G7FD98G7D9', 'Crea tu propia Bombilla', 'Create Your Own Light Bulb', 'Los participantes aprenderán sobre energías renovables y la importancia de la electricidad en la robótica. Construirán circuitos eléctricos básicos, explorando el uso de paneles solares, motores y LEDs. Descubrirán cómo los circuitos eléctricos alimentan los robots y experimentarán con conexiones en serie y paralelo para optimizar el consumo energético.', 'Participants will learn about renewable energies and the importance of electricity in robotics. They will build basic electrical circuits, exploring the use of solar panels, motors, and LEDs. They will discover how electrical circuits power robots and experiment with series and parallel connections to optimize energy consumption.', 'Innovación y Energía', 'Innovation and Energy', '2025-02-20 10:00:00', '2025-02-20 12:00:00');
+(1, 'GFY8D97D8S97G89FD78GF9D789', 'Construye tu Explorador Robótico', 'Build Your Robotic Explorer', 'Los niños diseñarán y ensamblarán su propio rover robótico, equipado con motores y sensores, para explorar terrenos simulados. Aprenderán sobre movilidad autónoma, adaptación a obstáculos y el uso de programación para controlar su explorador. Esta actividad fomenta la creatividad y el pensamiento lógico, permitiéndoles experimentar con ingeniería mecánica y robótica.', 'Children will design and assemble their own robotic rover, equipped with motors and sensors, to explore simulated terrains. They will learn about autonomous mobility, obstacle adaptation, and how to use programming to control their explorer. This activity fosters creativity and logical thinking, allowing them to experiment with mechanical engineering and robotics.', 'Exploración y Tecnología', 'Exploration and Technology', '2025-03-04 12:00:00', '2025-03-04 18:00:00'),
+(2, 'HJD98D7G87D9F78G9FD7GF98D7', 'Vuelo de Drones', 'Drone Flight', 'Una competencia emocionante donde los participantes pilotarán drones a través de un circuito lleno de obstáculos. Los niños aprenderán sobre estabilidad, control y maniobrabilidad, además de conceptos básicos de aerodinámica. Esta actividad mejora la coordinación ojo-mano y desarrolla habilidades de precisión y toma de decisiones bajo presión.', 'An exciting competition where participants will pilot drones through a circuit full of obstacles. Children will learn about stability, control, and maneuverability, as well as basic aerodynamics concepts. This activity improves hand-eye coordination and develops precision skills and decision-making under pressure.', 'Estrategia y Competencia', 'Strategy and Competition', '2025-03-04 15:00:00', '2025-03-04 17:00:00'),
+(3, 'KJH87D98G79D87F9G8FD79G8D7', 'El Último Guerrero en Pie', 'Last Warrior Standing', 'Enfrenta tu robot en un combate de sumo donde el objetivo es empujar al oponente fuera del ring. Los niños diseñarán, programarán y optimizarán sus robots para mejorar su estabilidad y fuerza. Aprenderán sobre sensores de proximidad, estrategias de defensa y ataque, y la importancia del ajuste mecánico en la robótica de competencia.', 'Face off your robot in a sumo battle where the goal is to push the opponent out of the ring. Children will design, program, and optimize their robots to improve stability and strength. They will learn about proximity sensors, defensive and attack strategies, and the importance of mechanical adjustments in competition robotics.', 'Estrategia y Competencia', 'Strategy and Competition', '2025-03-07 10:00:00', '2025-03-07 12:00:00'),
+(4, 'LKJH98D7G98F7D9G87FD98G7D9', 'Construye tu Catapulta Robótica', 'Build Your Robotic Catapult', 'Usando principios de ingeniería y mecánica, los niños diseñarán y construirán una catapulta robótica capaz de lanzar proyectiles con precisión. Experimentarán con diferentes ángulos de lanzamiento, tensión de los materiales y programación de mecanismos automatizados para optimizar su puntería. Esta actividad combina creatividad, resolución de problemas y habilidades matemáticas.', 'Using engineering and mechanical principles, children will design and build a robotic catapult capable of launching projectiles with precision. They will experiment with different launch angles, material tension, and program automated mechanisms to optimize accuracy. This activity combines creativity, problem-solving, and mathematical skills.', 'Ingeniería y Puntería', 'Engineering and Accuracy', '2025-03-07 12:00:00', '2025-03-07 14:00:00'),
+(5, 'POIU98D7F98G7D98G7FD98G7D9', 'Crea tu propia Bombilla', 'Create Your Own Light Bulb', 'Los participantes aprenderán sobre energías renovables y la importancia de la electricidad en la robótica. Construirán circuitos eléctricos básicos, explorando el uso de paneles solares, motores y LEDs. Descubrirán cómo los circuitos eléctricos alimentan los robots y experimentarán con conexiones en serie y paralelo para optimizar el consumo energético.', 'Participants will learn about renewable energies and the importance of electricity in robotics. They will build basic electrical circuits, exploring the use of solar panels, motors, and LEDs. They will discover how electrical circuits power robots and experiment with series and parallel connections to optimize energy consumption.', 'Innovación y Energía', 'Innovation and Energy', '2025-03-10 10:00:00', '2025-03-10 12:00:00');
 
 
 CREATE TABLE `attendance` (
@@ -142,8 +142,8 @@ CREATE TABLE `attendance` (
 );
 
 INSERT INTO `attendance` (`attendance_id`, `attendance_id2`, `activity_id`, `participant_id`, `checkin_datetime`, `checkout_datetime`) VALUES
-(1, '40D771E4671625387847ACEB222C86F1', 1, 1, '2025-02-28 10:35:00', NULL),
-(2, '255663C9FD7B3E17D4D7ECC261E4ED8C', 1, 2, '2025-02-28 10:35:00', NULL);
+(1, '40D771E4671625387847ACEB222C86F1', 1, 1, '2025-04-28 10:35:00', NULL),
+(2, '255663C9FD7B3E17D4D7ECC261E4ED8C', 1, 2, '2025-04-28 10:35:00', NULL);
 
 ALTER TABLE `attendance`
   DROP PRIMARY KEY,
@@ -179,7 +179,7 @@ CREATE TABLE `payments` (
 );
 
 INSERT INTO `payments` (`payment_id2`, `user_id`, `status`, `amount`, `payment_date`) VALUES
-('A1B2C3D4E5F6G7H8', 1, 1, 150.00, '2025-02-20'),
+('A1B2C3D4E5F6G7H8', 1, 1, 150.00, '2025-03-10'),
 ('I9J8K7L6M5N4O3P2', 2, 0, 200.00, '2025-02-21'),
 ('Q1R2S3T4U5V6W7X8', 3, 1, 180.00, '2025-02-22'),
 ('Y9Z8A7B6C5D4E3F2', 4, 0, 220.00, '2025-02-23'),
@@ -200,7 +200,6 @@ CREATE TABLE `schedule_participants` (
 );
 
 INSERT INTO `schedule_participants` (`schedule_id2`, `participant_id`, `start_day`, `end_day`) VALUES
-('D7S89FG789DF7G89DS79', 1, '2025-03-02', '2025-03-16'),
 ('HV6546G56G4G6456G456', 2, '2025-03-03', '2025-03-17'),
 ('G645645G645VHRTBHYTN', 3, '2025-03-04', '2025-03-18'),
 ('VHRJTDGBFGJRDTERGTRY', 4, '2025-03-05', '2025-03-19'),

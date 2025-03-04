@@ -334,7 +334,7 @@ function app_panel_interface(): string
 
         <div class="flex flex-col flex-1 items-start p-4">
           <a class="inline-flex" href="/" title="kodalogic">
-            <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">' . pl_label( 'campament' ) . '</span>
+            <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">Robocamp</span>
           </a>
         </div>
 
@@ -713,20 +713,20 @@ function app_landing_navbar( bool $center = false ): string
     $margin = '';
 
   $html = '
-    <nav id="main-navbar" class="bg-transparent fixed top-0 w-full z-50 transform transition">
-      <div class="' . $margin . ' bg-white md:bg-transparent flex items-center justify-between w-full md:w-fit space-x-12 px-6 lg:px-12 py-0 md:py-4">
+    <nav id="main-navbar" class="bg-transparent fixed top-0 w-full z-50 transform transition px-[1rem] lg:px-[4.5rem] lg:ml-[12rem]">
+      <div class="' . $margin . ' bg-[#f9f9f9] lg:bg-transparent flex items-center justify-between w-full lg:w-fit py-3 lg:py-1 space-x-0 lg:space-x-12">
         
-        <a class="py-5 inline-flex" href="/" title="Campament">
+        <a class="inline-flex" href="/" title="Campament">
           <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">
-            ' . pl_label( 'campament' ) . '
+            Robocamp
           </span>
         </a>
       
-        <div class="hidden md:flex space-x-12">
-          <div class="py-3 hidden md:flex flex-row items-center gap-12 text-gray-700">
+        <div class="hidden lg:flex space-x-12">
+          <div class="py-1 hidden lg:flex flex-row items-center gap-12 text-gray-700">
             <a href="#activities" class="hover:text-blue-500 cursor-pointer transition">' . pl_label( 'activities' ) . '</a>
             <a href="/contact" class="hover:text-blue-500 cursor-pointer transition">' . pl_label( 'contact' ) . '</a>
-            <a href="/login" class="apple-button-secondary transition bg-white">' . pl_label( 'login' ) . '</a>
+            <a href="/login" class="apple-button-secondary transition bg-[#f9f9f9]">' . pl_label( 'login' ) . '</a>
           </div>
 
           <div class="flex flex-row items-center gap-12">
@@ -734,13 +734,13 @@ function app_landing_navbar( bool $center = false ): string
           </div>
         </div>
 
-        <button id="mobile-menu-toggle" class="md:hidden focus:outline-none">
+        <button id="mobile-menu-toggle" class="lg:hidden focus:outline-none">
           <i class="icon">menu</i>
         </button>
 
       </div>
 
-      <div id="mobile-menu" class="hidden md:hidden flex-col bg-white shadow-landing p-4 space-y-3 transform transition duration-300">
+      <div id="mobile-menu" class="hidden lg:hidden flex-col bg-[#f9f9f9] shadow-landing p-4 space-y-3 transform transition duration-300 rounded-xl">
         <a href="#activities" class="hover:text-blue-500 transition">' . pl_label( 'activities' ) . '</a>
         <a href="/contact" class="hover:text-blue-500 transition">' . pl_label( 'contact' ) . '</a>
         <a href="/login" class="btn-secondary">' . pl_label( 'login' ) . '</a>
@@ -765,7 +765,7 @@ function app_landing_footer( $margin = true ): string
         <div class="lg:col-span-5 text-center">
           <a class="inline-flex" href="/" title="Campament">
             <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">
-              ' . pl_label( 'campament' ) . '
+              Robocamp
             </span>
           </a>
           <nav class="mt-4">

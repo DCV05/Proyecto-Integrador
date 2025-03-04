@@ -1,8 +1,29 @@
+:root {
+  --font-heading: 'Nunito', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+  
+  --color-text: #333333;
+  --color-bg: #f9f9f9;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  font-family: var( --font-body ) !important;
+  background-color: var( --color-bg ) !important;
+  color: var( --color-text ) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var( --font-heading );
 }
 
 #hero-photo {
