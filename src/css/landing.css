@@ -4,6 +4,8 @@
   
   --color-text: #333333;
   --color-bg: #f9f9f9;
+  --color-buttons: #5e57ea;
+  --color-buttons-hover: #4840e6;
 }
 
 * {
@@ -52,13 +54,13 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0.5rem;
   color: white;
   padding: 0.50rem 1.5rem;
-  background-color: #4f46e5;
+  background-color: var( --color-buttons );
   width: fit-content;
   transition: all .3s;
 }
 
 .apple-button:hover {
-  background-color: rgb(79, 70, 229);
+  background-color: var( --color-buttons-hover );
 }
 
 .apple-button:disabled {
@@ -70,12 +72,12 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0.5rem;
   padding: 0.5rem 1.5rem;
   width: fit-content;
-  color: #4f46e5;
-  border: 0.15rem #4f46e5 solid;
+  color: var( --color-buttons );
+  border: 0.15rem var( --color-buttons ) solid;
 }
 
 .apple-button-secondary:hover {
-  background: #4f46e5;
+  background: var( --color-buttons-hover );
   color: white; 
 }
 
@@ -84,6 +86,7 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+  cursor: pointer;
   
   width: 24rem;
   height: 42rem;
@@ -94,12 +97,76 @@ h1, h2, h3, h4, h5, h6 {
   background-size: cover;
   background-position: center;
   scroll-snap-align: start;
+
+  z-index: 1000;
 }
 
 @media (max-width: 1024px) {
   .apple-card {
     width: 21rem;
   }
+}
+
+.robot-icon {
+  z-index: 25;
+}
+
+.robot-icon.right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: rotate(-30deg) translateX(25px) translateY(50px);
+}
+
+.robot-icon.left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: rotate(30deg) translateX(-25px) translateY(50px);
+}
+
+.card-img-left {
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.card-img-right {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+@media screen and ( max-width: 768px ) {
+  .robot-icon {
+    display: none;
+  }
+
+  .card-img-left, .card-img-right {
+    border-radius: 0 0 1rem 1rem;
+  }
+
+  .card-left, .card-right {
+    border-radius: 1rem 1rem 0 0 !important;
+  }
+}
+
+.card {
+  background: #f2f2fa;
+  padding: 1.5rem 2rem;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.card-right {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.card-left {
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
 }
 
 .apple-card-snap {

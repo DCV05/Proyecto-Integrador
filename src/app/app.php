@@ -710,10 +710,10 @@ function app_landing_navbar( bool $center = false ): string
   if( $center === true )
     $margin = 'mx-auto';
   else
-    $margin = '';
+    $margin = 'lg:px-[4.5rem] lg:ml-[12rem]';
 
   $html = '
-    <nav id="main-navbar" class="bg-transparent fixed top-0 w-full z-50 transform transition px-[1rem] lg:px-[4.5rem] lg:ml-[12rem]">
+    <nav id="main-navbar" class="bg-transparent fixed top-0 w-full z-50 transform transition px-[1rem]">
       <div class="' . $margin . ' bg-[#f9f9f9] lg:bg-transparent flex items-center justify-between w-full lg:w-fit py-3 lg:py-1 space-x-0 lg:space-x-12">
         
         <a class="inline-flex" href="/" title="Campament">
