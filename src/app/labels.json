@@ -199,6 +199,14 @@
     "es": "Grupo A",
     "en": "Group A"
   },
+  "activity_name_es_placeholder": {
+    "es": "Actividad 1",
+    "en": "Actividad 1"
+  },
+  "activity_name_en_placeholder": {
+    "es": "Activity 1",
+    "en": "Activity 1"
+  },
   "group_size_placeholder": {
     "es": "4",
     "en": "4"
@@ -832,6 +840,10 @@
   "user_phone_number": {
     "es": "Número de teléfono",
     "en": "Phone number"
+  },
+  "add": {
+    "es": "Añadir",
+    "en": "Add"
   },
   "user_phone_number_placeholder": {
     "es": "+34 678 123 456",

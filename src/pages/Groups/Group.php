@@ -52,10 +52,10 @@ class GroupController
 
     // Columnas
     $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' )              ) );
-    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )        ) );
-    $table->addColumn( 'participant_allergies'        , new TableColumn( pl_label( 'allergies' )         ) );
-    $table->addColumn( 'participant_special_needs'    , new TableColumn( pl_label( 'special_needs' )     ) );
-    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ) ) );
+    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'participant_allergies'        , new TableColumn( pl_label( 'allergies' )        , ['class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'participant_special_needs'    , new TableColumn( pl_label( 'special_needs' )    , ['class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['class' => 'hidden md:table-cell'] ) );
     $table->addColumn( 'schedule_icon'                , new TableColumn( ''                              ) );
 
     // Si es un admin, mostramos los iconos de borrar
@@ -81,10 +81,10 @@ class GroupController
       // Definimos las celdas
       $cells = [
           'participant_name'              => new TableCell( $participant['participant_name'] )
-        , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'] )
-        , 'participant_allergies'         => new TableCell( $participant['participant_allergies'] )
-        , 'participant_special_needs'     => new TableCell( $participant['participant_special_needs'] )
-        , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
+        , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date']    , ['class' => 'hidden md:table-cell'] )
+        , 'participant_allergies'         => new TableCell( $participant['participant_allergies']     , ['class' => 'hidden md:table-cell'] )
+        , 'participant_special_needs'     => new TableCell( $participant['participant_special_needs'] , ['class' => 'hidden md:table-cell'] )
+        , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem] hidden md:table-cell'] )
         , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 icon-container schedule-icon'] )
       ];
 
@@ -150,10 +150,10 @@ class GroupController
     // Definimos las celdas
     $cells = [
         'participant_name'              => new TableCell( $participant['participant_name'] )
-      , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'] )
-      , 'participant_allergies'         => new TableCell( $participant['participant_allergies'] )
-      , 'participant_special_needs'     => new TableCell( $participant['participant_special_needs'] )
-      , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
+      , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date']    , ['class' => 'hidden md:table-cell'] )
+      , 'participant_allergies'         => new TableCell( $participant['participant_allergies']     , ['class' => 'hidden md:table-cell'] )
+      , 'participant_special_needs'     => new TableCell( $participant['participant_special_needs'] , ['class' => 'hidden md:table-cell'] )
+      , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem] hidden md:table-cell'] )
       , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 icon-container schedule-icon'] )
     ];
 

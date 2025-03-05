@@ -33,7 +33,8 @@ class ActivitiesController
       $value = '
         <button type="button" id="btn-add-activity" class="p-button">
           <i class="icon">add</i>
-          <span>' . pl_label( 'add-activity' ) . '</span>
+          <span class="hidden md:block">' . pl_label( 'add-activity' ) . '</span>
+          <span class="block md:hidden">' . pl_label( 'add' ) . '</span>
         </button>
       '; 
     }
@@ -66,9 +67,9 @@ class ActivitiesController
     
     // Inicializamos la tabla y sus columnas
     $table = new Table( ['id' => 'activities_table', 'class' => 'p-table'] );
-    $table->addColumn( 'activity_name'       , new TableColumn( pl_label( 'activity_name' ), ['id' => 'name_col']               ) );
-    $table->addColumn( 'activity_description', new TableColumn( pl_label( 'activity_description' ), ['id' => 'description_col'] ) );
-    $table->addColumn( 'activity_time'       , new TableColumn( pl_label( 'activity_time' ), ['id' => 'time_col']               ) );
+    $table->addColumn( 'activity_name'       , new TableColumn( pl_label( 'activity_name' ) ) );
+    $table->addColumn( 'activity_description', new TableColumn( pl_label( 'activity_description' ), ['class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'activity_time'       , new TableColumn( pl_label( 'activity_time' )       , ['class' => 'hidden md:table-cell'] ) );
 
     // Si es un admin, mostramos los iconos de editar y borrar
     if( $role === 2 )
@@ -90,7 +91,7 @@ class ActivitiesController
         <div class="flex gap-3">
           <span class="p-tag-blue">
             ' . date( 'd/m/y | H:i', strtotime( $activity['activity_datetime_start'] ) )  . ' - '
-              . date( 'H:i', strtotime( $activity['activity_datetime_end'] ) )    . '
+              . date( 'H:i', strtotime( $activity['activity_datetime_end'] ) )            . '
           </span>
         </div>
       ';
@@ -98,8 +99,8 @@ class ActivitiesController
       // Definimos las celdas
       $cells = [
           'activity_name'        => new TableCell( $activity['activity_name_' . DEF_LANG] )
-        , 'activity_description' => new TableCell( $activity['activity_description_' . DEF_LANG], ['class' => 'max-w-[14rem]'] )
-        , 'activity_time'        => new TableCell( $activity['activity_time'] )
+        , 'activity_description' => new TableCell( $activity['activity_description_' . DEF_LANG], ['class' => 'max-w-[14rem] hidden md:table-cell'] )
+        , 'activity_time'        => new TableCell( $activity['activity_time'], ['class' => 'hidden md:table-cell'] )
       ];
 
       // --------------------------------------------------------------------------------
@@ -177,9 +178,9 @@ class ActivitiesController
 
     // Definimos las celdas
     $cells = [
-        'activity_name'        => new TableCell( $activity['activity_name_' . DEF_LANG] )
-      , 'activity_description' => new TableCell( $activity['activity_description_' . DEF_LANG], ['class' => 'max-w-[14rem]'] )
-      , 'activity_time'        => new TableCell( $activity['activity_time'] )
+        'activity_name'        => new TableCell( $activity['activity_name_' . DEF_LANG]       , ['class' => 'max-w-[14rem] hidden md:table-cell'] )
+      , 'activity_description' => new TableCell( $activity['activity_description_' . DEF_LANG], ['class' => 'max-w-[14rem] hidden md:table-cell'] )
+      , 'activity_time'        => new TableCell( $activity['activity_time']                   , ['class' => 'hidden md:table-cell'] )
     ];
 
     // --------------------------------------------------------------------------------

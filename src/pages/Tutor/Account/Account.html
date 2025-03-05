@@ -39,16 +39,17 @@
               </div>
           
               <div class="flex gap-3">
-                <button type="button" id="clean-filters" class="p-button">
+                <button type="button" id="clean-filters" class="p-button !hidden md:!flex">
                   <i class="icon">restart_alt</i>
                   <span>[[ label | clean_filters ]]</span>
                 </button>
-              </div>
 
-              <button type="button" id="btn-add-tutor" class="p-button">
-                <i class="icon">add</i>
-                <span>[[ label | add_tutor ]]</span>
-              </button>
+                <button type="button" id="btn-add-tutor" class="p-button">
+                  <i class="icon">add</i>
+                  <span class="hidden md:block">[[ label | add_tutor ]]</span>
+                  <span class="block md:hidden">[[ label | add ]]</span>
+                </button>
+              </div>
   
             </div>
           </form>
@@ -82,16 +83,17 @@
               </div>
           
               <div class="flex gap-3">
-                <button type="button" id="clean-filters" class="p-button">
+                <button type="button" id="clean-filters" class="p-button !hidden md:!flex">
                   <i class="icon">restart_alt</i>
                   <span>[[ label | clean_filters ]]</span>
                 </button>
-              </div>
 
-              <button type="button" id="btn-add-participant" class="p-button">
-                <i class="icon">add</i>
-                <span>[[ label | add_participant ]]</span>
-              </button>
+                <button type="button" id="btn-add-participant" class="p-button">
+                  <i class="icon">add</i>
+                  <span class="hidden md:block">[[ label | add_participant ]]</span>
+                  <span class="block md:hidden">[[ label | add ]]</span>
+                </button>
+              </div>
   
             </div>
           </form>

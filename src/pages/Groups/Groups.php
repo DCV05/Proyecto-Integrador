@@ -24,7 +24,8 @@ class GroupsController
       $value = '
         <button type="button" id="btn-add-group" class="p-button">
           <i class="icon">add</i>
-          <span>' . pl_label( 'add-group' ) . '</span>
+          <span class="hidden md:block">' . pl_label( 'add-group' ) . '</span>
+          <span class="block md:hidden">' . pl_label( 'add' ) . '</span>
         </button>
       '; 
     }
@@ -56,9 +57,9 @@ class GroupsController
     $table = new Table( ['id' => 'groups_table', 'class' => 'p-table'] );
 
     // Columnas
-    $table->addColumn( 'group_name'        , new TableColumn( pl_label( 'name' )                ) );
-    $table->addColumn( 'participants_count', new TableColumn( pl_label( 'participants_count' )  ) );
-    $table->addColumn( 'monitor_name'      , new TableColumn( pl_label( 'monitor_name' )        ) );
+    $table->addColumn( 'group_name'        , new TableColumn( pl_label( 'name' ) ) );
+    $table->addColumn( 'participants_count', new TableColumn( pl_label( 'participants_count' ), ['class' => 'hidden md:table-cell']  ) );
+    $table->addColumn( 'monitor_name'      , new TableColumn( pl_label( 'monitor_name' )      , ['class' => 'hidden md:table-cell']  ) );
 
     // Si es un admin, mostramos los iconos de editar y borrar
     if( $role === 2 )
@@ -82,8 +83,8 @@ class GroupsController
       // Definimos las celdas
       $cells = [
           'group_name'         => new TableCell( $group['group_name'] )
-        , 'participants_count' => new TableCell( $group['group_size'] )
-        , 'monitor_name'       => new TableCell( $monitor_name )
+        , 'participants_count' => new TableCell( $group['group_size'], ['class' => 'hidden md:table-cell'] )
+        , 'monitor_name'       => new TableCell( $monitor_name       , ['class' => 'hidden md:table-cell'] )
       ];
 
       // --------------------------------------------------------------------------------
@@ -147,8 +148,8 @@ class GroupsController
     // Definimos las celdas
     $cells = [
         'group_name'         => new TableCell( $group['group_name'] )
-      , 'participants_count' => new TableCell( $group['group_size'] )
-      , 'monitor_name'       => new TableCell( $monitor_name )
+      , 'participants_count' => new TableCell( $group['group_size'], ['class' => 'hidden md:table-cell'] )
+      , 'monitor_name'       => new TableCell( $monitor_name       , ['class' => 'hidden md:table-cell'] )
     ];
 
     // --------------------------------------------------------------------------------

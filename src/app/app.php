@@ -287,7 +287,7 @@ function app_panel_hamburger_menu(): string
   global $entries, $current_url, $colors;
 
   $value = '
-    <button id="hamburger_button" class="md:hidden bg-blue-500 text-white px-2 py-1.5 rounded-lg z-50">
+    <button id="hamburger_button" class="md:!hidden p-button">
       ' . app_get_svg_icon( 'menu' ) . '
     </button>
 

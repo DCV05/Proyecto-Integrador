@@ -41,10 +41,10 @@ class ParticipantsController
 
     // Columnas
     $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' )             , ['id' => 'p_name_col']          ) );
-    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['id' => 'p_birth_date_col']    ) );
-    $table->addColumn( 'participant_allergies'        , new TableColumn( pl_label( 'allergies' )        , ['id' => 'p_allergies_col']     ) );
-    $table->addColumn( 'participant_special_needs'    , new TableColumn( pl_label( 'special_needs' )    , ['id' => 'p_special_needs_col'] ) );
-    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['id' => 'p_medical_treatment'] ) );
+    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['id' => 'p_birth_date_col'   , 'class' => 'hidden md:table-cell']  ) );
+    $table->addColumn( 'participant_allergies'        , new TableColumn( pl_label( 'allergies' )        , ['id' => 'p_allergies_col'    , 'class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'participant_special_needs'    , new TableColumn( pl_label( 'special_needs' )    , ['id' => 'p_special_needs_col', 'class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['id' => 'p_medical_treatment', 'class' => 'hidden md:table-cell'] ) );
     $table->addColumn( 'family_icon'                  , new TableColumn( ''                             , ['id' => 'family_icon']         ) );
     $table->addColumn( 'schedule_icon'                , new TableColumn( ''                             , ['id' => 'schedule_icon']       ) );
 
@@ -74,12 +74,12 @@ class ParticipantsController
       // Definimos las celdas
       $cells = [
           'participant_name'              => new TableCell( $participant['participant_name'] )
-        , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'] )
-        , 'participant_allergies'         => new TableCell( $participant['participant_allergies'] )
-        , 'participant_special_needs'     => new TableCell( $participant['participant_special_needs'] )
-        , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
-        , 'family_icon'                   => new TableCell( $family_icon, ['class' => 'text-center w-12 icon-container family-icon'] )
-        , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 icon-container schedule-icon'] )
+        , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date']   , ['class' => 'hidden md:table-cell'] )
+        , 'participant_allergies'         => new TableCell( $participant['participant_allergies']    , ['class' => 'hidden md:table-cell'] )
+        , 'participant_special_needs'     => new TableCell( $participant['participant_special_needs'], ['class' => 'hidden md:table-cell'] )
+        , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem] hidden md:table-cell'] )
+        , 'family_icon'                   => new TableCell( $family_icon,       ['class' => 'text-center w-12 icon-container family-icon'] )
+        , 'schedule_icon'                 => new TableCell( $schedule_icon,     ['class' => 'text-center w-12 icon-container schedule-icon'] )
       ];
 
       // Añadimos la fila

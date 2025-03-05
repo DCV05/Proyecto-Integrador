@@ -51,7 +51,8 @@ class ActivityController
       $value = '
         <button type="button" id="btn-add-group" class="p-button">
           <i class="icon">add</i>
-          <span>' . pl_label( 'add-group' ) . '</span>
+          <span class="hidden md:block">' . pl_label( 'add-group' ) . '</span>
+          <span class="block md:hidden">' . pl_label( 'add' ) . '</span>
         </button>
       '; 
     }
@@ -528,8 +529,6 @@ class ActivityController
           break 2;
         }
       }
-
-      pl_dump( $this->activity ); exit;
 
       // --------------------------------------------------------------------------------------------------------------
       // Insert

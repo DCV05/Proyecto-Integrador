@@ -33,7 +33,7 @@ class AdminFinancesController
 
     // Inicializamos la tabla y sus columnas
     $table = new Table( ['id' => 'payments_table', 'class' => 'p-table'] );
-    $table->addColumn( 'payment_id2' , new TableColumn( pl_label( 'payment_id2' )   ) );
+    $table->addColumn( 'payment_id2' , new TableColumn( pl_label( 'payment_id2' ), ['class' => 'hidden md:table-cell'] ) );
     $table->addColumn( 'user_name'   , new TableColumn( pl_label( 'user_name' )     ) );
     $table->addColumn( 'amount'      , new TableColumn( pl_label( 'amount' )        ) );
     $table->addColumn( 'status'      , new TableColumn( pl_label( 'status' )        ) );
@@ -84,14 +84,15 @@ class AdminFinancesController
         $badge_color = 'red'; // Más de 30 días después
 
       $date = '
-        <span class="bg-' . $badge_color . '-100 text-' . $badge_color . '-800 text-sm font-medium px-3.5 py-1 rounded-lg">
+        <span class="hidden md:inline bg-' . $badge_color . '-100 text-' . $badge_color . '-800 text-sm font-medium px-3.5 py-1 rounded-lg">
           ' . date( 'd-m-Y', strtotime( $payment['payment_date'] ) ) . '
         </span>
+        <span class="block md:hidden">' . date( 'd-m-Y', strtotime( $payment['payment_date'] ) ) . '</span>
       ';
 
       // Definimos las celdas
       $cells = [
-          'payment_id2'   => new TableCell( $payment['payment_id2'] )
+          'payment_id2'   => new TableCell( $payment['payment_id2'], ['class' => 'hidden md:table-cell'] )
         , 'user_name'     => new TableCell( '<a class="text-blue-500 hover:underline" href="/users?uid2=' . $user_details['detail_id2'] .'">' . $user_details['user_name'] . '</a>' )
         , 'amount'        => new TableCell( number_format( $payment['amount'], 2 ) . ' €' )
         , 'status'        => new TableCell( $status_html )
@@ -167,14 +168,15 @@ class AdminFinancesController
       $badge_color = 'red'; // Más de 30 días después
 
     $date = '
-      <span class="bg-' . $badge_color . '-100 text-' . $badge_color . '-800 text-sm font-medium px-3.5 py-1 rounded-lg">
+      <span class="hidden md:inline bg-' . $badge_color . '-100 text-' . $badge_color . '-800 text-sm font-medium px-3.5 py-1 rounded-lg">
         ' . date( 'd-m-Y', strtotime( $payment['payment_date'] ) ) . '
       </span>
+      <span class="block md:hidden">' . date( 'd-m-Y', strtotime( $payment['payment_date'] ) ) . '</span>
     ';
 
     // Definimos las celdas
     $cells = [
-        'payment_id2'   => new TableCell( $payment['payment_id2'] )
+        'payment_id2'   => new TableCell( $payment['payment_id2'], ['class' => 'hidden md:table-cell'] )
       , 'user_name'     => new TableCell( '<a class="text-blue-500 hover:underline" href="/users?uid2=' . $user_details['detail_id2'] .'">' . $user_details['user_name'] . '</a>' )
       , 'amount'        => new TableCell( number_format( $payment['amount'], 2 ) . ' €' )
       , 'status'        => new TableCell( $status_html )

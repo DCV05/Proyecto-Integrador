@@ -53,9 +53,9 @@ class UsersController
     // Columnas
     $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' )         , ['id' => 'name_col']          ) );
     $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )        , ['id' => 'email_col']         ) );
-    $table->addColumn( 'user_role'        , new TableColumn( pl_label( 'role' )         , ['id' => 'role_col']          ) );
-    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )          , ['id' => 'dni_col']           ) );
-    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ) , ['id' => 'phone_number_col']  ) );
+    $table->addColumn( 'user_role'        , new TableColumn( pl_label( 'role' )         , ['id' => 'role_col'        , 'class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )          , ['id' => 'dni_col'         , 'class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ) , ['id' => 'phone_number_col', 'class' => 'hidden md:table-cell'] ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $users as $user )
@@ -64,9 +64,9 @@ class UsersController
       $cells = [
           'user_name'         => new TableCell( $user['user_name'] )
         , 'user_email'        => new TableCell( $user['user_email'] )
-        , 'user_role'         => new TableCell( $user['user_relationship'] )
-        , 'user_dni'          => new TableCell( $user['user_dni'] )
-        , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
+        , 'user_role'         => new TableCell( $user['user_relationship'], ['class' => 'hidden md:table-cell'] )
+        , 'user_dni'          => new TableCell( $user['user_dni']         , ['class' => 'hidden md:table-cell'] )
+        , 'user_phone_number' => new TableCell( $user['user_phone_number'], ['class' => 'hidden md:table-cell'] )
       ];
 
       // Añadimos la fila

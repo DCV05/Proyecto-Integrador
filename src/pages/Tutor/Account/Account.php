@@ -45,13 +45,13 @@ class TutorAccountController
 
     // Inicializamos la tabla y sus columnas
     $table = new Table( ['id' => 'users_table', 'class' => 'p-table'] );
-    $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' )         , ['id' => 'name_col']          ) );
-    $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )        , ['id' => 'email_col']         ) );
-    $table->addColumn( 'user_relationship', new TableColumn( pl_label( 'relationship' ) , ['id' => 'relationship_col']  ) );
-    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )          , ['id' => 'dni_col']           ) );
-    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ) , ['id' => 'phone_number_col']  ) );
-    $table->addColumn( 'edit_icon'        , new TableColumn( ''                         , ['id' => 'edit_icon']         ) );
-    $table->addColumn( 'delete_icon'      , new TableColumn( ''                         , ['id' => 'delete_icon']       ) );
+    $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' ) ) );
+    $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )       , ['class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'user_relationship', new TableColumn( pl_label( 'relationship' ), ['class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )         , ['class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ), ['class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'edit_icon'        , new TableColumn( '' ) );
+    $table->addColumn( 'delete_icon'      , new TableColumn( '' ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $users as $user )
@@ -71,10 +71,10 @@ class TutorAccountController
       // Definimos las celdas
       $cells = [
           'user_name'         => new TableCell( $user['user_name'] )
-        , 'user_email'        => new TableCell( $user['user_email'] )
-        , 'user_relationship' => new TableCell( $user['user_relationship'] )
-        , 'user_dni'          => new TableCell( $user['user_dni'] )
-        , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
+        , 'user_email'        => new TableCell( $user['user_email']       , ['class' => 'hidden md:table-cell'] )
+        , 'user_relationship' => new TableCell( $user['user_relationship'], ['class' => 'hidden md:table-cell'] )
+        , 'user_dni'          => new TableCell( $user['user_dni']         , ['class' => 'hidden md:table-cell'] )
+        , 'user_phone_number' => new TableCell( $user['user_phone_number'], ['class' => 'hidden md:table-cell'] )
         , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 icon-container'] )
       ];
 
@@ -133,10 +133,10 @@ class TutorAccountController
     // Definimos las celdas
     $cells = [
         'user_name'         => new TableCell( $user['user_name'] )
-      , 'user_email'        => new TableCell( $user['user_email'] )
-      , 'user_relationship' => new TableCell( $user['user_relationship'] )
-      , 'user_dni'          => new TableCell( $user['user_dni'] )
-      , 'user_phone_number' => new TableCell( $user['user_phone_number'] )
+      , 'user_email'        => new TableCell( $user['user_email']       , ['class' => 'hidden md:table-cell'] )
+      , 'user_relationship' => new TableCell( $user['user_relationship'], ['class' => 'hidden md:table-cell'] )
+      , 'user_dni'          => new TableCell( $user['user_dni']         , ['class' => 'hidden md:table-cell'] )
+      , 'user_phone_number' => new TableCell( $user['user_phone_number'], ['class' => 'hidden md:table-cell'] )
       , 'edit_icon'         => new TableCell( $edit_icon, ['class' => 'text-center w-10 icon-container'] )
     ];
 
@@ -171,12 +171,12 @@ class TutorAccountController
 
     // Inicializamos la tabla y sus columnas
     $table = new Table( ['id' => 'participants_table', 'class' => 'p-table'] );
-    $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' )             , ['id' => 'p_name_col']          ) );
-    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['id' => 'p_birth_date_col']    ) );
-    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['id' => 'p_medical_treatment'] ) );
-    $table->addColumn( 'schedule_icon'                , new TableColumn( ''                             , ['id' => 'schedule_icon']       ) );
-    $table->addColumn( 'edit_icon'                    , new TableColumn( ''                             , ['id' => 'edit_icon']           ) );
-    $table->addColumn( 'delete_icon'                  , new TableColumn( ''                             , ['id' => 'delete_icon']         ) );
+    $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' ) ) );
+    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'schedule_icon'                , new TableColumn( '' ) );
+    $table->addColumn( 'edit_icon'                    , new TableColumn( '' ) );
+    $table->addColumn( 'delete_icon'                  , new TableColumn( '' ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $participants as $participant )
@@ -215,11 +215,11 @@ class TutorAccountController
       // Definimos las celdas
       $cells = [
           'participant_name'              => new TableCell( $participant['participant_name'] )
-        , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'] )
-        , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem]'] )
-        , 'schedule_icon'                 => new TableCell( $schedule_icon, ['class' => 'text-center w-12 icon-container schedule-icon'] )
-        , 'edit_icon'                     => new TableCell( $edit_icon, ['class' => 'text-center w-12 icon-container'] )
-        , 'delete_icon'                   => new TableCell( $delete_icon, ['class' => 'text-center w-12 icon-container'] )
+        , 'participant_birth_date'        => new TableCell( $participant['participant_birth_date'], ['class' => 'hidden md:table-cell'] )
+        , 'participant_medical_treatment' => new TableCell( $medical_treatment, ['class' => 'max-w-[14rem] hidden md:table-cell'] )
+        , 'schedule_icon'                 => new TableCell( $schedule_icon    , ['class' => 'text-center w-12 icon-container schedule-icon'] )
+        , 'edit_icon'                     => new TableCell( $edit_icon        , ['class' => 'text-center w-12 icon-container'] )
+        , 'delete_icon'                   => new TableCell( $delete_icon      , ['class' => 'text-center w-12 icon-container'] )
       ];
 
       // Añadimos la fila

@@ -164,7 +164,7 @@ class CalendarWidget
   public function render(): string
   {
     return '
-    <div class="flex gap-4 rounded-3xl bg-gray-50 p-4 w-fit">
+    <div class="flex gap-4 rounded-3xl bg-gray-50 p-4 w-full lg:w-fit">
       ' . $this->render_calendar() . '
       <div class="flex flex-col gap-4">
         ' . $this->render_events() . '

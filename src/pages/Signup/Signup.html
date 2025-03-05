@@ -16,145 +16,145 @@
 </head>
 <body class="bg-gray-100">
   <div class="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8">
-    <div class="sm:mx-auto sm:w-full max-w-3xl">
-      <div class="mt-10 sm:mx-auto sm:w-full">
-        <form id="register-form" class="space-y-4">
+    <div class="mx-auto max-w-6xl lg:max-w-3xl w-full">
+      <div class="mt-10">
+        <form id="register-form" class="space-y-4 h-full">
 
-      <h2 class="text-left text-4xl font-bold max-w-xl tracking-tight text-gray-900 mx-auto">
-        [[ label | create_account_button ]]
-      </h2>
+          <h2 class="text-left text-3xl lg:text-4xl font-bold max-w-xl tracking-tight text-gray-900 mx-auto">
+            [[ label | create_account_button ]]
+          </h2>
 
-      <section id="account_section" class="flex flex-col space-y-4 max-w-xl mx-auto">
+          <section id="account_section" class="flex flex-col space-y-4 max-w-xl mx-auto">
 
-        <div class="bg-white shadow-xl rounded-lg p-8 w-full space-y-6">
-          <h3 class="text-2xl font-semibold text-gray-700 mb-4">[[ label | account_info ]]</h3>
+            <div class="bg-white shadow-xl rounded-lg p-8 w-full space-y-6">
+              <h3 class="text-xl lg:text-3xl font-semibold text-gray-700 mb-4">[[ label | account_info ]]</h3>
 
-          [[ func | &custom_input | user_email | email ]]
+              [[ func | &custom_input | user_email | email ]]
+              
+              [[ func | &custom_input | user_password | password ]]
+
+              <div class="flex justify-end mt-4">
+                <button type="button" class="next-btn" disabled>[[ label | next ]]</button>
+              </div>
+            </div>
+
+            <div class="flex justify-center items-center text-sm">
+              <a href="/login" class="text-center text-sm text-indigo-600 hover:underline">[[ label | has_account ]]</a>
+            </div>
+          </section>
           
-          [[ func | &custom_input | user_password | password ]]
+          <section id="tutor_section" class="flex flex-col space-y-4 max-w-xl mx-auto hidden">
+            <div class="bg-white shadow-xl rounded-lg p-8 w-full space-y-6">
+              <h3 class="text-xl lg:text-3xl font-semibold text-gray-700 mb-4">[[ label | user_info ]]</h3>
+              <div id="tutor_container" class="space-y-6">
 
-          <div class="flex justify-end mt-4">
-            <button type="button" class="next-btn" disabled>[[ label | next ]]</button>
-          </div>
-        </div>
+                <div class="tutor_block">
+                  <div class="border-b border-gray-700">
+                    <button type="button" class="faq-toggle flex justify-between items-center w-full py-3 text-left text-lg font-semibold">
+                      [[ label | user ]] 1
+                      <span class="icon">+</span>
+                    </button>
+                    <div class="faq-content pb-3 text-gray-400 space-y-6">
+                      [[ func | &custom_input | tutor_full_name_0 | text ]]
+        
+                      [[ func | &custom_input | tutor_relationship_0 | text ]]
+        
+                      [[ func | &custom_input | tutor_email_0 | email ]]
+        
+                      [[ func | &custom_input | tutor_dni_0 | text ]]
+        
+                      [[ func | &custom_input | tutor_phone_number_0 | tel ]]
 
-        <div class="flex justify-center items-center text-sm">
-          <a href="/login" class="text-center text-sm text-indigo-600 hover:underline">[[ label | has_account ]]</a>
-        </div>
-      </section>
-      
-      <section id="tutor_section" class="flex flex-col space-y-4 max-w-xl mx-auto hidden">
-        <div class="bg-white shadow-xl rounded-lg p-8 w-full space-y-6">
-          <h3 class="text-2xl font-semibold text-gray-700 mb-4">[[ label | user_info ]]</h3>
-          <div id="tutor_container" class="space-y-6">
-
-            <div class="tutor_block">
-              <div class="border-b border-gray-700">
-                <button type="button" class="faq-toggle flex justify-between items-center w-full py-3 text-left text-lg font-semibold">
-                  [[ label | user ]] 1
-                  <span class="icon">+</span>
-                </button>
-                <div class="faq-content pb-3 text-gray-400 space-y-6">
-                  [[ func | &custom_input | tutor_full_name_0 | text ]]
-    
-                  [[ func | &custom_input | tutor_relationship_0 | text ]]
-    
-                  [[ func | &custom_input | tutor_email_0 | email ]]
-    
-                  [[ func | &custom_input | tutor_dni_0 | text ]]
-    
-                  [[ func | &custom_input | tutor_phone_number_0 | tel ]]
-
-                  <div id="image_container" class="w-full">
-                    <span class="custom-label">[[ label | user_photo ]]</span>
-                    <label for="tutor_image_upload_0" class="flex flex-col items-center justify-center w-full h-32 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-50 transform transition duration-300 mt-1">
-                      <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                        [[ func | &get_svg_icon | cloud ]]
-                        <p class="mb-2 body-text text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                        <p class="text-xs text-gray-500">JPG, PNG, WEBP, SVG, JPEG</p>
+                      <div id="image_container" class="w-full">
+                        <span class="custom-label">[[ label | user_photo ]]</span>
+                        <label for="tutor_image_upload_0" class="flex flex-col items-center justify-center w-full h-32 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-50 transform transition duration-300 mt-1">
+                          <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            [[ func | &get_svg_icon | cloud ]]
+                            <p class="mb-2 body-text text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                            <p class="text-xs text-gray-500">JPG, PNG, WEBP, SVG, JPEG</p>
+                          </div>
+                          <input
+                            id="tutor_image_upload_0"
+                            name="tutor_image_upload_0"
+                            type="file"
+                            accept=".jpg, .png, .webp, .svg, .jpeg"
+                            class="hidden"/>
+                        </label>
                       </div>
-                      <input
-                        id="tutor_image_upload_0"
-                        name="tutor_image_upload_0"
-                        type="file"
-                        accept=".jpg, .png, .webp, .svg, .jpeg"
-                        class="hidden"/>
-                    </label>
+
+                    </div>
                   </div>
 
                 </div>
               </div>
 
+              <div class="flex justify-end mt-4">
+                <button type="button" id="add_tutor" class="bg-blue-500 text-white px-4 py-2 rounded w-full">[[ label | add_new_user ]]</button>
+              </div>
+
+              <div class="flex justify-between mt-4">
+                <button type="button" class="prev-btn">[[ label | previous ]]</button>
+                <button type="button" class="next-btn" disabled>[[ label | next ]]</button>
+              </div>
+
             </div>
-          </div>
+          </section>
 
-          <div class="flex justify-end mt-4">
-            <button type="button" id="add_tutor" class="bg-blue-500 text-white px-4 py-2 rounded w-full">[[ label | add_new_user ]]</button>
-          </div>
+          <section id="participant_section" class="flex flex-col space-y-4 max-w-xl mx-auto hidden">
+            <div class="bg-white shadow-xl rounded-lg p-8 w-full space-y-6">
+              <h3 class="text-xl lg:text-3xl font-semibold text-gray-700 mb-4">[[ label | participant_info ]]</h3>
 
-          <div class="flex justify-between mt-4">
-            <button type="button" class="prev-btn">[[ label | previous ]]</button>
-            <button type="button" class="next-btn" disabled>[[ label | next ]]</button>
-          </div>
+              <div id="participant_container" class="space-y-6">
+                <div class="participant_block">
+                  <div class="border-b border-gray-700">
+                    <button type="button" class="faq-toggle flex justify-between items-center w-full py-3 text-left text-lg font-semibold">
+                      [[ label | participant ]] 1
+                      <span class="icon">+</span>
+                    </button>
+                    <div class="faq-content pb-3 text-gray-400 space-y-6">
+                      [[ func | &custom_input | participant_full_name_0 | text ]]
 
-        </div>
-      </section>
+                      [[ func | &custom_input | participant_birth_date_0 | date ]]
 
-      <section id="participant_section" class="flex flex-col space-y-4 max-w-xl mx-auto hidden">
-        <div class="bg-white shadow-xl rounded-lg p-8 w-full space-y-6">
-          <h3 class="text-2xl font-semibold text-gray-700 mb-4">[[ label | participant_info ]]</h3>
+                      [[ func | &custom_textarea | participant_allergies_0 ]]
+            
+                      [[ func | &custom_textarea | participant_medical_treatment_0 ]]
+            
+                      [[ func | &custom_textarea | participant_special_needs_0 ]]
 
-          <div id="participant_container" class="space-y-6">
-            <div class="participant_block">
-              <div class="border-b border-gray-700">
-                <button type="button" class="faq-toggle flex justify-between items-center w-full py-3 text-left text-lg font-semibold">
-                  [[ label | participant ]] 1
-                  <span class="icon">+</span>
-                </button>
-                <div class="faq-content pb-3 text-gray-400 space-y-6">
-                  [[ func | &custom_input | participant_full_name_0 | text ]]
-
-                  [[ func | &custom_input | participant_birth_date_0 | date ]]
-
-                  [[ func | &custom_textarea | participant_allergies_0 ]]
-        
-                  [[ func | &custom_textarea | participant_medical_treatment_0 ]]
-        
-                  [[ func | &custom_textarea | participant_special_needs_0 ]]
-
-                  <div id="image_container" class="w-full">
-                    <span class="custom-label">[[ label | participant_photo ]]</span>
-                    <label for="participant_image_upload_0" class="flex flex-col items-center justify-center w-full h-32 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-50 transform transition duration-300 mt-1">
-                      <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                        [[ func | &get_svg_icon | cloud ]]
-                        <p class="mb-2 body-text text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                        <p class="text-xs text-gray-500">JPG, PNG, WEBP, SVG, JPEG</p>
+                      <div id="image_container" class="w-full">
+                        <span class="custom-label">[[ label | participant_photo ]]</span>
+                        <label for="participant_image_upload_0" class="flex flex-col items-center justify-center w-full h-32 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-50 transform transition duration-300 mt-1">
+                          <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            [[ func | &get_svg_icon | cloud ]]
+                            <p class="mb-2 body-text text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                            <p class="text-xs text-gray-500">JPG, PNG, WEBP, SVG, JPEG</p>
+                          </div>
+                          <input
+                            id="participant_image_upload_0"
+                            name="participant_image_upload_0"
+                            type="file"
+                            accept=".jpg, .png, .webp, .svg, .jpeg"
+                            class="hidden"/>
+                        </label>
                       </div>
-                      <input
-                        id="participant_image_upload_0"
-                        name="participant_image_upload_0"
-                        type="file"
-                        accept=".jpg, .png, .webp, .svg, .jpeg"
-                        class="hidden"/>
-                    </label>
+
+                    </div>
                   </div>
 
                 </div>
               </div>
 
+              <div class="flex justify-end mt-4">
+                <button type="button" id="add_participant" class="bg-blue-500 text-white px-4 py-2 rounded w-full">[[ label | add_new_participant ]]</button>
+              </div>
+
+              <div class="flex justify-between mt-4">
+                <button type="button" class="prev-btn">[[ label | previous ]]</button>
+                <button type="submit" class="next-btn">[[ label | create_account_button ]]</button>
+              </div>
             </div>
-          </div>
-
-          <div class="flex justify-end mt-4">
-            <button type="button" id="add_participant" class="bg-blue-500 text-white px-4 py-2 rounded w-full">[[ label | add_new_participant ]]</button>
-          </div>
-
-          <div class="flex justify-between mt-4">
-            <button type="button" class="prev-btn">[[ label | previous ]]</button>
-            <button type="submit" class="next-btn">[[ label | create_account_button ]]</button>
-          </div>
-        </div>
-      </section>
+          </section>
 
         </form>
       </div>
