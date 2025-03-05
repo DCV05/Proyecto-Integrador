@@ -21,7 +21,12 @@
       <div class="relative flex flex-col lg:flex-row items-center justify-between lg:justify-start lg:min-h-screen h-full mx-auto gap-12 lg:gap-24">
 
         <div class="w-full lg:w-1/2 lg:ml-[4.5rem] space-y-8 text-left">
-          <h1 class="text-5xl lg:text-6xl font-semibold">[[ label | hero_title ]]</h1>
+          <h1 class="max-w-4xl text-5xl lg:text-6xl font-semibold">
+            [[ label | hero_title ]]
+            <span class="lufga-regular font-normal gradient-text">
+              Robocamp
+            </span>
+          </h1>
           <p class="text-lg">[[ label | hero_subtitle ]]</p>
           <div class="flex justify-start space-x-4">
             <a href="#activities" class="apple-button transition">
@@ -48,7 +53,7 @@
   <main id="details-container" class="min-h-screen h-full overflow-x-hidden max-w-7xl mx-auto space-y-24 md:space-y-32">
   
     <section class="px-4 xl:px-0">
-      <div class="relative flex flex-col-reverse md:flex-row items-start mx-auto overflow-hidden">
+      <div class="relative flex flex-col-reverse md:flex-row items-start mx-auto overflow-hidden detail-container">
         
         <div class="w-full flex justify-start">
           <img class="h-[26rem] object-cover card-img-left" src="[[ polaris.assets ]]/img/detail1.webp" alt="[[ label | learning_title ]]">
@@ -63,8 +68,8 @@
     
             [[ label | learning_experience ]]
           </p>
-          <a href="/activities" class="apple-button">
-            [[ label | explore_more ]]
+          <a href="#activities" class="apple-button">
+            [[ label | learn_more ]]
           </a>
         </div>
 
@@ -74,7 +79,7 @@
     </section>
 
     <section class="px-4 xl:px-0">
-      <div class="relative flex flex-col md:flex-row mx-auto max-w-7xl overflow-hidden">
+      <div class="relative flex flex-col md:flex-row mx-auto max-w-7xl overflow-hidden detail-container">
         
         <div class="relative h-[26rem] card card-left max-w-6xl lg:max-w-2xl space-y-8">
           <h2 class="text-3xl lg:text-4xl font-semibold">[[ label | difficulty_levels ]]</h2>
@@ -101,7 +106,7 @@
     </section>
 
     <section class="px-4 xl:px-0 overflow-hidden">
-      <div class="relative flex flex-col-reverse md:flex-row mx-auto overflow-hidden">
+      <div class="relative flex flex-col-reverse md:flex-row mx-auto overflow-hidden detail-container">
         
         <div class="w-full lg:w-1/2 flex">
           <img class="card-img-left w-[42rem] h-[29.5rem] object-cover" src="[[ polaris.assets ]]/img/detail3.webp" alt="[[ label | robotics_challenges ]]">

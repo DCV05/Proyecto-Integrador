@@ -717,7 +717,7 @@ function app_landing_navbar( bool $center = false ): string
       <div class="' . $margin . ' bg-[#f9f9f9] lg:bg-transparent flex items-center justify-between w-full lg:w-fit py-3 lg:py-1 space-x-0 lg:space-x-12">
         
         <a class="inline-flex" href="/" title="Campament">
-          <span class="subtitle lufga-regular font-normal bg-clip-text text-transparent bg-gradient-to-tr from-blue-500 to-[#5560f5]">
+          <span class="subtitle lufga-regular font-normal gradient-text">
             Robocamp
           </span>
         </a>

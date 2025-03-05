@@ -107,6 +107,27 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+@keyframes gradientShiftText {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #e79a1e, #5560f5);
+  background-size: 200% 200%;
+  animation: gradientShiftText 3s infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
 .robot-icon {
   z-index: 25;
 }
@@ -115,14 +136,20 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   bottom: 0;
   right: 0;
-  transform: rotate(-30deg) translateX(25px) translateY(50px);
+  transform: rotate(-20deg) translateX(25px) translateY(50px);
+  transition: all 0.3s;
 }
 
 .robot-icon.left {
   position: absolute;
   bottom: 0;
   left: 0;
-  transform: rotate(30deg) translateX(-25px) translateY(50px);
+  transform: rotate(20deg) translateX(-25px) translateY(50px);
+  transition: all 0.3s;
+}
+
+.detail-container:hover .robot-icon {
+  transform: rotate(-20deg) translateX(15px) translateY(40px);
 }
 
 .card-img-left {
