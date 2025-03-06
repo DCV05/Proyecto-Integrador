@@ -32,12 +32,12 @@ class AdminFinancesController
     $payments = $mod_payments->GetRows( $where );
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'payments_table', 'class' => 'p-table'] );
-    $table->addColumn( 'payment_id2' , new TableColumn( pl_label( 'payment_id2' ), ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'user_name'   , new TableColumn( pl_label( 'user_name' )     ) );
-    $table->addColumn( 'amount'      , new TableColumn( pl_label( 'amount' )        ) );
-    $table->addColumn( 'status'      , new TableColumn( pl_label( 'status' )        ) );
-    $table->addColumn( 'payment_date', new TableColumn( pl_label( 'payment_date' )  ) );
+    $table = new Table( ['id' => 'payments_table', 'class' => 'p-table', 'role' => 'table'] );
+    $table->addColumn( 'payment_id2' , new TableColumn( pl_label( 'payment_id2' ) , ['class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'user_name'   , new TableColumn( pl_label( 'user_name' )   , ['scope' => 'col'] ) );
+    $table->addColumn( 'amount'      , new TableColumn( pl_label( 'amount' )      , ['scope' => 'col'] ) );
+    $table->addColumn( 'status'      , new TableColumn( pl_label( 'status' )      , ['scope' => 'col'] ) );
+    $table->addColumn( 'payment_date', new TableColumn( pl_label( 'payment_date' ), ['scope' => 'col'] ) );
     $table->addColumn( 'email_icon'  , new TableColumn( '' ) );
 
     // Iteramos cada pago y lo añadimos a la tabla
@@ -102,8 +102,9 @@ class AdminFinancesController
 
       // Añadimos la fila
       $table->addRow( new TableRow( $cells, [
-          'id'        => 'row-' . $payment['payment_id2']
-        , 'class'     => 'hover:bg-gray-100 table-row-link h-6'
+          'id'    => 'row-' . $payment['payment_id2']
+        , 'class' => 'hover:bg-gray-100 table-row-link h-6'
+        , 'role'  => 'row'
       ] ) );
     }
 
@@ -186,8 +187,9 @@ class AdminFinancesController
 
     // Añadimos la fila
     $table_row =  new TableRow( $cells, [
-        'id'        => 'row-' . $payment['payment_id2']
-      , 'class'     => 'hover:bg-gray-100 table-row-link h-6'
+        'id'    => 'row-' . $payment['payment_id2']
+      , 'class' => 'hover:bg-gray-100 table-row-link h-6'
+      , 'role'  => 'row'
     ] );
 
     // Convertimos la tabla a HTML

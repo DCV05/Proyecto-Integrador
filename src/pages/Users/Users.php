@@ -48,14 +48,12 @@ class UsersController
     */
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'users_table', 'class' => 'p-table'] );
-
-    // Columnas
-    $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' )         , ['id' => 'name_col']          ) );
-    $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )        , ['id' => 'email_col']         ) );
-    $table->addColumn( 'user_role'        , new TableColumn( pl_label( 'role' )         , ['id' => 'role_col'        , 'class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )          , ['id' => 'dni_col'         , 'class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ) , ['id' => 'phone_number_col', 'class' => 'hidden md:table-cell'] ) );
+    $table = new Table( ['id' => 'users_table', 'class' => 'p-table', 'role' => 'table'] );
+    $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' )         , ['scope' => 'col'] ) );
+    $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )        , ['scope' => 'col'] ) );
+    $table->addColumn( 'user_role'        , new TableColumn( pl_label( 'role' )         , ['scope' => 'col', 'class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )          , ['scope' => 'col', 'class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ) , ['scope' => 'col', 'class' => 'hidden md:table-cell'] ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $users as $user )
@@ -75,6 +73,7 @@ class UsersController
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
         , 'data-type' => 'user_info'
         , 'data-id2'  => $user['detail_id2']
+        , 'role'      => 'row'
       ] ) );
     }
   

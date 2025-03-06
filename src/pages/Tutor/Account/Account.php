@@ -44,14 +44,14 @@ class TutorAccountController
     */
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'users_table', 'class' => 'p-table'] );
-    $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' ) ) );
-    $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )       , ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'user_relationship', new TableColumn( pl_label( 'relationship' ), ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )         , ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ), ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'edit_icon'        , new TableColumn( '' ) );
-    $table->addColumn( 'delete_icon'      , new TableColumn( '' ) );
+    $table = new Table( ['id' => 'users_table', 'class' => 'p-table', 'role' => 'table'] );
+    $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' ), ['scope' => 'col'] ) );
+    $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )       , ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'user_relationship', new TableColumn( pl_label( 'relationship' ), ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )         , ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ), ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'edit_icon'        , new TableColumn( '', ['scope' => 'col'] ) );
+    $table->addColumn( 'delete_icon'      , new TableColumn( '', ['scope' => 'col'] ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $users as $user )
@@ -87,6 +87,7 @@ class TutorAccountController
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
         , 'data-type' => 'user_info'
         , 'data-id2'  => $user['detail_id2']
+        , 'role'      => 'row'
       ] ) );
     }
 
@@ -149,6 +150,7 @@ class TutorAccountController
       , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
       , 'data-type' => 'user_info'
       , 'data-id2'  => $detail_id2
+      , 'role'      => 'row'
     ] );
     return $table_row->html();
   }
@@ -170,13 +172,13 @@ class TutorAccountController
     $participants = ( new Participants() )->GetRows( $_SESSION['app']['user']['user_id'], $where );
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'participants_table', 'class' => 'p-table'] );
-    $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' ) ) );
-    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'schedule_icon'                , new TableColumn( '' ) );
-    $table->addColumn( 'edit_icon'                    , new TableColumn( '' ) );
-    $table->addColumn( 'delete_icon'                  , new TableColumn( '' ) );
+    $table = new Table( ['id' => 'participants_table', 'class' => 'p-table', 'role' => 'table'] );
+    $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' ), ['scope' => 'col'] ) );
+    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'schedule_icon'                , new TableColumn( '', ['scope' => 'col'] ) );
+    $table->addColumn( 'edit_icon'                    , new TableColumn( '', ['scope' => 'col'] ) );
+    $table->addColumn( 'delete_icon'                  , new TableColumn( '', ['scope' => 'col'] ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $participants as $participant )
@@ -228,6 +230,7 @@ class TutorAccountController
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
         , 'data-type' => 'participant_info'
         , 'data-id2'  => $participant['participant_id2']
+        , 'role'      => 'row'
       ] ) );
     }
 
@@ -304,6 +307,7 @@ class TutorAccountController
       , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
       , 'data-type' => 'participant_info'
       , 'data-id2'  => $participant['participant_id2']
+      , 'role'      => 'row'
     ] );
 
     // Retornamos la fila convertida a HTML

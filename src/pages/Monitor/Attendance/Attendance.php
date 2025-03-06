@@ -76,10 +76,10 @@ class MonitorAttendanceController
     $attendances = $mod_attendance->GetGroupRows( $group['group_id'], $this->activity['activity_id'] );
 
     // Tabla de Asistencia
-    $table = new Table( ['id' => 'attendance_table', 'class' => 'p-table', 'data-activity' => $this->activity['activity_id2']] );
-    $table->addColumn( 'participant_name' , new TableColumn( pl_label( 'participant_name' ), ['id' => 'p_name_col'] ) );
-    $table->addColumn( 'checkin_datetime' , new TableColumn( pl_label( 'checkin' )         , ['id' => 'p_checkin_col'] ) );
-    $table->addColumn( 'checkout_datetime', new TableColumn( pl_label( 'checkout' )        , ['id' => 'p_checkout_col'] ) );
+    $table = new Table( ['id' => 'attendance_table', 'class' => 'p-table', 'data-activity' => $this->activity['activity_id2'], 'role' => 'table'] );
+    $table->addColumn( 'participant_name' , new TableColumn( pl_label( 'participant_name' ), ['scope' => 'col'] ) );
+    $table->addColumn( 'checkin_datetime' , new TableColumn( pl_label( 'checkin' )         , ['scope' => 'col'] ) );
+    $table->addColumn( 'checkout_datetime', new TableColumn( pl_label( 'checkout' )        , ['scope' => 'col'] ) );
 
     // Iteramos cada registro de asistencia
     foreach( $attendances as $entry )
@@ -110,6 +110,7 @@ class MonitorAttendanceController
           'id'        => 'row-' . $entry['participant_id2']
         , 'class'     => 'hover:bg-gray-100 table-row-link cursor-pointer'
         , 'data-href' => '/participant?pid2=' . $entry['participant_id2']
+        , 'role'      => 'row'
       ] ) );
     }
 
@@ -162,9 +163,10 @@ class MonitorAttendanceController
 
     // Añadimos la fila
     $row = new TableRow( $cells, [
-        'id'    => 'row-' . $participant['participant_id2']
-      , 'class' => 'hover:bg-gray-100 table-row-link cursor-pointer'
+        'id'        => 'row-' . $participant['participant_id2']
+      , 'class'     => 'hover:bg-gray-100 table-row-link cursor-pointer'
       , 'data-href' => '/participant?pid2=' . $participant['participant_id2']
+      , 'role'      => 'row'
     ] );
 
     // Retornamos la fila convertida a HTML

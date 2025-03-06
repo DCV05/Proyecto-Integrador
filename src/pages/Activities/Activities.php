@@ -66,16 +66,16 @@ class ActivitiesController
     // --------------------------------------------------------------------------------
     
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'activities_table', 'class' => 'p-table'] );
-    $table->addColumn( 'activity_name'       , new TableColumn( pl_label( 'activity_name' ) ) );
-    $table->addColumn( 'activity_description', new TableColumn( pl_label( 'activity_description' ), ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'activity_time'       , new TableColumn( pl_label( 'activity_time' )       , ['class' => 'hidden md:table-cell'] ) );
+    $table = new Table( ['id' => 'activities_table', 'class' => 'p-table', 'role' => 'table'] );
+    $table->addColumn( 'activity_name'       , new TableColumn( pl_label( 'activity_name' )       , ['scope' => 'col'] ) );
+    $table->addColumn( 'activity_description', new TableColumn( pl_label( 'activity_description' ), ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'activity_time'       , new TableColumn( pl_label( 'activity_time' )       , ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
 
     // Si es un admin, mostramos los iconos de editar y borrar
     if( $role === 2 )
     {
-      $table->addColumn( 'edit_icon'  , new TableColumn( '', ['id' => 'edit_icon']    ) );
-      $table->addColumn( 'delete_icon', new TableColumn( '', ['id' => 'delete_icon']  ) );
+      $table->addColumn( 'edit_icon'  , new TableColumn( '', ['id' => 'edit_icon', 'scope' => 'col']    ) );
+      $table->addColumn( 'delete_icon', new TableColumn( '', ['id' => 'delete_icon', 'scope' => 'col']  ) );
     }
 
     // --------------------------------------------------------------------------------
@@ -131,6 +131,7 @@ class ActivitiesController
           'id'        => 'row-' . $activity['activity_id2']
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
         , 'data-href' => '/activity?aid2=' . $activity['activity_id2']
+        , 'role'      => 'row'
       ] ) );
     }
 
@@ -211,6 +212,7 @@ class ActivitiesController
         'id'        => 'row-' . $activity['activity_id2']
       , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
       , 'data-href' => '/activity?aid2=' . $activity['activity_id2']
+      , 'role'      => 'row'
     ] );
 
     // Retornamos la fila convertida a HTML

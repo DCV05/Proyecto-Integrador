@@ -119,10 +119,10 @@ class ActivityController
     $groups = $mod_groups->GetRows();
 
     // Tabla de Participantes
-    $table = new Table( ['id' => 'participants_table', 'class' => 'p-table', 'data-activity' => $this->activity['activity_id2']] );
-    $table->addColumn( 'participant_name'         , new TableColumn( pl_label( 'participant_name' )         , ['id' => 'p_name_col'] ) );
-    $table->addColumn( 'participant_special_needs', new TableColumn( pl_label( 'participant_special_needs' ), ['id' => 'p_special_needs_col'] ) );
-    $table->addColumn( 'participant_allergies'    , new TableColumn( pl_label( 'allergies' )                , ['id' => 'p_allergies_col'] ) );
+    $table = new Table( ['id' => 'participants_table', 'class' => 'p-table', 'data-activity' => $this->activity['activity_id2'], 'role' => 'table'] );
+    $table->addColumn( 'participant_name'         , new TableColumn( pl_label( 'participant_name' )         , ['scope' => 'col'] ) );
+    $table->addColumn( 'participant_special_needs', new TableColumn( pl_label( 'participant_special_needs' ), ['scope' => 'col'] ) );
+    $table->addColumn( 'participant_allergies'    , new TableColumn( pl_label( 'allergies' )                , ['scope' => 'col'] ) );
 
     // Iteramos cada participante relacionado con la actividad
     foreach( $groups as $group )
@@ -151,6 +151,7 @@ class ActivityController
         $table->addRow( new TableRow( $cells, [
             'id'    => 'row-' . $participant['participant_id2']
           , 'class' => 'hover:bg-gray-100'
+          , 'role'  => 'row'
         ] ) );
       }
     }
@@ -185,6 +186,7 @@ class ActivityController
     $row = new TableRow( $cells, [
         'id'    => 'row-' . $participant['participant_id2']
       , 'class' => 'hover:bg-gray-100'
+      , 'role'  => 'row'
     ] );
 
     return $row->html();
@@ -248,13 +250,13 @@ class ActivityController
     $groups = $mod_group_activities->GetRows();
 
     // Tabla de Grupos
-    $table = new Table( ['id' => 'groups_table', 'class' => 'p-table', 'data-activity' => $this->activity['activity_id2']] );
-    $table->addColumn( 'group_name'  , new TableColumn( pl_label( 'group_name' )  , ['id' => 'g_name_col'] ) );
-    $table->addColumn( 'monitor_name', new TableColumn( pl_label( 'monitor_name' ), ['id' => 'g_monitor_col'] ) );
+    $table = new Table( ['id' => 'groups_table', 'class' => 'p-table', 'data-activity' => $this->activity['activity_id2'], 'role' => 'table'] );
+    $table->addColumn( 'group_name'  , new TableColumn( pl_label( 'group_name' )  , ['scope' => 'col'] ) );
+    $table->addColumn( 'monitor_name', new TableColumn( pl_label( 'monitor_name' ), ['scope' => 'col'] ) );
 
     // Si es un admin, mostramos los iconos de editar y borrar
     if( $role === 2 || $role === 1 )
-      $table->addColumn( 'delete_icon', new TableColumn( '', ['id' => 'delete_icon']  ) );
+      $table->addColumn( 'delete_icon', new TableColumn( '', ['id' => 'delete_icon', 'scope' => 'col'] ) );
 
     // Iteramos cada grupo relacionado con la actividad
     foreach( $groups as $group )
@@ -289,6 +291,7 @@ class ActivityController
           'id'        => 'row-' . $group['group_id2']
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
         , 'data-href' => '/group?gid2=' . $group['group_id2']
+        , 'role'      => 'row'
       ] ) );
     }
     
@@ -345,8 +348,9 @@ class ActivityController
 
     // Creamos la fila con `TableRow`
     $row = new TableRow( $cells, [
-        'id'        => 'row-' . $group['group_id2']
-      , 'class'     => 'hover:bg-gray-100'
+        'id'    => 'row-' . $group['group_id2']
+      , 'class' => 'hover:bg-gray-100'
+      , 'role'  => 'row'
     ] );
 
     // Retornamos la fila convertida a HTML

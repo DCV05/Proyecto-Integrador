@@ -37,16 +37,16 @@ class ParticipantsController
       $participants = $mod_participants->GetAll( $where );
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'participants_table', 'class' => 'p-table'] );
+    $table = new Table( ['id' => 'participants_table', 'class' => 'p-table', 'role' => 'table'] );
 
     // Columnas
-    $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' )             , ['id' => 'p_name_col']          ) );
-    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['id' => 'p_birth_date_col'   , 'class' => 'hidden md:table-cell']  ) );
-    $table->addColumn( 'participant_allergies'        , new TableColumn( pl_label( 'allergies' )        , ['id' => 'p_allergies_col'    , 'class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'participant_special_needs'    , new TableColumn( pl_label( 'special_needs' )    , ['id' => 'p_special_needs_col', 'class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['id' => 'p_medical_treatment', 'class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'family_icon'                  , new TableColumn( ''                             , ['id' => 'family_icon']         ) );
-    $table->addColumn( 'schedule_icon'                , new TableColumn( ''                             , ['id' => 'schedule_icon']       ) );
+    $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' )             , ['scope' => 'col'] ) );
+    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['scope' => 'col', 'class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'participant_allergies'        , new TableColumn( pl_label( 'allergies' )        , ['scope' => 'col', 'class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'participant_special_needs'    , new TableColumn( pl_label( 'special_needs' )    , ['scope' => 'col', 'class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['scope' => 'col', 'class' => 'hidden md:table-cell'] ) );
+    $table->addColumn( 'family_icon'                  , new TableColumn( ''                             , ['scope' => 'col'] ) );
+    $table->addColumn( 'schedule_icon'                , new TableColumn( ''                             , ['scope' => 'col'] ) );
 
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $participants as $participant )
@@ -88,6 +88,7 @@ class ParticipantsController
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
         , 'data-type' => 'participant_info'
         , 'data-id2'  => $participant['participant_id2']
+        , 'role'      => 'row'
       ] ) );
     }
 
@@ -120,12 +121,12 @@ class ParticipantsController
     */
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'users_table', 'class' => 'p-table'] );
-    $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' )         , ['id' => 'name_col']          ) );
-    $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )        , ['id' => 'email_col']         ) );
-    $table->addColumn( 'user_relationship', new TableColumn( pl_label( 'relationship' ) , ['id' => 'relationship_col']  ) );
-    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )          , ['id' => 'dni_col']           ) );
-    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ) , ['id' => 'phone_number_col']  ) );
+    $table = new Table( ['id' => 'users_table', 'class' => 'p-table', 'role' => 'table'] );
+    $table->addColumn( 'user_name'        , new TableColumn( pl_label( 'name' )         , ['scope' => 'col'] ) );
+    $table->addColumn( 'user_email'       , new TableColumn( pl_label( 'email' )        , ['scope' => 'col'] ) );
+    $table->addColumn( 'user_relationship', new TableColumn( pl_label( 'relationship' ) , ['scope' => 'col'] ) );
+    $table->addColumn( 'user_dni'         , new TableColumn( pl_label( 'dni' )          , ['scope' => 'col'] ) );
+    $table->addColumn( 'user_phone_number', new TableColumn( pl_label( 'phone_number' ) , ['scope' => 'col'] ) );
     
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $users as $user )
@@ -143,6 +144,7 @@ class ParticipantsController
       $table->addRow( new TableRow( $cells, [
           'id'        => 'row-' . $user['detail_id2']
         , 'class'     => 'hover:bg-gray-100'
+        , 'role'      => 'row'
       ] ) );
     }
 

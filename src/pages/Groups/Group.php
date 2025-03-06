@@ -48,19 +48,19 @@ class GroupController
     $group_participants = $mod_groups_participants->GetRow( $this->group_id2, $where );
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'participants_table', 'class' => 'p-table'] );
+    $table = new Table( ['id' => 'participants_table', 'class' => 'p-table', 'role' => 'table'] );
 
     // Columnas
-    $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' )              ) );
-    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'participant_allergies'        , new TableColumn( pl_label( 'allergies' )        , ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'participant_special_needs'    , new TableColumn( pl_label( 'special_needs' )    , ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['class' => 'hidden md:table-cell'] ) );
-    $table->addColumn( 'schedule_icon'                , new TableColumn( ''                              ) );
+    $table->addColumn( 'participant_name'             , new TableColumn( pl_label( 'name' )             , ['scope' => 'col'] ) );
+    $table->addColumn( 'participant_birth_date'       , new TableColumn( pl_label( 'birth_date' )       , ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'participant_allergies'        , new TableColumn( pl_label( 'allergies' )        , ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'participant_special_needs'    , new TableColumn( pl_label( 'special_needs' )    , ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'participant_medical_treatment', new TableColumn( pl_label( 'medical_treatment' ), ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'schedule_icon'                , new TableColumn( ''                             , ['scope' => 'col'] ) );
 
     // Si es un admin, mostramos los iconos de borrar
     if( $role === 2 || $role === 1 )
-      $table->addColumn( 'delete_icon', new TableColumn( '', ['id' => 'delete_icon']  ) );
+      $table->addColumn( 'delete_icon', new TableColumn( '', ['id' => 'delete_icon', 'scope' => 'col']  ) );
 
     // Iteramos cada cuenta y la añadimos a la tabla
     foreach( $group_participants as $participant )
@@ -110,6 +110,7 @@ class GroupController
         , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
         , 'data-type' => 'participant_info'
         , 'data-id2'  => $participant['participant_id2']
+        , 'role'      => 'row'
       ] ) );
     }
 
@@ -179,6 +180,7 @@ class GroupController
       , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row'
       , 'data-type' => 'participant_info'
       , 'data-id2'  => $participant['participant_id2']
+      , 'role'      => 'row'
     ] );
 
     $value = $table_row->html();

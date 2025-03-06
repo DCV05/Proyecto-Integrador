@@ -54,18 +54,18 @@ class GroupsController
     $groups = $mod_groups->GetRows( $where );
 
     // Inicializamos la tabla y sus columnas
-    $table = new Table( ['id' => 'groups_table', 'class' => 'p-table'] );
+    $table = new Table( ['id' => 'groups_table', 'class' => 'p-table', 'role' => 'table'] );
 
     // Columnas
-    $table->addColumn( 'group_name'        , new TableColumn( pl_label( 'name' ) ) );
-    $table->addColumn( 'participants_count', new TableColumn( pl_label( 'participants_count' ), ['class' => 'hidden md:table-cell']  ) );
-    $table->addColumn( 'monitor_name'      , new TableColumn( pl_label( 'monitor_name' )      , ['class' => 'hidden md:table-cell']  ) );
+    $table->addColumn( 'group_name'        , new TableColumn( pl_label( 'name' ), ['scope' => 'col'] ) );
+    $table->addColumn( 'participants_count', new TableColumn( pl_label( 'participants_count' ), ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
+    $table->addColumn( 'monitor_name'      , new TableColumn( pl_label( 'monitor_name' )      , ['class' => 'hidden md:table-cell', 'scope' => 'col'] ) );
 
     // Si es un admin, mostramos los iconos de editar y borrar
     if( $role === 2 )
     {
-      $table->addColumn( 'edit_icon'  , new TableColumn( '', ['id' => 'edit_icon']    ) );
-      $table->addColumn( 'delete_icon', new TableColumn( '', ['id' => 'delete_icon']  ) );
+      $table->addColumn( 'edit_icon'  , new TableColumn( '', ['id' => 'edit_icon'   , 'scope' => 'col'] ) );
+      $table->addColumn( 'delete_icon', new TableColumn( '', ['id' => 'delete_icon' , 'scope' => 'col'] ) );
     }
 
     // Iteramos cada cuenta y la añadimos a la tabla
@@ -117,6 +117,7 @@ class GroupsController
         , 'data-type' => 'group_info'
         , 'data-id2'  => $group['group_id2']
         , 'data-href' => '/group?gid2=' . $group['group_id2']
+        , 'role'      => 'row'
       ] ) );
     }
 
@@ -180,6 +181,7 @@ class GroupsController
         'id'        => 'row-' . $group['group_id2']
       , 'class'     => 'hover:bg-gray-100 cursor-pointer table-row-link'
       , 'data-href' => '/group?gid2=' . $group['group_id2']
+      , 'role'      => 'row'
     ] );
 
     // Retornamos la fila convertida a HTML
